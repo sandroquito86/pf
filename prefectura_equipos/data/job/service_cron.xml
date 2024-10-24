@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo> 
+    <!-- <record model="ir.cron" id="update_date_value">
+        <field name='name'>Update Date</field>
+        <field name="model_id" ref="model_asset_periferico"/>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+        <field name="code">model.cron()</field>
+    </record> -->
+</odoo>

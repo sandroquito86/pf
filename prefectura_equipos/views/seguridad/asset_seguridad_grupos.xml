@@ -1,0 +1,15 @@
+<odoo>
+    <data>      
+
+        <record id="action_activo_gestion_seguridad_server" model="ir.actions.server">
+            <field name="name">Grupos</field>
+            <field name="model_id" ref="model_res_groups" />
+            <field name="binding_model_id" ref="model_res_groups" />
+            <field name="state">code</field>
+            <field name="code">action = env['res.groups'].activar_perfiles_activo()</field>
+        </record>
+
+        <menuitem name="Activar acción de perfiles" action="action_activo_gestion_seguridad_server" id="menu_action_activo_gestion_seguridad_server" groups="prefectura_equipos.grupo_equipos_administrador_general" parent="menu_maintenance_seguridad" sequence="10"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,62 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="view_generar_horarios_tree">
+      <field name="name">gi.generarhorarios.tree</field>
+      <field name="model">gi.generarhorarios</field>
+      <field name="arch" type="xml">
+        <tree >
+          <field name="servicio_id" />
+          <field name="personal_id" />
+          <field name="mes_genera" />
+          <field name="anio"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_generar_horarios_form">
+      <field name="name">gi.generarhorarios.form</field>
+      <field name="model">gi.generarhorarios</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <group>
+                <field name="personal_id"  options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+                <field name="mes_genera" />
+            
+              </group>
+              <group>
+                <field name="servicio_id"  options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+                <field name="anio" />
+              </group>
+            </group>
+            <field name="turno_disponibles_ids">
+              <!--<field name="turno_disponibles_ids" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}">-->
+              <tree create='0' editable="top">
+                <!--<field name="idpersonal_ids"/>   -->
+                <field name="fecha" />
+                <field name="horainicio" widget="float_time" />
+                <field name="horafin" widget="float_time" />
+                <field name="hora" invisible="1" />                
+                <!-- <field name="beneficiario_id" /> -->
+                <field name="estado" />
+              </tree>
+            </field>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+
+  
+   
+    <record model="ir.actions.act_window" id="action_gi_generar_horarios">
+     <field name="name">Planificación de Horarios</field>
+      <field name="res_model">gi.generarhorarios</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Planificación de Horarios" id="menu_action_gi_generar_horarios" parent="menu_gi_planificacion" action="action_gi_generar_horarios" sequence="40" />
+  </data>
+</odoo>

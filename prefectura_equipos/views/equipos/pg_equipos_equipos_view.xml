@@ -1,0 +1,276 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="pg_equipos_graph_view">
+      <field name="name">pg_equipos.pg_equipos.graph</field>
+      <field name="model">pg_equipos.pg_equipos</field>
+      <field name="type">graph</field>
+      <field name="arch" type="xml">
+        <graph string="Activo" type="bar">
+          <field name="categoria_id" />
+          <field name="programa_id" />
+        </graph>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="pg_equipos_graph_view_estado">
+      <field name="name">pg_equipos.pg_equipos.graph</field>
+      <field name="model">pg_equipos.pg_equipos</field>
+      <field name="type">graph</field>
+      <field name="arch" type="xml">
+        <graph string="Activo" type="bar">
+          <field name="categoria_id" />
+          <field name="programa_id" />
+        </graph>
+      </field>
+    </record>
+
+    <record id="pg_equiposs_form_view" model="ir.ui.view">
+      <field name="name">pg_equipos.pg_equipos.form</field>
+      <field name="model">pg_equipos.pg_equipos</field>
+      <field name="arch" type="xml">
+        <form string="Assets" version="7.0">
+          <sheet>
+            <div class="row justify-content-between position-relative w-100 m-0 mb-2">
+              <div class="oe_title mw-75 ps-0 pe-2">
+                <h1 class="d-flex flex-row align-items-center">
+                  <field name="name" placeholder="Nombre del Equipo" required="True" style="font-size: min(4vw, 2.6rem);"/>
+                </h1>                
+              </div>
+              <div class="o_employee_avatar m-0 p-0">
+                <field name="image_medium" widget="image" class="oe_avatar" options="{'preview_image': 'image'}"/>
+              </div>
+            </div>           
+            <group col="3">
+              <group>
+                <field name="grupo_id" type="object" placeholder="Grupo...." options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+              </group>
+              <group>
+                <field name="categoria_id" domain="[('grupo_id','=',grupo_id)]" placeholder="Categoria...." options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+              </group>
+              <group>
+                <field name="tipo_id" domain="[('categoria_id','=',categoria_id)]" placeholder="Tipo...." options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+              </group>
+            </group>
+            <group>            
+              <group>
+                <field name="programa_id" readonly="1" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+                <field name="empleado_id" placeholder="Seleccione el responsable del activos.." context="{'form_view_ref': 'th_gestion_hr.view_hr_personal_lectura_form'}" options="{'no_create': True,  'no_create_edit': True}" />
+                <field name="user_id" invisible="1" />
+              </group>
+              <group>
+                <field name="departamento_id" invisible="1" placeholder="Seleccione el departamento del responsable del activo.." options="{'no_create_edit': True, 'no_open': True,'no_create': True}" />
+              
+                <field name="estado_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" required="1" />
+              </group>
+            </group>
+
+            <notebook>
+              <page name="info" string="Información">
+                <group >
+                  <group>
+                    <field name="purchase_date" />
+                    <field name="serial" widget="auto_fill"/>
+                  </group>
+                  <group>
+                    <field name="pg_marca_id_domain" invisible="True" />
+                    <field name="marca_id" required="1" options="{'domain_field': 'pg_marca_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+                    <field name="modelo_id" required="1" domain="[('marca_id','=',marca_id)]" context="{'default_marca_id': marca_id, 'form_view_ref': 'prefectura_equipos.view_pg_equipos_modelo_form2'}" />
+
+                  </group>
+                </group>
+              </page>
+
+              <page name="caracteristicas" string="Características Generales">
+                <field name="detalle_caracteristicas_ids" widget="one2many">
+                  <tree string="Caracteristicas" editable="bottom">
+                    <field name="caracteristica_id_domain" invisible="1" />
+                    <field name="caracteristica_id" domain="caracteristica_id_domain" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+                    <field name="valor_id" context="{'default_caracteristica_id': caracteristica_id, 'show_attribute': False}" options="{'no_open': True, 'no_create_edit': True}" />
+                  </tree>
+                </field>
+              </page>
+
+              <page name="garantia" string="Garantía">
+                <group>
+                  <group>
+                    <field name="warranty_start_date" placeholder="Fecha de Inicio de garantía.." />
+                    <field name="start_date" placeholder="Fecha que empieza a usarse.." />
+                  </group>
+                  <group>
+                    <field name="warranty_end_date" placeholder="Fecha de fin de garantía.." />
+                  </group>
+                </group>
+              </page>
+
+
+              <page name="biblioteca" string="Biblioteca">
+                <group>
+                  <field name="file_biblioteca_ids" widget="many2many_binary" />
+                </group>
+              </page>
+            </notebook>
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" />
+            <field name="message_ids" widget="mail_thread" />
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <!-- <record id="view_pg_equipos_pg_equipos_form_inherited" model="ir.ui.view">
+      <field name="name">pg_equipos.pg_equipos.form</field>
+      <field name="model">pg_equipos.pg_equipos</field>
+      <field name="inherit_id" ref="pg_equiposs_form_view" />
+      <field name="type">form</field>
+      <field name="groups_id" eval="[(6, 0, [ref('grupo_equipos_registrador_general'),ref('grupo_equipos_administrador_general')])]" />
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='programa_id']" position="attributes">
+          <attribute name="readonly">False</attribute>
+        </xpath>
+      </field>
+    </record> -->
+
+    <record id="pg_equiposs_form_presentacion_view" model="ir.ui.view">
+      <field name="name">pg_equipos.pg_equipos.form</field>
+      <field name="model">pg_equipos.pg_equipos</field>
+      <field name="arch" type="xml">
+        <form string="Assets" version="7.0">
+          <header>
+            <field name="estado_id" widget="statusbar" />
+          </header>
+          <sheet>
+            <div class="oe_right oe_button_box" style="width: 300px;" name="buttons"></div>
+            <field name="image_medium" widget="image" class="oe_avatar oe_left" readonly="1" />
+            <div class="oe_title">
+              <field name="categoria_id" readonly="1" />
+            </div>
+            <group>
+              <group colspan="2">
+                <h1>
+                  <field name="name" />
+                </h1>
+              </group>
+              <group>
+                <field name="programa_id" readonly="1" />
+               
+              </group>
+              <group>
+                <field name="departamento_id" invisible="1" readonly="1" />
+                <field name="empleado_id" readonly="1" />
+                <field name="user_id" />
+              </group>
+            </group>
+            <notebook>
+              <page name="info" string="Información General">
+                <group col="3">
+                  <group>
+                    <field name="purchase_date" readonly="1" />
+                    <field name="serial" readonly="1" />
+                  </group>
+                  <group>
+                    <field name="marca_id" readonly="1" />
+                    <field name="modelo_id" readonly="1" />
+                  </group>
+                </group>
+              </page>
+              <page name="caracteristicas" string="Caracteristicas Generales">
+                <field name="detalle_caracteristicas_ids" widget="one2many" context="{'show_attribute': False}" readonly="1">
+                  <tree string="Caracteristicas" editable="bottom">
+                    <field name="caracteristica_id" string="Características" />
+                    <field name="valor_id" />
+                  </tree>
+                </field>
+              </page>
+              <page name="garantia" string="Garantía">
+                <group>
+                  <group>
+                    <field name="warranty_start_date" readonly="1" />
+                    <field name="start_date" readonly="1" />
+                  </group>
+                  <group>
+                    <field name="warranty_end_date" readonly="1" />
+                  </group>
+                </group>
+              </page>
+            </notebook>
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" />
+            <field name="message_ids" widget="mail_thread" />
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="pg_equiposs_search">
+      <field name="name">pg_equipos.pg_equipos</field>
+      <field name="model">pg_equipos.pg_equipos</field>
+      <field name="arch" type="xml">
+        <search string="Busqueda activo">
+          <field name="name" />
+          <field name="programa_id" />
+          <field name="empleado_id" />
+        
+          <field name="categoria_id" />
+          <field name="marca_id" />
+          <field name="detalle_caracteristicas_ids" string="Características Generales" filter_domain="[('detalle_caracteristicas_ids.valor_id', 'ilike', self)]" />
+          <field name="estado_id" />
+          <separator />
+          <group expand="0" string="Group By">
+            <filter name="reparto" string="Reparto" context="{'group_by': 'programa_id'}" />
+            <filter name="empleado" string="Empleado" context="{'group_by': 'empleado_id'}" />
+            <filter name="grupo" string="Grupo" context="{'group_by': 'grupo_id'}" />
+            <filter name="categoria" string="Categoria" context="{'group_by': 'categoria_id'}" />
+            <filter name="tipo" string="Tipo de activo" context="{'group_by': 'tipo_id'}" />
+            <filter name="marca" string="Marca" context="{'group_by': 'marca_id'}" />
+            <filter name="estado" string="Estado" context="{'group_by': 'estado_id'}" />
+          </group>
+        </search>
+      </field>
+    </record>
+
+    <record id="pg_equiposs_tree_view" model="ir.ui.view">
+      <field name="name">pg_equipos.pg_equipos.tree</field>
+      <field name="model">pg_equipos.pg_equipos</field>
+      <field name="arch" type="xml">
+        <tree string="Assets">
+          <field name="serial" />
+          <field name="name" />
+          <field name="empleado_id" />
+          <field name="programa_id" optional="hide"/>
+          <field name="estado_id" optional="hide"/>
+          <field name="detalle_caracteristicas_ids" widget="many2many_tags" optional="hide"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="pg_equipos_pg_equipos_action2">
+      <field name="name">Activo</field>
+      <field name="res_model">pg_equipos.pg_equipos</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="pg_equiposs_form_presentacion_view" />
+    </record>
+
+    <record id="action_pg_equiposs" model="ir.actions.act_window">
+      <field name="name">Ingreso de activos</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">pg_equipos.pg_equipos</field>
+      <field name="context" eval="{'search_default_reparto':1}"></field>
+      <field name="view_mode">tree,form,graph</field>
+      <field name="view_id" eval="False" />
+    </record>
+
+    <record id="action_activo_activo_server" model="ir.actions.server">
+      <field name="name">Ingreso de activos</field>
+      <field name="model_id" ref="model_pg_equipos_pg_equipos" />
+      <field name="binding_model_id" ref="model_pg_equipos_pg_equipos" />
+      <field name="state">code</field>
+      <field name="code">action = env['pg_equipos.pg_equipos'].ver_activos()</field>
+    </record>
+
+
+    <menuitem name="Ingreso de Equipos" action="action_activo_activo_server" id="menu_action_pg_equiposs" parent="pg_equipos_equipos" groups="grupo_equipos_administrador_general,grupo_equipos_registrador_sucursal,grupo_equipos_registrador_general" sequence="20" />
+
+  </data>
+</odoo>

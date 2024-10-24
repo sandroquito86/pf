@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!-- Vista de búsqueda -->
+  <record id="view_programa_stock_search" model="ir.ui.view">
+    <field name="name">programa.stock.search</field>
+    <field name="model">stock.quant</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="product_id"/>
+        <field name="location_id"/>
+        <filter string="En Stock" name="in_stock" domain="[('quantity', '>', 0)]"/>
+        <filter string="Mi Programa" name="my_program" domain="[('location_id.warehouse_id', '=', uid.programa_id.warehouse_id.id)]"/>
+        <group expand="0" string="Agrupar Por">
+          <filter string="Producto" name="groupby_product" context="{'group_by': 'product_id'}"/>
+          <filter string="Ubicación" name="groupby_location" context="{'group_by': 'location_id'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <!-- Vista de árbol -->
+  <record id="view_programa_stock_tree" model="ir.ui.view">
+    <field name="name">programa.stock.tree</field>
+    <field name="model">stock.quant</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="product_id"/>
+        <field name="location_id"/>
+        <field name="quantity"/>
+        <field name="product_uom_id" groups="uom.group_uom"/>
+      </tree>
+    </field>
+  </record>
+
+  <!-- Vista de formulario -->
+  <record id="view_programa_stock_form" model="ir.ui.view">
+    <field name="name">programa.stock.form</field>
+    <field name="model">stock.quant</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <group>
+            <field name="company_id" invisible="1"/>
+            <field name="product_id" options="{'no_create': True}"/>
+            <field name="location_id" options="{'no_create': True}"/>
+            <field name="quantity"/>
+            <field name="product_uom_id" groups="uom.group_uom"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_get_programa_stock_domain" model="ir.actions.server">
+    <field name="name">Obtener Dominio de Inventario del Programa</field>
+    <field name="model_id" ref="stock.model_stock_quant"/>
+    <field name="state">code</field>
+    <field name="code">
+action = {
+    'type': 'ir.actions.act_window',
+    'res_model': 'stock.quant',
+    'view_mode': 'tree,form',
+    'name': 'Inventario del Programa',
+    'context': {
+        'search_default_in_stock': 1,
+        'search_default_my_program': 1,
+    },
+    'domain': [('location_id.warehouse_id', '=', env.user.programa_id.warehouse_id.id)],
+    'search_view_id': env.ref('prefectura_inventario.view_programa_stock_search').id,
+}
+    </field>
+  </record>
+
+  <!-- Elemento de menú para el informe -->
+  <menuitem id="menu_programa_stock_report" name="Inventario del Programa" action="action_get_programa_stock_domain" parent="stock.menu_warehouse_report" sequence="100"/>
+</odoo>

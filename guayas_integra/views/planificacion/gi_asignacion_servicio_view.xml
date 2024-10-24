@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_gi_asignacion_servicio_tree">
+            <field name="name">gi.asignacion_servicio.tree</field>
+            <field name="model">gi.asignacion_servicio</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="servicio_id" />
+                    <field name="personal_ids" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_gi_asignacion_servicio_form" model="ir.ui.view">
+            <field name="name">gi.asignacion_servicio.form</field>
+            <field name="model">gi.asignacion_servicio</field>
+            <field name="arch" type="xml">
+                <form string="Nuevo">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="servicio_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+                                <field name="personal_ids" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_gi_asignacion_servicio">
+            <field name="name">Asignación de Servicios</field>
+            <field name="res_model">gi.asignacion_servicio</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_action_gi_asignacion_servicio" name="Asignación de Servicios" action="action_gi_asignacion_servicio" parent="menu_gi_planificacion" sequence="10" />
+
+
+
+    </data>
+</odoo>

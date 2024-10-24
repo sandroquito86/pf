@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_asistencia_servicio_tree" model="ir.ui.view">
+        <field name="name">mz.asistencia_servicio.tree</field>
+        <field name="model">mz.asistencia_servicio</field>
+        <field name="arch" type="xml">
+            <tree string="Asistencia Servicio">
+                <field name="planificacion_id"/>
+                <field name="beneficiario_id"/>
+                <field name="fecha"/>
+                <field name="asistio"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_asistencia_servicio_form" model="ir.ui.view">
+        <field name="name">mz.asistencia_servicio.form</field>
+        <field name="model">mz.asistencia_servicio</field>
+        <field name="arch" type="xml">
+            <form string="Asistencia Servicio">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="planificacion_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="beneficiario_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="fecha"/>
+                        </group>
+                        <group>
+                            <field name="asistio"/>
+                            <field name="observacion"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_asistencia_servicio_search" model="ir.ui.view">
+        <field name="name">mz.asistencia_servicio.search</field>
+        <field name="model">mz.asistencia_servicio</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Asistencia Servicio">
+                <field name="planificacion_id"/>
+                <field name="beneficiario_id"/>
+                <field name="fecha"/>
+                <filter string="Asistió" name="asistio_filter" domain="[('asistio', '=', True)]"/>
+                <filter string="No Asistió" name="no_asistio_filter" domain="[('asistio', '=', False)]"/>
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Planificación" name="group_by_planificacion" context="{'group_by': 'planificacion_id'}"/>
+                    <filter string="Beneficiario" name="group_by_beneficiario" context="{'group_by': 'beneficiario_id'}"/>
+                    <filter string="Fecha" name="group_by_fecha" context="{'group_by': 'fecha'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_mz_asistencia_servicio" model="ir.actions.act_window">
+        <field name="name">Asistencia Servicio</field>
+        <field name="res_model">mz.asistencia_servicio</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu item -->
+    <menuitem id="menu_action_mz_asistencia_servicio" 
+              name="Asistencia Servicio" 
+              parent="menu_mz_ejecucion" 
+              action="action_mz_asistencia_servicio"/>
+</odoo>

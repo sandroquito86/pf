@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_asset_wizard_mis_activos_form" model="ir.ui.view">
+            <field name="name">asset_wizard.mis_activos</field>
+            <field name="model">asset_wizard.mis_activos</field>
+            <field name="arch" type="xml">
+                <form string="NUEVO" create="false">
+                    <sheet>
+                        <group>
+                            <group colspan="2">
+                                <field name="tipo_reporte"/>
+                            </group>
+                        </group>
+                        <group string="Criterios de busqueda" attrs="{'invisible':['|',('tipo_reporte','=','todo'),('tipo_reporte','=',False)]}">
+                            <group colspan="2">
+                                <field name="grupo_ids" widget="many2many_tags"/>
+                                <field name="tipo_ids" widget="many2many_tags"/>
+                                <field name="categoria_ids" widget="many2many_tags"/>
+                            </group>                          
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="print_report" type="object" string="Imprimir reporte" class="btn-primary" />
+                        <button name="cancel_report" type="object" string="Cancelar" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_asset_wizard_mis_activo">
+            <field name="name">Reporte mis activos</field>
+            <field name="res_model">asset_wizard.mis_activos</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Mis activos" action="action_asset_wizard_mis_activo" id="menu_action_asset_wizard_mis_activo" parent="asset_menu_reportes" sequence="1"/>
+
+    </data>
+</odoo>

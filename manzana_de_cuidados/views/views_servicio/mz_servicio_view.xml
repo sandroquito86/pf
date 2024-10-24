@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<data>
+    <!-- Vista Tree -->
+    <record id="view_servicio_tree" model="ir.ui.view">
+        <field name="name">mz.servicio.tree</field>
+        <field name="model">mz.servicio</field>
+        <field name="arch" type="xml">
+            <tree string="Servicios">
+                <field name="name"/>
+                <field name="tipo_servicio"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Form -->
+    <record id="view_servicio_form" model="ir.ui.view">
+    <field name="name">mz.servicio.form</field>
+    <field name="model">mz.servicio</field>
+        <field name="arch" type="xml">
+            <form string="Servicio">
+                <sheet>
+                    <div class="row justify-content-between position-relative w-100 m-0 mb-2">
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nombre del Servicio" />
+                            </h1>
+                        </div>
+                        <div class="o_employee_avatar m-0 p-0">
+                            <field name="image" widget="image" class="oe_avatar" options="{'preview_image': 'image'}"/>
+                        </div>
+                    </div>
+                    <group>
+                        <field name="descripcion" placeholder="Detalle sel Servicio"/>
+                        <field name="tipo_servicio"/>
+                        <field name="if_derivacion" widget="boolean_toggle"/>
+                        <field name="active" widget="boolean_toggle" readonly="1" force_save="1"/>
+                    </group>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Filtro -->
+    <record id="view_servicio_search" model="ir.ui.view">
+        <field name="name">mz.servicio.search</field>
+        <field name="model">mz.servicio</field>
+        <field name="arch" type="xml">
+            <search string="Servicios">
+                <field name="name"/>
+                <field name="tipo_servicio"/>
+                <searchpanel>
+                    <field name="tipo_servicio" icon="fa-cogs" string="Tipo Servicio"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+
+    <!-- Acción -->
+    <record id="action_servicio" model="ir.actions.act_window">
+        <field name="name">Servicios</field>
+        <field name="res_model">mz.servicio</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_servicio_tree"/>
+    </record>
+
+    <!-- Menú -->
+    <menuitem id="menu_servicio" name="Servicios" parent="menu_configuracion" action="action_servicio" sequence="5"/>
+</data>
+</odoo>

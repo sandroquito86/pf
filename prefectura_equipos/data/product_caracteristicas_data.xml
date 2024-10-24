@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- CARACTERISTICAS -->
+        <!--COLOR-->
+        <record id="product_attribute_color" model="product.attribute">
+            <field name="name">Color</field>
+            <field name="sequence">1</field>
+            <field name="is_used_on_products">False</field>
+        </record>
+        <record id="product_color_blanco" model="product.attribute.value">
+            <field name="name">Blanco</field>
+            <field name="attribute_id" ref="product_attribute_color"/>
+            <field name="sequence">1</field>
+        </record>
+        <record id="product_color_negro" model="product.attribute.value">
+            <field name="name">Negro</field>
+            <field name="attribute_id" ref="product_attribute_color"/>
+            <field name="sequence">2</field>
+        </record>
+        <record id="product_color_plomo" model="product.attribute.value">
+            <field name="name">Plomo</field>
+            <field name="attribute_id" ref="product_attribute_color"/>
+            <field name="sequence">3</field>
+        </record>
+        <!--COMPUTADORAS-->
+        <!-- Sistema Operativo -->
+        <record id="product_attribute_s_o" model="product.attribute">
+            <field name="name">Sistema Operativo</field>
+            <field name="sequence">1</field>
+            <field name="is_used_on_products">False</field>
+        </record>
+        <record id="product_win_98" model="product.attribute.value">
+            <field name="name">Windows 98</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">18</field>
+        </record>
+        <record id="product_win_xp_32" model="product.attribute.value">
+            <field name="name">Windows Xp 32 bits</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">17</field>
+        </record>
+        <record id="product_win_xp_64" model="product.attribute.value">
+            <field name="name">Windows Xp 64 bits</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">16</field>
+        </record>
+        <record id="product_win_server" model="product.attribute.value">
+            <field name="name">Windows Server</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">15</field>
+        </record>
+        <record id="product_win_8_prof_32_bits" model="product.attribute.value">
+            <field name="name">Windows 8 Professional 32 Bits</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">13</field>
+        </record>
+        <record id="product_win_8_prof_64_bits" model="product.attribute.value">
+            <field name="name">Windows 8  Professional 64 Bits</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">12</field>
+        </record>
+        <record id="product_win_7_ultimate_64_bits" model="product.attribute.value">
+            <field name="name">Windows 7 Ultimate 64 Bits</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">11</field>
+        </record>
+        <record id="product_win_7_ultimate_32_bits" model="product.attribute.value">
+            <field name="name">Windows 7 Ultimate 32 Bits</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">10</field>
+        </record>
+        <record id="product_win_7_profesional_64_bits" model="product.attribute.value">
+            <field name="name">Windows 7 Professional 64 Bits</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">9</field>
+        </record>
+        <record id="product_win_7_profesional_32_bits" model="product.attribute.value">
+            <field name="name">Windows 7 Professional 32 Bits</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">8</field>
+        </record>
+        <record id="product_win_10_profesional_64_bits" model="product.attribute.value">
+            <field name="name">Windows 10 Professional 64 Bits</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">7</field>
+        </record>
+        <record id="product_win_10_profesional_32_bits" model="product.attribute.value">
+            <field name="name">Windows 10 Professional 32 Bits</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">6</field>
+        </record>
+        <record id="product_win_10_home_64_bits" model="product.attribute.value">
+            <field name="name">Windows 10 Home 64 Bits</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">5</field>
+        </record>
+        <record id="product_win_10_home_32_bits" model="product.attribute.value">
+            <field name="name">Windows 10 Home 32 Bits</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">4</field>
+        </record>
+        <record id="product_win_10_enterprise_32_bits" model="product.attribute.value">
+            <field name="name">Windows 10 Enterprise 32 Bits</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">1</field>
+        </record>
+        <record id="product_win_10_enterprise_64_bits" model="product.attribute.value">
+            <field name="name">Windows 10 Enterprise 64 Bits</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">2</field>
+        </record>
+        <record id="product_win_10_education_64_bits" model="product.attribute.value">
+            <field name="name">Windows 10 Education 64 Bits</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">3</field>
+        </record>
+        <record id="product_attributevalue_2" model="product.attribute.value">
+            <field name="name">Windows 7</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">2</field>
+        </record>
+        <record id="product_attributevalue_3" model="product.attribute.value">
+            <field name="name">Windows 8.1</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">3</field>
+        </record>
+        <record id="product_attributevalue_4" model="product.attribute.value">
+            <field name="name">Windows 10</field>
+            <field name="attribute_id" ref="product_attribute_s_o"/>
+            <field name="sequence">4</field>
+        </record>
+
+
+        <!-- Ofimatica -->
+        <record id="product_attribute_ofimatica" model="product.attribute">
+            <field name="name">Ofimática</field>
+            <field name="sequence">2</field>
+            <field name="is_used_on_products">False</field>
+        </record>
+        <record id="product_attributevalue_off_2007" model="product.attribute.value">
+            <field name="name">Office 2007</field>
+            <field name="attribute_id" ref="product_attribute_ofimatica"/>
+            <field name="sequence">1</field>
+        </record>
+        <record id="product_attributevalue_off_2010" model="product.attribute.value">
+            <field name="name">Windows 2010</field>
+            <field name="attribute_id" ref="product_attribute_ofimatica"/>
+            <field name="sequence">2</field>
+        </record>
+        <record id="product_attributevalue_off_2013" model="product.attribute.value">
+            <field name="name">Windows 2013</field>
+            <field name="attribute_id" ref="product_attribute_ofimatica"/>
+            <field name="sequence">3</field>
+        </record>
+        <record id="product_attributevalue_off_2016" model="product.attribute.value">
+            <field name="name">Windows 2016</field>
+            <field name="attribute_id" ref="product_attribute_ofimatica"/>
+            <field name="sequence">4</field>
+        </record>
+        <record id="product_attributevalue_off_2018" model="product.attribute.value">
+            <field name="name">Windows 2018</field>
+            <field name="attribute_id" ref="product_attribute_ofimatica"/>
+            <field name="sequence">5</field>
+        </record>
+        <record id="product_attributevalue_off_2019" model="product.attribute.value">
+            <field name="name">Windows 2019</field>
+            <field name="attribute_id" ref="product_attribute_ofimatica"/>
+            <field name="sequence">6</field>
+        </record>
+
+
+        <!-- Direccion Ip -->
+        <record id="product_direccion_ip" model="product.attribute">
+            <field name="name">Dirección Ip</field>
+            <field name="sequence">3</field>
+            <field name="is_used_on_products">False</field>
+        </record>
+        <record id="product_attributevalue_dir_ip_dhcp" model="product.attribute.value">
+            <field name="name">DHCP</field>
+            <field name="attribute_id" ref="product_direccion_ip"/>
+            <field name="sequence">6</field>
+        </record>
+
+        <!-- Direccion Física Ethernet -->
+        <record id="product_direccion_fisica_eth" model="product.attribute">
+            <field name="name">Dirección Física Ethernet</field>
+            <field name="sequence">4</field>
+            <field name="is_used_on_products">False</field>
+        </record>
+        <!-- Direccion Física Wifi -->
+        <record id="product_direccion_fisica_wifi" model="product.attribute">
+            <field name="name">Dirección Física Wifi</field>
+            <field name="sequence">5</field>
+            <field name="is_used_on_products">False</field>
+        </record>
+
+        <!--Attach CARACTERISTICAS PC-->
+        <!-- <record id="asset_cat_atr_pc" model="asset.categoria.atributo">
+                    <field name="categoria_id" ref="asset_categoria_computadora"/>
+                    <field name="atributo_ids" eval="[(6, 0, [ ref('product_attribute_s_o'),ref('product_attribute_ofimatica'),ref('product_direccion_ip'),
+                                                                ref('product_direccion_fisica_eth'),ref('product_direccion_fisica_wifi')])]"/>                   
+                </record>    -->
+        <!--Attach CARACTERISTICAS LAPTOP-->
+        <!-- <record id="asset_cat_atr_laptop" model="asset.categoria.atributo">
+                    <field name="categoria_id" ref="asset_categoria_laptop"/>
+                   <field name="atributo_ids" eval="[(6, 0, [ ref('product_attribute_s_o'),ref('product_attribute_ofimatica'),ref('product_direccion_ip'),
+                                                                ref('product_direccion_fisica_eth'),ref('product_direccion_fisica_wifi')])]"/>                   
+                  </record>  -->
+
+        <!--EQUIPOS DE COMUNICACIONES-->
+        <!--Tipo-->
+        <record id="product_equip_comunicacion_tipo" model="product.attribute">
+            <field name="name">Tipo de Transmisión</field>
+            <field name="sequence">6</field>
+            <field name="is_used_on_products">False</field>
+        </record>
+        <record id="product_atr_val_tipo_1" model="product.attribute.value">
+            <field name="name">Tx</field>
+            <field name="attribute_id" ref="product_equip_comunicacion_tipo"/>
+            <field name="sequence">1</field>
+        </record>
+        <record id="product_atr_val_tipo_2" model="product.attribute.value">
+            <field name="name">Rx</field>
+            <field name="attribute_id" ref="product_equip_comunicacion_tipo"/>
+            <field name="sequence">2</field>
+        </record>
+
+        <!--Banda-->
+        <record id="product_comunicacion_banda" model="product.attribute">
+            <field name="name">Banda</field>
+            <field name="sequence">7</field>
+            <field name="is_used_on_products">False</field>
+        </record>
+        <record id="product_atr_val_banda_1" model="product.attribute.value">
+            <field name="name">Hf</field>
+            <field name="attribute_id" ref="product_comunicacion_banda"/>
+            <field name="sequence">1</field>
+        </record>
+        <record id="product_atr_val_banda_2" model="product.attribute.value">
+            <field name="name">Satelital</field>
+            <field name="attribute_id" ref="product_comunicacion_banda"/>
+            <field name="sequence">2</field>
+        </record>
+        <record id="product_atr_val_banda_3" model="product.attribute.value">
+            <field name="name">Uhf</field>
+            <field name="attribute_id" ref="product_comunicacion_banda"/>
+            <field name="sequence">3</field>
+        </record>
+        <record id="product_atr_val_banda_4" model="product.attribute.value">
+            <field name="name">Vhf</field>
+            <field name="attribute_id" ref="product_comunicacion_banda"/>
+            <field name="sequence">4</field>
+        </record>
+
+        <!--Potencia en watts-->
+        <record id="product_comunicacion_potencia_watts" model="product.attribute">
+            <field name="name">Potencia en watts</field>
+            <field name="sequence">8</field>
+            <field name="is_used_on_products">False</field>
+        </record>
+        <record id="product_atr_val_potencia_watts_1" model="product.attribute.value">
+            <field name="name">5</field>
+            <field name="attribute_id" ref="product_comunicacion_potencia_watts"/>
+            <field name="sequence">1</field>
+        </record>
+        <record id="product_atr_val_potencia_watts_2" model="product.attribute.value">
+            <field name="name">10</field>
+            <field name="attribute_id" ref="product_comunicacion_potencia_watts"/>
+            <field name="sequence">2</field>
+        </record>
+        <record id="product_atr_val_potencia_watts_3" model="product.attribute.value">
+            <field name="name">20</field>
+            <field name="attribute_id" ref="product_comunicacion_potencia_watts"/>
+            <field name="sequence">3</field>
+        </record>
+        <record id="product_atr_val_potencia_watts_4" model="product.attribute.value">
+            <field name="name">25</field>
+            <field name="attribute_id" ref="product_comunicacion_potencia_watts"/>
+            <field name="sequence">4</field>
+        </record>
+        <record id="product_atr_val_potencia_watts_5" model="product.attribute.value">
+            <field name="name">50</field>
+            <field name="attribute_id" ref="product_comunicacion_potencia_watts"/>
+            <field name="sequence">5</field>
+        </record>
+        <record id="product_atr_val_potencia_watts_6" model="product.attribute.value">
+            <field name="name">150</field>
+            <field name="attribute_id" ref="product_comunicacion_potencia_watts"/>
+            <field name="sequence">6</field>
+        </record>
+        <record id="product_atr_val_potencia_watts_7" model="product.attribute.value">
+            <field name="name">500</field>
+            <field name="attribute_id" ref="product_comunicacion_potencia_watts"/>
+            <field name="sequence">7</field>
+        </record>
+        <!--Attach CARACTERISTICAS EQUIPOS DE COMUNICACIÓN-->
+        <!-- <record id="asset_cat_atr_equip_comu" model="asset.categoria.atributo">
+                    <field name="categoria_id" ref="asset_categoria_equi_comunicacion"/>
+                    <field name="atributo_ids" eval="[(6, 0, [ ref('product_equip_comunicacion_tipo'),ref('product_comunicacion_banda'),ref('product_comunicacion_potencia_watts'),])]"/>                   
+                </record>  -->
+
+
+        <!--ANTENAS DE COMUNICACION-->
+        <!--Tipo-->
+        <record id="product_antena_comunicacion_tipo" model="product.attribute">
+            <field name="name">Tipo</field>
+            <field name="sequence">7</field>
+            <field name="is_used_on_products">False</field>
+        </record>
+        <record id="product_atr_val_antena_tipo_1" model="product.attribute.value">
+            <field name="name">Log periódica</field>
+            <field name="attribute_id" ref="product_antena_comunicacion_tipo"/>
+            <field name="sequence">1</field>
+        </record>
+        <record id="product_atr_val_antena_tipo_2" model="product.attribute.value">
+            <field name="name">Látigo</field>
+            <field name="attribute_id" ref="product_antena_comunicacion_tipo"/>
+            <field name="sequence">2</field>
+        </record>
+        <!--Attach CARACTERISTICAS ANTENA DE COMUNICACIÓN-->
+        <!-- <record id="asset_cat_atr_antena_comu" model="asset.categoria.atributo">
+                    <field name="categoria_id" ref="asset_categoria_antena_comunicacion"/>
+                    <field name="atributo_ids" eval="[(6, 0, [ ref('product_antena_comunicacion_tipo')])]"/>                   
+                </record>  -->
+    </data>
+</openerp>

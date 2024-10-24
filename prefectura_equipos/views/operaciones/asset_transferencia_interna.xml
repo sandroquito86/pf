@@ -1,0 +1,65 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_asset_transferencia_interna_tree">
+            <field name="name">asset.transferencia_interna</field>
+            <field name="model">asset.transferencia_interna</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="fecha" />
+                </tree>
+            </field>
+        </record>
+
+        <!-- <record id="view_asset_transferencia_interna_search" model="ir.ui.view">
+            <field name="name">asset.transferencia_interna</field>
+            <field name="model">asset.transferencia_interna</field>
+            <field name="arch" type="xml">
+                <search string="">
+                    <field name="name" />
+                    <field name="modelo_ids" />
+                    <group>
+                        <filter string="Eliminado" name="inactive" domain="[('active','=',False)]" />
+                    </group>
+                </search>
+            </field>
+        </record> -->
+
+        <record id="view_asset_transferencia_interna_form" model="ir.ui.view">
+            <field name="name">asset.transferencia_interna</field>
+            <field name="model">asset.transferencia_interna</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="transferencia_interna" create="true" delete="true" edit="true">
+                    <header></header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="fecha" />                          
+                            </group>
+                            <group colspan="2" string="Modelos">
+                                <field name="personal_solicitante_id" />
+                                <field name="personal_recibe_id" />
+                            </group>
+
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+                </form>
+            </field>
+        </record>
+
+     
+
+        <record model="ir.actions.act_window" id="action_asset_transferencia_interna">
+            <field name="name">Transferencia Interna</field>
+            <field name="res_model">asset.transferencia_interna</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="context" eval="{'search_default_transferencia_interna':1}"></field> -->
+        </record>
+
+        <menuitem name="Transferencia Interna" action="action_asset_transferencia_interna" id="menu_action_asset_transferencia_interna" parent="menu_configuracion_operaciones" sequence="10" />
+
+    </data>
+</odoo>

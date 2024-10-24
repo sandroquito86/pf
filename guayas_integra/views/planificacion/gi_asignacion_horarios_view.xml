@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_gi_asignacion_horario_tree">
+            <field name="name">gi.asignacion_horario.tree</field>
+            <field name="model">gi.asignacion_horario</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="servicio_id" />
+                    <field name="personal_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_gi_asignacion_horario_form" model="ir.ui.view">
+            <field name="name">gi.asignacion_horario.form</field>
+            <field name="model">gi.asignacion_horario</field>
+            <field name="arch" type="xml">
+                <form string="Nuevo">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="servicio_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+                            </group>
+                            <group>
+                                <field name="personal_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+                            </group>
+                            <field name="detalle_horario_ids">
+                                <tree editable="top">
+                                    <field name="horainicio" widget="float_time"/>
+                                    <field name="horafin" widget="float_time" />
+                                    <field name="duracionconsulta" widget="float_time"/>
+                                    <field name="dias" />
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_gi_asignacion_horario">
+            <field name="name">Asignación de Servicios</field>
+            <field name="res_model">gi.asignacion_horario</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_action_gi_asignacion_horario" name="Asignación de Horarios" action="action_gi_asignacion_horario" parent="menu_gi_planificacion" sequence="20" />
+
+
+
+    </data>
+</odoo>

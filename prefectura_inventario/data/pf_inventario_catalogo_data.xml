@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Catálogo: Unidades de Medida -->
+        <record id="catalogo_unidades_medida" model="pf_inventario.catalogo">
+            <field name="name">Unidades de Medida</field>
+            <field name="descripcion">Unidades de medida para dosificación de medicamentos</field>
+        </record>
+
+        <record id="item_mg" model="pf_inventario.items">
+            <field name="name">Miligramos</field>
+            <field name="descripcion">mg</field>
+            <field name="catalogo_id" ref="catalogo_unidades_medida"/>
+        </record>
+        <record id="item_g" model="pf_inventario.items">
+            <field name="name">Gramos</field>
+            <field name="descripcion">g</field>
+            <field name="catalogo_id" ref="catalogo_unidades_medida"/>
+        </record>
+        <record id="item_ml" model="pf_inventario.items">
+            <field name="name">Mililitros</field>
+            <field name="descripcion">ml</field>
+            <field name="catalogo_id" ref="catalogo_unidades_medida"/>
+        </record>
+        <record id="item_l" model="pf_inventario.items">
+            <field name="name">Litros</field>
+            <field name="descripcion">l</field>
+            <field name="catalogo_id" ref="catalogo_unidades_medida"/>
+        </record>
+        <record id="item_iu" model="pf_inventario.items">
+            <field name="name">Unidades Internacionales</field>
+            <field name="descripcion">IU</field>
+            <field name="catalogo_id" ref="catalogo_unidades_medida"/>
+        </record>
+        <record id="item_mcg" model="pf_inventario.items">
+            <field name="name">Microgramos</field>
+            <field name="descripcion">mcg</field>
+            <field name="catalogo_id" ref="catalogo_unidades_medida"/>
+        </record>
+        <record id="item_meq" model="pf_inventario.items">
+            <field name="name">Miliequivalentes</field>
+            <field name="descripcion">mEq</field>
+            <field name="catalogo_id" ref="catalogo_unidades_medida"/>
+        </record>
+
+        <!-- Catálogo: Formas Farmacéuticas -->
+        <record id="catalogo_formas_farmaceuticas" model="pf_inventario.catalogo">
+            <field name="name">Formas Farmacéuticas</field>
+            <field name="descripcion">Diferentes formas de presentación de medicamentos</field>
+        </record>
+
+        <record id="item_tablet" model="pf_inventario.items">
+            <field name="name">Tableta</field>
+            <field name="catalogo_id" ref="catalogo_formas_farmaceuticas"/>
+        </record>
+        <record id="item_capsule" model="pf_inventario.items">
+            <field name="name">Cápsula</field>
+            <field name="catalogo_id" ref="catalogo_formas_farmaceuticas"/>
+        </record>
+        <record id="item_syrup" model="pf_inventario.items">
+            <field name="name">Jarabe</field>
+            <field name="catalogo_id" ref="catalogo_formas_farmaceuticas"/>
+        </record>
+        <record id="item_injection" model="pf_inventario.items">
+            <field name="name">Inyección</field>
+            <field name="catalogo_id" ref="catalogo_formas_farmaceuticas"/>
+        </record>
+        <record id="item_cream" model="pf_inventario.items">
+            <field name="name">Crema</field>
+            <field name="catalogo_id" ref="catalogo_formas_farmaceuticas"/>
+        </record>
+        <record id="item_ointment" model="pf_inventario.items">
+            <field name="name">Ungüento</field>
+            <field name="catalogo_id" ref="catalogo_formas_farmaceuticas"/>
+        </record>
+        <record id="item_drops" model="pf_inventario.items">
+            <field name="name">Gotas</field>
+            <field name="catalogo_id" ref="catalogo_formas_farmaceuticas"/>
+        </record>
+        <record id="item_powder" model="pf_inventario.items">
+            <field name="name">Polvo</field>
+            <field name="catalogo_id" ref="catalogo_formas_farmaceuticas"/>
+        </record>
+        <record id="item_spray" model="pf_inventario.items">
+            <field name="name">Spray</field>
+            <field name="catalogo_id" ref="catalogo_formas_farmaceuticas"/>
+        </record>
+
+        <!-- Catálogo: Frecuencia de Administración -->
+        <record id="catalogo_frecuencia_administracion" model="pf_inventario.catalogo">
+            <field name="name">Frecuencia de Administración</field>
+            <field name="descripcion">Frecuencia con la que se administra el medicamento</field>
+        </record>
+
+        <record id="item_single" model="pf_inventario.items">
+            <field name="name">Dosis única</field>
+            <field name="catalogo_id" ref="catalogo_frecuencia_administracion"/>
+        </record>
+        <record id="item_daily" model="pf_inventario.items">
+            <field name="name">Una vez al día</field>
+            <field name="catalogo_id" ref="catalogo_frecuencia_administracion"/>
+        </record>
+        <record id="item_bid" model="pf_inventario.items">
+            <field name="name">Dos veces al día</field>
+            <field name="catalogo_id" ref="catalogo_frecuencia_administracion"/>
+        </record>
+        <record id="item_tid" model="pf_inventario.items">
+            <field name="name">Tres veces al día</field>
+            <field name="catalogo_id" ref="catalogo_frecuencia_administracion"/>
+        </record>
+        <record id="item_qid" model="pf_inventario.items">
+            <field name="name">Cuatro veces al día</field>
+            <field name="catalogo_id" ref="catalogo_frecuencia_administracion"/>
+        </record>
+        <record id="item_prn" model="pf_inventario.items">
+            <field name="name">Según sea necesario</field>
+            <field name="catalogo_id" ref="catalogo_frecuencia_administracion"/>
+        </record>
+
+        <!-- Catálogo: Vía de Administración -->
+        <record id="catalogo_via_administracion" model="pf_inventario.catalogo">
+            <field name="name">Vía de Administración</field>
+            <field name="descripcion">Diferentes vías por las que se administra el medicamento</field>
+        </record>
+
+        <record id="item_oral" model="pf_inventario.items">
+            <field name="name">Oral</field>
+            <field name="catalogo_id" ref="catalogo_via_administracion"/>
+        </record>
+        <record id="item_topical" model="pf_inventario.items">
+            <field name="name">Tópica</field>
+            <field name="catalogo_id" ref="catalogo_via_administracion"/>
+        </record>
+        <record id="item_intravenous" model="pf_inventario.items">
+            <field name="name">Intravenosa</field>
+            <field name="catalogo_id" ref="catalogo_via_administracion"/>
+        </record>
+        <record id="item_intramuscular" model="pf_inventario.items">
+            <field name="name">Intramuscular</field>
+            <field name="catalogo_id" ref="catalogo_via_administracion"/>
+        </record>
+        <record id="item_subcutaneous" model="pf_inventario.items">
+            <field name="name">Subcutánea</field>
+            <field name="catalogo_id" ref="catalogo_via_administracion"/>
+        </record>
+        <record id="item_rectal" model="pf_inventario.items">
+            <field name="name">Rectal</field>
+            <field name="catalogo_id" ref="catalogo_via_administracion"/>
+        </record>
+        <record id="item_ophthalmic" model="pf_inventario.items">
+            <field name="name">Oftálmica</field>
+            <field name="catalogo_id" ref="catalogo_via_administracion"/>
+        </record>
+        <record id="item_otic" model="pf_inventario.items">
+            <field name="name">Ótica</field>
+            <field name="catalogo_id" ref="catalogo_via_administracion"/>
+        </record>
+        <record id="item_nasal" model="pf_inventario.items">
+            <field name="name">Nasal</field>
+            <field name="catalogo_id" ref="catalogo_via_administracion"/>
+        </record>
+    </data>
+</odoo>

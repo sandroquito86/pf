@@ -1,0 +1,365 @@
+<odoo>
+    <data noupdate="1">
+    <!--FAMILIA DE SERVICIOS IT-->
+    <record id="asset_familia_servicio" model="asset.familia.servicio">
+        <field name="name">Servicios IT</field>
+    </record>
+
+    <!--CATEGORIA DE SERVICIOS IT-->
+    <record id="categoria_servicio_it_1" model="asset.categoria.servicio">
+        <field name="name">Servicios de Aplicaciones</field>
+        <field name="descripcion">Este servicio se encarga de dar soporte a las diversas aplicaciones</field>
+        <field name="familia_id" ref="asset_familia_servicio"/>
+    </record>
+
+    <record id="categoria_servicio_it_3" model="asset.categoria.servicio">
+        <field name="name">Servicios de Hardware</field>
+        <field name="descripcion">Este servicio se encarga de dar soporte a nivel de Hardware</field>
+        <field name="familia_id" ref="asset_familia_servicio"/>
+    </record>
+
+    <record id="categoria_servicio_it_4" model="asset.categoria.servicio">
+        <field name="name">Servicios de Servidores</field>
+        <field name="descripcion">Este servicio se encarga de dar soporte a nivel de Servidores</field>
+        <field name="familia_id" ref="asset_familia_servicio"/>
+    </record>
+
+    <record id="categoria_servicio_it_5" model="asset.categoria.servicio">
+        <field name="name">Servicio de Infraestructura</field>
+        <field name="descripcion">Este servicio se encarga de dar soporte a nivel de Infraestructura</field>
+        <field name="familia_id" ref="asset_familia_servicio"/>
+    </record>
+
+    <record id="categoria_servicio_it_6" model="asset.categoria.servicio">
+        <field name="name">Servicio de Comunicaciones</field>
+        <field name="descripcion">Este servicio se encarga de dar soporte a nivel de Comunicaciones</field>
+        <field name="familia_id" ref="asset_familia_servicio"/>
+    </record>
+
+
+
+    <!--SERVICIO ZIMBRA-->
+        <record id="servicio_tipo_servicio_zimbra" model="asset.servicio">
+            <field name="name">ZIMBRA</field>
+            <field name="descripcion">Problemas presentados con zimbra</field>
+            <field name="categoria_servicio_id" ref="categoria_servicio_it_1" />
+        </record>
+
+        <!--SUBCATEGORIA ZIMBRA-->
+        <record id="items_subcategoria_zimbra_clave" model="asset.subcategoria.servicio">
+            <field name="name">Cambio de clave</field>
+            <field name="descripcion">peticion de cambio de clave</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_zimbra"/>
+        </record>
+        <record id="items_subcategoria_zimbra_maletin" model="asset.subcategoria.servicio">
+            <field name="name">Maletin</field>
+            <field name="descripcion">peticion de sobre maletin</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_zimbra"/>
+        </record>
+        <record id="asset_scateg_equicomp_zimbra_creacion" model="asset.subcategoria.servicio">
+            <field name="name">Coreccion de correo</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va crear una cuenta de correo ZIMBRA</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_zimbra" />
+        </record>
+        <record id="asset_scateg_zimbra_reseteo" model="asset.subcategoria.servicio">
+            <field name="name">Reseteo de Clave</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va a realizar un reseteo de clave de un correo zimbra</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_zimbra" />
+        </record>
+        <record id="asset_scateg_equicomp_zimbra_capac" model="asset.subcategoria.servicio">
+            <field name="name">Aumento de capacidad</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va aunmentar la capacidad de almacenamiento del correo zimbra</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_zimbra" />
+        </record>
+        <record id="asset_scateg_equicomp_zimbra_correnombre" model="asset.subcategoria.servicio">
+            <field name="name">Coreccion del nombre</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va Coorregir el nombre del usuario</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_zimbra" />
+        </record>
+        <record id="asset_scateg_equicomp_zimbra_correnombre" model="asset.subcategoria.servicio">
+            <field name="name">Creacion de listas</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va a crear listas de correos</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_zimbra" />
+        </record>
+        
+
+    <!--SERVICIO SISDON-->
+        <record id="servicio_tipo_servicio_sisdon" model="asset.servicio">
+            <field name="name">SISDON</field>
+            <field name="descripcion">Problemas presentados con sisdon</field>
+            <field name="categoria_servicio_id" ref="categoria_servicio_it_1" />
+        </record>
+
+        <!--SUBCATEGORIA SISDON-->
+        <record id="items_subcategoria_sisdon_estructura" model="asset.subcategoria.servicio">
+            <field name="name">Creación de estructura</field>
+            <field name="descripcion">creación de reparto</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_sisdon"/>
+        </record>
+        <record id="items_subcategoria_sisdon_certificado" model="asset.subcategoria.servicio">
+            <field name="name">Instalación de certificado</field>
+            <field name="descripcion">certificado para realizar firma electrónica</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_sisdon"/>
+        </record>
+        <record id="asset_scateg_sisdon_firma" model="asset.subcategoria.servicio">
+            <field name="name">Firmar documentos</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va un soporte para poder firmar un documento en el sisdon</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_sisdon" />
+        </record>
+        <record id="asset_scateg_sisdon_cargcolcrear" model="asset.subcategoria.servicio">
+            <field name="name">Crear cargo colateral</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va a crear un cargo colateral en el sisdon</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_sisdon" />
+        </record>
+        <record id="asset_scateg_sisdon_cargcoleditar" model="asset.subcategoria.servicio">
+            <field name="name">Editar cargo colateral</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va a editar un cargo colateral en el sisdon</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_sisdon" />
+        </record>
+        <record id="asset_scateg_sisdon_cargcolelim" model="asset.subcategoria.servicio">
+            <field name="name">Eliminar cargo colateral</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va a eliminar un cargo colateral en el sisdon</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_sisdon" />
+        </record>
+    
+    <!--SERVICIO SISDON-->    
+        <record id="servicio_tipo_servicio_vpn" model="asset.servicio">
+            <field name="name">VPN</field>
+            <field name="descripcion">Problemas presentados con vpn</field>
+            <field name="categoria_servicio_id" ref="categoria_servicio_it_1" />
+        </record>
+
+        <!--SUBCATEGORIA VPN-->
+        <record id="mantenimiento_scateg_vpn_crear" model="asset.subcategoria.servicio">
+            <field name="name">Crear VPN</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va a crear una VPN</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_vpn" />
+        </record>
+    
+    <!--SERVICIO IP-->  
+        <record id="asset_catalogo_servicio_telefoniaip" model="asset.servicio">
+            <field name="name">Telefonia Ip</field>
+            <field name="descripcion">Telefonia Ip</field>
+            <field name="categoria_servicio_id" ref="categoria_servicio_it_6" />
+        </record>
+
+        <!--SUBCATEGORIA IP-->  
+        <record id="asset_scateg_telefoniaip_conf" model="asset.subcategoria.servicio">
+            <field name="name">Configurar un telefono ip</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va a configurar un telefono IP</field>
+            <field name="servicio_id" ref="asset_catalogo_servicio_telefoniaip" />
+        </record>
+        <record id="asset_scateg_telefoniaiP_arreg" model="asset.subcategoria.servicio">
+            <field name="name">Arreglar un telefono IP</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va dar soporte a un telefono IP</field>
+            <field name="servicio_id" ref="asset_catalogo_servicio_telefoniaip" />
+        </record> 
+
+    <!--SERVICIO EQUIPOS DE COMPUTO-->  
+        <record id="servicio_tipo_servicio_computo" model="asset.servicio">
+            <field name="name">Equipos de computo</field>
+            <field name="descripcion">Problemas presentados con equipos de computo</field>
+            <field name="categoria_servicio_id" ref="categoria_servicio_it_3" />
+        </record>
+
+        <!--SUBCATEGORIA EQUIPOS DE COMPUTO-->
+        <record id="asset_scateg_equicomp_mantpre" model="asset.subcategoria.servicio">
+            <field name="name">Mantenimiento Preventivo</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va a realizar un mantenimiento preventivo a un activo</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_computo" />
+        </record>
+        <record id="asset_scateg_equicomp_mantcorr" model="asset.subcategoria.servicio">
+            <field name="name">Mantenimiento Correctivo</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va a realizar un mantenimiento correctivo a un activo</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_computo" />
+        </record>
+        <record id="asset_scateg_equicomp_instprog" model="asset.subcategoria.servicio">
+            <field name="name">Instalacion de programas</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va a instalar programas en un equipo</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_computo" />
+        </record>
+        <record id="asset_scateg_equicomp_so" model="asset.subcategoria.servicio">
+            <field name="name">Sistema operativo</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va a dar soporte del sistema operativo de un quipo de computacion</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_computo" />
+        </record>
+
+    <!--SERVICIO RED-->    
+        <record id="servicio_tipo_servicio_lan" model="asset.servicio">
+            <field name="name">Red</field>
+            <field name="descripcion">Problemas presentados con red lan</field>
+            <field name="categoria_servicio_id" ref="categoria_servicio_it_5" />
+        </record>
+
+        <!--SUBCATEGORIA LAN-->
+        <record id="asset_scateg_red_bloqueo" model="asset.subcategoria.servicio">
+            <field name="name">Bloqueo de puerto</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va a desbloquear un puerto de red</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_lan" />
+        </record>
+        <record id="asset_scateg_red_creacion" model="asset.subcategoria.servicio">
+            <field name="name">Creacion de puertos</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va crear un puerto de red</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_lan" />
+        </record>
+        <record id="asset_scateg_red_confred" model="asset.subcategoria.servicio">
+            <field name="name">Configuracion de red</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va configurar una red</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_lan" />
+        </record> 
+    
+    <!--SERVICIO SEGURIDAD-->
+        <record id="asset_catalogo_servicio_seguridad" model="asset.servicio">
+            <field name="name">Seguridad</field>
+            <field name="descripcion">Seguridad</field>
+            <field name="categoria_servicio_id" ref="categoria_servicio_it_1" />
+        </record>
+        
+        <record id="asset_scateg_seguridad_spam" model="asset.subcategoria.servicio">
+            <field name="name">Mensajes spam</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se a revisar una cuenta por mensajes spam</field>
+            <field name="servicio_id" ref="asset_catalogo_servicio_seguridad" />
+        </record>
+
+    <!--SERVICIO SISLOG-->
+        <record id="servicio_tipo_servicio_sislog" model="asset.servicio">
+            <field name="name">SISLOG</field>
+            <field name="descripcion">Problemas presentados con Sislog</field>
+            <field name="categoria_servicio_id" ref="categoria_servicio_it_1" />
+        </record>
+
+        <!--SUBCATEGORIA SISLOG-->
+        <record id="asset_scateg_sislog_permisos" model="asset.subcategoria.servicio">
+            <field name="name">Permisos de Sislog</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se van asignar permisos de sislog </field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_sislog" />
+        </record>
+        <record id="asset_scateg_sislog_sumilla" model="asset.subcategoria.servicio">
+            <field name="name">Cambio de sumillas en reportes</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va a cambiar las sumillas de los docuemntos de sislog</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_sislog" />
+        </record>
+        <record id="asset_scateg_sislog_instalacion" model="asset.subcategoria.servicio">
+            <field name="name">Instalacion de sislog</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va a instalar un modulo de sislog</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_sislog" />
+        </record>
+    
+     <!--SERVICIO INTERNET-->
+        <record id="servicio_tipo_servicio_internet" model="asset.servicio">
+            <field name="name">Internet</field>
+            <field name="descripcion">Problemas presentados con internet</field>
+            <field name="categoria_servicio_id" ref="categoria_servicio_it_5" />
+        </record>
+
+        <!--SUBCATEGORIA INTERNET-->
+        <record id="asset_scateg_internet_permisospag" model="asset.subcategoria.servicio">
+            <field name="name">Permisos de acceso a paginas</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se habilitar permisos en paginas de internet </field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_internet" />
+        </record>
+        <record id="asset_scateg_internet_permisosip" model="asset.subcategoria.servicio">
+            <field name="name">Permisos de direccion IP</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se a dar permisos al internet por IP </field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_internet" />
+        </record>
+        <record id="asset_scateg_internet_anchodbanda" model="asset.subcategoria.servicio">
+            <field name="name">Ancho de banda</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va a asignar o aumentar el ancho de banda del internet</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_internet" />
+        </record>
+
+    <!--SERVICIO TODARM-->
+        <record id="servicio_tipo_servicio_todarm" model="asset.servicio">
+            <field name="name">TODARM</field>
+            <field name="descripcion">Envio de mensajes a todarm</field>      
+            <field name="categoria_servicio_id" ref="categoria_servicio_it_1" />     
+        </record>
+
+        <!--TODARM-->
+        <record id="asset_scateg_mensajetodarm_envio" model="asset.subcategoria.servicio">
+            <field name="name">Envio de mensajes a TODARM</field>
+            <field name="descripcion">Usamos esta subcategoria cuando enviara un mensaje a TODARM</field>
+            <field name="servicio_id" ref="servicio_tipo_servicio_todarm" />
+        </record>
+
+    <!--SERVICIO TOKEN-->
+        <record id="asset_catalogo_servicio_token" model="asset.servicio">
+            <field name="name">Token</field>
+            <field name="descripcion">Token</field>
+            <field name="categoria_servicio_id" ref="categoria_servicio_it_1" />
+        </record>
+
+        <!--SUBCATEGORIA TOKEN-->
+        <record id="asset_scateg_token_revocacion" model="asset.subcategoria.servicio">
+            <field name="name">Revocacion</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va a revocar un dispositivo token</field>
+            <field name="servicio_id" ref="asset_catalogo_servicio_token" />
+        </record>
+        <record id="asset_scateg_token_cadcertificados" model="asset.subcategoria.servicio">
+            <field name="name">Caducidad de certificados</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se actualizara certificados por caducidad </field>
+            <field name="servicio_id" ref="asset_catalogo_servicio_token" />
+        </record>
+        <record id="asset_scateg_token_certreparto" model="asset.subcategoria.servicio">
+            <field name="name">Actualizacion del reparto en el certificado</field>
+            <field name="descripcion">Usamos esta subcategoria cuando se va a actualizara el reparto del certificado</field>
+            <field name="servicio_id" ref="asset_catalogo_servicio_token" />
+        </record>
+
+
+        <record id="servicio_tipo_servicio_atecion" model="asset.servicio">
+            <field name="name">Atención al usuario</field>
+            <field name="descripcion">Atención al usuario</field>
+            <field name="categoria_servicio_id" ref="asset_familia_servicio" />
+        </record>        
+    
+        <record id="servicio_tipo_servicio_ldap" model="asset.servicio">
+            <field name="name">LDAP</field>
+            <field name="descripcion">Problemas presentados con ldap</field>
+            <field name="categoria_servicio_id" ref="asset_familia_servicio" />
+        </record>
+        <record id="servicio_tipo_servicio_portales_web" model="asset.servicio">
+            <field name="name">Portales web</field>
+            <field name="descripcion">Problemas presentados con portales web</field>
+            <field name="categoria_servicio_id" ref="asset_familia_servicio" />
+        </record>
+        <record id="servicio_tipo_servicio_bd" model="asset.servicio">
+            <field name="name">Base de datos</field>
+            <field name="descripcion">Problemas presentados con base de datos</field>
+            <field name="categoria_servicio_id" ref="asset_familia_servicio" />
+        </record>
+        <record id="servicio_tipo_servicio_circuito" model="asset.servicio">
+            <field name="name">Circuitos de video</field>
+            <field name="descripcion">Problemas presentados con circuito de video</field>
+            <field name="categoria_servicio_id" ref="asset_familia_servicio" />
+        </record>
+        <record id="servicio_tipo_servicio_datacenter" model="asset.servicio">
+            <field name="name">Datacenter</field>
+            <field name="descripcion">Problemas presentados con datacenter</field>
+            <field name="categoria_servicio_id" ref="asset_familia_servicio" />
+        </record>
+        <record id="servicio_tipo_servicio_directivas" model="asset.servicio">
+            <field name="name">Directivas</field>
+            <field name="descripcion">Problemas presentados con directivas</field>
+            <field name="categoria_servicio_id" ref="asset_familia_servicio" />
+        </record>
+        
+        <record id="servicio_tipo_servicio_incidentes" model="asset.servicio">
+            <field name="name">Gestión de incidentes</field>
+            <field name="descripcion">Problemas presentados con incidentes</field>
+            <field name="categoria_servicio_id" ref="asset_familia_servicio" />
+        </record>
+        <record id="servicio_tipo_servicio_icron" model="asset.servicio">
+            <field name="name">ICRON</field>
+            <field name="descripcion">Problemas presentados con icron</field>
+            <field name="categoria_servicio_id" ref="asset_familia_servicio" />
+        </record>
+       
+        <record id="servicio_tipo_servicio_sigein" model="asset.servicio">
+            <field name="name">SIGEIN</field>
+            <field name="descripcion">Problemas presentados con sigein</field>
+            <field name="categoria_servicio_id" ref="asset_familia_servicio" />
+        </record>
+    </data>
+</odoo>

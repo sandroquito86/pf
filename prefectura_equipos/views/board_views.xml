@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--My Dashboard-->
+    <record id="action_asset_graph_state" model="ir.actions.act_window">
+        <field name="name">Grafica activo por estado</field>
+        <field name="res_model">asset.asset</field>
+        <field name="view_mode">graph</field>
+        <!-- <field name="context">{'graph_mode':'pie','search_default_estado':1}</field> -->
+        <field name="view_id" ref="prefectura_equipos.asset_graph_view"/>
+    </record>
+
+     <record id="action_asset_graph2" model="ir.actions.act_window">
+        <field name="name">Grafica</field>
+        <field name="res_model">asset.asset</field>
+        <field name="view_mode">graph</field>
+        <field name="context">{'graph_mode':'pie','search_default_categoria':1}</field>
+        <field name="view_id" ref="prefectura_equipos.asset_graph_view"/>
+    </record>
+
+     <record id="action_asset_graph_state2" model="ir.actions.act_window">
+        <field name="name">Grafica activo por estado</field>
+        <field name="res_model">asset.asset</field>
+        <field name="view_mode">graph</field>
+        <!-- <field name="context">{'graph_mode':'pie','search_default_estado':1}</field> -->
+        <field name="view_id" ref="prefectura_equipos.asset_graph_view_estado"/>
+    </record>
+    
+    <record model="ir.ui.view" id="board_asset_asset_view2">
+        <field name="name">My Dashboard Form</field>
+        <field name="model">board.board</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="My Dashboard" >
+                <board style="1-1">
+                    <column>                       
+                         <action string="Hola mundo" name="%(action_assets)d" />
+                    </column>
+                    <column>
+                                           
+                    </column>
+                </board>
+            </form>
+        </field>
+    </record>
+
+    <!--My Dashboard Action-->
+    <record model="ir.actions.act_window" id="board_asset_asset_action3">
+        <field name="name">My Dashboard</field>
+        <field name="res_model">board.board</field>
+        <field name="view_mode">form</field>
+        <field name="usage">menu</field>
+        <field name="view_id" ref="board_asset_asset_view2"/>
+    </record>
+
+
+
+    <!--My Dashboard Menu-->
+    <!-- <menuitem id="menu_board_asset_asset_action" parent="asset_menu_reportes" action="board_asset_asset_action3" sequence="300"/> -->
+
+</odoo>

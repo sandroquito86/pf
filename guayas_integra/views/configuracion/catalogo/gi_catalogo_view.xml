@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_gi_catalogo_tree">
+            <field name="name">gi.catalogo.tree</field>
+            <field name="model">gi.catalogo</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_gi_catalogo_form" model="ir.ui.view">
+            <field name="name">gi.catalogo.form</field>
+            <field name="model">gi.catalogo</field>
+            <field name="arch" type="xml">
+                <form string="Nuevo">
+                    <sheet>
+                        <group>
+                            <!-- Primera columna: nombre del catálogo -->
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+
+                            </group>
+
+                            <!-- Segunda columna (items_ids debería ocupar el espacio de dos columnas) -->
+                            <group>
+                                <field name="items_ids" nolabel="1" colspan="2"  context="{'form_view_ref': 'guayas_integra.view_gi_catalogo_items_form2'}"/>
+
+                            </group>
+                        </group>
+
+                        <!-- Sección opcional para actividades y seguidores -->                       <!--
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                -->
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+
+        <record model="ir.actions.act_window" id="action_gi_catalogo">
+            <field name="name">Catálogo General</field>
+            <field name="res_model">gi.catalogo</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_action_gi_catalogo" name="Catálogo General" action="action_gi_catalogo" parent="menu_gi_conf_catalogo" sequence="10" />
+
+
+
+    </data>
+</odoo>

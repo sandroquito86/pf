@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+    
+        <!-- Partner -->
+        <record id="res_partner_asset_1" model="res.partner">
+            <field name="name">LSE</field>
+        </record>        
+        <record id="res_partner_asset_2" model="res.partner">
+            <field name="name">MAN</field>
+        </record>        
+        <record id="res_partner_asset_3" model="res.partner">
+            <field name="name">MR Group</field>
+        </record>        
+        <record id="res_partner_asset_4" model="res.partner">
+            <field name="name">Global Leasing</field>
+        </record>
+
+        <!-- Asset Category -->
+        <record id="pg_equipos_categoria_1" model="pg_equipos.categoria">
+            <field name="name">Equipment</field>
+        </record>
+        <record id="pg_equipos_categoria_2" model="pg_equipos.categoria">
+            <field name="name">Vehicle</field>
+        </record>
+        <record id="pg_equipos_categoria_3" model="pg_equipos.categoria">
+            <field name="name">Building</field>
+        </record>     
+    </data>
+</openerp>

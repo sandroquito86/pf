@@ -1,0 +1,7 @@
+<odoo>
+  <data>
+   
+    <menuitem name="País" id="menu_action_country" parent="menu_gi_conf_ubicacion" action="base.action_country" sequence="10"/>
+
+  </data>
+</odoo>

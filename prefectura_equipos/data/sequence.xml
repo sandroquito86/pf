@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequences for sale.order -->
+        <record id="seq_mro_request" model="ir.sequence">
+            <field name="name">asset_asset sequence</field>
+            <field name="code">asset.asset</field>
+            <field name="prefix">Ticket # </field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+            <field name="number_increment">1</field>
+        </record>
+    </data>
+</odoo>

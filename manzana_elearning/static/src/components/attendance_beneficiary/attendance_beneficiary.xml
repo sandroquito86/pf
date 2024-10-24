@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="manzana_elearning.attendance_beneficiary">
+        <div class="o_asistencias_component">
+            <h2>Asistencias</h2>
+            <button t-on-click="handleClick" class="btn btn-primary">
+                Interactuar
+            </button>
+            <div class="form-group d-flex flex-row align-items-center">
+                <label for="dtBrowser"><strong>Fecha: </strong></label>
+                    <DateTimeInput
+                    type="'date'"
+                    value="state.date"
+                    onChange.bind="onDateChanged"
+                    minDate="state.today"
+                    maxDate="state.today"
+                    placeholder="'Today'"/>
+            </div>
+            
+            <!-- Aquí puedes añadir más elementos interactivos -->
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Alumno/Beneficiario</th>
+                <th scope="col">Asistió</th>
+                <th scope="col">No Asistió</th>
+                <th scope="col">Falta Justificada</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-foreach="state.beneficiaries" t-as="beneficiary" t-key="beneficiary.id">
+                    <tr>
+                    <th scope="row"><span t-esc="beneficiary.id"/></th>
+                    <td><span t-esc="beneficiary.name"/></td>
+                    <td>
+                        <CheckBox value="beneficiary.attendance" disabled="true" onChange.bind="() => this.onOptionChanged(beneficiary.id, 'attendance')"
+                                    />
+                    </td>
+                    <td>
+                        <CheckBox value="beneficiary.absent" disabled="" onChange.bind="() => this.onOptionChanged(beneficiary.id, 'absent')"
+                                    />
+                    </td>
+                    <td>
+                        <CheckBox value="beneficiary.justified" disabled="" onChange.bind="() => this.onOptionChanged(beneficiary.id, 'justified')"
+                                    />
+                    </td>
+                    </tr>
+                </t>
+            </tbody>
+        </table>
+
+        <button t-on-click="saveAttendances" class="btn btn-primary">
+                Guardar Asistencias
+            </button>
+
+        
+
+    </t>
+</templates>

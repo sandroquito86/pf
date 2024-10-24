@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_mz_catalogo_tree">
+            <field name="name">mz.catalogo.tree</field>
+            <field name="model">mz.catalogo</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" />
+                    <field name="descripcion" />
+                   
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_mz_catalogo_form" model="ir.ui.view">
+            <field name="name">mz.catalogo.form</field>
+            <field name="model">mz.catalogo</field>
+            <field name="arch" type="xml">
+                <form string="Nuevo" duplicate="0">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" />
+                                <field name="descripcion" />
+                            </group>
+                            
+                        </group>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers" />
+                            <field name="message_ids" widget="mail_thread" />
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        
+
+        <record model="ir.actions.act_window" id="action_mz_catalogo">
+            <field name="name">CATÁLOGOS</field>
+            <field name="res_model">mz.catalogo</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_action_mz_catalogo"
+              name="Catálogo"
+              action="action_mz_catalogo"
+              parent="menu_configuracion"
+              sequence="1" />
+
+    </data>
+</odoo>

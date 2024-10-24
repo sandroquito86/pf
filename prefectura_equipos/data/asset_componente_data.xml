@@ -1,0 +1,1359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--Componentes Internos -->
+        <!--Categoria COMPUTADORA-->
+            <!--Disco Duro-->
+                <record id="cat_pc_componente_disco_duro" model="asset.detalle.componente">
+                    <field name="name">Disco Duro</field>
+                    <field name="categoria_id" ref="asset_categoria_computadora"/>
+                </record>
+
+                <!--TIPO-->
+                <record id="cat_pc_componente_disco_atr_tipo" model="asset.atributo">
+                    <field name="name">Tipo</field>
+                    <field name="componente_id" ref="cat_pc_componente_disco_duro"/>
+                </record>
+
+                <record id="atributo_valor_tipo_1" model="asset.atributo.valor">
+                    <field name="name">Mecánico</field>
+                    <field name="atributo_id" ref="cat_pc_componente_disco_atr_tipo"/>
+                </record>
+                <record id="atributo_valor_tipo_2" model="asset.atributo.valor">
+                    <field name="name">Sólido</field>
+                    <field name="atributo_id" ref="cat_pc_componente_disco_atr_tipo"/>
+                </record>
+
+                <!--Interfaz-->
+                <record id="cat_pc_componente_disco_atr_interfaz" model="asset.atributo">
+                    <field name="name">Interfaz</field>
+                    <field name="componente_id" ref="cat_pc_componente_disco_duro"/>
+                </record>
+
+                <record id="atributo_valor_interfaz_1" model="asset.atributo.valor">
+                    <field name="name">Ide</field>
+                    <field name="atributo_id" ref="cat_pc_componente_disco_atr_interfaz"/>
+                </record>
+                <record id="atributo_valor_interfaz_2" model="asset.atributo.valor">
+                    <field name="name">Sata</field>
+                    <field name="atributo_id" ref="cat_pc_componente_disco_atr_interfaz"/>
+                </record>
+
+                <!--Capacidad-->
+                <record id="cat_pc_componente_disco_atr_capacidad" model="asset.atributo">
+                    <field name="name">Capacidad</field>
+                    <field name="componente_id" ref="cat_pc_componente_disco_duro"/>
+                </record>
+
+                <record id="atributo_valor_capacidad_1" model="asset.atributo.valor">
+                    <field name="name">1 Tb</field>
+                    <field name="atributo_id" ref="cat_pc_componente_disco_atr_capacidad"/>
+                </record>
+                <record id="atributo_valor_capacidad_2" model="asset.atributo.valor">
+                    <field name="name">500 Gb</field>
+                    <field name="atributo_id" ref="cat_pc_componente_disco_atr_capacidad"/>
+                </record>
+                <record id="atributo_valor_capacidad_3" model="asset.atributo.valor">
+                    <field name="name">250 Gb</field>
+                    <field name="atributo_id" ref="cat_pc_componente_disco_atr_capacidad"/>
+                </record>
+                <record id="atributo_valor_capacidad_4" model="asset.atributo.valor">
+                    <field name="name">160 Gb</field>
+                    <field name="atributo_id" ref="cat_pc_componente_disco_atr_capacidad"/>
+                </record>
+                <record id="atributo_valor_capacidad_5" model="asset.atributo.valor">
+                    <field name="name">150 Gb</field>
+                    <field name="atributo_id" ref="cat_pc_componente_disco_atr_capacidad"/>
+                </record>
+                <record id="atributo_valor_capacidad_6" model="asset.atributo.valor">
+                    <field name="name">120 Gb</field>
+                    <field name="atributo_id" ref="cat_pc_componente_disco_atr_capacidad"/>
+                </record>
+            <!--Procesador-->
+                <record id="cat_pc_componente_procesador" model="asset.detalle.componente">
+                    <field name="name">Procesador</field>
+                    <field name="categoria_id" ref="asset_categoria_computadora"/>
+                </record>
+                <!--Marca-->
+                    <record id="cat_pc_componente_proc_atr_marca" model="asset.atributo">
+                        <field name="name">Marca</field>
+                        <field name="componente_id" ref="cat_pc_componente_procesador"/>
+                    </record>
+
+                    <record id="atributo_pc_marca_1" model="asset.atributo.valor">
+                        <field name="name">Intel</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_marca"/>
+                    </record>
+                    <record id="atributo_pc_marca_2" model="asset.atributo.valor">
+                        <field name="name">Amd</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_marca"/>
+                    </record>
+
+                <!--Modelo-->
+                    <record id="cat_pc_componente_proc_atr_modelo" model="asset.atributo">
+                        <field name="name">Modelo</field>
+                        <field name="componente_id" ref="cat_pc_componente_procesador"/>
+                    </record>
+
+                    <record id="atributo_pc_modelo_marca_1" model="asset.atributo.valor">
+                        <field name="name">D2500HN</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_2" model="asset.atributo.valor">
+                        <field name="name">D33GU</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_3" model="asset.atributo.valor">
+                        <field name="name">339A</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_4" model="asset.atributo.valor">
+                        <field name="name">D845EPI</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_5" model="asset.atributo.valor">
+                        <field name="name">D945GCNL</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_6" model="asset.atributo.valor">
+                        <field name="name">D946GZIS</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_7" model="asset.atributo.valor">
+                        <field name="name">DB75EN</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_8" model="asset.atributo.valor">
+                        <field name="name">DG31PR</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_9" model="asset.atributo.valor">
+                        <field name="name">DG41CN</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_10" model="asset.atributo.valor">
+                        <field name="name">DG41TY</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_11" model="asset.atributo.valor">
+                        <field name="name">DH1615</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_12" model="asset.atributo.valor">
+                        <field name="name">DH55PJ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_13" model="asset.atributo.valor">
+                        <field name="name">DH61BF</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_14" model="asset.atributo.valor">
+                        <field name="name">DH61CR</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_15" model="asset.atributo.valor">
+                        <field name="name">DH61SA</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_16" model="asset.atributo.valor">
+                        <field name="name">DH77EB</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_17" model="asset.atributo.valor">
+                        <field name="name">H310M</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_18" model="asset.atributo.valor">
+                        <field name="name">H310M H</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_19" model="asset.atributo.valor">
+                        <field name="name">H61-DM62</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_20" model="asset.atributo.valor">
+                        <field name="name">HM76</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_21" model="asset.atributo.valor">
+                        <field name="name">ATOM</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_22" model="asset.atributo.valor">
+                        <field name="name">CELERON</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_23" model="asset.atributo.valor">
+                        <field name="name">CORE 2 DUO</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_24" model="asset.atributo.valor">
+                        <field name="name">CORE 2 QUAD</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_25" model="asset.atributo.valor">
+                        <field name="name">CORE I3</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_26" model="asset.atributo.valor">
+                        <field name="name">CORE I7</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_27" model="asset.atributo.valor">
+                        <field name="name">CORE I9</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_28" model="asset.atributo.valor">
+                        <field name="name">DUAL CORE</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_29" model="asset.atributo.valor">
+                        <field name="name">PENTIUM</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_30" model="asset.atributo.valor">
+                        <field name="name">PENTIUM 4</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_31" model="asset.atributo.valor">
+                        <field name="name">PENTIUM GOLD</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_pc_modelo_marca_32" model="asset.atributo.valor">
+                        <field name="name">XEON</field>
+                        <field name="atributo_id" ref="cat_pc_componente_proc_atr_modelo"/>
+                    </record>
+                <!--Velocidad-->
+                    <record id="cat_pc_componente_disco_atr_velocidad" model="asset.atributo">
+                        <field name="name">Velocidad</field>
+                        <field name="componente_id" ref="cat_pc_componente_procesador"/>
+                    </record>
+
+                    <record id="atributo_valor_pc_velocidad_1" model="asset.atributo.valor">
+                        <field name="name">1.7 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_2" model="asset.atributo.valor">
+                        <field name="name">1.0 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_3" model="asset.atributo.valor">
+                        <field name="name">1.4 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_4" model="asset.atributo.valor">
+                        <field name="name">1.6 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_5" model="asset.atributo.valor">
+                        <field name="name">1.8 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_6" model="asset.atributo.valor">
+                        <field name="name">1.86 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_7" model="asset.atributo.valor">
+                        <field name="name">2.66 GHz</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_8" model="asset.atributo.valor">
+                        <field name="name">2.8 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_9" model="asset.atributo.valor">
+                        <field name="name">2.83 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_10" model="asset.atributo.valor">
+                        <field name="name">2.93 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_11" model="asset.atributo.valor">
+                        <field name="name">2.0 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_12" model="asset.atributo.valor">
+                        <field name="name">2.2 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_13" model="asset.atributo.valor">
+                        <field name="name">2.3 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_14" model="asset.atributo.valor">
+                        <field name="name">2.4 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_15" model="asset.atributo.valor">
+                        <field name="name">2.5 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_16" model="asset.atributo.valor">
+                        <field name="name">2.6 GHz</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_20" model="asset.atributo.valor">
+                        <field name="name">2.9 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_21" model="asset.atributo.valor">
+                        <field name="name">2.92 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_22" model="asset.atributo.valor">
+                        <field name="name">3.0 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_23" model="asset.atributo.valor">
+                        <field name="name">3.07 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_24" model="asset.atributo.valor">
+                        <field name="name">3.1 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_25" model="asset.atributo.valor">
+                        <field name="name">3.2 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_26" model="asset.atributo.valor">
+                        <field name="name">3.4 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_27" model="asset.atributo.valor">
+                        <field name="name">3.6 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_28" model="asset.atributo.valor">
+                        <field name="name">3.7 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_29" model="asset.atributo.valor">
+                        <field name="name">3.8 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_velocidad_30" model="asset.atributo.valor">
+                        <field name="name">3.9 GHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_velocidad"/>
+                    </record>
+
+                <!--Generación-->
+                    <record id="cat_pc_componente_disco_atr_generacion" model="asset.atributo">
+                        <field name="name">Generacion</field>
+                        <field name="componente_id" ref="cat_pc_componente_procesador"/>
+                    </record>
+
+                    <record id="atributo_valor_pc_generación_1" model="asset.atributo.valor">
+                        <field name="name">N3050</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_2" model="asset.atributo.valor">
+                        <field name="name">4570</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_3" model="asset.atributo.valor">
+                        <field name="name">3470</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_4" model="asset.atributo.valor">
+                        <field name="name">G2030</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_5" model="asset.atributo.valor">
+                        <field name="name">G4400</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_6" model="asset.atributo.valor">
+                        <field name="name">4005</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_7" model="asset.atributo.valor">
+                        <field name="name">Q8400</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_8" model="asset.atributo.valor">
+                        <field name="name">E7400</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_9" model="asset.atributo.valor">
+                        <field name="name">4130</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_10" model="asset.atributo.valor">
+                        <field name="name">2120</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_11" model="asset.atributo.valor">
+                        <field name="name">E7500</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_12" model="asset.atributo.valor">
+                        <field name="name">9100</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_13" model="asset.atributo.valor">
+                        <field name="name">E4500</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_14" model="asset.atributo.valor">
+                        <field name="name">2350</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_15" model="asset.atributo.valor">
+                        <field name="name">J4005</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_16" model="asset.atributo.valor">
+                        <field name="name">4160</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_17" model="asset.atributo.valor">
+                        <field name="name">3220</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_18" model="asset.atributo.valor">
+                        <field name="name">G 2030</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_19" model="asset.atributo.valor">
+                        <field name="name">G 5400</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_20" model="asset.atributo.valor">
+                        <field name="name">2100</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_21" model="asset.atributo.valor">
+                        <field name="name">3330</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_22" model="asset.atributo.valor">
+                        <field name="name">3240</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_23" model="asset.atributo.valor">
+                        <field name="name">6440</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_24" model="asset.atributo.valor">
+                        <field name="name">5400</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_25" model="asset.atributo.valor">
+                        <field name="name">4400</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_26" model="asset.atributo.valor">
+                        <field name="name">2030</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_27" model="asset.atributo.valor">
+                        <field name="name">6400</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_28" model="asset.atributo.valor">
+                        <field name="name">2500</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_29" model="asset.atributo.valor">
+                        <field name="name">7400</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_30" model="asset.atributo.valor">
+                        <field name="name">E8300</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_31" model="asset.atributo.valor">
+                        <field name="name">Q9550</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_32" model="asset.atributo.valor">
+                        <field name="name">E1-2100</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_33" model="asset.atributo.valor">
+                        <field name="name">D2500</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_34" model="asset.atributo.valor">
+                        <field name="name">G1610</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_35" model="asset.atributo.valor">
+                        <field name="name">G4560</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_36" model="asset.atributo.valor">
+                        <field name="name">3300</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_36" model="asset.atributo.valor">
+                        <field name="name">E 5700</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_37" model="asset.atributo.valor">
+                        <field name="name">8400</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_38" model="asset.atributo.valor">
+                        <field name="name">3230</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_39" model="asset.atributo.valor">
+                        <field name="name">9400</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_40" model="asset.atributo.valor">
+                        <field name="name">4440</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_41" model="asset.atributo.valor">
+                        <field name="name">E7300</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_42" model="asset.atributo.valor">
+                        <field name="name">8130</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_43" model="asset.atributo.valor">
+                        <field name="name">E5300</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+                    <record id="atributo_valor_pc_generación_44" model="asset.atributo.valor">
+                        <field name="name">4770</field>
+                        <field name="atributo_id" ref="cat_pc_componente_disco_atr_generacion"/>
+                    </record>
+            <!--Memoria-->
+                <record id="cat_pc_componente_memoria" model="asset.detalle.componente">
+                    <field name="name">Memoria</field>
+                    <field name="categoria_id" ref="asset_categoria_computadora"/>
+                </record>
+
+                <!--Tipo-->
+                    <record id="cat_pc_componente_memoria_atr_tipo" model="asset.atributo">
+                        <field name="name">Tipo</field>
+                        <field name="componente_id" ref="cat_pc_componente_memoria"/>
+                    </record>
+
+                    <record id="atributo_valor_pc_memoria_tipo_1" model="asset.atributo.valor">
+                        <field name="name">DDR2</field>
+                        <field name="atributo_id" ref="cat_pc_componente_memoria_atr_tipo"/>
+                    </record>
+                    <record id="atributo_valor_pc_memoria_tipo_2" model="asset.atributo.valor">
+                        <field name="name">DDR3</field>
+                        <field name="atributo_id" ref="cat_pc_componente_memoria_atr_tipo"/>
+                    </record>
+                    <record id="atributo_valor_pc_memoria_tipo_3" model="asset.atributo.valor">
+                        <field name="name">DDR4</field>
+                        <field name="atributo_id" ref="cat_pc_componente_memoria_atr_tipo"/>
+                    </record>
+
+                <!--Capacidad-->
+                    <record id="cat_pc_componente_memoria_atr_capacidad" model="asset.atributo">
+                        <field name="name">Capacidad</field>
+                        <field name="componente_id" ref="cat_pc_componente_memoria"/>
+                    </record>
+
+                    <record id="atributo_valor_pc_memoria_cap_1" model="asset.atributo.valor">
+                        <field name="name">128 MB</field>
+                        <field name="atributo_id" ref="cat_pc_componente_memoria_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_memoria_cap_2" model="asset.atributo.valor">
+                        <field name="name">256 MB</field>
+                        <field name="atributo_id" ref="cat_pc_componente_memoria_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_memoria_cap_3" model="asset.atributo.valor">
+                        <field name="name">512 MB</field>
+                        <field name="atributo_id" ref="cat_pc_componente_memoria_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_memoria_cap_4" model="asset.atributo.valor">
+                        <field name="name">1 GB</field>
+                        <field name="atributo_id" ref="cat_pc_componente_memoria_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_memoria_cap_5" model="asset.atributo.valor">
+                        <field name="name">2 GB</field>
+                        <field name="atributo_id" ref="cat_pc_componente_memoria_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_memoria_cap_6" model="asset.atributo.valor">
+                        <field name="name">3 GB</field>
+                        <field name="atributo_id" ref="cat_pc_componente_memoria_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_memoria_cap_7" model="asset.atributo.valor">
+                        <field name="name">4 GB</field>
+                        <field name="atributo_id" ref="cat_pc_componente_memoria_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_memoria_cap_8" model="asset.atributo.valor">
+                        <field name="name">6 GB</field>
+                        <field name="atributo_id" ref="cat_pc_componente_memoria_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_valor_pc_memoria_cap_9" model="asset.atributo.valor">
+                        <field name="name">8 GB</field>
+                        <field name="atributo_id" ref="cat_pc_componente_memoria_atr_capacidad"/>
+                    </record>
+
+                <!--Frecuencia-->
+                    <record id="cat_pc_componente_memoria_atr_frecuencia" model="asset.atributo">
+                        <field name="name">Frecuencia</field>
+                        <field name="componente_id" ref="cat_pc_componente_memoria"/>
+                    </record>
+
+                    <record id="atributo_valor_pc_memoria_frec_1" model="asset.atributo.valor">
+                        <field name="name">400 MHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_memoria_atr_frecuencia"/>
+                    </record>
+                    <record id="atributo_valor_pc_memoria_frec_2" model="asset.atributo.valor">
+                        <field name="name">800 MHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_memoria_atr_frecuencia"/>
+                    </record>
+                    <record id="atributo_valor_pc_memoria_frec_3" model="asset.atributo.valor">
+                        <field name="name">1333 MHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_memoria_atr_frecuencia"/>
+                    </record>
+                    <record id="atributo_valor_pc_memoria_frec_4" model="asset.atributo.valor">
+                        <field name="name">1600 MHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_memoria_atr_frecuencia"/>
+                    </record>
+                    <record id="atributo_valor_pc_memoria_frec_5" model="asset.atributo.valor">
+                        <field name="name">2400 MHZ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_memoria_atr_frecuencia"/>
+                    </record>
+
+            <!--Mainboard-->
+                <record id="cat_pc_componente_mainboard" model="asset.detalle.componente">
+                    <field name="name">Mainboard</field>
+                    <field name="categoria_id" ref="asset_categoria_computadora"/>
+                </record>
+                <!--Marca-->
+                    <record id="cat_pc_componente_mainboard_atr_marca" model="asset.atributo">
+                        <field name="name">Marca</field>
+                        <field name="componente_id" ref="cat_pc_componente_mainboard"/>
+                    </record>
+
+                    <record id="atributo_valor_pc_mainboard_marca_1" model="asset.atributo.valor">
+                        <field name="name">HP</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_marca"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_marca_2" model="asset.atributo.valor">
+                        <field name="name">INTEL</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_marca"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_marca_3" model="asset.atributo.valor">
+                        <field name="name">BIOSTAR</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_marca"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_marca_4" model="asset.atributo.valor">
+                        <field name="name">TOSHIBA</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_marca"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_marca5" model="asset.atributo.valor">
+                        <field name="name">ASUS</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_marca"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_marca_6" model="asset.atributo.valor">
+                        <field name="name">PEGATRON</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_marca"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_marca_7" model="asset.atributo.valor">
+                        <field name="name">DELL</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_marca"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_marca_8" model="asset.atributo.valor">
+                        <field name="name">ASPIRE</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_marca"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_marca_9" model="asset.atributo.valor">
+                        <field name="name">GIGABYTE </field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_marca"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_marca_10" model="asset.atributo.valor">
+                        <field name="name">CLON</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_marca"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_marca_11" model="asset.atributo.valor">
+                        <field name="name">AMERICAN MEGATRENDS </field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_marca"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_marca_12" model="asset.atributo.valor">
+                        <field name="name">ASROCK</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_marca"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_marca_13" model="asset.atributo.valor">
+                        <field name="name">ACER</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_marca"/>
+                    </record>
+
+                <!--Modelo-->
+                    <record id="cat_pc_componente_mainboard_atr_modelo" model="asset.atributo">
+                        <field name="name">Modelo</field>
+                        <field name="componente_id" ref="cat_pc_componente_mainboard"/>
+                    </record>
+
+                    <record id="atributo_valor_pc_mainboard_modelo_1" model="asset.atributo.valor">
+                        <field name="name">PRODESK 400 G1 MT</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_2" model="asset.atributo.valor">
+                        <field name="name">DG41CN</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_3" model="asset.atributo.valor">
+                        <field name="name">H110M-P</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_4" model="asset.atributo.valor">
+                        <field name="name">339A</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_5" model="asset.atributo.valor">
+                        <field name="name">H81M-K</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_6" model="asset.atributo.valor">
+                        <field name="name">H110M-D</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_7" model="asset.atributo.valor">
+                        <field name="name">E93839</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_8" model="asset.atributo.valor">
+                        <field name="name">DH61BF</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_9" model="asset.atributo.valor">
+                        <field name="name">H110M-R</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_10" model="asset.atributo.valor">
+                        <field name="name">D946GZIS</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_11" model="asset.atributo.valor">
+                        <field name="name">GA-H61M-S1</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_12" model="asset.atributo.valor">
+                        <field name="name">DH77EB</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_13" model="asset.atributo.valor">
+                        <field name="name">D845EPI</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_14" model="asset.atributo.valor">
+                        <field name="name">DG41TY</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_15" model="asset.atributo.valor">
+                        <field name="name">DG31PR</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_16" model="asset.atributo.valor">
+                        <field name="name">GA-H61M-DS2</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_17" model="asset.atributo.valor">
+                        <field name="name">DH55PJ</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_18" model="asset.atributo.valor">
+                        <field name="name">H61MG</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_19" model="asset.atributo.valor">
+                        <field name="name">H310MHD</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_20" model="asset.atributo.valor">
+                        <field name="name">6000 PRO MT</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_21" model="asset.atributo.valor">
+                        <field name="name">DH61SA</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_22" model="asset.atributo.valor">
+                        <field name="name">DH1615</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_" model="asset.atributo.valor">
+                        <field name="name">6300 PRO MT</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_23" model="asset.atributo.valor">
+                        <field name="name">GA-H110M-H</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_24" model="asset.atributo.valor">
+                        <field name="name">G31-M7 TE</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_25" model="asset.atributo.valor">
+                        <field name="name">GA-H81M-H</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_26" model="asset.atributo.valor">
+                        <field name="name">DC5800</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_27" model="asset.atributo.valor">
+                        <field name="name">HG1MGV3</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_28" model="asset.atributo.valor">
+                        <field name="name">H130</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_29" model="asset.atributo.valor">
+                        <field name="name">GA-N3050N</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_30" model="asset.atributo.valor">
+                        <field name="name">A68N -2100</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_31" model="asset.atributo.valor">
+                        <field name="name">D2500HN</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_32" model="asset.atributo.valor">
+                        <field name="name">H61MHV</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_33" model="asset.atributo.valor">
+                        <field name="name">DB75EN</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_34" model="asset.atributo.valor">
+                        <field name="name">D945GCNL</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_35" model="asset.atributo.valor">
+                        <field name="name">H81MLV3</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_36" model="asset.atributo.valor">
+                        <field name="name">DH61CR</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_37" model="asset.atributo.valor">
+                        <field name="name">G41MT-S2PT</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_38" model="asset.atributo.valor">
+                        <field name="name">198E</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_39" model="asset.atributo.valor">
+                        <field name="name">3048H</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_40" model="asset.atributo.valor">
+                        <field name="name">H310M</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_41" model="asset.atributo.valor">
+                        <field name="name">H61-DM62</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_42" model="asset.atributo.valor">
+                        <field name="name">H310M H</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_43" model="asset.atributo.valor">
+                        <field name="name">D33GU</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_pc_mainboard_modelo_44" model="asset.atributo.valor">
+                        <field name="name">VERITON M4603G</field>
+                        <field name="atributo_id" ref="cat_pc_componente_mainboard_atr_modelo"/>
+                    </record>
+
+            
+
+
+        <!--Categoria LAPTOP-->
+            <!--Disco Duro-->
+                <record id="cat_laptop_componente_disco_duro" model="asset.detalle.componente">
+                    <field name="name">Disco Duro</field>
+                    <field name="categoria_id" ref="asset_categoria_laptop"/>
+                </record>
+                <!--TIPO-->
+                    <record id="cat_laptop_componente_disco_atr_tipo" model="asset.atributo">
+                        <field name="name">Tipo</field>
+                        <field name="componente_id" ref="cat_laptop_componente_disco_duro"/>
+                    </record>
+
+                    <record id="atributo_valor_laptop_tipo_1" model="asset.atributo.valor">
+                        <field name="name">Mecánico</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_tipo"/>
+                    </record>
+                    <record id="atributo_valor_laptop_tipo_2" model="asset.atributo.valor">
+                        <field name="name">Sólido</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_tipo"/>
+                    </record>
+
+                <!--Interfaz-->
+                    <record id="cat_laptop_componente_disco_atr_interfaz" model="asset.atributo">
+                        <field name="name">Interfaz</field>
+                        <field name="componente_id" ref="cat_laptop_componente_disco_duro"/>
+                    </record>
+
+                    <record id="atributo_valor_laptop_interfaz_1" model="asset.atributo.valor">
+                        <field name="name">Ide</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_interfaz"/>
+                    </record>
+                    <record id="atributo_valor_laptop_interfaz_2" model="asset.atributo.valor">
+                        <field name="name">Sata</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_interfaz"/>
+                    </record>
+
+                <!--Capacidad-->
+                    <record id="cat_laptop_componente_disco_atr_capacidad" model="asset.atributo">
+                        <field name="name">Capacidad</field>
+                        <field name="componente_id" ref="cat_laptop_componente_disco_duro"/>
+                    </record>
+
+                    <record id="atributo_laptop_valor_capacidad_1_1" model="asset.atributo.valor">
+                        <field name="name">1 Tb</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_laptop_valor_capacidad_1_2" model="asset.atributo.valor">
+                        <field name="name">500 Gb</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_laptop_valor_capacidad_1_3" model="asset.atributo.valor">
+                        <field name="name">250 Gb</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_laptop_valor_capacidad_1_4" model="asset.atributo.valor">
+                        <field name="name">160 Gb</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_laptop_valor_capacidad_1_5" model="asset.atributo.valor">
+                        <field name="name">150 Gb</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_laptop_valor_capacidad_1_6" model="asset.atributo.valor">
+                        <field name="name">120 Gb</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_capacidad"/>
+                    </record>
+
+            <!--Procesador-->
+                <record id="cat_laptop_componente_procesador" model="asset.detalle.componente">
+                    <field name="name">Procesador</field>
+                    <field name="categoria_id" ref="asset_categoria_laptop"/>
+                </record>
+
+                <!--Marca-->
+                    <record id="cat_laptop_componente_proc_atr_marca" model="asset.atributo">
+                        <field name="name">Marca</field>
+                        <field name="componente_id" ref="cat_laptop_componente_procesador"/>
+                    </record>
+
+                    <record id="atributo_laptop_marca_1" model="asset.atributo.valor">
+                        <field name="name">Intel</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_marca"/>
+                    </record>
+                    <record id="atributo_laptop_marca_2" model="asset.atributo.valor">
+                        <field name="name">Amd</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_marca"/>
+                    </record>
+
+                <!--Modelo-->
+                    <record id="cat_laptop_componente_proc_atr_modelo" model="asset.atributo">
+                        <field name="name">Modelo</field>
+                        <field name="componente_id" ref="cat_laptop_componente_procesador"/>
+                    </record>
+
+                    <record id="atributo_laptop_valor_marca_1" model="asset.atributo.valor">
+                        <field name="name">D2500HN</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_2" model="asset.atributo.valor">
+                        <field name="name">D33GU</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_3" model="asset.atributo.valor">
+                        <field name="name">339A</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_4" model="asset.atributo.valor">
+                        <field name="name">D845EPI</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_5" model="asset.atributo.valor">
+                        <field name="name">D945GCNL</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_6" model="asset.atributo.valor">
+                        <field name="name">D946GZIS</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_7" model="asset.atributo.valor">
+                        <field name="name">DB75EN</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_8" model="asset.atributo.valor">
+                        <field name="name">DG31PR</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_9" model="asset.atributo.valor">
+                        <field name="name">DG41CN</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_10" model="asset.atributo.valor">
+                        <field name="name">DG41TY</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_11" model="asset.atributo.valor">
+                        <field name="name">DH1615</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_12" model="asset.atributo.valor">
+                        <field name="name">DH55PJ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_13" model="asset.atributo.valor">
+                        <field name="name">DH61BF</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_14" model="asset.atributo.valor">
+                        <field name="name">DH61CR</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_15" model="asset.atributo.valor">
+                        <field name="name">DH61SA</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_16" model="asset.atributo.valor">
+                        <field name="name">DH77EB</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_17" model="asset.atributo.valor">
+                        <field name="name">H310M</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_18" model="asset.atributo.valor">
+                        <field name="name">H310M H</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_19" model="asset.atributo.valor">
+                        <field name="name">H61-DM62</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_20" model="asset.atributo.valor">
+                        <field name="name">HM76</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_21" model="asset.atributo.valor">
+                        <field name="name">ATOM</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_22" model="asset.atributo.valor">
+                        <field name="name">CELERON</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_23" model="asset.atributo.valor">
+                        <field name="name">CORE 2 DUO</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_24" model="asset.atributo.valor">
+                        <field name="name">CORE 2 QUAD</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_25" model="asset.atributo.valor">
+                        <field name="name">CORE I3</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_26" model="asset.atributo.valor">
+                        <field name="name">CORE I7</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_27" model="asset.atributo.valor">
+                        <field name="name">CORE I9</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_28" model="asset.atributo.valor">
+                        <field name="name">DUAL CORE</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_29" model="asset.atributo.valor">
+                        <field name="name">PENTIUM</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_30" model="asset.atributo.valor">
+                        <field name="name">PENTIUM 4</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_31" model="asset.atributo.valor">
+                        <field name="name">PENTIUM GOLD</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+                    <record id="atributo_laptop_valor_marca_32" model="asset.atributo.valor">
+                        <field name="name">XEON</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_proc_atr_modelo"/>
+                    </record>
+
+                <!--Velocidad-->
+                    <record id="cat_laptop_componente_disco_atr_velocidad" model="asset.atributo">
+                        <field name="name">Velocidad</field>
+                        <field name="componente_id" ref="cat_laptop_componente_procesador"/>
+                    </record>
+
+                    <record id="atributo_valor_laptop_velocidad_1" model="asset.atributo.valor">
+                        <field name="name">1.7 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_2" model="asset.atributo.valor">
+                        <field name="name">1.0 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_3" model="asset.atributo.valor">
+                        <field name="name">1.4 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_4" model="asset.atributo.valor">
+                        <field name="name">1.6 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_5" model="asset.atributo.valor">
+                        <field name="name">1.8 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_6" model="asset.atributo.valor">
+                        <field name="name">1.86 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_7" model="asset.atributo.valor">
+                        <field name="name">2.66 GHz</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_8" model="asset.atributo.valor">
+                        <field name="name">2.8 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_9" model="asset.atributo.valor">
+                        <field name="name">2.83 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_10" model="asset.atributo.valor">
+                        <field name="name">2.93 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_11" model="asset.atributo.valor">
+                        <field name="name">2.0 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_12" model="asset.atributo.valor">
+                        <field name="name">2.2 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_13" model="asset.atributo.valor">
+                        <field name="name">2.3 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_14" model="asset.atributo.valor">
+                        <field name="name">2.4 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_15" model="asset.atributo.valor">
+                        <field name="name">2.5 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_16" model="asset.atributo.valor">
+                        <field name="name">2.6 GHz</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_20" model="asset.atributo.valor">
+                        <field name="name">2.9 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_21" model="asset.atributo.valor">
+                        <field name="name">2.92 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_22" model="asset.atributo.valor">
+                        <field name="name">3.0 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_23" model="asset.atributo.valor">
+                        <field name="name">3.07 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_24" model="asset.atributo.valor">
+                        <field name="name">3.1 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_25" model="asset.atributo.valor">
+                        <field name="name">3.2 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_26" model="asset.atributo.valor">
+                        <field name="name">3.4 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_27" model="asset.atributo.valor">
+                        <field name="name">3.6 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_28" model="asset.atributo.valor">
+                        <field name="name">3.7 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_29" model="asset.atributo.valor">
+                        <field name="name">3.8 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_velocidad_30" model="asset.atributo.valor">
+                        <field name="name">3.9 GHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_disco_atr_velocidad"/>
+                    </record>
+
+            <!--Memoria-->
+                <record id="cat_laptop_componente_memoria" model="asset.detalle.componente">
+                    <field name="name">Memoria</field>
+                    <field name="categoria_id" ref="asset_categoria_laptop"/>
+                </record>
+                <!--Tipo-->
+                    <record id="cat_laptop_componente_memoria_atr_tipo" model="asset.atributo">
+                        <field name="name">Tipo</field>
+                        <field name="componente_id" ref="cat_laptop_componente_memoria"/>
+                    </record>
+
+                    <record id="atributo_valor_laptop_memoria_tipo_1" model="asset.atributo.valor">
+                        <field name="name">DDR2</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_memoria_atr_tipo"/>
+                    </record>
+                    <record id="atributo_valor_laptop_memoria_tipo_2" model="asset.atributo.valor">
+                        <field name="name">DDR3</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_memoria_atr_tipo"/>
+                    </record>
+                    <record id="atributo_valor_laptop_memoria_tipo_3" model="asset.atributo.valor">
+                        <field name="name">DDR4</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_memoria_atr_tipo"/>
+                    </record>
+                <!--Capacidad-->
+                    <record id="cat_laptop_componente_memoria_atr_capacidad" model="asset.atributo">
+                        <field name="name">Capacidad</field>
+                        <field name="componente_id" ref="cat_laptop_componente_memoria"/>
+                    </record>
+
+                    <record id="atributo_valor_laptop_memoria_cap_1" model="asset.atributo.valor">
+                        <field name="name">128 MB</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_memoria_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_memoria_cap_2" model="asset.atributo.valor">
+                        <field name="name">256 MB</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_memoria_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_memoria_cap_3" model="asset.atributo.valor">
+                        <field name="name">512 MB</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_memoria_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_memoria_cap_4" model="asset.atributo.valor">
+                        <field name="name">1 GB</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_memoria_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_memoria_cap_5" model="asset.atributo.valor">
+                        <field name="name">2 GB</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_memoria_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_memoria_cap_6" model="asset.atributo.valor">
+                        <field name="name">3 GB</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_memoria_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_memoria_cap_7" model="asset.atributo.valor">
+                        <field name="name">4 GB</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_memoria_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_memoria_cap_8" model="asset.atributo.valor">
+                        <field name="name">6 GB</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_memoria_atr_capacidad"/>
+                    </record>
+                    <record id="atributo_valor_laptop_memoria_cap_9" model="asset.atributo.valor">
+                        <field name="name">8 GB</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_memoria_atr_capacidad"/>
+                    </record>
+
+                <!--Frecuencia-->
+                    <record id="cat_laptop_componente_memoria_atr_frecuencia" model="asset.atributo">
+                        <field name="name">Frecuencia</field>
+                        <field name="componente_id" ref="cat_laptop_componente_memoria"/>
+                    </record>
+
+                    <record id="atributo_valor_laptop_memoria_frec_1" model="asset.atributo.valor">
+                        <field name="name">400 MHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_memoria_atr_frecuencia"/>
+                    </record>
+                    <record id="atributo_valor_laptop_memoria_frec_2" model="asset.atributo.valor">
+                        <field name="name">800 MHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_memoria_atr_frecuencia"/>
+                    </record>
+                    <record id="atributo_valor_laptop_memoria_frec_3" model="asset.atributo.valor">
+                        <field name="name">1333 MHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_memoria_atr_frecuencia"/>
+                    </record>
+                    <record id="atributo_valor_laptop_memoria_frec_4" model="asset.atributo.valor">
+                        <field name="name">1600 MHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_memoria_atr_frecuencia"/>
+                    </record>
+                    <record id="atributo_valor_laptop_memoria_frec_5" model="asset.atributo.valor">
+                        <field name="name">2400 MHZ</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_memoria_atr_frecuencia"/>
+                    </record>
+
+            <!--Mainboard-->
+                <record id="cat_laptop_componente_mainboard" model="asset.detalle.componente">
+                    <field name="name">Mainboard</field>
+                    <field name="categoria_id" ref="asset_categoria_laptop"/>
+                </record>
+                <!--Marca-->
+                    <record id="cat_laptop_componente_mainboard_atr_marca" model="asset.atributo">
+                        <field name="name">Marca</field>
+                        <field name="componente_id" ref="cat_laptop_componente_mainboard"/>
+                    </record>
+
+                    <record id="atributo_valor_laptop_mainboard_marca_1" model="asset.atributo.valor">
+                        <field name="name">HP</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_mainboard_atr_marca"/>
+                    </record>
+                    <record id="atributo_valor_laptop_mainboard_marca_2" model="asset.atributo.valor">
+                        <field name="name">INTEL</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_mainboard_atr_marca"/>
+                    </record>
+                    <record id="atributo_valor_laptop_mainboard_marca_4" model="asset.atributo.valor">
+                        <field name="name">TOSHIBA</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_mainboard_atr_marca"/>
+                    </record>
+
+                <!--Modelo-->
+                    <record id="cat_laptop_componente_mainboard_atr_modelo" model="asset.atributo">
+                        <field name="name">Modelo</field>
+                        <field name="componente_id" ref="cat_laptop_componente_mainboard"/>
+                    </record>
+
+                    <record id="atributo_valor_laptop_mainboard_modelo_1" model="asset.atributo.valor">
+                        <field name="name">PRODESK 400 G1 MT</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_laptop_mainboard_modelo_2" model="asset.atributo.valor">
+                        <field name="name">SATELLITE S55T</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_laptop_mainboard_modelo_3" model="asset.atributo.valor">
+                        <field name="name">SATELLITE C45-C4320K</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_laptop_mainboard_modelo_4" model="asset.atributo.valor">
+                        <field name="name">PROBOOK 4430S</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_mainboard_atr_modelo"/>
+                    </record>
+                    <record id="atributo_valor_laptop_mainboard_modelo_5" model="asset.atributo.valor">
+                        <field name="name">HM76</field>
+                        <field name="atributo_id" ref="cat_laptop_componente_mainboard_atr_modelo"/>
+                    </record>
+
+    </data>
+</openerp>

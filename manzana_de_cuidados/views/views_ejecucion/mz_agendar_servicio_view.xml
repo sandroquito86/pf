@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+
+  <!-- Tree View -->
+  <record id="view_agendar_servicio_tree" model="ir.ui.view">
+    <field name="name">mz.agendar.servicio.tree</field>
+    <field name="model">mz.agendar_servicio</field>
+    <field name="arch" type="xml">
+      <tree string="Agendar Servicio">
+        <field name="beneficiario_id"/>
+        <field name="fecha_solicitud"/>
+        <field name="horario_id"/>
+        <field name="personal_id"/>
+        <field name="servicio_id"/>
+        <field name="programa_id"/>
+      </tree>
+    </field>
+  </record>
+
+  <!-- Form View -->
+  <record id="view_agendar_servicio_form" model="ir.ui.view">
+    <field name="name">mz.agendar.servicio.form</field>
+    <field name="model">mz.agendar_servicio</field>
+    <field name="arch" type="xml">
+      <form string="Agendar Servicio">
+      <style>
+        .mensaje-destacado {
+            background-color: #e6f3ff;
+            border: 1px solid #99ccff;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            width: 300%; /* Ajusta el ancho al triple */
+        }
+        .mensaje-destacado:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        .mensaje-destacado .o_field_widget {
+            font-weight: bold;
+            color: #3366cc;
+        }
+    </style>
+        <header>
+          <button name="solicitar_horario" invisible="state != 'borrador'" type="object" string="Solicitar" class="oe_highlight"/>
+          <button name="anular_horario" invisible="state != 'solicitud'" type="object" string="Anular"/>
+          <field name="state" widget="statusbar" statusbar_visible="borrador,solicitud"/>
+         
+        </header>
+        <sheet>
+        <div class="row justify-content-between position-relative w-100 m-0 mb-2">
+            <div class="oe_title">
+                <h1>
+                    <field name="codigo" placeholder="#000 de Solicitud" force_save="1"/>
+                </h1>
+            </div>
+          </div>
+          <group>
+            <group>
+              <field name="programa_id" readonly="1"  options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
+              <field name="modulo_id" readonly="1" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+              <field name="beneficiario_id_domain" invisible="1" />
+              <field name="beneficiario_id" readonly="state != 'borrador'" options="{'domain_field': 'beneficiario_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+              <field name="servicio_id" readonly="state != 'borrador'" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
+              <field name="personal_id_domain" invisible="1" />
+              <field name="personal_id" readonly="state != 'borrador'" options="{'domain_field': 'personal_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+              <field name="horario_id_domain" invisible="1"/>
+              <field name="fecha_solicitud" required="1" readonly="state != 'borrador'" />
+              <field name="horario_id" readonly="not (fecha_solicitud and personal_id and servicio_id) or state != 'borrador'" force_save="1" options="{'domain_field': 'horario_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+            </group>
+            <group>
+            <div class="mensaje-destacado" invisible="not (personal_id and servicio_id)">
+              <field name="mensaje" invisible="not (personal_id and servicio_id)" />
+          </div>
+            </group>
+          </group>
+          <!-- You can add other fields here as necessary -->
+          <div class="oe_chatter">
+              <field name="message_follower_ids" widget="mail_followers" />
+              <field name="message_ids" widget="mail_thread" />
+          </div>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  
+
+
+  <!-- Search View -->
+    <record id="view_agendar_servicio_search" model="ir.ui.view">
+        <field name="name">mz.agendar.servicio.search</field>
+        <field name="model">mz.agendar_servicio</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Agendar Servicio">
+                <field name="codigo"/>
+                <field name="beneficiario_id"/>
+                <field name="personal_id"/>
+                <group expand="1" string="Agrupar por">
+                    <filter string="Año" name="group_by_year" context="{'group_by':'fecha_solicitud:year'}"/>
+                    <filter string="Mes" name="group_by_month" context="{'group_by':'fecha_solicitud:month'}"/>
+                    <filter string="Día" name="group_by_day" context="{'group_by':'fecha_solicitud:day'}"/>
+                    <filter string="Programa" name="group_by_programa" context="{'group_by':'programa_id'}"/>
+                    <filter string="Servicio" name="group_by_servicio" context="{'group_by':'servicio_id'}"/>
+                    <filter string="Personal" name="group_by_personal" context="{'group_by':'personal_id'}"/>
+                </group>
+                <searchpanel>
+                    <field name="programa_id" icon="fa-building" string="Programa"/>
+                    <field name="servicio_id" icon="fa-cogs" string="Servicio"/>
+                    <field name="personal_id" icon="fa-user-md" string="Persona" select="multi" hierarchize="false"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+  
+
+  <record id="action_mz_agendar_servicio" model="ir.actions.act_window">
+    <field name="name">Agendar Servicio</field>
+    <field name="res_model">mz.agendar_servicio</field>
+    <field name="view_mode">tree,form</field>
+    <field name="context">{'group_by': ['fecha_solicitud:year', 'fecha_solicitud:month', 'fecha_solicitud:day']}</field>
+  </record>
+
+  <!-- Menu item -->
+  <menuitem id="menu_action_mz_agendar_servicio" name="Agendar Servicio" parent="menu_mz_ejecucion" action="action_mz_agendar_servicio" sequence="10"/>
+
+
+</odoo>

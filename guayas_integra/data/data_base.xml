@@ -1,0 +1,194 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Catálogos -->
+        <record id="estado_civil" model="pf.catalogo">
+            <field name="name">Estado Civil</field>
+            <field name="descripcion">Catálogo de estados civiles</field>
+        </record>
+        <record id="tipo_sangre" model="pf.catalogo">
+            <field name="name">Tipo de Sangre</field>
+            <field name="descripcion">Catálogo de tipos de sangre</field>
+        </record>
+        <record id="genero" model="pf.catalogo">
+            <field name="name">Género</field>
+            <field name="descripcion">Catálogo de géneros</field>
+        </record>
+        <record id="etnia" model="pf.catalogo">
+            <field name="name">Etnia</field>
+            <field name="descripcion">Catálogo de etnias</field>
+        </record>
+        <record id="tipo_documento" model="pf.catalogo">
+            <field name="name">Tipo de Documento</field>
+            <field name="descripcion">Catálogo de tipos de documento</field>
+        </record>
+        <record id="tipos_discapacidad" model="pf.catalogo">
+            <field name="name">Tipos de Discapacidad</field>
+            <field name="descripcion">Catálogo de tipos de discapacidad</field>
+        </record>
+
+        <!-- modulos activos -->
+        <record id="modulo_1" model="pf.modulo">
+            <field name="name">Guayas integra</field>
+        </record>
+
+        <record id="modulo_2" model="pf.modulo">
+            <field name="name">Manzana de Cuidados</field>
+        </record>
+
+        <record id="modulo_3" model="pf.modulo">
+            <field name="name">Escuela y Programas de Deportes</field>
+        </record>
+        <!-- Items -->
+        <!-- Estado Civil -->
+        <record id="estado_civil_soltero" model="pf.items">
+            <field name="name">Soltero</field>
+            <field name="descripcion">Estado civil soltero</field>
+            <field name="catalogo_id" ref="estado_civil"/>
+        </record>
+        <record id="estado_civil_casado" model="pf.items">
+            <field name="name">Casado</field>
+            <field name="descripcion">Estado civil casado</field>
+            <field name="catalogo_id" ref="estado_civil"/>
+        </record>
+        <record id="estado_civil_divorciado" model="pf.items">
+            <field name="name">Divorciado</field>
+            <field name="descripcion">Estado civil divorciado</field>
+            <field name="catalogo_id" ref="estado_civil"/>
+        </record>
+        <record id="estado_civil_viudo" model="pf.items">
+            <field name="name">Viudo</field>
+            <field name="descripcion">Estado civil viudo</field>
+            <field name="catalogo_id" ref="estado_civil"/>
+        </record>
+
+        <!-- Tipo de Sangre -->
+        <record id="tipo_sangre_a_pos" model="pf.items">
+            <field name="name">A+</field>
+            <field name="descripcion">Tipo de sangre A positivo</field>
+            <field name="catalogo_id" ref="tipo_sangre"/>
+        </record>
+        <record id="tipo_sangre_a_neg" model="pf.items">
+            <field name="name">A-</field>
+            <field name="descripcion">Tipo de sangre A negativo</field>
+            <field name="catalogo_id" ref="tipo_sangre"/>
+        </record>
+        <record id="tipo_sangre_b_pos" model="pf.items">
+            <field name="name">B+</field>
+            <field name="descripcion">Tipo de sangre B positivo</field>
+            <field name="catalogo_id" ref="tipo_sangre"/>
+        </record>
+        <record id="tipo_sangre_b_neg" model="pf.items">
+            <field name="name">B-</field>
+            <field name="descripcion">Tipo de sangre B negativo</field>
+            <field name="catalogo_id" ref="tipo_sangre"/>
+        </record>
+        <record id="tipo_sangre_ab_pos" model="pf.items">
+            <field name="name">AB+</field>
+            <field name="descripcion">Tipo de sangre AB positivo</field>
+            <field name="catalogo_id" ref="tipo_sangre"/>
+        </record>
+        <record id="tipo_sangre_ab_neg" model="pf.items">
+            <field name="name">AB-</field>
+            <field name="descripcion">Tipo de sangre AB negativo</field>
+            <field name="catalogo_id" ref="tipo_sangre"/>
+        </record>
+        <record id="tipo_sangre_o_pos" model="pf.items">
+            <field name="name">O+</field>
+            <field name="descripcion">Tipo de sangre O positivo</field>
+            <field name="catalogo_id" ref="tipo_sangre"/>
+        </record>
+        <record id="tipo_sangre_o_neg" model="pf.items">
+            <field name="name">O-</field>
+            <field name="descripcion">Tipo de sangre O negativo</field>
+            <field name="catalogo_id" ref="tipo_sangre"/>
+        </record>
+
+        <!-- Género -->
+        <record id="genero_masculino" model="pf.items">
+            <field name="name">Masculino</field>
+            <field name="descripcion">Género masculino</field>
+            <field name="catalogo_id" ref="genero"/>
+        </record>
+        <record id="genero_femenino" model="pf.items">
+            <field name="name">Femenino</field>
+            <field name="descripcion">Género femenino</field>
+            <field name="catalogo_id" ref="genero"/>
+        </record>
+        <record id="genero_no_binario" model="pf.items">
+            <field name="name">No Binario</field>
+            <field name="descripcion">Género no binario</field>
+            <field name="catalogo_id" ref="genero"/>
+        </record>
+
+        <!-- Etnia -->
+        <record id="etnia_caucasico" model="pf.items">
+            <field name="name">Caucásico</field>
+            <field name="descripcion">Etnia caucásica</field>
+            <field name="catalogo_id" ref="etnia"/>
+        </record>
+        <record id="etnia_afroamericano" model="pf.items">
+            <field name="name">Afroamericano</field>
+            <field name="descripcion">Etnia afroamericana</field>
+            <field name="catalogo_id" ref="etnia"/>
+        </record>
+        <record id="etnia_hispano" model="pf.items">
+            <field name="name">Hispano</field>
+            <field name="descripcion">Etnia hispana</field>
+            <field name="catalogo_id" ref="etnia"/>
+        </record>
+        <record id="etnia_asiatico" model="pf.items">
+            <field name="name">Asiático</field>
+            <field name="descripcion">Etnia asiática</field>
+            <field name="catalogo_id" ref="etnia"/>
+        </record>
+        <record id="etnia_indigena" model="pf.items">
+            <field name="name">Indígena</field>
+            <field name="descripcion">Etnia indígena</field>
+            <field name="catalogo_id" ref="etnia"/>
+        </record>
+        <record id="etnia_otro" model="pf.items">
+            <field name="name">Otro</field>
+            <field name="descripcion">Otra etnia</field>
+            <field name="catalogo_id" ref="etnia"/>
+        </record>
+
+        <!-- Tipo de Documento -->
+        <record id="tipo_documento_dni" model="pf.items">
+            <field name="name">DNI</field>
+            <field name="descripcion">Documento Nacional de Identidad</field>
+            <field name="catalogo_id" ref="tipo_documento"/>
+        </record>
+        <record id="tipo_documento_pasaporte" model="pf.items">
+            <field name="name">Pasaporte</field>
+            <field name="descripcion">Pasaporte</field>
+            <field name="catalogo_id" ref="tipo_documento"/>
+        </record>
+
+        <!-- Tipos de Discapacidad -->
+        <record id="discapacidad_visual" model="pf.items">
+            <field name="name">Visual</field>
+            <field name="descripcion">Discapacidad visual</field>
+            <field name="catalogo_id" ref="tipos_discapacidad"/>
+        </record>
+        <record id="discapacidad_auditiva" model="pf.items">
+            <field name="name">Auditiva</field>
+            <field name="descripcion">Discapacidad auditiva</field>
+            <field name="catalogo_id" ref="tipos_discapacidad"/>
+        </record>
+        <record id="discapacidad_motriz" model="pf.items">
+            <field name="name">Motriz</field>
+            <field name="descripcion">Discapacidad motriz</field>
+            <field name="catalogo_id" ref="tipos_discapacidad"/>
+        </record>
+        <record id="discapacidad_intelectual" model="pf.items">
+            <field name="name">Intelectual</field>
+            <field name="descripcion">Discapacidad intelectual</field>
+            <field name="catalogo_id" ref="tipos_discapacidad"/>
+        </record>
+        <record id="discapacidad_psicosocial" model="pf.items">
+            <field name="name">Psicosocial</field>
+            <field name="descripcion">Discapacidad psicosocial</field>
+            <field name="catalogo_id" ref="tipos_discapacidad"/>
+        </record>
+    </data>
+</odoo>

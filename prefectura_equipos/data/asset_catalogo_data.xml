@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <!-- Catalogo -->     
+        
+
+
+        <!-- Catalogo  GRUPO (agrupación de categorías)-->
+        <record id="items_grupo_transporte" model="pg_equipos.grupo">
+            <field name="name">Transporte</field>
+        </record>
+
+        <record id="items_grupo_informatico" model="pg_equipos.grupo">
+            <field name="name">Informático</field>
+        </record>
+
+         <record id="items_grupo_comunicaciones" model="pg_equipos.grupo">
+            <field name="name">Comunicaciones</field>
+        </record>
+       
+    </data>
+</openerp>

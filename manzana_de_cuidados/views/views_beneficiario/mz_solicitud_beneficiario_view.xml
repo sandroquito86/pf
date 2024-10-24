@@ -1,0 +1,107 @@
+<odoo>
+    <data>
+        <record id="mz_solicitud_beneficiario_view_tree" model="ir.ui.view">
+            <field name="name">mz.solicitud.beneficiario.tree</field>
+            <field name="model">mz.solicitud.beneficiario</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Solicitudes de Beneficiario">
+                    <field name="name"/>
+                    <field name="tipo_documento"/>
+                    <field name="numero_documento"/>
+                    <field name="email"/>
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="mz_solicitud_beneficiario_view_form" model="ir.ui.view">
+            <field name="name">mz.solicitud.beneficiario.form</field>
+            <field name="model">mz.solicitud.beneficiario</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Solicitud de Beneficiario" create="true" delete="true" edit="true" >
+                    <header>
+                        <button name="action_submit" type="object" string="Enviar" class="btn-primary"
+                                invisible="state != 'draft'"/>
+                        <button name="action_approve" type="object" string="Aprobar" class="btn-success"
+                                invisible="state != 'submitted'"/>
+                        <button name="action_reject" type="object" string="Rechazar" class="btn-danger"
+                                invisible="state != 'submitted'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,rejected"/>
+                    </header>
+                    <sheet>
+                        <div class="row justify-content-between position-relative w-100 m-0 mb-2">
+                            <div class="oe_title mw-75 ps-0 pe-2">
+                                <h1 class="d-flex flex-row align-items-center">
+                                    <field name="name" placeholder="Nombre del Beneficiario" force_save="1" required="True" style="font-size: min(4vw, 2.6rem);" readonly="state in ['approved', 'rejected']"/>
+                                </h1>
+                            </div>
+                        </div>
+                        <group>
+                            <group string="Apellidos y Nombres">
+                                <field name="apellido_paterno" readonly="state in ['approved', 'rejected']"/>
+                                <field name="apellido_materno" readonly="state in ['approved', 'rejected']"/>
+                                <field name="primer_nombre" readonly="state in ['approved', 'rejected']"/>
+                                <field name="segundo_nombre" readonly="state in ['approved', 'rejected']"/>
+                                <field name="tipo_documento" readonly="state in ['approved', 'rejected']"/>
+                                <field name="numero_documento" readonly="state in ['approved', 'rejected']"/>
+                            </group>
+                            <group string="Lugar y Fecha de Nacimiento">
+                                <field name="fecha_nacimiento" readonly="state in ['approved', 'rejected']"/>
+                                <field name="edad" readonly="state in ['approved', 'rejected']"/>
+                                <field name="pais_id" readonly="state in ['approved', 'rejected']"/>
+                                <field name="provincia_id" readonly="state in ['approved', 'rejected']"/>
+                                <field name="ciudad_id" readonly="state in ['approved', 'rejected']"/>
+                                <field name="direccion" readonly="state in ['approved', 'rejected']"/>
+                            </group>
+                            <group string="Datos de Contacto">
+                                <field name="telefono" readonly="state in ['approved', 'rejected']"/>
+                                <field name="email" readonly="state in ['approved', 'rejected']"/>
+                                <field name="programa_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" readonly="state in ['approved', 'rejected']"/>
+                            </group>
+                        </group>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers" />
+                            <field name="message_ids" widget="mail_thread" />
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="mz_solicitud_beneficiario_filter" model="ir.ui.view">
+            <field name="name">mz.solicitud.beneficiario.filter</field>
+            <field name="model">mz.solicitud.beneficiario</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Solicitudes de Beneficiario">
+                    <field name="name"/>
+                    <field name="apellido_paterno"/>
+                    <field name="apellido_materno"/>
+                    <field name="tipo_documento"/>
+                    <field name="numero_documento"/>
+                    <field name="email"/>
+                    <filter string="Borrador" name="draft" domain="[('state','=','draft')]"/>
+                    <filter string="Enviado" name="submitted" domain="[('state','=','submitted')]"/>
+                    <filter string="Aprobado" name="approved" domain="[('state','=','approved')]"/>
+                    <filter string="Rechazado" name="rejected" domain="[('state','=','rejected')]"/>
+                <searchpanel>
+                    <field name="state" icon="ffa-check" string="Estado"/>
+                    <field name="programa_id" icon="fa-building" string="Programa"/>
+                </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_mz_solicitud_beneficiario" model="ir.actions.act_window">
+            <field name="name">Solicitudes de Beneficiario</field>
+            <field name="res_model">mz.solicitud.beneficiario</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="mz_solicitud_beneficiario_view_tree"/>
+        </record>
+
+        <menuitem name="Solicitudes" id="menu_mz_solicitud_beneficiario" parent="menu_beneficiario" action="action_mz_solicitud_beneficiario" sequence="20"/>
+
+    </data>
+</odoo>

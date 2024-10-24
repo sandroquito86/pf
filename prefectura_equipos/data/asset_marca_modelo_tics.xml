@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>  
+    <!--COMPUTADORAS - SERVIDORES - IMPRESORAS--> 
+        <!--Hp-->
+            <record id="pg_equipos_marca_1" model="pg_equipos.marca">
+                <field name="name">Hp</field>
+            </record>
+            <record id="pg_equipos_modelo_hp_1" model="pg_equipos.modelo">
+                <field name="name">LV1911</field>
+                <field name="marca_id" ref="pg_equipos_marca_1"/>
+            </record>      
+        <!--Dell-->
+            <record id="pg_equipos_marca_4" model="pg_equipos.marca">
+                <field name="name">Dell</field>
+            </record>
+            <record id="pg_equipos_modelo_dell_1" model="pg_equipos.modelo">
+                <field name="name">P170SB</field>
+                <field name="marca_id" ref="pg_equipos_marca_4"/>
+            </record>         
+        <!--Acer-->    
+            <record id="pg_equipos_marca_5" model="pg_equipos.marca">
+                <field name="name">Acer</field>
+            </record>
+            <record id="pg_equipos_modelo_acer_1" model="pg_equipos.modelo">
+                <field name="name">S220HQL</field>
+                <field name="marca_id" ref="pg_equipos_marca_5"/>
+            </record>   
+        <!--Olivetti-->
+            <record id="pg_equipos_marca_9" model="pg_equipos.marca">
+                <field name="name">Olivetti</field>
+            </record>
+            <record id="pg_equipos_modelo_olivetti_1" model="pg_equipos.modelo">
+                <field name="name">1981A</field>
+                <field name="marca_id" ref="pg_equipos_marca_9"/>
+            </record>         
+        <!--Lg-->
+            <record id="pg_equipos_marca_10" model="pg_equipos.marca">
+                <field name="name">Lg</field>
+            </record>
+            <record id="pg_equipos_modelo_hp_1" model="pg_equipos.modelo">
+                <field name="name">W1943S</field>
+                <field name="marca_id" ref="pg_equipos_marca_10"/>
+            </record>
+            <record id="pg_equipos_modelo_hp_2" model="pg_equipos.modelo">
+                <field name="name">20MP38HQ-B</field>
+                <field name="marca_id" ref="pg_equipos_marca_10"/>
+            </record>
+            <record id="pg_equipos_modelo_hp_3" model="pg_equipos.modelo">
+                <field name="name">W1943C</field>
+                <field name="marca_id" ref="pg_equipos_marca_10"/>
+            </record>
+            <record id="pg_equipos_modelo_hp_4" model="pg_equipos.modelo">
+                <field name="name">L1718S</field>
+                <field name="marca_id" ref="pg_equipos_marca_10"/>
+            </record>
+            <record id="pg_equipos_modelo_hp_5" model="pg_equipos.modelo">
+                <field name="name">20MK400H</field>
+                <field name="marca_id" ref="pg_equipos_marca_10"/>
+            </record>
+            <record id="pg_equipos_modelo_hp_6" model="pg_equipos.modelo">
+                <field name="name">W1942S</field>
+                <field name="marca_id" ref="pg_equipos_marca_10"/>
+            </record>
+            <record id="pg_equipos_modelo_hp_7" model="pg_equipos.modelo">
+                <field name="name">20EN33SS</field>
+                <field name="marca_id" ref="pg_equipos_marca_10"/>
+            </record>
+            <record id="pg_equipos_modelo_hp_8" model="pg_equipos.modelo">
+                <field name="name">20M38H-B</field>
+                <field name="marca_id" ref="pg_equipos_marca_10"/>
+            </record>
+            <record id="pg_equipos_modelo_hp_9" model="pg_equipos.modelo">
+                <field name="name">20M38A</field>
+                <field name="marca_id" ref="pg_equipos_marca_10"/>
+            </record>
+            <record id="pg_equipos_modelo_hp_10" model="pg_equipos.modelo">
+                <field name="name">W1941S</field>
+                <field name="marca_id" ref="pg_equipos_marca_10"/>
+            </record>
+            <record id="pg_equipos_modelo_hp_11" model="pg_equipos.modelo">
+                <field name="name">L177WSBS</field>
+                <field name="marca_id" ref="pg_equipos_marca_10"/>
+            </record>
+            <record id="pg_equipos_modelo_hp_12" model="pg_equipos.modelo">
+                <field name="name">19EN33S</field>
+                <field name="marca_id" ref="pg_equipos_marca_10"/>
+            </record>
+            <record id="pg_equipos_modelo_hp_13" model="pg_equipos.modelo">
+                <field name="name">L1753T</field>
+                <field name="marca_id" ref="pg_equipos_marca_10"/>
+            </record>
+            <record id="pg_equipos_modelo_hp_14" model="pg_equipos.modelo">
+                <field name="name">20NK400H</field>
+                <field name="marca_id" ref="pg_equipos_marca_10"/>
+            </record>
+        <!--Samsung-->    
+            <record id="pg_equipos_marca_12" model="pg_equipos.marca">
+                <field name="name">Samsung</field>
+            </record>
+            <record id="pg_equipos_modelo_samsung_1" model="pg_equipos.modelo">
+                <field name="name">S19D300NY</field>
+                <field name="marca_id" ref="pg_equipos_marca_12"/>
+            </record>
+            <record id="pg_equipos_modelo_samsung_2" model="pg_equipos.modelo">
+                <field name="name">S20D300NH</field>
+                <field name="marca_id" ref="pg_equipos_marca_12"/>
+            </record>
+            <record id="pg_equipos_modelo_samsung_3" model="pg_equipos.modelo">
+                <field name="name">LS20D300NH</field>
+                <field name="marca_id" ref="pg_equipos_marca_12"/>
+            </record>
+            <record id="pg_equipos_modelo_samsung_4" model="pg_equipos.modelo">
+                <field name="name">S19C150F</field>
+                <field name="marca_id" ref="pg_equipos_marca_12"/>
+            </record>
+            <record id="pg_equipos_modelo_samsung_5" model="pg_equipos.modelo">
+                <field name="name">B1930N</field>
+                <field name="marca_id" ref="pg_equipos_marca_12"/>
+            </record>
+            <record id="pg_equipos_modelo_samsung_6" model="pg_equipos.modelo">
+                <field name="name">732NW</field>
+                <field name="marca_id" ref="pg_equipos_marca_12"/>
+            </record>
+            <record id="pg_equipos_modelo_samsung_7" model="pg_equipos.modelo">
+                <field name="name">740NW</field>
+                <field name="marca_id" ref="pg_equipos_marca_12"/>
+            </record>
+            <record id="pg_equipos_modelo_samsung_8" model="pg_equipos.modelo">
+                <field name="name">740N</field>
+                <field name="marca_id" ref="pg_equipos_marca_12"/>
+            </record>
+        <!--Benq-->
+            <record id="pg_equipos_marca_13" model="pg_equipos.marca">
+                <field name="name">Benq</field>
+            </record>
+            <record id="pg_equipos_modelo_benq_1" model="pg_equipos.modelo">
+                <field name="name">ET-0025-TA</field>
+                <field name="marca_id" ref="pg_equipos_marca_13"/>
+            </record>
+            
+            <record id="pg_equipos_modelo_benq_3" model="pg_equipos.modelo">
+                <field name="name">W1507</field>
+                <field name="marca_id" ref="pg_equipos_marca_13"/>
+            </record>
+            <record id="pg_equipos_modelo_benq_4" model="pg_equipos.modelo">
+                <field name="name">T71W</field>
+                <field name="marca_id" ref="pg_equipos_marca_13"/>
+            </record>         
+        <!--Aoc-->
+            <record id="pg_equipos_marca_15" model="pg_equipos.marca">
+                <field name="name">Aoc</field>
+            </record>
+            <record id="pg_equipos_modelo_aoc_1" model="pg_equipos.modelo">
+                <field name="name">195LM00003</field>
+                <field name="marca_id" ref="pg_equipos_marca_15"/>
+            </record>
+            <record id="pg_equipos_modelo_aoc_2" model="pg_equipos.modelo">
+                <field name="name">TFT15W60PS</field>
+                <field name="marca_id" ref="pg_equipos_marca_15"/>
+            </record>
+            <record id="pg_equipos_modelo_aoc_3" model="pg_equipos.modelo">
+                <field name="name">215LM00063</field>
+                <field name="marca_id" ref="pg_equipos_marca_15"/>
+            </record>
+            <record id="pg_equipos_modelo_aoc_4" model="pg_equipos.modelo">
+                <field name="name">E2070SWN</field>
+                <field name="marca_id" ref="pg_equipos_marca_15"/>
+            </record>              
+        <!--Quasad-->
+            <record id="pg_equipos_marca_19" model="pg_equipos.marca">
+                <field name="name">Quasad</field>
+            </record>
+            <record id="pg_equipos_modelo_quasad_1" model="pg_equipos.modelo">
+                <field name="name">QMS20</field>
+                <field name="marca_id" ref="pg_equipos_marca_19"/>
+            </record>
+        <!--Fujitsu-->
+            <record id="pg_equipos_marca_23" model="pg_equipos.marca">
+                <field name="name">Fujitsu</field>
+            </record>
+            <record id="pg_equipos_modelo_fujitsu_1" model="pg_equipos.modelo">
+                <field name="name">SIEMENS</field>
+                <field name="marca_id" ref="pg_equipos_marca_23"/>
+            </record>
+        
+        <!--Xtratech-->
+            <record id="pg_equipos_marca_6" model="pg_equipos.marca">
+                <field name="name">Xtratech</field>
+            </record>
+            <record id="pg_equipos_modelo_fujitsu_1" model="pg_equipos.modelo">
+                    <field name="name">1817</field>
+                    <field name="marca_id" ref="pg_equipos_marca_6"/>
+            </record>
+        <!--Otros-->
+            <record id="pg_equipos_marca_7" model="pg_equipos.marca">
+                <field name="name">Panasonic</field>
+            </record>
+            <record id="pg_equipos_marca_8" model="pg_equipos.marca">
+                <field name="name">Asus</field>
+            </record>
+            <record id="pg_equipos_marca_3" model="pg_equipos.marca">
+                <field name="name">Toshiba</field>
+            </record>
+            <record id="pg_equipos_marca_20" model="pg_equipos.marca">
+                <field name="name">Obex</field>
+            </record>
+            <record id="pg_equipos_marca_21" model="pg_equipos.marca">
+                <field name="name">Ultratech</field>
+            </record>
+            <record id="pg_equipos_marca_14" model="pg_equipos.marca">
+                <field name="name">Ari</field>
+            </record>
+            <record id="pg_equipos_marca_2" model="pg_equipos.marca">
+                <field name="name">Clon</field>
+            </record>
+            <record id="pg_equipos_marca_16" model="pg_equipos.marca">
+                <field name="name">Lenovo</field>
+            </record>
+            <record id="pg_equipos_marca_11" model="pg_equipos.marca">
+                <field name="name">Integrado</field>
+            </record>
+            <record id="pg_equipos_marca_22" model="pg_equipos.marca">
+                <field name="name">Senseye</field>
+            </record> 
+   
+    
+    </data>
+</openerp>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record model="ir.module.category" id="prefectura_categoria_adicional_equipos">
+            <field name="name">Gestión de Equipos</field>
+            <field name="description">Ayuda a administrar los permisos adicionales en mantenimiento</field>
+            <field name="sequence">6</field>
+        </record>
+
+    <!-- perfil encargado del ingreso de activos en su reparto -->
+        <record id="grupo_equipos_registrador_sucursal" model="res.groups">
+            <field name="name">Registro de Equipos por sucursal</field>
+            <field name="category_id" ref="prefectura_categoria_adicional_equipos"/>
+        </record>
+
+    <!-- perfil encargado del ingreso de activos de todos los repartos -->
+        <record id="grupo_equipos_registrador_general" model="res.groups">
+            <field name="name">Registro de Equipos General</field>
+            <field name="category_id" ref="prefectura_categoria_adicional_equipos"/>
+        </record>
+
+        <record id="group_tecnico_reparto" model="res.groups">
+            <field name="name">Técnico del reparto</field>
+            <field name="category_id" ref="prefectura_categoria_adicional_equipos"/>
+        </record>
+
+        <record id="group_tecnico_general" model="res.groups">
+            <field name="name">Técnico General</field>
+            <field name="category_id" ref="prefectura_categoria_adicional_equipos"/>
+        </record>
+
+        <record id="group_prefectura_equipos_configurador" model="res.groups">
+            <field name="name">Administración de configuraciones</field>
+            <field name="category_id" ref="prefectura_categoria_adicional_equipos"/>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Modificar la vista de product.template -->
+    <record id="product_template_form_view_procurement_button_inherited" model="ir.ui.view">
+        <field name="name">product.template.procurement.button.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <script>
+                    $(document).ready(function() {
+                        $("button[name='action_view_orderpoints'], button[name='action_view_related_putaway_rules']").hide();
+                    });
+                </script>
+            </xpath>
+            <!-- <xpath expr="//button[@name='%(stock.action_product_replenish)d']" position="attributes">
+                <attribute name="groups">stock.group_stock_manager</attribute>
+            </xpath> -->
+        </field>
+    </record>
+
+  
+
+    <record id="product_template_form_view_inherited" model="ir.ui.view">
+        <field name="name">product.template.form.inherited</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Encuentra el campo 'type' y agrega 'categ_id' justo después -->
+            <xpath expr="//page[@name='general_information']" position="replace">
+                <page string="General Information" name="general_information">
+                    <group>
+                        <group name="group_general">
+                            <field name="active" invisible="1"/>
+                            <field name="detailed_type"/>
+                            <field name="product_tooltip" string="" class="fst-italic text-muted" invisible="type == 'service' and not sale_ok"/>
+                            <field name="uom_id" groups="uom.group_uom" options="{'no_create': True}"/>
+                            <field name="uom_po_id" groups="uom.group_uom" options="{'no_create': True}"/>
+                            <field name="categ_id"/>
+                        </group>
+                        <group name="group_standard_price">
+                            <label for="list_price"/>
+                            <div name="pricing" class="o_row">
+                                <field name="list_price" class="oe_inline" widget='monetary' options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                            </div>
+                            <label for="standard_price" invisible="product_variant_count &gt; 1 and not is_product_variant"/>
+                            <div name="standard_price_uom" invisible="product_variant_count &gt; 1 and not is_product_variant">
+                                <field name="standard_price" class="oe_inline" widget='monetary' options="{'currency_field': 'cost_currency_id', 'field_digits': True}"/>
+                                <span groups="uom.group_uom">per
+                                    <field name="uom_name" class="oe_inline"/>
+                                </span>
+                            </div>
+                            <field name="product_tag_ids" widget="many2many_tags" context="{'product_template_id': id}"/>
+                            <field name="company_id" invisible="1" options="{'no_create': True}"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="cost_currency_id" invisible="1"/>
+                            <field name="product_variant_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="Internal Notes">
+                        <field colspan="2" name="description" nolabel="1" placeholder="This note is only for internal purposes."/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//page[@name='inventory']" position="replace">
+                <page string="Inventory" name="inventory" groups="product.group_stock_packaging" invisible="type == 'service'">
+                    <group name="inventory">
+                        <group name="group_lots_and_weight" string="Logistics" invisible="type not in ['product', 'consu']">
+                            <label for="weight" invisible="product_variant_count &gt; 1 and not is_product_variant"/>
+                            <div class="o_row" name="weight" invisible="product_variant_count &gt; 1 and not is_product_variant">
+                                <field name="weight" class="oe_inline"/>
+                                <field name="weight_uom_name"/>
+                            </div>
+                            <label for="volume" invisible="product_variant_count &gt; 1 and not is_product_variant"/>
+                            <div class="o_row" name="volume" invisible="product_variant_count &gt; 1 and not is_product_variant">
+                                <field name="volume" string="Volume" class="oe_inline"/>
+                                <field name="volume_uom_name"/>
+                            </div>
+                        </group>
+                    </group>
+                    <group name="packaging" string="Packaging" colspan="4" invisible="(type not in ['product', 'consu'] or product_variant_count &gt; 1) and not is_product_variant" groups="product.group_stock_packaging">
+                        <field colspan="2" name="packaging_ids" nolabel="1" context="{'tree_view_ref':'product.product_packaging_tree_view2', 'default_company_id': company_id}"/>
+                    </group>
+                </page>
+            </xpath>
+
+            <!-- Hacemos readonly los campos sale_ok y list_price -->
+            <field name="sale_ok" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </field>
+
+            <field name="list_price" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </field>
+        </field>
+    </record>
+
+
+    <!-- <record id="product_template_form_view_medicine" model="ir.ui.view">
+        <field name="name">product.template.common.form.medicine</field>
+        <field name="model">product.template</field>l
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']" position="inside">
+                <field name="es_medicina"/>
+            </xpath>
+            <notebook position="inside">
+                <page string="Información Médica" invisible="not es_medicina">
+                    <group>
+                        <field name="active_ingredient"/>
+                         <field name="dosage_id"/>
+                        <field name="forma_farmaceutica_id"/>
+                        <field name="via_administracion_id"/>
+                        <field name="frecuencia_id"/>
+                        <field name="requires_prescription" widget="boolean_toggle"/> 
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record> -->
+</odoo>

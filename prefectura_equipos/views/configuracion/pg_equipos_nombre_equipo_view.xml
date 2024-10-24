@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_nombre_equipo_tree">
+            <field name="name">pg_equipos.nombre_equipo</field>
+            <field name="model">pg_equipos.nombre_equipo</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="abreviatura" />
+                    <field name="name" />
+                    <field name="categoria_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_nombre_equipo_form" model="ir.ui.view">
+            <field name="name">pg_equipos.nombre_equipo</field>
+            <field name="model">pg_equipos.nombre_equipo</field>
+            <field name="arch" type="xml">
+                <form string="NUEVO">
+                    <sheet>
+                        <group>
+                            <group colspan="2">
+                                <field name="categoria_id" context="{'complete_name': 1}" placeholder="Seleccione una categoria" options="{'no_create_edit': True, 'no_open': True,'no_create': True}" />
+                            </group>
+                            <group>
+                                <field name="abreviatura" placeholder="Escriba abreviatura del tipo de activo.." />
+                                <field name="active" widget="boolean_toggle"/>
+                            </group>
+                            <group>
+                                <field name="name" placeholder="Escriba el nombre del tipo de activo.." />
+                            </group>
+                        </group>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers" />
+                            <field name="activity_ids" widget="mail_activity" />
+                            <field name="message_ids" widget="mail_thread" />
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_nombre_equipo_form2" model="ir.ui.view">
+            <field name="name">pg_equipos.nombre_equipo</field>
+            <field name="model">pg_equipos.nombre_equipo</field>
+            <field name="arch" type="xml">
+                <form string="NUEVO">
+                    <sheet>
+                        <group>
+                            <group colspan="2">
+                                <field name="categoria_id" invisible="1" placeholder="Seleccione una categoria" options="{'no_create_edit': True, 'no_open': True,'no_create': True}" />
+                            </group>
+                            <group>
+                                <field name="abreviatura" placeholder="Escriba abreviatura del tipo de activo.." />
+                                <field name="active" widget="boolean_toggle"/>
+                            </group>
+                            <group>
+                                <field name="name" placeholder="Escriba el nombre del tipo de activo.." />
+                            </group>
+                        </group>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers" />
+                            <field name="activity_ids" widget="mail_activity" />
+                            <field name="message_ids" widget="mail_thread" />
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_nombre_equipo_search" model="ir.ui.view">
+            <field name="name">pg_equipos.nombre_equipo</field>
+            <field name="model">pg_equipos.nombre_equipo</field>
+            <field name="arch" type="xml">
+                <search string="">
+                    <field name="categoria_id" />
+                    <field name="abreviatura" />
+                    <field name="name" />
+                    <group>
+                        <filter name="categoria" string="Agrupar por Categorìa" context="{'group_by': 'categoria_id' }" />
+                        <filter string="Eliminado" name="inactive" domain="[('active','=',False)]"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_nombre_equipo">
+            <field name="name">NOMBRE DEL EQUIPO</field>
+            <field name="res_model">pg_equipos.nombre_equipo</field>
+            <field name="context" eval="{'search_default_grupo':1, 'search_default_categoria':1}"></field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Nombre del Equipo" id="menu_action_nombre_equipo" parent="menu_configuracion_categorizacion" action="action_nombre_equipo" sequence="30"/>
+    </data>
+</odoo>

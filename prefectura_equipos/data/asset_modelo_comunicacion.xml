@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="pg_equipos_modelo_comunicacion-1" model="pg_equipos.modelo">
+            <field name="name">XD 4410A</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-1" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-2" model="pg_equipos.modelo">
+            <field name="name">GRC 171</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-2" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-3" model="pg_equipos.modelo">
+            <field name="name">URC-200</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-3" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-4" model="pg_equipos.modelo">
+            <field name="name">SPECTRUM 2000</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-2" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-5" model="pg_equipos.modelo">
+            <field name="name">176 SSB</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-4" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-6" model="pg_equipos.modelo">
+            <field name="name">RT 100/MP</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-5" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-7" model="pg_equipos.modelo">
+            <field name="name">XK 2100L</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-1" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-8" model="pg_equipos.modelo">
+            <field name="name">NRD 93</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-4" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-9" model="pg_equipos.modelo">
+            <field name="name">NRD 240</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-4" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-10" model="pg_equipos.modelo">
+            <field name="name">RA 1792</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-6" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-11" model="pg_equipos.modelo">
+            <field name="name">M 127</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-12" model="pg_equipos.modelo">
+            <field name="name">TK 730</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-8" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-13" model="pg_equipos.modelo">
+            <field name="name">RADIUS GM300</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-3" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-14" model="pg_equipos.modelo">
+            <field name="name">IC A110</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-15" model="pg_equipos.modelo">
+            <field name="name">618M 3A</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-2" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-16" model="pg_equipos.modelo">
+            <field name="name">MD 786G</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-9" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-17" model="pg_equipos.modelo">
+            <field name="name">VX 600U</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-10" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-18" model="pg_equipos.modelo">
+            <field name="name">PRO 5150</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-3" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-19" model="pg_equipos.modelo">
+            <field name="name">XG 25</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-11" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-20" model="pg_equipos.modelo">
+            <field name="name">XTL 2500</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-3" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-21" model="pg_equipos.modelo">
+            <field name="name">-</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-12" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-22" model="pg_equipos.modelo">
+            <field name="name">FB250</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-13" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-23" model="pg_equipos.modelo">
+            <field name="name">A3LA D</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-14" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-24" model="pg_equipos.modelo">
+            <field name="name">FTR 1100</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-15" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-25" model="pg_equipos.modelo">
+            <field name="name">RX 3002</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-16" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-26" model="pg_equipos.modelo">
+            <field name="name">FTR 5050</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-15" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-27" model="pg_equipos.modelo">
+            <field name="name">PD 706G</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-9" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-28" model="pg_equipos.modelo">
+            <field name="name">FM 8900S</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-29" model="pg_equipos.modelo">
+            <field name="name">TH 923</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-18" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-30" model="pg_equipos.modelo">
+            <field name="name">SP 3540</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-13" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-31" model="pg_equipos.modelo">
+            <field name="name">GM 360</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-3" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-32" model="pg_equipos.modelo">
+            <field name="name">9555</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-14" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-33" model="pg_equipos.modelo">
+            <field name="name">XK 4115D</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-1" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-34" model="pg_equipos.modelo">
+            <field name="name">EK 4100D</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-1" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-35" model="pg_equipos.modelo">
+            <field name="name">XT 4410A</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-1" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-36" model="pg_equipos.modelo">
+            <field name="name">XU 4200</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-1" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-37" model="pg_equipos.modelo">
+            <field name="name">PRO 3100</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-3" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-38" model="pg_equipos.modelo">
+            <field name="name">FM 8800S</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-39" model="pg_equipos.modelo">
+            <field name="name">8050</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-2" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-40" model="pg_equipos.modelo">
+            <field name="name">240</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-4" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-41" model="pg_equipos.modelo">
+            <field name="name">FM 8500</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-42" model="pg_equipos.modelo">
+            <field name="name">PRO 5100</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-3" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-43" model="pg_equipos.modelo">
+            <field name="name">MR 201</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-2" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-44" model="pg_equipos.modelo">
+            <field name="name">GM 300</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-19" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-45" model="pg_equipos.modelo">
+            <field name="name">XG 25P</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-11" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-46" model="pg_equipos.modelo">
+            <field name="name">XK 4015D</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-1" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-47" model="pg_equipos.modelo">
+            <field name="name">EK 896</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-1" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-48" model="pg_equipos.modelo">
+            <field name="name">651S</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-2" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-49" model="pg_equipos.modelo">
+            <field name="name">PD 786G</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-9" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-50" model="pg_equipos.modelo">
+            <field name="name">PRO 7150</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-3" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-51" model="pg_equipos.modelo">
+            <field name="name">TT 3672A</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-20" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-52" model="pg_equipos.modelo">
+            <field name="name">NRD 545</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-4" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-53" model="pg_equipos.modelo">
+            <field name="name">IC GM1600</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-54" model="pg_equipos.modelo">
+            <field name="name">NRD 240 </field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-4" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-55" model="pg_equipos.modelo">
+            <field name="name">XU 250A</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-1" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-56" model="pg_equipos.modelo">
+            <field name="name">SC 4150</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-13" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-57" model="pg_equipos.modelo">
+            <field name="name">JSB 166</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-4" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-58" model="pg_equipos.modelo">
+            <field name="name">JSL 5</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-4" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-59" model="pg_equipos.modelo">
+            <field name="name">2570C</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-60" model="pg_equipos.modelo">
+            <field name="name">FM 8800D</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-61" model="pg_equipos.modelo">
+            <field name="name">FELCOM 15</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-62" model="pg_equipos.modelo">
+            <field name="name">ST 4120</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-14" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-63" model="pg_equipos.modelo">
+            <field name="name">XK 2100</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-1" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-64" model="pg_equipos.modelo">
+            <field name="name">F 1570</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-65" model="pg_equipos.modelo">
+            <field name="name">FS 1550</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-66" model="pg_equipos.modelo">
+            <field name="name">NRD 92</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-4" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-67" model="pg_equipos.modelo">
+            <field name="name">AR ONE</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-21" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-68" model="pg_equipos.modelo">
+            <field name="name">XTS 2250</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-3" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-69" model="pg_equipos.modelo">
+            <field name="name">RT 2048</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-13" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-70" model="pg_equipos.modelo">
+            <field name="name">IC GM651</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-71" model="pg_equipos.modelo">
+            <field name="name">ICM 304</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-72" model="pg_equipos.modelo">
+            <field name="name">IC 988B</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-73" model="pg_equipos.modelo">
+            <field name="name">JSB 176</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-4" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-74" model="pg_equipos.modelo">
+            <field name="name">FS 1562</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-75" model="pg_equipos.modelo">
+            <field name="name">EK 895</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-1" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-76" model="pg_equipos.modelo">
+            <field name="name">DGM 6100</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-3" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-77" model="pg_equipos.modelo">
+            <field name="name">FM 3000</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-78" model="pg_equipos.modelo">
+            <field name="name">22B</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-2" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-79" model="pg_equipos.modelo">
+            <field name="name">TRP 9000</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-22" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-80" model="pg_equipos.modelo">
+            <field name="name">FT 900</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-23" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-81" model="pg_equipos.modelo">
+            <field name="name">JHS 32B</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-4" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-82" model="pg_equipos.modelo">
+            <field name="name">NCH 414</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-4" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-83" model="pg_equipos.modelo">
+            <field name="name">9500</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-14" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-84" model="pg_equipos.modelo">
+            <field name="name">FS 2570C</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-85" model="pg_equipos.modelo">
+            <field name="name">JSB 196GM</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-4" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-86" model="pg_equipos.modelo">
+            <field name="name">IC M88</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-87" model="pg_equipos.modelo">
+            <field name="name">XF 2571C</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-88" model="pg_equipos.modelo">
+            <field name="name">IC R75</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-89" model="pg_equipos.modelo">
+            <field name="name">MAXTRAC 300</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-3" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-90" model="pg_equipos.modelo">
+            <field name="name">IC A24</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-91" model="pg_equipos.modelo">
+            <field name="name">IC GM36</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-92" model="pg_equipos.modelo">
+            <field name="name">IC M36</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-93" model="pg_equipos.modelo">
+            <field name="name">DSC 6</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-94" model="pg_equipos.modelo">
+            <field name="name">AA-50</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-95" model="pg_equipos.modelo">
+            <field name="name">FELCOM 12</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-96" model="pg_equipos.modelo">
+            <field name="name">DP 6</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-97" model="pg_equipos.modelo">
+            <field name="name">TT 3738A</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-20" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-98" model="pg_equipos.modelo">
+            <field name="name">GX 100</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-13" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-99" model="pg_equipos.modelo">
+            <field name="name">9575</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-14" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-100" model="pg_equipos.modelo">
+            <field name="name">RT859</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-24" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-101" model="pg_equipos.modelo">
+            <field name="name">FS 5070</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-102" model="pg_equipos.modelo">
+            <field name="name">TT 6222A</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-13" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-103" model="pg_equipos.modelo">
+            <field name="name">SP 3520</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-13" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-104" model="pg_equipos.modelo">
+            <field name="name">IC F14</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-105" model="pg_equipos.modelo">
+            <field name="name">IC 202D</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-106" model="pg_equipos.modelo">
+            <field name="name">IC M604</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-107" model="pg_equipos.modelo">
+            <field name="name">IC A210E</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-108" model="pg_equipos.modelo">
+            <field name="name">IC M323G</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-109" model="pg_equipos.modelo">
+            <field name="name">IC M423</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-110" model="pg_equipos.modelo">
+            <field name="name">MD 782G</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-9" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-111" model="pg_equipos.modelo">
+            <field name="name"> TT 6301A</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-13" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-112" model="pg_equipos.modelo">
+            <field name="name">DGP 6150</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-3" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-113" model="pg_equipos.modelo">
+            <field name="name">TT 6006A</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-13" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-114" model="pg_equipos.modelo">
+            <field name="name">IC R8500</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-115" model="pg_equipos.modelo">
+            <field name="name">2050</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-25" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-116" model="pg_equipos.modelo">
+            <field name="name">AXIS 250</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-26" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-117" model="pg_equipos.modelo">
+            <field name="name">IC F121</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-118" model="pg_equipos.modelo">
+            <field name="name">RF-5800-MP</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-11" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-119" model="pg_equipos.modelo">
+            <field name="name">IB 583</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-120" model="pg_equipos.modelo">
+            <field name="name">TD-L 1630A</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-27" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-121" model="pg_equipos.modelo">
+            <field name="name">NX 500</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-122" model="pg_equipos.modelo">
+            <field name="name">IC F50</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-123" model="pg_equipos.modelo">
+            <field name="name">IC A14</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-124" model="pg_equipos.modelo">
+            <field name="name">JUE 85</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-4" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-125" model="pg_equipos.modelo">
+            <field name="name">IC M34</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-126" model="pg_equipos.modelo">
+            <field name="name">FSG 90</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-28" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-127" model="pg_equipos.modelo">
+            <field name="name">IC F3003</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-128" model="pg_equipos.modelo">
+            <field name="name">DNV-2000</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-29" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-129" model="pg_equipos.modelo">
+            <field name="name">H 5057B</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-3" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-130" model="pg_equipos.modelo">
+            <field name="name">ICF 121</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-131" model="pg_equipos.modelo">
+            <field name="name">RT 6222</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-13" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-132" model="pg_equipos.modelo">
+            <field name="name">FS 2575C</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-133" model="pg_equipos.modelo">
+            <field name="name">IC A210</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-134" model="pg_equipos.modelo">
+            <field name="name">IC A14S</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-135" model="pg_equipos.modelo">
+            <field name="name">RT 6223</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-13" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-136" model="pg_equipos.modelo">
+            <field name="name"> XTL 2500</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-3" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-137" model="pg_equipos.modelo">
+            <field name="name">FS 1575T</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-3" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-138" model="pg_equipos.modelo">
+            <field name="name">SP 3521</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-13" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-139" model="pg_equipos.modelo">
+            <field name="name">NX 700A/B</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-140" model="pg_equipos.modelo">
+            <field name="name">PHONTECH 4061</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-30" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-141" model="pg_equipos.modelo">
+            <field name="name">G 1300</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-31" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-142" model="pg_equipos.modelo">
+            <field name="name">IC M323</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-143" model="pg_equipos.modelo">
+            <field name="name">PR 300</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-144" model="pg_equipos.modelo">
+            <field name="name">FELCOM IC 218</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-145" model="pg_equipos.modelo">
+            <field name="name">ALPHACALL MF</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-32" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-146" model="pg_equipos.modelo">
+            <field name="name">DGM 8500</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-3" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-147" model="pg_equipos.modelo">
+            <field name="name">IC F121D</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-148" model="pg_equipos.modelo">
+            <field name="name">IC M421</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-149" model="pg_equipos.modelo">
+            <field name="name">IC 3003</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-150" model="pg_equipos.modelo">
+            <field name="name">E70243</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-33" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-151" model="pg_equipos.modelo">
+            <field name="name">6301</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-13" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-152" model="pg_equipos.modelo">
+            <field name="name">FM 8500 </field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-17" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-153" model="pg_equipos.modelo">
+            <field name="name">IC F12</field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-7" />
+        </record>
+        <record id="pg_equipos_modelo_comunicacion-154" model="pg_equipos.modelo">
+            <field name="name">AXIS 250 </field>
+            <field name="marca_id" ref="pg_equipos_marca_comunicacion-26" />
+        </record>
+    </data>
+</openerp>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="report_asset_mis_activos" model="ir.actions.report">
+            <field name="name">Reporte mis activos</field>
+            <field name="model">asset.asset</field>
+            <!-- tipo de reporte en este caso pdf -->
+            <field name="report_type">qweb-pdf</field>
+            <!-- nombre del pdf -->
+            <field name="report_name">prefectura_equipos.reporte_asset_mis_activos</field>
+            <!-- nombre del pdf -->
+            <field name="report_file">prefectura_equipos.reporte_asset_mis_activos</field>
+            <!-- <field name="binding_model_id" ref="asset.model_asset_asset"/>
+            <field name="binding_type">report</field> -->
+        </record>       
+
+        <template id="reporte_asset_mis_activos">
+            <t t-call="web.html_container">
+                <div class="header">
+                    <div class="table-responsive">
+                        <img src='/vuelo_base/static/src/img/3.jpeg' align="left" style="max-height: 70px;"/>
+                        <img src='/vuelo_base/static/src/img/1.jpeg' align="right" style="max-height: 70px;"/>
+                        <div class="col-md-12 text-center">
+                            <h6 style="font-weight: bold;">ARMADA DEL ECUADOR</h6>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <h6 style="font-weight: bold;text-transform: uppercase;">
+                                <span t-esc="request.env.user.company_id.name"/>
+                            </h6>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <h6 style="font-size: 18px !important;font-weight: bold;text-transform: uppercase;">REPORTE DE HORAS DE VUELO POR TRIPULANTE</h6>
+                        </div>
+
+                    </div>
+                </div>
+                <t t-call="web.external_layout">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Reparto</th>
+                                <th scope="col">Personal</th>
+                                <th scope="col">Icron</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    <div class="table-responsive">
+                        <div class="footer">
+                            <table class="o_event_table table table-striped">
+                                <tr align="center">
+                                    <!-- <t t-foreach="request.env['pf.programas'].search([])" t-as="obj1"> -->
+                                    <th style="font-size: 14px !important;font-weight: bold;text-transform: uppercase;">JEFE DPTO. OPERACIONES DEL <span t-esc="request.env.user.company_id.name"/>
+                                    </th>
+                                    <th></th>
+                                    <th></th>
+                                    <th style="font-size: 14px !important;font-weight: bold;text-transform: uppercase;">COMANDANTE DEL <span t-esc="request.env.user.company_id.name"/>
+                                    </th>
+                                    <!-- </t> -->
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_beneficiario_form_inherited" model="ir.ui.view">
+        <field name="name">mz.beneficiario.form.inherited</field>
+        <field name="model">mz.beneficiario</field>
+        <field name="inherit_id" ref="manzana_de_cuidados.mz_beneficiario_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='oe_chatter']" position="before">
+                <notebook>
+                    <page string="Historial Clínico">
+                        <field name="historia_clinica_ids" readonly="1">
+                            <tree>
+                                <field name="fecha"/>
+                                <field name="motivo_consulta"/>
+                                <field name="diagnostico"/>
+                                <field name="tratamiento"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+            <xpath expr="//div[@class='oe_title']" position="after">
+                <div class="oe_button_box" name="button_box">
+                    <button class="oe_stat_button" type="object" name="action_view_consultas" icon="fa-stethoscope">
+                        <field string="Consultas" name="consulta_count" widget="statinfo"/>
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

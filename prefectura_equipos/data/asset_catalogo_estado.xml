@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+        <!-- <record id="asset_catalogo_estado_1" model="asset.estados">
+            <field name="name">Operativo</field>
+            <field name="sequence">1</field>
+        </record>   
+        <record id="asset_catalogo_estado_2" model="asset.estados">
+            <field name="name">Mantenimiento</field>
+            <field name="sequence">2</field>
+        </record>  
+        <record id="asset_catalogo_estado_3" model="asset.estados">
+            <field name="name">Operativo con limitaciones</field>
+            <field name="sequence">3</field>
+        </record>  
+        <record id="asset_catalogo_estado_4" model="asset.estados">
+            <field name="name">No operativo</field>
+            <field name="sequence">4</field>
+        </record>       -->
+    </data>    
+</openerp>

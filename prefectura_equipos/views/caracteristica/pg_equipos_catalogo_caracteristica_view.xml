@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_pg_equipos_catalogo_caracteristica_tree">
+            <field name="name">pg_equipos.catalogo_caracteristica</field>
+            <field name="model">pg_equipos.catalogo_caracteristica</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" />
+                    <field name="descripcion" />
+                    <field name="caracteristica_valor_ids" widget="many2many_tags" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_pg_equipos_catalogo_caracteristica_form" model="ir.ui.view">
+            <field name="name">pg_equipos.catalogo_caracteristica</field>
+            <field name="model">pg_equipos.catalogo_caracteristica</field>
+            <field name="arch" type="xml">
+                <form string="NUEVO" duplicate="0">
+                    <sheet>
+
+                        <group>
+                            <group>
+                                <field name="name" />
+                                <field name="active" widget="boolean_toggle" />
+                            </group>
+                            <group>
+                                <field name="descripcion" />
+                            </group>
+                        </group>
+                        <group>
+                            <field name="caracteristica_valor_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle" />
+                                    <field name="name"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <div class="oe_chatter">
+                            <field name="message_ids" widget="mail_thread" />
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_pg_equipos_catalogo_caracteristica_presentacion_form" model="ir.ui.view">
+            <field name="name">pg_equipos.catalogo_caracteristica</field>
+            <field name="model">pg_equipos.catalogo_caracteristica</field>
+            <field name="arch" type="xml">
+                <form string="NUEVO">
+                    <sheet>
+                        <group>
+
+                            <group>
+                                <field name="name" readonly="1" />
+                            </group>
+                            <group>
+                                <field name="descripcion" readonly="1" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_pg_equipos_catalogo_caracteristica_search" model="ir.ui.view">
+            <field name="name">pg_equipos.catalogo_caracteristica</field>
+            <field name="model">pg_equipos.catalogo_caracteristica</field>
+            <field name="arch" type="xml">
+                <search string="">
+                    <field name="name" />
+                    <field name="descripcion" />
+
+                    <field name="caracteristica_valor_ids" />
+                    <group>
+                        <filter string="Inactivo" name="inactive" domain="[('active','=',False)]" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_pg_equipos_catalogo_caracteristica">
+            <field name="name">CATÁLOGO DE CARACTERÍSTICAS</field>
+            <field name="res_model">pg_equipos.catalogo_caracteristica</field>
+            <field name="context" eval="{'search_default_grupo':1}"></field>
+        </record>
+
+        <menuitem name="Catálogo de características" id="menu_action_pg_equipos_catalogo_caracteristica" parent="menu_configuracion_caracteristicas" action="action_pg_equipos_catalogo_caracteristica" sequence="10" />
+
+    </data>
+</odoo>

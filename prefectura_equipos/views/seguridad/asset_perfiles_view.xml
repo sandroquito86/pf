@@ -1,0 +1,77 @@
+<odoo>
+    <data>
+        <record id="view_asset_perfiles_tree" model="ir.ui.view">
+            <field name="name">res.users.tree</field>
+            <field name="model">res.users</field>
+            <field name="arch" type="xml">
+                <!-- the user list is editable, but one cannot add or delete rows -->
+                <tree string="Users" create="false" delete="false">
+                    <field name="name" />
+                    <field name="login" />
+                    <field name="company_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_asset_perfiles_form" model="ir.ui.view">
+            <field name="name">res.users.form</field>
+            <field name="model">res.users</field>
+            <field name="arch" type="xml">
+                <form string="Users" edit="1">
+                    <sheet>
+                        <group>
+                            <group colspan="2" string="Usuario">
+                                <h1>
+                                    <field name="login" readonly="1"/>
+                                </h1>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="PERFILES">
+                                <field name="groups_id"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="user_groups_view_asset_inherit" model="ir.ui.view">
+            <field name="name">res.users.groups</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="prefectura_equipos.view_asset_perfiles_form"/>
+            <field name="arch" type="xml">
+                <field name="groups_id" position="after"/>
+            </field>
+        </record>
+
+        <record id="view_asset_perfiles_search" model="ir.ui.view">
+            <field name="name">res.users.search</field>
+            <field name="model">res.users</field>
+            <field name="arch" type="xml">
+                <search string="">
+                    <field name="login" />
+                    <field name="name" />
+                    <field name="company_id" />
+                    <group>
+                        <filter name="reparto" string="Agrupar por reparto" context="{'group_by': 'company_id' }" />
+                        <filter string="Inactivo" name="inactive" domain="[('active','=',False)]" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_asset_perfiles" model="ir.actions.act_window">
+            <field name="name">Perfiles</field>
+            <field name="res_model">res.users</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                       (0, 0, {'view_mode': 'tree', 'view_id': ref('prefectura_equipos.view_asset_perfiles_tree')}),
+                       (0, 0, {'view_mode': 'form', 'view_id': ref('prefectura_equipos.view_asset_perfiles_form')})]"/>
+            <field name="search_view_id" ref="prefectura_equipos.view_asset_perfiles_search"/>
+            <field name="context">{'search_default_reparto':1}</field>
+        </record>
+
+        <menuitem name="Perfiles" action="action_asset_perfiles" id="menu_action_asset_perfiles" parent="menu_maintenance_seguridad" sequence="20"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_asistencia_servicio_benef_tree" model="ir.ui.view">
+        <field name="name">mz.asistencia_servicio.benef.tree</field>
+        <field name="model">mz.asistencia_servicio</field>
+        <field name="arch" type="xml">
+            <tree string="Asistencia Servicio" duplicate="False" create="False" delete="False" edit="False">
+                <field name="planificacion_id"/>
+                <field name="beneficiario_id"/>
+                <field name="programa_id" optional="hide"/>
+                <field name="servicio_id" />
+                <field name="personal_id" />
+                <field name="codigo" optional="hide"/>
+                <field name="fecha"/>
+                <field name="tipo_servicio" optional="hide"/>
+                <field name="asistio" />
+                <field name="atendido" widget="boolean_toggle" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_asistencia_servicio_benef_form" model="ir.ui.view">
+        <field name="name">mz.asistencia_servicio.benef.form</field>
+        <field name="model">mz.asistencia_servicio</field>
+        <field name="arch" type="xml">
+            <form string="Asistencia Servicio" create="False" delete="False" edit="False">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="programa_id" options="{'no_create': True, 'no_open': True}" readonly="1" force_save="1"/>
+                            <field name="servicio_id" options="{'no_create': True, 'no_open': True}" readonly="1" force_save="1"/>
+                            <field name="planificacion_id" options="{'no_create': True, 'no_open': True}" readonly="1" force_save="1"/>
+                            <field name="beneficiario_id" options="{'no_create': True, 'no_open': True}" readonly="1" force_save="1"/>
+                            <field name="fecha" readonly="1" force_save="1"/>
+                        </group>
+                        <group>
+                            <field name="asistio"/>
+                            <field name="observacion"/>
+
+                        </group>
+                    </group>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_asistencia_servicio_benef_search" model="ir.ui.view">
+        <field name="name">mz.asistencia_servicio.search</field>
+        <field name="model">mz.asistencia_servicio</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Asistencia Servicio">
+                <field name="planificacion_id"/>
+                <field name="beneficiario_id"/>
+                <field name="fecha"/>
+                <filter string="Asistió" name="asistio_filter" domain="[('asistio', '=', True)]"/>
+                <filter string="No Asistió" name="no_asistio_filter" domain="[('asistio', '=', False)]"/>
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Planificación" name="group_by_planificacion" context="{'group_by': 'planificacion_id'}"/>
+                    <filter string="Beneficiario" name="group_by_beneficiario" context="{'group_by': 'beneficiario_id'}"/>
+                    <filter string="Fecha" name="group_by_fecha" context="{'group_by': 'fecha'}"/>
+                </group>
+                <searchpanel>
+                    <field name="servicio_id" icon="fa-cogs" string="Servicio"/>
+                    <field name="personal_id" icon="fa-user_md" string="Empleado" select="multi" hierarchize="false"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    
+</odoo>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_slide_channel_form_inherit" model="ir.ui.view">
+            <field name="name">view.slide.channel.form.inherit</field>
+            <field name="model">slide.channel</field>
+            <field name="inherit_id" ref="website_slides.view_slide_channel_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_redirect_to_members']" position="replace">
+                    <button name="action_redirect_to_members"
+                        type="object"
+                        icon="fa-graduation-cap"
+                        class="oe_stat_button"
+                        groups="website_slides.group_website_slides_officer">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="members_all_count" nolabel="1"/>
+                            </span>
+                            <span class="o_stat_text">Participantes</span>
+                        </div>
+                    </button>
+                </xpath>
+                <xpath expr="//button[@name='action_redirect_to_members']" position="after">
+                    <button name="action_view_attendances_student"
+                        type="object"
+                        icon="fa-users"
+                        class="oe_stat_button"
+                        groups="website_slides.group_website_slides_officer">
+                        <div class="o_stat_info">
+                            <!-- <span class="o_stat_value">
+                                <field name="members_all_count" nolabel="1"/>
+                            </span> -->
+                            <span class="o_stat_text">Asistencias</span>
+                        </div>
+                    </button>
+                </xpath>
+                <xpath expr="//page[@name='karma_rules']" position="after">
+                    <page string="Asistencias" name="mz_elearning_asistencias">
+                        <!-- TEMPLATE RENDERIZADO CON JS -->
+                        <widget name="mze_attendance_beneficiary"/>
+                    </page>
+                    <page string="Tareas" name="mz_elearning_task">
+                        <field name="assignments_ids">
+                            <tree>
+                                <field name="name" />
+                                <field name="description_task" />
+                                <field name="teacher_id" />
+                                <field name="deadline" string="Fecha de Entrega" />
+                                <field name="allow_deadline_exceedance" widget="boolean_toggle" readonly="1"/>
+                                <field name="max_score" string="Calificación Máxima" />
+                            </tree>
+                            <form string="Tareas">
+                                <header>
+                                    <button name="action_confirm" type="object" invisible="published == 'done'" string="Publicar Tarea" class="oe_highlight"/>
+                                    <button name="action_draft" type="object" invisible="published == 'draft'" string="Retirar Publicación" class="btn btn-secondary"/>
+                                </header>
+                                <sheet>
+                                <field name="published" widget="state_selection" class="ms-auto float-end"/>
+                                <div class="oe_title">
+                                    <label for="name" string="Nombre de la Tarea"/>
+                                        <h2><field class="text-break" widget="text" readonly="published == 'done'" name="name" placeholder="Ejem. La Inteligencia Artificial"/></h2>
+                                </div>    
+                                    <group>
+                                        <field name="description_task" readonly="published == 'done'"/>
+                                        <field name="teacher_id" readonly="published == 'done'" options="{'no_open': True, 'no_create': True}"/>
+                                        <field name="deadline" string="Fecha de Entrega" readonly="published == 'done'"/>
+                                        <field name="allow_deadline_exceedance" widget="boolean_toggle" readonly="published == 'done'"/>
+                                        <field name="max_score" string="Calificación Máxima" readonly="published == 'done'"/>
+                                    </group>
+                                    <field name="student_assignments_ids">
+                                        <tree editable="bottom" create="0" >
+                                            <field name="name" readonly="1"/>
+                                            <field name="student_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
+                                            <field name="submitted_file" widget="binary" string="Archivo Subido" filename="submitted_filename" readonly="1"/>
+                                            <field name="submitted_filename" column_invisible="True" />
+                                            <field name="status" readonly="1"/>
+                                            <field name="grade" />
+                                            <field name="feedback" />
+                                        </tree>
+                                    </field>
+                                </sheet>
+                            </form>
+                        </field>
+                    </page>
+
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="slide_channel_partner_view_tree_inherit" model="ir.ui.view">
+            <field name="name">slide.channel.partner.view.tree.inherit</field>
+            <field name="model">slide.channel.partner</field>
+            <field name="inherit_id" ref="website_slides.slide_channel_partner_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='active']" position="before">
+                    <field name="student_id"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

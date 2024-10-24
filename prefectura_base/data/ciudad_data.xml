@@ -1,0 +1,1110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="cuenca_city" model="res.country.ciudad">
+            <field name="name">Cuenca</field>
+            <field name="numero_ciudad">1</field>
+            <field name="state_id">1384</field>
+        </record>
+        <record id="camilo_ponce_enriquez_city" model="res.country.ciudad">
+            <field name="name">Camilo Ponce Enríquez</field>
+            <field name="numero_ciudad">2</field>
+            <field name="state_id">1384</field>
+        </record>
+        <record id="chordeleg_city" model="res.country.ciudad">
+            <field name="name">Chordeleg</field>
+            <field name="numero_ciudad">3</field>
+            <field name="state_id">1384</field>
+        </record>
+        <record id="el_pan_city" model="res.country.ciudad">
+            <field name="name">El Pan</field>
+            <field name="numero_ciudad">4</field>
+            <field name="state_id">1384</field>
+        </record>
+        <record id="giron_city" model="res.country.ciudad">
+            <field name="name">Girón</field>
+            <field name="numero_ciudad">5</field>
+            <field name="state_id">1384</field>
+        </record>
+        <record id="guachapala_city" model="res.country.ciudad">
+            <field name="name">Guachapala</field>
+            <field name="numero_ciudad">6</field>
+            <field name="state_id">1384</field>
+        </record>
+        <record id="gualaceo_city" model="res.country.ciudad">
+            <field name="name">Gualaceo</field>
+            <field name="numero_ciudad">7</field>
+            <field name="state_id">1384</field>
+        </record>
+        <record id="nabon_city" model="res.country.ciudad">
+            <field name="name">Nabón</field>
+            <field name="numero_ciudad">8</field>
+            <field name="state_id">1384</field>
+        </record>
+        <record id="oña_city" model="res.country.ciudad">
+            <field name="name">Oña</field>
+            <field name="numero_ciudad">9</field>
+            <field name="state_id">1384</field>
+        </record>
+        <record id="paute_city" model="res.country.ciudad">
+            <field name="name">Paute</field>
+            <field name="numero_ciudad">10</field>
+            <field name="state_id">1384</field>
+        </record>
+        <record id="pucara_city" model="res.country.ciudad">
+            <field name="name">Pucará</field>
+            <field name="numero_ciudad">11</field>
+            <field name="state_id">1384</field>
+        </record>
+        <record id="san_fernando_city" model="res.country.ciudad">
+            <field name="name">San Fernando</field>
+            <field name="numero_ciudad">12</field>
+            <field name="state_id">1384</field>
+        </record>
+        <record id="santa_isabel_city" model="res.country.ciudad">
+            <field name="name">Santa Isabel</field>
+            <field name="numero_ciudad">13</field>
+            <field name="state_id">1384</field>
+        </record>
+        <record id="sevilla_de_oro_city" model="res.country.ciudad">
+            <field name="name">Sevilla de Oro</field>
+            <field name="numero_ciudad">14</field>
+            <field name="state_id">1384</field>
+        </record>
+        <record id="sigsig_city" model="res.country.ciudad">
+            <field name="name">Sígsig</field>
+            <field name="numero_ciudad">15</field>
+            <field name="state_id">1384</field>
+        </record>
+        <record id="guaranda_city" model="res.country.ciudad">
+            <field name="name">Guaranda</field>
+            <field name="numero_ciudad">16</field>
+            <field name="state_id">1385</field>
+        </record>
+        <record id="caluma_city" model="res.country.ciudad">
+            <field name="name">Caluma</field>
+            <field name="numero_ciudad">17</field>
+            <field name="state_id">1385</field>
+        </record>
+        <record id="chillanes_city" model="res.country.ciudad">
+            <field name="name">Chillanes</field>
+            <field name="numero_ciudad">18</field>
+            <field name="state_id">1385</field>
+        </record>
+        <record id="chimbo_city" model="res.country.ciudad">
+            <field name="name">Chimbo</field>
+            <field name="numero_ciudad">19</field>
+            <field name="state_id">1385</field>
+        </record>
+        <record id="echeandia_city" model="res.country.ciudad">
+            <field name="name">Echeandía</field>
+            <field name="numero_ciudad">20</field>
+            <field name="state_id">1385</field>
+        </record>
+        <record id="las_naves_city" model="res.country.ciudad">
+            <field name="name">Las Naves</field>
+            <field name="numero_ciudad">21</field>
+            <field name="state_id">1385</field>
+        </record>
+        <record id="san_miguel_city" model="res.country.ciudad">
+            <field name="name">San Miguel</field>
+            <field name="numero_ciudad">22</field>
+            <field name="state_id">1385</field>
+        </record>
+        <record id="azogues_city" model="res.country.ciudad">
+            <field name="name">Azogues</field>
+            <field name="numero_ciudad">23</field>
+            <field name="state_id">1386</field>
+        </record>
+        <record id="biblian_city" model="res.country.ciudad">
+            <field name="name">Biblián</field>
+            <field name="numero_ciudad">24</field>
+            <field name="state_id">1386</field>
+        </record>
+        <record id="cañar_city" model="res.country.ciudad">
+            <field name="name">Cañar</field>
+            <field name="numero_ciudad">25</field>
+            <field name="state_id">1386</field>
+        </record>
+        <record id="déleg_city" model="res.country.ciudad">
+            <field name="name">Déleg</field>
+            <field name="numero_ciudad">26</field>
+            <field name="state_id">1386</field>
+        </record>
+        <record id="el_tambo_city" model="res.country.ciudad">
+            <field name="name">El Tambo</field>
+            <field name="numero_ciudad">27</field>
+            <field name="state_id">1386</field>
+        </record>
+        <record id="la_troncal_city" model="res.country.ciudad">
+            <field name="name">La Troncal</field>
+            <field name="numero_ciudad">28</field>
+            <field name="state_id">1386</field>
+        </record>
+        <record id="suscal_city" model="res.country.ciudad">
+            <field name="name">Suscal</field>
+            <field name="numero_ciudad">29</field>
+            <field name="state_id">1386</field>
+        </record>
+        <record id="tulcan_city" model="res.country.ciudad">
+            <field name="name">Tulcán</field>
+            <field name="numero_ciudad">30</field>
+            <field name="state_id">1387</field>
+        </record>
+        <record id="bolivar_city" model="res.country.ciudad">
+            <field name="name">Bolívar</field>
+            <field name="numero_ciudad">31</field>
+            <field name="state_id">1387</field>
+        </record>
+        <record id="espejo_city" model="res.country.ciudad">
+            <field name="name">Espejo</field>
+            <field name="numero_ciudad">32</field>
+            <field name="state_id">1387</field>
+        </record>
+        <record id="mira_city" model="res.country.ciudad">
+            <field name="name">Mira</field>
+            <field name="numero_ciudad">33</field>
+            <field name="state_id">1387</field>
+        </record>
+        <record id="montufar_city" model="res.country.ciudad">
+            <field name="name">Montúfar</field>
+            <field name="numero_ciudad">34</field>
+            <field name="state_id">1387</field>
+        </record>
+        <record id="huaca_city" model="res.country.ciudad">
+            <field name="name">Huaca</field>
+            <field name="numero_ciudad">35</field>
+            <field name="state_id">1387</field>
+        </record>
+        <record id="riobamba_city" model="res.country.ciudad">
+            <field name="name">Riobamba</field>
+            <field name="numero_ciudad">36</field>
+            <field name="state_id">1387</field>
+        </record>
+        <record id="alausi_city" model="res.country.ciudad">
+            <field name="name">Alausí</field>
+            <field name="numero_ciudad">37</field>
+            <field name="state_id">1387</field>
+        </record>
+        <record id="chambo_city" model="res.country.ciudad">
+            <field name="name">Chambo</field>
+            <field name="numero_ciudad">38</field>
+            <field name="state_id">1387</field>
+        </record>
+        <record id="chunchi_city" model="res.country.ciudad">
+            <field name="name">Chunchi</field>
+            <field name="numero_ciudad">39</field>
+            <field name="state_id">1387</field>
+        </record>
+        <record id="colta_city" model="res.country.ciudad">
+            <field name="name">Colta</field>
+            <field name="numero_ciudad">40</field>
+            <field name="state_id">1387</field>
+        </record>
+        <record id="cumanda_city" model="res.country.ciudad">
+            <field name="name">Cumandá</field>
+            <field name="numero_ciudad">41</field>
+            <field name="state_id">1389</field>
+        </record>
+        <record id="guamote_city" model="res.country.ciudad">
+            <field name="name">Guamote</field>
+            <field name="numero_ciudad">42</field>
+            <field name="state_id">1389</field>
+        </record>
+        <record id="guano_city" model="res.country.ciudad">
+            <field name="name">Guano</field>
+            <field name="numero_ciudad">43</field>
+            <field name="state_id">1389</field>
+        </record>
+        <record id="pallatanga_city" model="res.country.ciudad">
+            <field name="name">Pallatanga</field>
+            <field name="numero_ciudad">44</field>
+            <field name="state_id">1389</field>
+        </record>
+        <record id="penipe_city" model="res.country.ciudad">
+            <field name="name">Penipe</field>
+            <field name="numero_ciudad">45</field>
+            <field name="state_id">1389</field>
+        </record>
+        <record id="latacunga_city" model="res.country.ciudad">
+            <field name="name">Latacunga</field>
+            <field name="numero_ciudad">46</field>
+            <field name="state_id">1388</field>
+        </record>
+        <record id="la_mana_city" model="res.country.ciudad">
+            <field name="name">La Maná</field>
+            <field name="numero_ciudad">47</field>
+            <field name="state_id">1388</field>
+        </record>
+        <record id="pangua_city" model="res.country.ciudad">
+            <field name="name">Pangua</field>
+            <field name="numero_ciudad">48</field>
+            <field name="state_id">1388</field>
+        </record>
+        <record id="pujili_city" model="res.country.ciudad">
+            <field name="name">Pujilí</field>
+            <field name="numero_ciudad">49</field>
+            <field name="state_id">1388</field>
+        </record>
+        <record id="salcedo_city" model="res.country.ciudad">
+            <field name="name">Salcedo</field>
+            <field name="numero_ciudad">50</field>
+            <field name="state_id">1388</field>
+        </record>
+        <record id="saquisili_city" model="res.country.ciudad">
+            <field name="name">Saquisilí</field>
+            <field name="numero_ciudad">51</field>
+            <field name="state_id">1388</field>
+        </record>
+        <record id="sigchos_city" model="res.country.ciudad">
+            <field name="name">Sigchos</field>
+            <field name="numero_ciudad">52</field>
+            <field name="state_id">1388</field>
+        </record>
+        <record id="machala_city" model="res.country.ciudad">
+            <field name="name">Machala</field>
+            <field name="numero_ciudad">53</field>
+            <field name="state_id">1390</field>
+        </record>
+        <record id="arenillas_city" model="res.country.ciudad">
+            <field name="name">Arenillas</field>
+            <field name="numero_ciudad">54</field>
+            <field name="state_id">1390</field>
+        </record>
+        <record id="atahualpa_city" model="res.country.ciudad">
+            <field name="name">Atahualpa</field>
+            <field name="numero_ciudad">55</field>
+            <field name="state_id">1390</field>
+        </record>
+        <record id="balsas_city" model="res.country.ciudad">
+            <field name="name">Balsas</field>
+            <field name="numero_ciudad">56</field>
+            <field name="state_id">1390</field>
+        </record>
+        <record id="chilla_city" model="res.country.ciudad">
+            <field name="name">Chilla</field>
+            <field name="numero_ciudad">57</field>
+            <field name="state_id">1390</field>
+        </record>
+        <record id="el_guabo_city" model="res.country.ciudad">
+            <field name="name">El Guabo</field>
+            <field name="numero_ciudad">58</field>
+            <field name="state_id">1390</field>
+        </record>
+        <record id="huaquillas_city" model="res.country.ciudad">
+            <field name="name">Huaquillas</field>
+            <field name="numero_ciudad">59</field>
+            <field name="state_id">1390</field>
+        </record>
+        <record id="las_lajas_city" model="res.country.ciudad">
+            <field name="name">Las Lajas</field>
+            <field name="numero_ciudad">60</field>
+            <field name="state_id">1390</field>
+        </record>
+        <record id="marcabeli_city" model="res.country.ciudad">
+            <field name="name">Marcabelí</field>
+            <field name="numero_ciudad">61</field>
+            <field name="state_id">1390</field>
+        </record>
+        <record id="pasaje_city" model="res.country.ciudad">
+            <field name="name">Pasaje</field>
+            <field name="numero_ciudad">62</field>
+            <field name="state_id">1390</field>
+        </record>
+        <record id="piñas_city" model="res.country.ciudad">
+            <field name="name">Piñas</field>
+            <field name="numero_ciudad">63</field>
+            <field name="state_id">1390</field>
+        </record>
+        <record id="portovelo_city" model="res.country.ciudad">
+            <field name="name">Portovelo</field>
+            <field name="numero_ciudad">64</field>
+            <field name="state_id">1390</field>
+        </record>
+        <record id="santa_rosa_city" model="res.country.ciudad">
+            <field name="name">Santa Rosa</field>
+            <field name="numero_ciudad">65</field>
+            <field name="state_id">1390</field>
+        </record>
+        <record id="zaruma_city" model="res.country.ciudad">
+            <field name="name">Zaruma</field>
+            <field name="numero_ciudad">66</field>
+            <field name="state_id">1390</field>
+        </record>
+        <record id="esmeraldas_city" model="res.country.ciudad">
+            <field name="name">Esmeraldas</field>
+            <field name="numero_ciudad">67</field>
+            <field name="state_id">1391</field>
+        </record>
+        <record id="atacames_city" model="res.country.ciudad">
+            <field name="name">Atacames</field>
+            <field name="numero_ciudad">68</field>
+            <field name="state_id">1391</field>
+        </record>
+        <record id="eloy_alfaro_city" model="res.country.ciudad">
+            <field name="name">Eloy Alfaro</field>
+            <field name="numero_ciudad">69</field>
+            <field name="state_id">1391</field>
+        </record>
+        <record id="muisne_city" model="res.country.ciudad">
+            <field name="name">Muisne</field>
+            <field name="numero_ciudad">70</field>
+            <field name="state_id">1391</field>
+        </record>
+        <record id="quinindé_city" model="res.country.ciudad">
+            <field name="name">Quinindé</field>
+            <field name="numero_ciudad">71</field>
+            <field name="state_id">1391</field>
+        </record>
+        <record id="rioverde_city" model="res.country.ciudad">
+            <field name="name">Rioverde</field>
+            <field name="numero_ciudad">72</field>
+            <field name="state_id">1391</field>
+        </record>
+        <record id="san_lorenzo_city" model="res.country.ciudad">
+            <field name="name">San Lorenzo</field>
+            <field name="numero_ciudad">73</field>
+            <field name="state_id">1391</field>
+        </record>
+        <record id="san_cristobal_city" model="res.country.ciudad">
+            <field name="name">San Cristóbal</field>
+            <field name="numero_ciudad">74</field>
+            <field name="state_id">1403</field>
+        </record>
+        <record id="isabela_city" model="res.country.ciudad">
+            <field name="name">Isabela</field>
+            <field name="numero_ciudad">75</field>
+            <field name="state_id">1403</field>
+        </record>
+        <record id="santa_cruz_city" model="res.country.ciudad">
+            <field name="name">Santa Cruz</field>
+            <field name="numero_ciudad">76</field>
+            <field name="state_id">1403</field>
+        </record>
+        <record id="guayaquil_city" model="res.country.ciudad">
+            <field name="name">Guayaquil</field>
+            <field name="numero_ciudad">77</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="alfredo_baquerizo_city" model="res.country.ciudad">
+            <field name="name">Alfredo Baquerizo</field>
+            <field name="numero_ciudad">78</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="balao_city" model="res.country.ciudad">
+            <field name="name">Balao</field>
+            <field name="numero_ciudad">79</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="balzar_city" model="res.country.ciudad">
+            <field name="name">Balzar</field>
+            <field name="numero_ciudad">80</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="colimes_city" model="res.country.ciudad">
+            <field name="name">Colimes</field>
+            <field name="numero_ciudad">81</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="daule_city" model="res.country.ciudad">
+            <field name="name">Daule</field>
+            <field name="numero_ciudad">82</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="duran_city" model="res.country.ciudad">
+            <field name="name">Durán</field>
+            <field name="numero_ciudad">83</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="el_empalme_city" model="res.country.ciudad">
+            <field name="name">El Empalme</field>
+            <field name="numero_ciudad">84</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="el_triunfo_city" model="res.country.ciudad">
+            <field name="name">El Triunfo</field>
+            <field name="numero_ciudad">85</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="general_antonio_elizalde_city" model="res.country.ciudad">
+            <field name="name">General Antonio Elizalde</field>
+            <field name="numero_ciudad">86</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="isidro_ayora_city" model="res.country.ciudad">
+            <field name="name">Isidro Ayora</field>
+            <field name="numero_ciudad">87</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="lomas_de_sargentillo_city" model="res.country.ciudad">
+            <field name="name">Lomas de Sargentillo</field>
+            <field name="numero_ciudad">88</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="marcelino_maridueña_city" model="res.country.ciudad">
+            <field name="name">Marcelino Maridueña</field>
+            <field name="numero_ciudad">89</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="milagro_city" model="res.country.ciudad">
+            <field name="name">Milagro</field>
+            <field name="numero_ciudad">90</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="naranjal_city" model="res.country.ciudad">
+            <field name="name">Naranjal</field>
+            <field name="numero_ciudad">91</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="naranjito_city" model="res.country.ciudad">
+            <field name="name">Naranjito</field>
+            <field name="numero_ciudad">92</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="nobol_city" model="res.country.ciudad">
+            <field name="name">Nobol</field>
+            <field name="numero_ciudad">93</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="palestina_city" model="res.country.ciudad">
+            <field name="name">Palestina</field>
+            <field name="numero_ciudad">94</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="pedro_carbo_city" model="res.country.ciudad">
+            <field name="name">Pedro Carbo</field>
+            <field name="numero_ciudad">95</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="playas_city" model="res.country.ciudad">
+            <field name="name">Playas</field>
+            <field name="numero_ciudad">96</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="salitre_city" model="res.country.ciudad">
+            <field name="name">Salitre</field>
+            <field name="numero_ciudad">97</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="samborondon_city" model="res.country.ciudad">
+            <field name="name">Samborondón</field>
+            <field name="numero_ciudad">98</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="santa_lucia_city" model="res.country.ciudad">
+            <field name="name">Santa Lucía</field>
+            <field name="numero_ciudad">99</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="simon_bolivar_city" model="res.country.ciudad">
+            <field name="name">Simón Bolívar</field>
+            <field name="numero_ciudad">100</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="yaguachi_city" model="res.country.ciudad">
+            <field name="name">Yaguachi</field>
+            <field name="numero_ciudad">101</field>
+            <field name="state_id">1392</field>
+        </record>
+        <record id="ibarra_city" model="res.country.ciudad">
+            <field name="name">Ibarra</field>
+            <field name="numero_ciudad">102</field>
+            <field name="state_id">1393</field>
+        </record>
+        <record id="antonio_ante_city" model="res.country.ciudad">
+            <field name="name">Antonio Ante</field>
+            <field name="numero_ciudad">103</field>
+            <field name="state_id">1393</field>
+        </record>
+        <record id="cotacachi_city" model="res.country.ciudad">
+            <field name="name">Cotacachi</field>
+            <field name="numero_ciudad">104</field>
+            <field name="state_id">1393</field>
+        </record>
+        <record id="otavalo_city" model="res.country.ciudad">
+            <field name="name">Otavalo</field>
+            <field name="numero_ciudad">105</field>
+            <field name="state_id">1393</field>
+        </record>
+        <record id="pimampiro_city" model="res.country.ciudad">
+            <field name="name">Pimampiro</field>
+            <field name="numero_ciudad">106</field>
+            <field name="state_id">1393</field>
+        </record>
+        <record id="san_miguel_de_urcuqui_city" model="res.country.ciudad">
+            <field name="name">San Miguel de Urcuquí</field>
+            <field name="numero_ciudad">107</field>
+            <field name="state_id">1393</field>
+        </record>
+        <record id="loja_city" model="res.country.ciudad">
+            <field name="name">Loja</field>
+            <field name="numero_ciudad">108</field>
+            <field name="state_id">1394</field>
+        </record>
+        <record id="calvas_city" model="res.country.ciudad">
+            <field name="name">Calvas</field>
+            <field name="numero_ciudad">109</field>
+            <field name="state_id">1394</field>
+        </record>
+        <record id="catamayo_city" model="res.country.ciudad">
+            <field name="name">Catamayo</field>
+            <field name="numero_ciudad">110</field>
+            <field name="state_id">1394</field>
+        </record>
+        <record id="celica_city" model="res.country.ciudad">
+            <field name="name">Celica</field>
+            <field name="numero_ciudad">111</field>
+            <field name="state_id">1394</field>
+        </record>
+        <record id="chaguarpamba_city" model="res.country.ciudad">
+            <field name="name">Chaguarpamba</field>
+            <field name="numero_ciudad">112</field>
+            <field name="state_id">1394</field>
+        </record>
+        <record id="espindola_city" model="res.country.ciudad">
+            <field name="name">Espíndola</field>
+            <field name="numero_ciudad">113</field>
+            <field name="state_id">1394</field>
+        </record>
+        <record id="gonzanama_city" model="res.country.ciudad">
+            <field name="name">Gonzanamá</field>
+            <field name="numero_ciudad">114</field>
+            <field name="state_id">1394</field>
+        </record>
+        <record id="macara_city" model="res.country.ciudad">
+            <field name="name">Macará</field>
+            <field name="numero_ciudad">115</field>
+            <field name="state_id">1394</field>
+        </record>
+        <record id="olmedo_city" model="res.country.ciudad">
+            <field name="name">Olmedo</field>
+            <field name="numero_ciudad">116</field>
+            <field name="state_id">1394</field>
+        </record>
+        <record id="paltas_city" model="res.country.ciudad">
+            <field name="name">Paltas</field>
+            <field name="numero_ciudad">117</field>
+            <field name="state_id">1394</field>
+        </record>
+        <record id="pindal_city" model="res.country.ciudad">
+            <field name="name">Pindal</field>
+            <field name="numero_ciudad">118</field>
+            <field name="state_id">1394</field>
+        </record>
+        <record id="puyango_city" model="res.country.ciudad">
+            <field name="name">Puyango</field>
+            <field name="numero_ciudad">119</field>
+            <field name="state_id">1394</field>
+        </record>
+        <record id="quilanga_city" model="res.country.ciudad">
+            <field name="name">Quilanga</field>
+            <field name="numero_ciudad">120</field>
+            <field name="state_id">1394</field>
+        </record>
+        <record id="saraguro_city" model="res.country.ciudad">
+            <field name="name">Saraguro</field>
+            <field name="numero_ciudad">121</field>
+            <field name="state_id">1394</field>
+        </record>
+        <record id="sozoranga_city" model="res.country.ciudad">
+            <field name="name">Sozoranga</field>
+            <field name="numero_ciudad">122</field>
+            <field name="state_id">1394</field>
+        </record>
+        <record id="zapotillo_city" model="res.country.ciudad">
+            <field name="name">Zapotillo</field>
+            <field name="numero_ciudad">123</field>
+            <field name="state_id">1394</field>
+        </record>
+        <record id="babahoyo_city" model="res.country.ciudad">
+            <field name="name">Babahoyo</field>
+            <field name="numero_ciudad">124</field>
+           <field name="state_id">1395</field>
+        </record>
+        <record id="baba_city" model="res.country.ciudad">
+            <field name="name">Baba</field>
+            <field name="numero_ciudad">125</field>
+           <field name="state_id">1395</field>
+        </record>
+        <record id="buena_fe_city" model="res.country.ciudad">
+            <field name="name">Buena Fe</field>
+            <field name="numero_ciudad">126</field>
+           <field name="state_id">1395</field>
+        </record>
+        <record id="mocache_city" model="res.country.ciudad">
+            <field name="name">Mocache</field>
+            <field name="numero_ciudad">127</field>
+           <field name="state_id">1395</field>
+        </record>
+        <record id="montalvo_city" model="res.country.ciudad">
+            <field name="name">Montalvo</field>
+            <field name="numero_ciudad">128</field>
+           <field name="state_id">1395</field>
+        </record>
+        <record id="palenque_city" model="res.country.ciudad">
+            <field name="name">Palenque</field>
+            <field name="numero_ciudad">129</field>
+           <field name="state_id">1395</field>
+        </record>
+        <record id="puebloviejo_city" model="res.country.ciudad">
+            <field name="name">Puebloviejo</field>
+            <field name="numero_ciudad">130</field>
+           <field name="state_id">1395</field>
+        </record>
+        <record id="quevedo_city" model="res.country.ciudad">
+            <field name="name">Quevedo</field>
+            <field name="numero_ciudad">131</field>
+           <field name="state_id">1395</field>
+        </record>
+        <record id="quinsaloma_city" model="res.country.ciudad">
+            <field name="name">Quinsaloma</field>
+            <field name="numero_ciudad">132</field>
+           <field name="state_id">1395</field>
+        </record>
+        <record id="urdaneta_city" model="res.country.ciudad">
+            <field name="name">Urdaneta</field>
+            <field name="numero_ciudad">133</field>
+           <field name="state_id">1395</field>
+        </record>
+        <record id="valencia_city" model="res.country.ciudad">
+            <field name="name">Valencia</field>
+            <field name="numero_ciudad">134</field>
+           <field name="state_id">1395</field>
+        </record>
+        <record id="ventanas_city" model="res.country.ciudad">
+            <field name="name">Ventanas</field>
+            <field name="numero_ciudad">135</field>
+           <field name="state_id">1395</field>
+        </record>
+        <record id="vinces_city" model="res.country.ciudad">
+            <field name="name">Vinces</field>
+            <field name="numero_ciudad">136</field>
+           <field name="state_id">1395</field>
+        </record>
+        <record id="portoviejo_city" model="res.country.ciudad">
+            <field name="name">Portoviejo</field>
+            <field name="numero_ciudad">137</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="24_de_mayo_city" model="res.country.ciudad">
+            <field name="name">24 de Mayo</field>
+            <field name="numero_ciudad">138</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="bolivar_city" model="res.country.ciudad">
+            <field name="name">Bolívar</field>
+            <field name="numero_ciudad">139</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="chone_city" model="res.country.ciudad">
+            <field name="name">Chone</field>
+            <field name="numero_ciudad">140</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="el_carmen_city" model="res.country.ciudad">
+            <field name="name">El Carmen</field>
+            <field name="numero_ciudad">141</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="flavio_alfaro_city" model="res.country.ciudad">
+            <field name="name">Flavio Alfaro</field>
+            <field name="numero_ciudad">142</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="jama_city" model="res.country.ciudad">
+            <field name="name">Jama</field>
+            <field name="numero_ciudad">143</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="jaramijo_city" model="res.country.ciudad">
+            <field name="name">Jaramijó</field>
+            <field name="numero_ciudad">144</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="jipijapa_city" model="res.country.ciudad">
+            <field name="name">Jipijapa</field>
+            <field name="numero_ciudad">145</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="junin_city" model="res.country.ciudad">
+            <field name="name">Junín</field>
+            <field name="numero_ciudad">146</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="manta_city" model="res.country.ciudad">
+            <field name="name">Manta</field>
+            <field name="numero_ciudad">147</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="montecristi_city" model="res.country.ciudad">
+            <field name="name">Montecristi</field>
+            <field name="numero_ciudad">148</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="olmedo_city" model="res.country.ciudad">
+            <field name="name">Olmedo</field>
+            <field name="numero_ciudad">149</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="pajan_city" model="res.country.ciudad">
+            <field name="name">Paján</field>
+            <field name="numero_ciudad">150</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="pedernales_city" model="res.country.ciudad">
+            <field name="name">Pedernales</field>
+            <field name="numero_ciudad">151</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="pichincha_city" model="res.country.ciudad">
+            <field name="name">Pichincha</field>
+            <field name="numero_ciudad">152</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="puerto_lopez_city" model="res.country.ciudad">
+            <field name="name">Puerto López</field>
+            <field name="numero_ciudad">153</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="rocafuerte_city" model="res.country.ciudad">
+            <field name="name">Rocafuerte</field>
+            <field name="numero_ciudad">154</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="san_vicente_city" model="res.country.ciudad">
+            <field name="name">San Vicente</field>
+            <field name="numero_ciudad">155</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="santa_ana_city" model="res.country.ciudad">
+            <field name="name">Santa Ana</field>
+            <field name="numero_ciudad">156</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="sucre_city" model="res.country.ciudad">
+            <field name="name">Sucre</field>
+            <field name="numero_ciudad">157</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="tosagua_city" model="res.country.ciudad">
+            <field name="name">Tosagua</field>
+            <field name="numero_ciudad">158</field>
+            <field name="state_id">1396</field>
+        </record>
+        <record id="morona_city" model="res.country.ciudad">
+            <field name="name">Morona</field>
+            <field name="numero_ciudad">159</field>
+            <field name="state_id">1397</field>
+        </record>
+        <record id="gualaquiza_city" model="res.country.ciudad">
+            <field name="name">Gualaquiza</field>
+            <field name="numero_ciudad">160</field>
+            <field name="state_id">1397</field>
+        </record>
+        <record id="huamboya_city" model="res.country.ciudad">
+            <field name="name">Huamboya</field>
+            <field name="numero_ciudad">161</field>
+            <field name="state_id">1397</field>
+        </record>
+        <record id="limon_indanza_city" model="res.country.ciudad">
+            <field name="name">Limón Indanza</field>
+            <field name="numero_ciudad">162</field>
+            <field name="state_id">1397</field>
+        </record>
+        <record id="logroño_city" model="res.country.ciudad">
+            <field name="name">Logroño</field>
+            <field name="numero_ciudad">163</field>
+            <field name="state_id">1397</field>
+        </record>
+        <record id="pablo_sexto_city" model="res.country.ciudad">
+            <field name="name">Pablo Sexto</field>
+            <field name="numero_ciudad">164</field>
+            <field name="state_id">1397</field>
+        </record>
+        <record id="palora_city" model="res.country.ciudad">
+            <field name="name">Palora</field>
+            <field name="numero_ciudad">165</field>
+            <field name="state_id">1397</field>
+        </record>
+        <record id="san_juan_bosco_city" model="res.country.ciudad">
+            <field name="name">San Juan Bosco</field>
+            <field name="numero_ciudad">166</field>
+            <field name="state_id">1397</field>
+        </record>
+        <record id="santiago_de_méndez_city" model="res.country.ciudad">
+            <field name="name">Santiago de Méndez</field>
+            <field name="numero_ciudad">167</field>
+            <field name="state_id">1397</field>
+        </record>
+        <record id="sucua_city" model="res.country.ciudad">
+            <field name="name">Sucúa</field>
+            <field name="numero_ciudad">168</field>
+            <field name="state_id">1397</field>
+        </record>
+        <record id="taisha_city" model="res.country.ciudad">
+            <field name="name">Taisha</field>
+            <field name="numero_ciudad">169</field>
+            <field name="state_id">1397</field>
+        </record>
+        <record id="tiwintza_city" model="res.country.ciudad">
+            <field name="name">Tiwintza</field>
+            <field name="numero_ciudad">170</field>
+            <field name="state_id">1397</field>
+        </record>
+        <record id="tena_city" model="res.country.ciudad">
+            <field name="name">Tena</field>
+            <field name="numero_ciudad">171</field>
+            <field name="state_id">1398</field>
+        </record>
+        <record id="archidona_city" model="res.country.ciudad">
+            <field name="name">Archidona</field>
+            <field name="numero_ciudad">172</field>
+            <field name="state_id">1398</field>
+        </record>
+        <record id="carlos_julio_arosemena_tola_city" model="res.country.ciudad">
+            <field name="name">Carlos Julio Arosemena Tola</field>
+            <field name="numero_ciudad">173</field>
+            <field name="state_id">1398</field>
+        </record>
+        <record id="el_chaco_city" model="res.country.ciudad">
+            <field name="name">El Chaco</field>
+            <field name="numero_ciudad">174</field>
+            <field name="state_id">1398</field>
+        </record>
+        <record id="quijos_city" model="res.country.ciudad">
+            <field name="name">Quijos</field>
+            <field name="numero_ciudad">175</field>
+            <field name="state_id">1398</field>
+        </record>
+        <record id="francisco_de_orellana_city" model="res.country.ciudad">
+            <field name="name">Francisco de Orellana</field>
+            <field name="numero_ciudad">176</field>
+            <field name="state_id">1405</field>
+        </record>
+        <record id="aguarico_city" model="res.country.ciudad">
+            <field name="name">Aguarico</field>
+            <field name="numero_ciudad">177</field>
+            <field name="state_id">1405</field>
+        </record>
+        <record id="la_joya_de_los_sachas_city" model="res.country.ciudad">
+            <field name="name">La Joya de los Sachas</field>
+            <field name="numero_ciudad">178</field>
+            <field name="state_id">1405</field>
+        </record>
+        <record id="loreto_city" model="res.country.ciudad">
+            <field name="name">Loreto</field>
+            <field name="numero_ciudad">179</field>
+            <field name="state_id">1405</field>
+        </record>
+        <record id="pastaza_city" model="res.country.ciudad">
+            <field name="name">Pastaza</field>
+            <field name="numero_ciudad">180</field>
+            <field name="state_id">1399</field>
+        </record>
+        <record id="arajuno_city" model="res.country.ciudad">
+            <field name="name">Arajuno</field>
+            <field name="numero_ciudad">181</field>
+            <field name="state_id">1399</field>
+        </record>
+        <record id="mera_city" model="res.country.ciudad">
+            <field name="name">Mera</field>
+            <field name="numero_ciudad">182</field>
+            <field name="state_id">1399</field>
+        </record>
+        <record id="santa_clara_city" model="res.country.ciudad">
+            <field name="name">Santa Clara</field>
+            <field name="numero_ciudad">183</field>
+            <field name="state_id">1399</field>
+        </record>
+        <record id="quito_city" model="res.country.ciudad">
+            <field name="name">Quito</field>
+            <field name="numero_ciudad">184</field>
+            <field name="state_id">1400</field>
+        </record>
+        <record id="cayambe_city" model="res.country.ciudad">
+            <field name="name">Cayambe</field>
+            <field name="numero_ciudad">185</field>
+            <field name="state_id">1400</field>
+        </record>
+        <record id="mejia_city" model="res.country.ciudad">
+            <field name="name">Mejía</field>
+            <field name="numero_ciudad">186</field>
+            <field name="state_id">1400</field>
+        </record>
+        <record id="pedro_moncayo_city" model="res.country.ciudad">
+            <field name="name">Pedro Moncayo</field>
+            <field name="numero_ciudad">187</field>
+            <field name="state_id">1400</field>
+        </record>
+        <record id="pedro_vicente_maldonado_city" model="res.country.ciudad">
+            <field name="name">Pedro Vicente Maldonado</field>
+            <field name="numero_ciudad">188</field>
+            <field name="state_id">1400</field>
+        </record>
+        <record id="puerto_quito_city" model="res.country.ciudad">
+            <field name="name">Puerto Quito</field>
+            <field name="numero_ciudad">189</field>
+            <field name="state_id">1400</field>
+        </record>
+        <record id="rumiñahui_city" model="res.country.ciudad">
+            <field name="name">Rumiñahui</field>
+            <field name="numero_ciudad">190</field>
+            <field name="state_id">1400</field>
+        </record>
+        <record id="san_miguel_de_los_bancos_city" model="res.country.ciudad">
+            <field name="name">San Miguel de los Bancos</field>
+            <field name="numero_ciudad">191</field>
+            <field name="state_id">1400</field>
+        </record>
+        <record id="santa_elena_city" model="res.country.ciudad">
+            <field name="name">Santa Elena</field>
+            <field name="numero_ciudad">192</field>
+            <field name="state_id">1407</field>
+        </record>
+        <record id="la_libertad_city" model="res.country.ciudad">
+            <field name="name">La Libertad</field>
+            <field name="numero_ciudad">193</field>
+            <field name="state_id">1407</field>
+        </record>
+        <record id="salinas_city" model="res.country.ciudad">
+            <field name="name">Salinas</field>
+            <field name="numero_ciudad">194</field>
+            <field name="state_id">1407</field>
+        </record>
+        <record id="santo_domingo_city" model="res.country.ciudad">
+            <field name="name">Santo Domingo</field>
+            <field name="numero_ciudad">195</field>
+            <field name="state_id">1406</field>
+        </record>
+        <record id="la_concordia_city" model="res.country.ciudad">
+            <field name="name">La Concordia</field>
+            <field name="numero_ciudad">196</field>
+            <field name="state_id">1406</field>
+        </record>
+        <record id="lago_agrio_city" model="res.country.ciudad">
+            <field name="name">Lago Agrio</field>
+            <field name="numero_ciudad">197</field>
+            <field name="state_id">1404</field>
+        </record>
+        <record id="cascales_city" model="res.country.ciudad">
+            <field name="name">Cascales</field>
+            <field name="numero_ciudad">198</field>
+            <field name="state_id">1404</field>
+        </record>
+        <record id="cuyabeno_city" model="res.country.ciudad">
+            <field name="name">Cuyabeno</field>
+            <field name="numero_ciudad">199</field>
+            <field name="state_id">1404</field>
+        </record>
+        <record id="gonzalo_pizarro_city" model="res.country.ciudad">
+            <field name="name">Gonzalo Pizarro</field>
+            <field name="numero_ciudad">200</field>
+            <field name="state_id">1404</field>
+        </record>
+        <record id="putumayo_city" model="res.country.ciudad">
+            <field name="name">Putumayo</field>
+            <field name="numero_ciudad">201</field>
+            <field name="state_id">1404</field>
+        </record>
+        <record id="shushufindi_city" model="res.country.ciudad">
+            <field name="name">Shushufindi</field>
+            <field name="numero_ciudad">202</field>
+            <field name="state_id">1404</field>
+        </record>
+        <record id="sucumbios_city" model="res.country.ciudad">
+            <field name="name">Sucumbíos</field>
+            <field name="numero_ciudad">203</field>
+            <field name="state_id">1404</field>
+        </record>
+        <record id="ambato_city" model="res.country.ciudad">
+            <field name="name">Ambato</field>
+            <field name="numero_ciudad">204</field>
+            <field name="state_id">1401</field>
+        </record>
+        <record id="baños_city" model="res.country.ciudad">
+            <field name="name">Baños</field>
+            <field name="numero_ciudad">205</field>
+            <field name="state_id">1401</field>
+        </record>
+        <record id="cevallos_city" model="res.country.ciudad">
+            <field name="name">Cevallos</field>
+            <field name="numero_ciudad">206</field>
+            <field name="state_id">1401</field>
+        </record>
+        <record id="mocha_city" model="res.country.ciudad">
+            <field name="name">Mocha</field>
+            <field name="numero_ciudad">207</field>
+            <field name="state_id">1401</field>
+        </record>
+        <record id="patate_city" model="res.country.ciudad">
+            <field name="name">Patate</field>
+            <field name="numero_ciudad">208</field>
+            <field name="state_id">1401</field>
+        </record>
+        <record id="quero_city" model="res.country.ciudad">
+            <field name="name">Quero</field>
+            <field name="numero_ciudad">209</field>
+            <field name="state_id">1401</field>
+        </record>
+        <record id="san_pedro_de_pelileo_city" model="res.country.ciudad">
+            <field name="name">San Pedro de Pelileo</field>
+            <field name="numero_ciudad">210</field>
+            <field name="state_id">1401</field>
+        </record>
+        <record id="santiago_de_pillaro_city" model="res.country.ciudad">
+            <field name="name">Santiago de Píllaro</field>
+            <field name="numero_ciudad">211</field>
+            <field name="state_id">1401</field>
+        </record>
+        <record id="tisaleo_city" model="res.country.ciudad">
+            <field name="name">Tisaleo</field>
+            <field name="numero_ciudad">212</field>
+            <field name="state_id">1401</field>
+        </record>
+        <record id="zamora_city" model="res.country.ciudad">
+            <field name="name">Zamora</field>
+            <field name="numero_ciudad">213</field>
+            <field name="state_id">1402</field>
+        </record>
+        <record id="centinela_del_condor_city" model="res.country.ciudad">
+            <field name="name">Centinela del Cóndor</field>
+            <field name="numero_ciudad">214</field>
+            <field name="state_id">1402</field>
+        </record>
+        <record id="chinchipe_city" model="res.country.ciudad">
+            <field name="name">Chinchipe</field>
+            <field name="numero_ciudad">215</field>
+            <field name="state_id">1402</field>
+        </record>
+        <record id="el_pangui_city" model="res.country.ciudad">
+            <field name="name">El Pangui</field>
+            <field name="numero_ciudad">216</field>
+            <field name="state_id">1402</field>
+        </record>
+        <record id="nangaritza_city" model="res.country.ciudad">
+            <field name="name">Nangaritza</field>
+            <field name="numero_ciudad">217</field>
+            <field name="state_id">1402</field>
+        </record>
+        <record id="palanda_city" model="res.country.ciudad">
+            <field name="name">Palanda</field>
+            <field name="numero_ciudad">218</field>
+            <field name="state_id">1402</field>
+        </record>
+        <record id="paquisha_city" model="res.country.ciudad">
+            <field name="name">Paquisha</field>
+            <field name="numero_ciudad">219</field>
+            <field name="state_id">1402</field>
+        </record>
+        <record id="yacuambi_city" model="res.country.ciudad">
+            <field name="name">Yacuambi</field>
+            <field name="numero_ciudad">220</field>
+            <field name="state_id">1402</field>
+        </record>
+        <record id="yantzaza_city" model="res.country.ciudad">
+            <field name="name">Yantzaza</field>
+            <field name="numero_ciudad">221</field>
+            <field name="state_id">1402</field>
+        </record>
+    </data>
+</openerp>

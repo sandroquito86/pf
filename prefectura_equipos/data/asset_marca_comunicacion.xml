@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="pg_equipos_marca_comunicacion-1" model="pg_equipos.marca">
+            <field name="name">ROHDE and SCHWARZ</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-2" model="pg_equipos.marca">
+            <field name="name">ROCKWELL COLLINS</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-3" model="pg_equipos.marca">
+            <field name="name">MOTOROLA</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-4" model="pg_equipos.marca">
+            <field name="name">JRC</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-5" model="pg_equipos.marca">
+            <field name="name">TRANSWORLD</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-6" model="pg_equipos.marca">
+            <field name="name">RACAL</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-7" model="pg_equipos.marca">
+            <field name="name">ICOM</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-8" model="pg_equipos.marca">
+            <field name="name">KENWOOD</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-9" model="pg_equipos.marca">
+            <field name="name">HYTERA</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-10" model="pg_equipos.marca">
+            <field name="name">VERTEX</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-11" model="pg_equipos.marca">
+            <field name="name">HARRIS</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-12" model="pg_equipos.marca">
+            <field name="name">ZEUS</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-13" model="pg_equipos.marca">
+            <field name="name">SAILOR</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-14" model="pg_equipos.marca">
+            <field name="name">IRIDIUM</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-15" model="pg_equipos.marca">
+            <field name="name">REUTECH</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-16" model="pg_equipos.marca">
+            <field name="name">HMK</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-17" model="pg_equipos.marca">
+            <field name="name">FURUNO</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-18" model="pg_equipos.marca">
+            <field name="name">CONDOR SKY</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-19" model="pg_equipos.marca">
+            <field name="name">RADIUS</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-20" model="pg_equipos.marca">
+            <field name="name">THRANE and THRANE</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-21" model="pg_equipos.marca">
+            <field name="name">AOR LTD.</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-22" model="pg_equipos.marca">
+            <field name="name">SKANTI</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-23" model="pg_equipos.marca">
+            <field name="name">YAESU</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-24" model="pg_equipos.marca">
+            <field name="name">AEROMARITIME SISTEMBAU</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-25" model="pg_equipos.marca">
+            <field name="name">BARRETT</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-26" model="pg_equipos.marca">
+            <field name="name">SIMRAD</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-27" model="pg_equipos.marca">
+            <field name="name">TAIYO</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-28" model="pg_equipos.marca">
+            <field name="name">DITTEL</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-29" model="pg_equipos.marca">
+            <field name="name">DATOTEK</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-30" model="pg_equipos.marca">
+            <field name="name">JOTRON</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-31" model="pg_equipos.marca">
+            <field name="name">ECLIPSE</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-32" model="pg_equipos.marca">
+            <field name="name">ALPHATRON</field>
+        </record>
+        <record id="pg_equipos_marca_comunicacion-33" model="pg_equipos.marca">
+            <field name="name">RAYMARINE</field>
+        </record>
+    </data>
+</openerp>

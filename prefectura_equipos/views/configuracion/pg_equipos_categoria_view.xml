@@ -1,0 +1,120 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="pg_equipos_categoria_search_view">
+            <field name="name">pg_equipos.categoria</field>
+            <field name="model">pg_equipos.categoria</field>
+            <field name="arch" type="xml">
+                <search string="Busqueda Categorías">
+                    <field name="abreviatura" />
+                    <field name="name" />
+                    <group>
+                        <filter name="grupo" string="Agrupar por Grupo" context="{'group_by': 'grupo_id' }" />
+                        <filter string="Eliminado" name="inactive" domain="[('active','=',False)]"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="pg_equipos_categoria_tree_view" model="ir.ui.view">
+            <field name="name">pg_equipos.categoria.tree</field>
+            <field name="model">pg_equipos.categoria</field>
+            <field name="arch" type="xml">
+                <tree string="Asset Tags">
+                    <field name="abreviatura" />
+                    <field name="name" string="Categorìa"/>
+                    <field name="grupo_id" />
+                    <field name="marca_ids" widget="many2many_tags" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_pg_equipos_categoria" model="ir.actions.act_window">
+            <field name="name">Asset Tags</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pg_equipos.categoria</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="view_pg_equipos_categoria_form" model="ir.ui.view">
+            <field name="name">pg_equipos.categoria.form</field>
+            <field name="model">pg_equipos.categoria</field>
+            <field name="arch" type="xml">
+                <form string="NUEVO">
+                    <sheet>
+                        <group>
+                            <group colspan="2">
+                                <field name="grupo_id" context="{'form_view_ref': 'prefectura_equipos.view_asset_grupo_form2'}" placeholder="Seleccione el grupo al que pertenece la categoría" />
+                            </group>
+                            <group>
+                                <field name="abreviatura" placeholder="Escriba la abreviatura de la categoría" style="text-transform: uppercase;" />
+                            </group>
+                            <group>
+                                <field name="name" placeholder="Escriba el nombre de la categoría"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="descripcion" placeholder="Escriba una breve descripción de la categoría"/>
+                                <field name="marca_ids" placeholder="Seleccione las MARCAS a usar para esta categoría" widget="many2many_tags" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"></field>
+                                <field name="active" widget="boolean_toggle"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="tipo_ids">
+                                    <tree editable="top">
+                                        <field name="abreviatura" />
+                                        <field name="name" />
+                                        <field name="active" widget="boolean_toggle"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_pg_equipos_categoria_form2" model="ir.ui.view">
+            <field name="name">pg_equipos.categoria.form</field>
+            <field name="model">pg_equipos.categoria</field>
+            <field name="arch" type="xml">
+                <form string="NUEVO">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="abreviatura" placeholder="Escriba la abreviatura de la categoría" style="text-transform: uppercase;" />
+                                <field name="name" placeholder="Escriba el nombre de la categoría"/>
+                            </group>
+                            <group>
+                                <field name="grupo_id" invisible="1" context="{'form_view_ref': 'prefectura_equipos.view_asset_grupo_form2'}" placeholder="Seleccione el grupo al que pertenece la categoría" />
+                            </group>
+                            <group colspan="2">
+                                <field name="descripcion" placeholder="Escriba una breve descripción de la categoría"/>
+                                <field name="marca_ids" placeholder="Seleccione las MARCAS a usar para esta categoría" widget="many2many_tags" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"></field>
+                            </group>
+                            <group colspan="2">
+                                <field name="tipo_ids">
+                                    <tree editable="top">
+                                        <field name="abreviatura" />
+                                        <field name="name" />
+                                        <field name="active" widget="boolean_toggle"/>
+                                    </tree>
+                                </field>
+                            </group>
+
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--CAMBIAR NAME DE ACTION-->
+        <record id="action_pg_equipos_categoria" model="ir.actions.act_window">
+            <field name="name">CATEGORIAS</field>
+            <field name="context" eval="{'search_default_grupo':1}"></field>
+        </record>
+
+        <menuitem name="Categorías" id="menu_pg_equipos_categoria" action="action_pg_equipos_categoria" parent="menu_configuracion_categorizacion" sequence="20"/>
+    </data>
+</odoo>

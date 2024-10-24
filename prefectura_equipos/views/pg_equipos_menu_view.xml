@@ -1,0 +1,27 @@
+<odoo>
+    <data>
+
+        <menuitem name="Equipos" id="pg_equipos_menu_root" web_icon="prefectura_equipos,static/description/activo-fijo.png" sequence="10"/>
+        <menuitem name="Registro" id="pg_equipos_equipos" parent="pg_equipos_menu_root" groups="grupo_equipos_cliente" sequence="10"/>
+
+        <menuitem name="Configuración" id="pg_equipos_configuracion" parent="pg_equipos_menu_root" groups="grupo_equipos_administrador_general" sequence="30"/>
+        <menuitem name="Catálogos" id="menu_configuracion_catalogo" parent="pg_equipos_configuracion" sequence="10"/>
+        <menuitem name="Categorización" id="menu_configuracion_categorizacion" parent="pg_equipos_configuracion" sequence="20"/>
+        <menuitem name="Características Generales" id="menu_configuracion_caracteristicas" parent="pg_equipos_configuracion" sequence="30"/>
+
+        <!-- <menuitem name="Reportes" id="asset_menu_reportes" parent="asset_menu_mro_root" groups="grupo_equipos_administrador" sequence="20"/> -->
+        <!-- <menuitem name="Operaciones" id="menu_configuracion_operaciones" parent="asset_menu_mro_root" groups="grupo_equipos_administrador" sequence="20"/>
+
+
+         <menuitem name="Catálogos" id="menu_configuracion_catalogos" parent="menu_maintenance_config" sequence="50"/>
+
+        <menuitem name="Técnico" id="menu_maintenance_tecnico" parent="asset_menu_mro_root" groups="grupo_equipos_administrador_general,group_tecnico_reparto,group_tecnico_general" sequence="40"/>
+        <menuitem name="Características Específicas" id="menu_configuracion_caracteristicas_espec" parent="menu_maintenance_tecnico" sequence="10"/>
+        <menuitem name="Componentes" id="menu_configuracion_componentes" parent="menu_maintenance_tecnico" sequence="20"/>
+
+
+        <menuitem name="Seguridad" id="menu_maintenance_seguridad" parent="asset_menu_mro_root" groups="grupo_equipos_administrador_general" sequence="50"/>
+
+         -->
+    </data>
+</odoo>

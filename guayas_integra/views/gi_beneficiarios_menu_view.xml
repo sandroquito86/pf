@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <menuitem name="Guayas Integra" id="menu_guayas_integra_root" sequence="10"/>
+        <!-- MENU CONFIGURACIÓN -->
+        <menuitem name="Configuración" id="menu_gi_configuracion" parent="menu_guayas_integra_root" sequence="30"/>
+        <menuitem name="Catálogos" id="menu_gi_conf_catalogo" parent="menu_gi_configuracion" sequence="10"/>
+        <menuitem name="Ubicación" id="menu_gi_conf_ubicacion" parent="menu_gi_configuracion" sequence="30"/>
+        <!-- MENU REGISTRO -->
+        <menuitem name="Registro" id="menu_gi_registro" parent="menu_guayas_integra_root" sequence="10"/>
+        <!-- MENU PLANIFICACIÓN -->
+        <menuitem name="Planificación" id="menu_gi_planificacion" parent="menu_guayas_integra_root" sequence="20"/>
+
+
+
+    </data>
+</odoo>

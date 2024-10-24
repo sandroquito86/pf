@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_pg_equipos_configuracion_caracteristica_tree">
+            <field name="name">pg_equipos.config_caracteristica</field>
+            <field name="model">pg_equipos.config_caracteristica</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="grupo_id" />
+                    <field name="caracteristica_ids" widget="many2many_tags" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_pg_equipos_configuracion_caracteristica_form" model="ir.ui.view">
+            <field name="name">pg_equipos.config_caracteristica</field>
+            <field name="model">pg_equipos.config_caracteristica</field>
+            <field name="arch" type="xml">
+                <form string="NUEVO" duplicate="0">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="grupo_id" placeholder="Seleccione el grupo.." options="{'no_create_edit': True, 'no_open': True,'no_create': True}" />
+                                <field name="active" widget="boolean_toggle" />
+                            </group>
+                        </group>
+                        <field name="caracteristica_ids" nolabel="1">
+                            <tree limit="10" widget="one2many" editable="bottom">
+                                <field name="caracteristica_id_domain" column_invisible="True" />
+                                <field name="caracteristica_id" options="{'domain_field': 'caracteristica_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+                                <field name="es_obligatorio" />
+                            </tree>
+                            <form>
+                                <group>
+                                    <group>
+                                        <field name="caracteristica_id" />
+                                    </group>
+                                    <group>
+                                        <field name="es_obligatorio" />
+                                    </group>
+                                </group>
+                            </form>
+                        </field>
+
+                        <div class="oe_chatter">
+                            <field name="message_ids" widget="mail_thread" />
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_pg_equipos_configuracion_caracteristica_search" model="ir.ui.view">
+            <field name="name">pg_equipos.config_caracteristica</field>
+            <field name="model">pg_equipos.config_caracteristica</field>
+            <field name="arch" type="xml">
+                <search string="">
+                    <field name="grupo_id" />
+                    <group>
+                        <filter name="grupo" string="Agrupar por grupo" context="{'group_by': 'grupo_id' }" />
+                        <filter string="Inactivo" name="inactive" domain="[('active','=',False)]" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_pg_equipos_configuracion_caracteristica">
+            <field name="name">CONF. CARACTERÍSTICAS DE EQUIPOS</field>
+            <field name="res_model">pg_equipos.config_caracteristica</field>
+            <field name="context" eval="{'search_default_grupo':1}"></field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Configuración de características de Equipos" id="menu_action_pg_equipos_configuracion_caracteristica" parent="menu_configuracion_caracteristicas" action="action_pg_equipos_configuracion_caracteristica" sequence="20" />
+
+    </data>
+</odoo>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="module_category_prefectura" model="ir.module.category">
+            <field name="name">Prefectura</field>
+            <field name="description">Categoría para el módulo Prefectura</field>
+            <field name="sequence">100</field> <!-- Ajusta la secuencia según tu preferencia -->
+        </record>
+    <!-- Grupo Cliente -->
+        <record id="group_cliente" model="res.groups">
+            <field name="name">Cliente</field>
+            <field name="category_id" ref="module_category_prefectura"/>
+        </record>
+
+        <!-- Grupo Operador -->
+        <record id="group_operador" model="res.groups">
+            <field name="name">Operador</field>
+            <field name="category_id" ref="module_category_prefectura"/>
+            <field name="implied_ids" eval="[(4, ref('group_cliente'))]"/>
+        </record>
+
+        <!-- Grupo Administrador -->
+        <record id="group_administrador" model="res.groups">
+            <field name="name">Administrador</field>
+            <field name="category_id" ref="module_category_prefectura"/>
+            <field name="implied_ids" eval="[(4, ref('group_operador'))]"/>
+        </record>
+    </data>
+</odoo>

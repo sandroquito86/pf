@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista Form que ejecuta el boton desde asistencia-->
+        <record id="view_mz_consulta_form" model="ir.ui.view">
+            <field name="name">mz.consulta.form</field>
+            <field name="model">mz.consulta</field>
+            <field name="arch" type="xml">
+                <form string="Consulta Médica">
+                    <header>
+                        <button name="generar_orden_entrega" string="Generar Orden de Entrega" type="object" class="oe_highlight" invisible="picking_id"/>
+                        <!-- Aquí puedes agregar botones de acción si los necesitas -->
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="codigo" readonly="1" force_save="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="fecha" required="1" readonly="1" force_save="1"/>
+                                <field name="hora" widget="float_time" readonly="1" force_save="1"/>
+                                <field name="beneficiario_id" required="1" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="programa_id" required="1" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="servicio_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="personal_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            </group>
+                            <group>
+                                <field name="genero" readonly="1" force_save="1"/>
+                                <field name="fecha_nacimiento" readonly="1" force_save="1"/>
+                                <field name="edad" readonly="1" force_save="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Signos Vitales">
+                                <group>
+                                    <group>
+                                        <field name="presion_arterial"/>
+                                        <field name="frecuencia_cardiaca"/>
+                                        <field name="frecuencia_respiratoria"/>
+                                    </group>
+                                    <group>
+                                        <field name="temperatura"/>
+                                        <field name="peso"/>
+                                        <field name="altura"/>
+                                        <field name="imc"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Motivo de Consulta y Síntomas">
+                                <group>
+                                    <field name="motivo_consulta" placeholder="Describa el motivo principal de la consulta"/>
+                                    <field name="sintomas" placeholder="Detalle los síntomas que presenta el paciente"/>
+                                </group>
+                            </page>
+                            <page string="Examen Físico y Diagnóstico">
+                                <group>
+                                    <field name="examen_fisico" placeholder="Registre los hallazgos del examen físico"/>
+                                    <field name="diagnostico" placeholder="Anote el diagnóstico del paciente"/>
+                                    <field name="cie10_id" options="{'no_create': True, 'no_open': True}" />
+                                    <field name="tratamiento" placeholder="Detalle el plan de tratamiento"/>
+                                </group>
+                            </page>
+                            <page string="Historial Médico">
+                                <group>
+                                    <field name="antecedentes_personales" placeholder="Antecedentes médicos personales del paciente"/>
+                                    <field name="antecedentes_familiares" placeholder="Antecedentes médicos familiares relevantes"/>
+                                    <field name="alergias" placeholder="Alergias conocidas del paciente"/>
+                                    <field name="medicamentos_actuales" placeholder="Medicamentos que el paciente toma actualmente"/>
+                                </group>
+                            </page>
+                            <page string="Receta Médica">
+                                <group>
+                                    <field name="picking_id" readonly="1"/>
+                                </group>
+                                <field name="receta_ids">
+                                    <tree editable="bottom">
+                                        <field name="producto_id"/>
+                                        <field name="cantidad"/>
+                                        <field name="instrucciones"/>
+                                        <field name="en_inventario"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Seguimiento">
+                                <group>
+                                    <field name="observaciones" placeholder="Observaciones adicionales"/>
+                                    <field name="proxima_cita"/>
+                                </group>
+                            </page>
+                        </notebook>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers"/>
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- action del boton desde asistencia  -->
+        <record id="action_consulta_form" model="ir.actions.act_window">
+            <field name="name">Consulta Médica</field>
+            <field name="res_model">mz.consulta</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+        </record>
+
+        <!-- vista de consulta medica del menu  -->
+
+        <record id="view_mz_consulta_tree" model="ir.ui.view">
+            <field name="name">mz.consulta.tree</field>
+            <field name="model">mz.consulta</field>
+            <field name="arch" type="xml">
+                <tree string="Consultas Médicas" create="false" delete="false" duplicate="false">
+                    <field name="codigo"/>
+                    <field name="beneficiario_id"/>
+                    <field name="fecha"/>
+                    <field name="hora" widget="float_time"/>
+                    <field name="personal_id"/>
+                    <field name="programa_id"/>
+                    <field name="servicio_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_mz_consulta_form_custom" model="ir.ui.view">
+            <field name="name">mz.consulta.form.custom</field>
+            <field name="model">mz.consulta</field>
+            <field name="arch" type="xml">
+                <form string="Consulta Médica">
+                    <header>
+                        <!-- Aquí puedes agregar botones de acción si los necesitas -->
+                         <button name="generar_orden_entrega" string="Generar Orden de Entrega" type="object" class="oe_highlight" invisible="picking_id"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="codigo" readonly="1" force_save="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="fecha" required="1" readonly="1" force_save="1"/>
+                                <field name="hora" widget="float_time" readonly="1" force_save="1"/>
+                                <field name="beneficiario_id" required="1" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="programa_id" required="1" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="servicio_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="personal_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            </group>
+                            <group>
+                                <field name="genero" readonly="1" force_save="1"/>
+                                <field name="fecha_nacimiento" readonly="1" force_save="1"/>
+                                <field name="edad" readonly="1" force_save="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Motivo de Consulta y Síntomas">
+                                <group>
+                                    <field name="motivo_consulta" placeholder="Describa el motivo principal de la consulta"/>
+                                    <field name="sintomas" placeholder="Detalle los síntomas que presenta el paciente"/>
+                                </group>
+                            </page>
+                            <page string="Signos Vitales">
+                                <group>
+                                    <group>
+                                        <field name="presion_arterial"/>
+                                        <field name="frecuencia_cardiaca"/>
+                                        <field name="frecuencia_respiratoria"/>
+                                    </group>
+                                    <group>
+                                        <field name="temperatura"/>
+                                        <field name="peso"/>
+                                        <field name="altura"/>
+                                        <field name="imc"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Examen Físico y Diagnóstico">
+                                <group>
+                                    <field name="examen_fisico" placeholder="Registre los hallazgos del examen físico"/>
+                                    <field name="diagnostico" placeholder="Anote el diagnóstico del paciente"/>
+                                    <field name="cie10_id" options="{'no_create': True, 'no_open': True}" />
+                                    <field name="tratamiento" placeholder="Detalle el plan de tratamiento"/>
+                                </group>
+                            </page>
+                            <page string="Historial Médico">
+                                <group>
+                                    <field name="antecedentes_personales" placeholder="Antecedentes médicos personales del paciente"/>
+                                    <field name="antecedentes_familiares" placeholder="Antecedentes médicos familiares relevantes"/>
+                                    <field name="alergias" placeholder="Alergias conocidas del paciente"/>
+                                    <field name="medicamentos_actuales" placeholder="Medicamentos que el paciente toma actualmente"/>
+                                </group>
+                            </page>
+                            <page string="Receta Médica">
+                                <group>
+                                    <field name="picking_id" readonly="1"/>
+                                </group>
+                                <field name="receta_ids">
+                                    <tree editable="bottom">
+                                        <field name="producto_id"/>
+                                        <field name="cantidad"/>
+                                        <field name="instrucciones"/>
+                                        <field name="en_inventario"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Seguimiento">
+                                <group>
+                                    <field name="observaciones" placeholder="Observaciones adicionales"/>
+                                    <field name="proxima_cita"/>
+                                </group>
+                            </page>
+                        </notebook>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers"/>
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista de Búsqueda -->
+        <record id="view_mz_consulta_search" model="ir.ui.view">
+            <field name="name">mz.consulta.search</field>
+            <field name="model">mz.consulta</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Consultas Médicas">
+                    <field name="codigo"/>
+                    <field name="fecha"/>
+                    <field name="beneficiario_id"/>
+                    <field name="programa_id"/>
+                    <field name="servicio_id"/>
+                    <field name="personal_id"/>
+                    <filter string="Hoy" name="today" domain="[('fecha', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                    <filter string="Esta Semana" name="this_week" domain="[
+                        ('fecha', '&gt;=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d')),
+                        ('fecha', '&lt;=', (context_today() + datetime.timedelta(days=6 - context_today().weekday())).strftime('%Y-%m-%d'))
+                    ]"/>
+                    <filter string="Este Mes" name="this_month" domain="[
+                        ('fecha', '&gt;=', (context_today().replace(day=1)).strftime('%Y-%m-%d')),
+                        ('fecha', '&lt;=', (context_today().replace(day=1, month=context_today().month+1) - datetime.timedelta(days=1)).strftime('%Y-%m-%d'))
+                    ]"/>
+                    <group expand="1" string="Agrupar por">
+                        <filter string="Beneficiario" name="group_beneficiario" context="{'group_by': 'beneficiario_id'}"/>
+                        <filter string="Programa" name="group_programa" context="{'group_by': 'programa_id'}"/>
+                        <filter string="Servicio" name="group_servicio" context="{'group_by': 'servicio_id'}"/>
+                        <filter string="Personal" name="group_personal" context="{'group_by': 'personal_id'}"/>
+                    </group>
+                    <searchpanel>
+                        <field name="beneficiario_id" string="Beneficiario" icon="fa-user"/>
+                        <field name="programa_id" string="Programa" icon="fa-building"/>
+                        <field name="servicio_id" string="Servicio" icon="fa-cogs"/>
+                        <field name="personal_id" string="Personal" icon="fa-user-md"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_ma_consulta_medica" model="ir.actions.act_window">
+            <field name="name">Consultas Médicas</field>
+            <field name="res_model">mz.consulta</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_mz_consulta_tree"/>
+            <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz_consulta_tree')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz_consulta_form_custom')})]"/>
+            <field name="search_view_id" ref="view_mz_consulta_search"/>
+            <field name="context">{'create': False}</field>
+        </record>
+
+        <menuitem id="menu_consulta" name="Consultas" parent="menu_mz_ejecucion" action="action_ma_consulta_medica" sequence="30"/>
+
+    </data>
+</odoo>

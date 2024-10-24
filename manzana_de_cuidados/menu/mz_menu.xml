@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+<!-- Configuración Menu -->
+    <menuitem id="menu_principal" name="Manzana De Cuidados"/>
+
+    <menuitem id="menu_programas"
+              name="Programas"
+              parent="menu_principal"
+              sequence="4"/>
+    <menuitem id="menu_planificacion_curso"
+              name="Planificación"
+              parent="menu_principal"
+              sequence="5"/>
+    <menuitem id="menu_mz_ejecucion"
+              name="Ejecución"
+              parent="menu_principal"
+              sequence="7"/>
+    <menuitem id="menu_beneficiario"
+              name="Beneficiario"
+              parent="menu_principal"
+              sequence="10"/>
+    <menuitem id="menu_academico"
+              name="Academico"
+              parent="menu_principal"
+              sequence="20"/>
+    <menuitem id="menu_configuracion"
+              name="Configuración"
+              parent="menu_principal"
+              sequence="50"/>
+    <!-- <menuitem id="menu_edu_Generales" name="Generales" parent="menu_configuracion" sequence="10"/>
+    <menuitem id="menu_edu_catalogo" name="Catálogo" parent="menu_configuracion" sequence="11"/> -->
+
+    <!-- <menuitem id="menu_op_course_sub"
+              name="Courses"
+              parent="menu_principal_course"
+              sequence="10"
+              action="act_open_op_course_view"
+              groups="group_op_back_office,group_op_back_office_admin"/>
+
+    <menuitem id="menu_op_batch_sub"
+              name="Batches"
+              parent="menu_principal_course"
+              sequence="20"
+              action="act_open_op_batch_view"
+              groups="group_op_back_office,group_op_back_office_admin"/>
+
+    <menuitem id="menu_op_department_sub"
+              name="Department"
+              parent="menu_principal_course"
+              sequence="20"
+              action="act_open_op_department_view"
+              groups="group_op_back_office,group_op_back_office_admin"/>
+
+    <menuitem id="menu_principal_subject"
+              name="Subject Management"
+              parent="menu_principal"
+              sequence="20"/>
+
+    <menuitem id="menu_op_subject_sub"
+              name="Subjects"
+              sequence="10"
+              parent="menu_principal_subject"
+              action="act_open_op_subject_view"
+              groups="group_op_back_office,group_op_back_office_admin,openeducat_core.group_op_faculty"/>
+
+    <menuitem id="menu_principal_general"
+              name="General Management"
+              parent="menu_principal"
+              sequence="80"/>
+
+    <menuitem id="menu_op_category_sub"
+              name="Categories"
+              parent="menu_principal_general"
+              sequence="40"
+              action="act_open_op_category_view"
+              groups="openeducat_core.group_op_back_office"/> -->
+
+</data>
+</odoo>

@@ -1,0 +1,11 @@
+<odoo>
+    <data>
+        <menuitem name="Manzana agendar" id="menu_manzana_cuidado_agendar" sequence="10"/>
+        <!-- MENU CONFIGURACIÓN -->
+       
+        <menuitem name="Ejecución" id="menu_mz_ejecucion" parent="menu_manzana_cuidado_agendar" sequence="20"/>
+
+
+
+    </data>
+</odoo>

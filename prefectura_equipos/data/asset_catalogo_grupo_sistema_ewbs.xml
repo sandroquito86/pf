@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <!-- GRUPO AVIONES DE LA ARMADA DEL ECUADOR -->
+        <record id="asset_grupo_aviones_100" model="asset.estructura.grupo">
+            <field name="sigla">100</field>
+            <field name="name">GROUP AIRFRAME</field>
+            <field name="tipo_id" ref="items_familia_tipo_2" />
+        </record>
+        <record id="asset_grupo_aviones_200" model="asset.estructura.grupo">
+            <field name="sigla">200</field>
+            <field name="name">GROUP STRUCTURE</field>
+            <field name="tipo_id" ref="items_familia_tipo_2" />
+        </record>
+        <record id="asset_grupo_aviones_300" model="asset.estructura.grupo">
+            <field name="sigla">300</field>
+            <field name="name">GROUP PROPELLER/ROTOR</field>
+            <field name="tipo_id" ref="items_familia_tipo_2" />
+        </record>
+        <record id="asset_grupo_aviones_400" model="asset.estructura.grupo">
+            <field name="sigla">400</field>
+            <field name="name">GROUP POWER PLANT</field>
+            <field name="tipo_id" ref="items_familia_tipo_2" />
+        </record>
+
+        <!-- BATALLONES DE LA ARMADA DEL ECUADOR -->
+        <record id="asset_grupo_batallones_100" model="asset.estructura.grupo">
+            <field name="sigla">100</field>
+            <field name="name">SOSTENIMIENTO</field>
+            <field name="tipo_id" ref="items_familia_tipo_7" />
+        </record>
+        <record id="asset_grupo_batallones_200" model="asset.estructura.grupo">
+            <field name="sigla">200</field>
+            <field name="name">MANDO Y CONTROL</field>
+            <field name="tipo_id" ref="items_familia_tipo_7" />
+        </record>
+        <record id="asset_grupo_batallones_300" model="asset.estructura.grupo">
+            <field name="sigla">300</field>
+            <field name="name">MANIOBRA</field>
+            <field name="tipo_id" ref="items_familia_tipo_7" />
+        </record>
+        <record id="asset_grupo_batallones_400" model="asset.estructura.grupo">
+            <field name="sigla">400</field>
+            <field name="name">APOYO DE FUEGO</field>
+            <field name="tipo_id" ref="items_familia_tipo_7" />
+        </record>
+        <record id="asset_grupo_batallones_500" model="asset.estructura.grupo">
+            <field name="sigla">500</field>
+            <field name="name">PROTECCIÓN DE LA FUERZA</field>
+            <field name="tipo_id" ref="items_familia_tipo_7" />
+        </record>
+
+        <!--BUQUES DE LA ARMADA DEL ECUADOR-->
+        <record id="asset_grupo_buques_100" model="asset.estructura.grupo">
+            <field name="sigla">100</field>
+            <field name="name">CASCO Y ESTRUCTURA</field>
+            <field name="tipo_id" ref="items_familia_tipo_1" />
+        </record>
+        <record id="asset_grupo_buques_200" model="asset.estructura.grupo">
+            <field name="sigla">200</field>
+            <field name="name">SISTEMA DE PROPULSION</field>
+            <field name="tipo_id" ref="items_familia_tipo_1" />
+        </record>
+        <record id="asset_grupo_buques_300" model="asset.estructura.grupo">
+            <field name="sigla">300</field>
+            <field name="name">SISTEMA ELECTRICO</field>
+            <field name="tipo_id" ref="items_familia_tipo_1" />
+        </record>
+        <record id="asset_grupo_buques_400" model="asset.estructura.grupo">
+            <field name="sigla">400</field>
+            <field name="name">COMANDO Y VIGILANCIA</field>
+            <field name="tipo_id" ref="items_familia_tipo_1" />
+        </record>
+        <record id="asset_grupo_buques_500" model="asset.estructura.grupo">
+            <field name="sigla">500</field>
+            <field name="name">SISTEMAS AUXILIARES</field>
+            <field name="tipo_id" ref="items_familia_tipo_1" />
+        </record>
+        <record id="asset_grupo_buques_600" model="asset.estructura.grupo">
+            <field name="sigla">600</field>
+            <field name="name">EQUIPOS Y ACCESORIOS EN GENERAL</field>
+            <field name="tipo_id" ref="items_familia_tipo_1" />
+        </record>
+        <record id="asset_grupo_buques_700" model="asset.estructura.grupo">
+            <field name="sigla">700</field>
+            <field name="name">ARMAMENTO</field>
+            <field name="tipo_id" ref="items_familia_tipo_1" />
+        </record>
+
+        <!--DIQUES DE LA ARMADA DEL ECUADOR-->
+        <record id="asset_grupo_diques_200" model="asset.estructura.grupo">
+            <field name="sigla">200</field>
+            <field name="name">SISTEMAS DE PROPULSION</field>
+            <field name="tipo_id" ref="items_familia_tipo_6" />
+        </record>
+
+        <!--EDIFICACIONES DE LA ARMADA DEL ECUADOR-->
+        <record id="asset_grupo_edificaciones_100" model="asset.estructura.grupo">
+            <field name="sigla">100</field>
+            <field name="name">SISTEMAS OBRA CIVIL</field>
+            <field name="tipo_id" ref="items_familia_tipo_3" />
+        </record>
+        <record id="asset_grupo_edificaciones_200" model="asset.estructura.grupo">
+            <field name="sigla">200</field>
+            <field name="name">SISTEMAS ACCESORIOS EN GENERAL</field>
+            <field name="tipo_id" ref="items_familia_tipo_3" />
+        </record>
+        <record id="asset_grupo_edificaciones_300" model="asset.estructura.grupo">
+            <field name="sigla">300</field>
+            <field name="name">SISTEMAS ELECTRICOS</field>
+            <field name="tipo_id" ref="items_familia_tipo_3" />
+        </record>
+        <record id="asset_grupo_edificaciones_400" model="asset.estructura.grupo">
+            <field name="sigla">400</field>
+            <field name="name">SISTEMAS ELECTRONICOS</field>
+            <field name="tipo_id" ref="items_familia_tipo_3" />
+        </record>
+        <record id="asset_grupo_edificaciones_500" model="asset.estructura.grupo">
+            <field name="sigla">500</field>
+            <field name="name">SISTEMAS AUXILIARES ED</field>
+            <field name="tipo_id" ref="items_familia_tipo_3" />
+        </record>
+
+        <!--SERVICIO DE DRAGAS-->
+        <record id="asset_grupo_dragas_100" model="asset.estructura.grupo">
+            <field name="sigla">100</field>
+            <field name="name">CASCO Y ESTRUCTURA</field>
+            <field name="tipo_id" ref="items_familia_tipo_8" />
+        </record>
+        <record id="asset_grupo_dragas_200" model="asset.estructura.grupo">
+            <field name="sigla">200</field>
+            <field name="name">SISTEMA DE PROPULSION</field>
+            <field name="tipo_id" ref="items_familia_tipo_8" />
+        </record>
+        <record id="asset_grupo_dragas_300" model="asset.estructura.grupo">
+            <field name="sigla">300</field>
+            <field name="name">SISTEMA ELECTRICO</field>
+            <field name="tipo_id" ref="items_familia_tipo_8" />
+        </record>
+        <record id="asset_grupo_dragas_400" model="asset.estructura.grupo">
+            <field name="sigla">400</field>
+            <field name="name">COMANDO Y VIGILANCIA</field>
+            <field name="tipo_id" ref="items_familia_tipo_8" />
+        </record>
+        <record id="asset_grupo_dragas_500" model="asset.estructura.grupo">
+            <field name="sigla">500</field>
+            <field name="name">SISTEMAS AUXILIARES</field>
+            <field name="tipo_id" ref="items_familia_tipo_8" />
+        </record>
+        <record id="asset_grupo_dragas_600" model="asset.estructura.grupo">
+            <field name="sigla">600</field>
+            <field name="name">EQUIPOS Y ACCESORIOS EN GENERAL.</field>
+            <field name="tipo_id" ref="items_familia_tipo_8" />
+        </record>
+
+        <!--SERVICIO DE DRAGAS-->
+        <record id="asset_grupo_submarinos_100" model="asset.estructura.grupo">
+            <field name="sigla">100</field>
+            <field name="name">CASCO Y ESTRUCTURA</field>
+            <field name="tipo_id" ref="items_familia_tipo_5" />
+        </record>
+        <record id="asset_grupo_submarinos_200" model="asset.estructura.grupo">
+            <field name="sigla">200</field>
+            <field name="name">SISTEMA DE PROPULSION</field>
+            <field name="tipo_id" ref="items_familia_tipo_5" />
+        </record>
+        <record id="asset_grupo_submarinos_300" model="asset.estructura.grupo">
+            <field name="sigla">300</field>
+            <field name="name">SISTEMA ELECTRICO</field>
+            <field name="tipo_id" ref="items_familia_tipo_5" />
+        </record>
+        <record id="asset_grupo_submarinos_400" model="asset.estructura.grupo">
+            <field name="sigla">400</field>
+            <field name="name">MANDO Y CONTROL</field>
+            <field name="tipo_id" ref="items_familia_tipo_5" />
+        </record>
+        <record id="asset_grupo_submarinos_500" model="asset.estructura.grupo">
+            <field name="sigla">500</field>
+            <field name="name">SISTEMAS AUXILIARES</field>
+            <field name="tipo_id" ref="items_familia_tipo_5" />
+        </record>
+        <record id="asset_grupo_submarinos_600" model="asset.estructura.grupo">
+            <field name="sigla">600</field>
+            <field name="name">LOCK, KEYS Y TAGS</field>
+            <field name="tipo_id" ref="items_familia_tipo_5" />
+        </record>
+        <record id="asset_grupo_submarinos_700" model="asset.estructura.grupo">
+            <field name="sigla">700</field>
+            <field name="name">ARMAMENTO</field>
+            <field name="tipo_id" ref="items_familia_tipo_5" />
+        </record>
+
+        <!--VEHICULOS DE LA ARMADA DEL ECUADOR-->
+        <record id="asset_grupo_vehiculos_100" model="asset.estructura.grupo">
+            <field name="sigla">100</field>
+            <field name="name">SISTEMA CHASIS Y ESTRUCTURA</field>
+            <field name="tipo_id" ref="items_familia_tipo_4" />
+        </record>
+        <record id="asset_grupo_vehiculos_200" model="asset.estructura.grupo">
+            <field name="sigla">200</field>
+            <field name="name">SISTEMA PROPULSION VEHICULOS</field>
+            <field name="tipo_id" ref="items_familia_tipo_4" />
+        </record>
+        <record id="asset_grupo_vehiculos_300" model="asset.estructura.grupo">
+            <field name="sigla">300</field>
+            <field name="name">SISTEMA ELECTRICO VEHICULOS</field>
+            <field name="tipo_id" ref="items_familia_tipo_4" />
+        </record>
+        <record id="asset_grupo_vehiculos_400" model="asset.estructura.grupo">
+            <field name="sigla">400</field>
+            <field name="name">SISTEMA AUXILIARES VEHICULOS</field>
+            <field name="tipo_id" ref="items_familia_tipo_4" />
+        </record>
+
+
+    </data>
+</openerp>

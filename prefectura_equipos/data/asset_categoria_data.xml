@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="asset_categoria_vehiculo_liviano" model="pg_equipos.categoria">
+            <field name="abreviatura">LIV</field>
+            <field name="name">VEHICULO LIVIANO</field>
+            <field name="grupo_id" ref="items_grupo_transporte"/>
+        </record>
+        <record id="asset_categoria_computadora" model="pg_equipos.categoria">
+            <field name="abreviatura">COMP</field>
+            <field name="name">Computadoras</field>
+            <field name="grupo_id" ref="items_grupo_informatico"/>
+        </record>
+        <record id="asset_categoria_equi_comunicacion" model="pg_equipos.categoria">
+            <field name="abreviatura">E_COM</field>
+            <field name="name">Equipos de Comunicación</field>
+            <field name="grupo_id" ref="items_grupo_comunicaciones"/>
+        </record>
+        <record id="asset_categoria_antena_comunicacion" model="pg_equipos.categoria">
+            <field name="abreviatura">A_COM</field>
+            <field name="name">Antenas de Comunicación</field>
+            <field name="grupo_id" ref="items_grupo_comunicaciones"/>
+        </record>
+    </data>
+</openerp>

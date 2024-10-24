@@ -1,0 +1,232 @@
+<odoo>
+  <data>
+
+    <record model="ir.ui.view" id="pg_equipos_graph_mis_activos_view">
+      <field name="name">pg_equipos.pg_equipos.graph</field>
+      <field name="model">pg_equipos.pg_equipos</field>
+      <field name="type">graph</field>
+      <field name="arch" type="xml">
+        <graph string="Activo" type="bar">
+          <field name="categoria_id" />
+          <field name="programa_id" />
+        </graph>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="pg_equipos_graph_mis_activos_estado_view">
+      <field name="name">pg_equipos.pg_equipos.graph</field>
+      <field name="model">pg_equipos.pg_equipos</field>
+      <field name="type">graph</field>
+      <field name="arch" type="xml">
+        <graph string="Activo" type="bar">
+          <field name="categoria_id" />
+          <field name="programa_id" />
+        </graph>
+      </field>
+    </record>
+
+    <record id="pg_equiposs_form_mis_activos_view" model="ir.ui.view">
+      <field name="name">pg_equipos.pg_equipos.form</field>
+      <field name="model">pg_equipos.pg_equipos</field>
+      <field name="arch" type="xml">
+        <form string="Assets" version="7.0" create="0" delete="0" edit="0">
+          <sheet>
+            <div class="oe_right oe_button_box" style="width: 500px;" name="buttons"></div>
+            <field name="image_medium" widget="image" class="oe_avatar oe_left" />
+            <group col="3">
+              <group>
+                <field name="grupo_id" type="object" placeholder="Grupo...." options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+
+              </group>
+              <group>
+                <field name="categoria_id" domain="[('grupo_id','=',grupo_id)]" placeholder="Categoria...." options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+              </group>
+              <group>
+                <field name="tipo_id" domain="[('categoria_id','=',categoria_id)]" placeholder="Tipo...." options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+              </group>
+            </group>
+
+            <group>
+              <group colspan="2">
+                <h1>
+                  <field name="name" />
+                </h1>
+              </group>
+              <group>
+                <field name="programa_id" readonly="1" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+                <field name="empleado_id" placeholder="Seleccione el responsable del activo.." options="{'no_create': True,  'no_create_edit': True}" />
+                <field name="user_id" invisible="1" />
+              </group>
+              <group>
+                <field name="departamento_id" invisible="1" placeholder="Seleccione el departamento del responsable del activo.." options="{'no_create_edit': True, 'no_open': True,'no_create': True}" />
+              
+                <field name="estado_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+              </group>
+            </group>
+
+            <notebook>
+              <page name="info" string="Información">
+                <group >
+                  <group>
+                    <field name="purchase_date" />
+                    <field name="serial" />                  
+                  </group>
+                  <group>
+                    <field name="pg_marca_id_domain" invisible="1" />
+                    <field name="marca_id" required="1" domain="pg_marca_id_domain" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+                    <field name="modelo_id" required="1" domain="[('marca_id','=',marca_id)]" context="{'default_marca_id': marca_id, 'form_view_ref': 'prefectura_equipos.view_pg_equipos_modelo_form2'}" />
+                  
+                  </group>
+                </group>
+              </page>
+
+              <page name="caracteristicas" string="Características">
+                <field name="detalle_caracteristicas_ids" widget="one2many" readonly="1">
+                  <tree string="Caracteristicas" editable="bottom">
+                    <field name="caracteristica_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+                    <field name="valor_id" context="{'default_caracteristica_id': caracteristica_id, 'show_attribute': False}" />
+                  </tree>
+                </field>
+              </page>             
+              <page name="garantia" string="Garantía">
+                <group>
+                  <group>
+                    <field name="warranty_start_date" placeholder="Fecha de nicio de garantía.." />
+                    <field name="start_date" placeholder="Fecha que empieza a usarse.." />
+                  </group>
+                  <group>
+                    <field name="warranty_end_date" placeholder="Fecha de fin de garantía.." />
+                  </group>
+                </group>
+              </page>
+
+            </notebook>
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" />
+            <field name="message_ids" widget="mail_thread" />
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="pg_equiposs_kanban_view">
+      <field name="name">Asset Kanban</field>
+      <field name="model">pg_equipos.pg_equipos</field>
+      <field name="arch" type="xml">
+        <kanban>
+          <!-- <field name="maintenance_state_id"/> -->
+          <!-- <field name="maintenance_state_color"/> -->
+          <field name="user_id"/>
+         
+          <field name="id"/>
+          <templates>
+            <t t-name="kanban-box">
+              <div class="oe_kanban_vignette">
+                <div class="codup_kanban_left">
+                  <a type="open">
+                    <img t-att-src="kanban_image('pg_equipos.pg_equipos', 'image_medium', record.id.value)" class="oe_kanban_image" style="width: 100px; height: 100px;"/>
+
+                  </a>
+                  <!-- <div t-attf-title="#{record.maintenance_state_id.value}" t-attf-class="codup_status_color_#{record.maintenance_state_color.raw_value} codup_status"/> -->
+                </div>
+                <div class="oe_kanban_details">
+                  <h4>
+                    <a type="open">
+                      <field name="name"/>
+                    </a>
+                  </h4>
+                  <ul>
+                    <!-- <li>
+Model:
+                      <field name="model"/>
+                    </li> -->
+                    <li>
+Serial No:
+                      <field name="serial"/>
+                    </li>
+                    <li>
+Marca:
+                      <field name="marca_id"/>
+                    </li>
+                    <li>
+Modelo:
+                      <field name="modelo_id"/>
+                    </li>
+
+                  </ul>
+                </div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="pg_equiposs_mis_activos_search_view">
+      <field name="name">pg_equipos.pg_equipos</field>
+      <field name="model">pg_equipos.pg_equipos</field>
+      <field name="arch" type="xml">
+        <search string="Busqueda activo">
+          <field name="name" />
+          <field name="programa_id" />        
+          <field name="categoria_id" />
+          <field name="marca_id" />
+          <field name="detalle_caracteristicas_ids" string="Caracteristicas" filter_domain="[('detalle_caracteristicas_ids.valor_id', 'ilike', self)]" />
+          <field name="estado_id" />
+          <separator />
+          <group expand="0" string="Group By">
+            <filter name="reparto" string="Reparto" context="{'group_by': 'programa_id'}" />
+            <filter name="grupo" string="Grupo" context="{'group_by': 'grupo_id'}" />
+            <filter name="categoria" string="Categoria" context="{'group_by': 'categoria_id'}" />
+            <filter name="tipo" string="Tipo de activo" context="{'group_by': 'tipo_id'}" />
+            <filter name="marca" string="Marca" context="{'group_by': 'marca_id'}" />
+            <filter name="estado" string="Estado" context="{'group_by': 'estado_id'}" />
+          </group>
+        </search>
+      </field>
+    </record>
+
+
+    <record id="pg_equiposs_tree_mis_activos_view" model="ir.ui.view">
+      <field name="name">pg_equipos.pg_equipos.tree</field>
+      <field name="model">pg_equipos.pg_equipos</field>
+      <field name="arch" type="xml">
+        <tree string="Assets" create="0">
+          <field name="serial" />
+          <field name="name" />
+          <field name="empleado_id" />
+          <field name="programa_id" optional="hide"/>
+          <field name="estado_id" optional="hide"/>
+          <field name="detalle_caracteristicas_ids" widget="many2many_tags" optional="hide"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="action_pg_equipos_mis_activos">
+      <field name="name">MIS  EQUIPOS</field>
+      <field name="res_model">pg_equipos.pg_equipos</field>
+      <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('pg_equiposs_kanban_view')}),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('pg_equiposs_tree_mis_activos_view')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('pg_equiposs_form_mis_activos_view')}),]" />
+      <field name="context">{'search_default_reparto':1,'search_default_grupo':1,'search_default_categoria':1}</field>
+      <field name="view_mode">kanban,tree,form</field>
+      <field name="domain">[('user_id','=', context.get('uid'))]</field>
+    </record>
+
+    <!-- <record model="ir.actions.act_window.view" id="action_pg_equiposs_kanban_view">
+      <field name="sequence" eval="0"/>
+      <field name="view_mode">kanban</field>
+      <field name="view_id" ref="pg_equiposs_kanban_view"/>
+      <field name="act_window_id" ref="action_pg_equipos_mis_activos"/>
+    </record> -->
+
+
+    <menuitem name="Mis Equipos" action="action_pg_equipos_mis_activos" id="menu_action_pg_equipos_mis_activos" parent="pg_equipos_equipos" groups="grupo_equipos_cliente" sequence="10" />
+
+
+  </data>
+</odoo>

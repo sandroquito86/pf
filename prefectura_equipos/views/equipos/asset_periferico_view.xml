@@ -1,0 +1,61 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="view_asset_periferico_tree">
+            <field name="name">asset.periferico.tree</field>
+            <field name="model">asset.periferico</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="periferico_id"/>
+                    <field name="vida_util"/>
+                    <field name="fecha_inicio"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_asset_periferico_form" model="ir.ui.view">
+            <field name="name">asset.periferico.form</field>
+            <field name="model">asset.periferico</field>
+            <field name="arch" type="xml">
+                <form string="NUEVO">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="categoria_id" invisible="1" />
+                                <field name="periferico_id" context="{'form_view_ref': 'prefectura_equipos.view_asset_items_form2', 'default_catalogo_id':%(prefectura_equipos.asset_catalogo_perifericos)d}"/>
+                                <field name="marca_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
+                                <field name="modelo_id" context="{'form_view_ref': 'prefectura_equipos.view_pg_equipos_modelo_form2', 'default_marca_id':marca_id}"/>
+                                <field name="serie"/>
+                                <field name="asset_number"/>
+                            </group>
+                            <group>
+                                <field name="fecha_inicio"/>
+                                <field name="vida_util"/>
+                            </group>
+                            <group></group>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <field name="porcentaje" widget="percentpie" />
+                                    </div>
+                                    <div class="col-sm">
+                                        <button name="calcular" icon="fa-arrow-left" type="object" class="oe_highlight"/>
+                                    </div>
+                                    <div class="col-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_asset_periferico">
+            <field name="name">PERIFÉRICOS</field>
+            <field name="res_model">asset.periferico</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+</odoo>

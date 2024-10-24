@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Redefine el menú principal de Productos sin cambios -->
+    <menuitem id="stock.menu_product_in_config_stock" name="Products" parent="stock.menu_stock_config_settings" sequence="4"/>
+
+    <!-- Redefine el menú de Nomenclatura de códigos de barras sin restricciones de grupo -->
+    <menuitem id="stock.menu_wms_barcode_nomenclature_all" 
+              name="Barcode Nomenclatures"
+              parent="stock.menu_product_in_config_stock" 
+              action="barcodes.action_barcode_nomenclature_form"
+              sequence="50"/>
+
+    <!-- Redefine el menú de Categorías de producto sin cambios -->
+    <menuitem action="product.product_category_action_form" 
+              id="stock.menu_product_category_config_stock"
+              parent="stock.menu_product_in_config_stock" 
+              sequence="2"/>
+
+    <!-- Redefine el menú de Atributos sin restricciones de grupo -->
+    <menuitem action="product.attribute_action" 
+              id="stock.menu_attribute_action"
+              parent="stock.menu_product_in_config_stock" 
+              sequence="4"/>
+</odoo>
