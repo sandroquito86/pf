@@ -66,13 +66,14 @@ class StockLocation(models.Model):
         self.ensure_one()
         return self.programa_id
    
+    
     @api.model
     def create(self, vals):
-        if 'programa_id' not in vals and vals.get('location_id'):
-            parent_location = self.browse(vals['location_id'])
-            parent_programa = parent_location.get_programa()
-            if parent_programa:
-                vals['programa_id'] = parent_programa.id
+        # Si se está creando una ubicación vista y tiene un warehouse_id
+        if vals.get('usage') == 'view' and vals.get('warehouse_id'):
+            warehouse = self.env['stock.warehouse'].browse(vals['warehouse_id'])
+            if warehouse.programa_id:
+                vals['programa_id'] = warehouse.programa_id.id
         return super(StockLocation, self).create(vals)
 
     def write(self, vals):

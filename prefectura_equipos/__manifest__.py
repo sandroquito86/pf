@@ -22,19 +22,18 @@
 
     # any module necessary for this one to work correctly
     #'depends': ['base','asset','th_gestion_hr'],
-    'depends': ['base','web','mail','crnd_web_field_domain','hr'],    
+    'depends': ['base','web','mail','crnd_web_field_domain','hr','manzana_de_cuidados'],    
     'demo': [],
 
     # always loaded
-    'data': [
-    #data
-        # 'data/asset_catalogo_data.xml',    
-        # 'data/asset_historico.xml',            
-        # 'data/pg_equipos_marca_modelo_tics.xml',
-        # 'data/pg_equipos_marca_comunicacion.xml',
-        # 'data/pg_equipos_modelo_comunicacion.xml',
-        # 'data/asset_categoria_data.xml',         
-        # 'data/asset_data.xml',   
+    'data': [   
+        'data/pg_equipo_marca_data.xml',
+        'data/pg_equipo_modelo_data.xml', 
+        'data/pg_equipo_categorizacion_grupo_data.xml', 
+        'data/pg_equipo_categorizacion_categoria_data.xml', 
+        'data/pg_equipo_categorizacion_nom_equipo_data.xml', 
+        
+        
     # #security
         'security/security_grupos.xml',
         'security/security_equipos_generales.xml',
@@ -62,21 +61,10 @@
   
                      
     # # vistas de activos               
-        'views/equipos/pg_equipos_mis_equipos_view.xml',
         'views/equipos/pg_equipos_equipos_view.xml',   
     #     'views/board_views.xml',    
 
-    # # Operaciones              
-    #     # 'views/operaciones/asset_transferencia_interna.xml',
-        
-     
-            
-    # # Wizard  
-    #     # 'wizard/asset_mis_activos_wizard.xml',     
-     
-    #     # 'wizard/asset_caracteristica_report_view.xml',       
-    # # Reportes 
-    #     'report/asset_mis_activos_report.xml',   
+
               
     ],
     'assets': {

@@ -18,24 +18,48 @@ class PfProgramas(models.Model):
     def _create_inventory_structure(self):
         self.ensure_one()
         WarehouseObj = self.env['stock.warehouse']
+        
         # Crear almacén con nombre descriptivo
         warehouse_name = f"{self.name} (ALMACÉN)"
         warehouse_vals = {
             'name': warehouse_name,
-            'code': self.sigla[:5],  # Limitamos a 5 caracteres para evitar problemas
+            'code': self.sigla[:5],
             'company_id': self.sucursal_id.company_id.id,
-            'programa_id': self.id,  # Asociamos el almacén al programa
+            'programa_id': self.id,
         }
         warehouse = WarehouseObj.create(warehouse_vals)
         
-        # Actualizar el nombre de la ubicación de existencias
+        # Obtener la ubicación vista (parent location) del almacén
+        view_location = self.env['stock.location'].search([
+            ('warehouse_id', '=', warehouse.id),
+            ('usage', '=', 'view'),
+            ('location_id', '=', False)  # Ubicación padre de nivel superior
+        ], limit=1)
+        
+        if view_location:
+            view_location.write({
+                'programa_id': self.id,
+                'name': warehouse_name
+            })
+        
+        # Actualizar la ubicación de existencias
         stock_location = warehouse.lot_stock_id
         stock_location.write({
             'name': 'Existencias',
             'programa_id': self.id,
         })
-        # Actualizar el nombre completo de la ubicación
-        stock_location._compute_complete_name()
+        
+        # Actualizar todas las demás ubicaciones relacionadas
+        location_ids = self.env['stock.location'].search([
+            ('warehouse_id', '=', warehouse.id)
+        ])
+        location_ids.write({
+            'programa_id': self.id,
+        })
+        
+        # Actualizar nombres completos
+        location_ids._compute_complete_name()
+        
         return True
 
     def write(self, vals):

@@ -72,6 +72,8 @@
         </record>
 
         <menuitem name="Configuración de características de Equipos" id="menu_action_pg_equipos_configuracion_caracteristica" parent="menu_configuracion_caracteristicas" action="action_pg_equipos_configuracion_caracteristica" sequence="20" />
+        <menuitem name="Configuración de características de Equipos" id="menu_action_mc_equipos_configuracion_caracteristica" parent="mc_menu_config_carac_generales_equipos" action="action_pg_equipos_configuracion_caracteristica" sequence="20" />
+
 
     </data>
 </odoo>

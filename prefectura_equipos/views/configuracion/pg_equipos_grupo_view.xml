@@ -25,9 +25,8 @@
 
                         </group>
                         <group>
-                            <field name="categoria_ids"  context="{'form_view_ref': 'prefectura_equipos.view_pg_equipos_categoria_form2'}">
+                            <field name="categoria_ids" context="{'form_view_ref': 'prefectura_equipos.view_pg_equipos_categoria_form2'}">
                                 <tree>
-                                    <field name="abreviatura"/>
                                     <field name="name"/>
                                     <field name="marca_ids" widget="many2many_tags" />
                                     <field name="active" widget="boolean_toggle"/>
@@ -78,6 +77,8 @@
         </record>
 
         <menuitem name="Grupos" id="menu_pg_equipos_grupos" action="action_view_pg_equipos_grupo" parent="menu_configuracion_categorizacion" sequence="10"/>
+        <menuitem name="Grupos" id="menu_mc_equipos_grupos" action="action_view_pg_equipos_grupo" parent="mc_menu_config_categorizacion_equipos" sequence="10"/>
+
 
 
     </data>

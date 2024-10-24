@@ -12,32 +12,33 @@ class Equipos(models.Model):
         
    
     
-    name = fields.Char(string='Nombre del Equipo', required=True)
-    warranty_start_date = fields.Date('Inicio de Garantía', tracking=True)
-    start_date = fields.Date('Fecha de puesta en producción', tracking=True)
-    sigla = fields.Char(string='Sigla')  
-    programa_id = fields.Many2one(string='Reparto', comodel_name='pf.programas', ondelete='restrict', required=True,
-                                 default=lambda s: s.env.company.id) 
+    name = fields.Char(string='Nombre del Equipo', compute='_compute_name', store=True, tracking=True)
     grupo_id = fields.Many2one(string='Grupo', comodel_name='pg_equipos.grupo', required=True, ondelete='restrict', tracking=True, )    
     categoria_id = fields.Many2one(string='Categoria', comodel_name='pg_equipos.categoria', ondelete='restrict', required=True,tracking=True )   
-    tipo_id = fields.Many2one(string='Nombre del equipo', comodel_name='pg_equipos.nombre_equipo', ondelete='restrict', required=True,tracking=True )  
+    nombre_equipo = fields.Many2one(string='Nombre del equipo', comodel_name='pg_equipos.nombre_equipo', ondelete='restrict', required=True,tracking=True )  
     serial = fields.Char('Serial no.', size=64,tracking=True)
+    inicio_garantia = fields.Date('Inicio de Garantía', tracking=True)
+    start_date = fields.Date('Fecha de puesta en producción', tracking=True)
+    programa_id = fields.Many2one(string='Programa', comodel_name='pf.programas', ondelete='restrict', required=True,
+                                 default=lambda s: s.env.programa_id) 
+    empleado_id = fields.Many2one('hr.employee', domain="[('programa_id','!=',False),('programa_id','=',programa_id)]", string='Responsable del Equipo', tracking=True)    
+    user_id = fields.Many2one('res.users', 'Usuario', related='empleado_id.user_id', readonly=True, store=True,)  
+   
     pg_marca_id_domain = fields.Char ( compute = "_compute_pg_marca_id_domain" , readonly = True, store = False, )
-    image_medium = fields.Binary("Medium-sized image")
+    image = fields.Binary("Image", attachment=True)
+    image_medium = fields.Binary("Medium-sized image", attachment=True)
+    image_small = fields.Binary("Small-sized image", attachment=True)
     marca_id = fields.Many2one(string='Marca', comodel_name='pg_equipos.marca', ondelete='restrict',required=True, tracking=True)    
     modelo_id = fields.Many2one(string='Modelo', comodel_name='pg_equipos.modelo', ondelete='restrict',required=True, tracking=True)      
-    company_id = fields.Many2one('pf.programas', 'Company', required=True, default=lambda s: s.env.company.id, index=True,)  
-    departamento_id = fields.Many2one(string='Departamento', comodel_name='hr.department', ondelete='restrict', 
-                                      domain="[('company_id','=',programa_id)]",)
-    empleado_id = fields.Many2one('hr.employee', domain="[('company_id','!=',False),('company_id','=',programa_id)]", string='Responsable del Activo', required=True, tracking=True)                                                                                                
-    user_id = fields.Many2one('res.users', 'Usuario', related='empleado_id.user_id', readonly=True, store=True,)       
+                                                                                                
+         
     estado_id = fields.Selection(string='Estado', selection=[('op', 'Operativo'), ('mant', 'Mantenimiento'),('op_lim_men', 'Operativo con limitaciones menores'),
                                                              ('op_lim_may', 'Operativo con limitaciones mayores'), ('no_op', 'No operativo')],tracking=True)
     detalle_caracteristicas_ids = fields.One2many('pg_equipos.det_caracteristica', 'pg_equipos_id', 'Características de activos',) 
     #MODIFICACION DE CAMPOS EXISTENTES       @api.model
-    warranty_start_date = fields.Date('Inicio de Garantía', tracking=True)
-    purchase_date = fields.Date('Fecha de Adquisiciòn', required=True, tracking=True )
-    warranty_end_date = fields.Date('Fin de Garantía', tracking=True)  
+    
+    fecha_adquisicion = fields.Date('Fecha de Adquisiciòn', required=True, tracking=True )
+    fin_garantia = fields.Date('Fin de Garantía', tracking=True)  
     maintenance_date = fields.Datetime(string='Fecha de Mantenimiento', tracking=True)
     tipo_activo = fields.Selection(string='Tipo de activo', selection=[('ordinario', 'Ordinario'), ('estrategico', 'Estratégico')],default='ordinario') 
     
@@ -49,7 +50,29 @@ class Equipos(models.Model):
     _sql_constraints = [('name_unique', 'UNIQUE(name)',"Nombre  del activo debe ser único!!"),
                         ('pg_equipos_number_serie', 'UNIQUE(serial)',"Serial ingresado ya existe!!"),
                         ] 
-    
+
+    @api.depends('nombre_equipo', 'marca_id', 'modelo_id', 'serial')
+    def _compute_name(self):
+        for record in self:
+            # Inicializar partes del nombre
+            partes_nombre = []            
+            # Agregar tipo si existe
+            if record.nombre_equipo:
+                partes_nombre.append(record.nombre_equipo.name)            
+            # Agregar marca si existe
+            if record.marca_id:
+                partes_nombre.append(record.marca_id.name)            
+            # Agregar modelo si existe
+            if record.modelo_id:
+                partes_nombre.append(record.modelo_id.name)            
+            # Agregar serial si existe
+            if record.serial:
+                partes_nombre.append(f"[{record.serial}]")            
+            # Unir todas las partes con espacios
+            record.name = " - ".join(filter(None, partes_nombre))            
+            # Si no hay ningún dato, poner un valor por defecto
+            if not record.name:
+                record.name = "Nuevo Equipo"    
     
     @api.constrains('name','serial')
     def _check_pg_equipos_number(self):       
@@ -90,12 +113,12 @@ class Equipos(models.Model):
     @api.onchange('categoria_id')
     def _onchange_categoria_id(self):
       for record in self:
-        self.tipo_id = False    
+        self.nombre_equipo = False    
     
-    @api.onchange('tipo_id')
-    def _onchange_tipo_id(self):
+    @api.onchange('nombre_equipo')
+    def _onchange_nombre_equipo(self):
       for record in self:
-        if(record.tipo_id):
+        if(record.nombre_equipo):
           caracteristicas = self.env['pg_equipos.config_caracteristica'].search([('grupo_id','=',record.grupo_id.id)],limit=1).caracteristica_ids   
           caracteristica_obligatorio = caracteristicas.filtered(lambda valor: valor.es_obligatorio == True)  
           record.detalle_caracteristicas_ids = False        
@@ -103,12 +126,12 @@ class Equipos(models.Model):
             self.detalle_caracteristicas_ids = [(0, 0,  { 'caracteristica_id':linea.caracteristica_id})]
             
       
-    @api.depends('tipo_id.abreviatura','marca_id.name','modelo_id.name','serial')
+    @api.depends('nombre_equipo','marca_id.name','modelo_id.name','serial')
     def _concatenar_nombre_activo(self):
       for line in self: 
         _nombre = ""        
-        if line.tipo_id:
-          _nombre=str(line.tipo_id.abreviatura.upper())                  
+        if line.nombre_equipo:
+          _nombre=str(line.nombre_equipo.upper())                  
         if line.marca_id:          
           _nombre += "-" + str(line.marca_id.name.upper())
         if line.modelo_id:          
@@ -127,14 +150,29 @@ class Equipos(models.Model):
     def _onchange_programa_id(self):
         self.empleado_id = False
               
-    @api.model
-    def create(self, vals):                
-      result = super(Equipos, self).create(vals)       
-      return result     
-    
-    def write(self, values):      
-      result = super(Equipos, self).write(values)    
-      return result
+    @api.model_create_multi
+    def create(self, vals_list):
+        # Asegurar que vals_list sea una lista
+        if not isinstance(vals_list, list):
+            vals_list = [vals_list]
+        
+        for vals in vals_list:
+            # Si se proporciona una imagen, procesar los diferentes tamaños
+            if vals.get('image'):
+                image = vals['image']
+                vals['image_medium'] = image
+                vals['image_small'] = image
+
+        return super(Equipos, self).create(vals_list)
+
+    def write(self, vals):
+        # Si se actualiza la imagen, actualizar todos los tamaños
+        if vals.get('image'):
+            image = vals['image']
+            vals['image_medium'] = image
+            vals['image_small'] = image
+
+        return super(Equipos, self).write(vals)
    
     
     def ver_activos(self):
@@ -142,10 +180,10 @@ class Equipos(models.Model):
         if self.user_has_groups('prefectura_equipos.grupo_equipos_administrador_general') or self.user_has_groups('prefectura_equipos.grupo_equipos_registrador_general'):
           _condicion = [(1,'=',1)]
         elif self.user_has_groups('prefectura_equipos.grupo_equipos_registrador_sucursal'):
-          _condicion = [('programa_id','=',self.env.user.company_id.id)]  
+          _condicion = [('programa_id','=',self.env.user.programa_id.id)]  
         
         diccionario= {
-                        'name': ('Ingreso de Activos'),        
+                        'name': ('Equipos'),        
                         'domain': _condicion,
                         'res_model': 'pg_equipos.pg_equipos',
                         'views': [(self.env.ref('prefectura_equipos.pg_equiposs_tree_view').id, 'tree'),(self.env.ref('prefectura_equipos.pg_equiposs_form_view').id, 'form')],
@@ -161,9 +199,9 @@ class Equipos(models.Model):
         if self.user_has_groups('prefectura_equipos.grupo_equipos_administrador_general') or self.user_has_groups('prefectura_equipos.group_tecnico_general'):
           _condicion = [(1,'=',1)]
         elif self.user_has_groups('prefectura_equipos.group_tecnico_reparto'):
-          grupos = self.env['pg_equipos.permiso_acceso'].search([('programa_id','=',self.env.user.company_id.id)]).grupo_id
+          grupos = self.env['pg_equipos.permiso_acceso'].search([('programa_id','=',self.env.user.programa_id.id)]).grupo_id
           categoria = self.env['pg_equipos.permiso_acceso'].search([('grupo_id','in',grupos.ids)]).categoria_ids
-          _condicion = [('programa_id','=',self.env.user.company_id.id),('grupo_id','=',grupos.ids),('categoria_id','=',categoria.ids)]          
+          _condicion = [('programa_id','=',self.env.user.programa_id.id),('grupo_id','=',grupos.ids),('categoria_id','=',categoria.ids)]          
         diccionario= {
                         'name': ('Características Específicas y Componentes'),        
                         'domain': _condicion,
@@ -192,7 +230,7 @@ class DetalleCaracteristicaEquipo(models.Model):
     @api.depends('caracteristica_id')
     def _compute_caracteristica_id_domain(self):
       for record in self:        
-        all_caracteristicas= self.env['pg_equipos.config_caracteristica'].search([('tipo_id','=',record.pg_equipos_id.tipo_id.id)],limit=1).caracteristica_ids.caracteristica_id     
+        all_caracteristicas= self.env['pg_equipos.config_caracteristica'].search([('nombre_equipo','=',record.pg_equipos_id.nombre_equipo.id)],limit=1).caracteristica_ids.caracteristica_id     
         listado_caracteristicas = record.pg_equipos_id.detalle_caracteristicas_ids.caracteristica_id  
         restantes = all_caracteristicas - listado_caracteristicas        
         record.caracteristica_id_domain = json.dumps([('id' , 'in' , restantes.ids)])

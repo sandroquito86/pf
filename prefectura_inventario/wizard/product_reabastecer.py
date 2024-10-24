@@ -41,16 +41,11 @@ class ProductReplenish(models.TransientModel):
     @api.depends('warehouse_id')
     def _compute_location_id_domain(self):
         for record in self:
-            if self.env.user.has_group('stock.group_stock_manager') or \
-               self.env.user.has_group('prefectura_inventario.group_stock_program_manager'):
-                if record.warehouse_id:
-                    # Si se selecciona un almacén, mostrar sus ubicaciones internas
-                    record.location_id_domain = f"[('warehouse_id', '=', {record.warehouse_id.id}), ('usage', '=', 'internal')]"
-                else:
-                    # Si no se selecciona almacén, mostrar todas las ubicaciones internas
-                    record.location_id_domain = "[('usage', '=', 'internal')]"
+            if record.warehouse_id:
+                # Si hay un almacén seleccionado, mostrar solo sus ubicaciones internas
+                record.location_id_domain = f"[('warehouse_id', '=', {record.warehouse_id.id}), ('usage', '=', 'internal')]"
             else:
-                # Usuario regular: no ve ubicaciones
+                # Si no hay almacén seleccionado, no mostrar ubicaciones
                 record.location_id_domain = "[('id', '=', False)]"
 
     @api.model
@@ -91,7 +86,7 @@ class ProductReplenish(models.TransientModel):
     def _get_warehouse_domain(self):
         if self.env.user.has_group('stock.group_stock_manager'):
             return []  # Sin restricciones para administradores
-        elif self.env.user.has_group('your_module.group_stock_program_manager'):
+        elif self.env.user.has_group('prefectura_inventario.group_stock_program_manager'):
             user_programa = self.env.user.employee_id.programa_id
             if user_programa:
                 return [('programa_id', '=', user_programa.id)]

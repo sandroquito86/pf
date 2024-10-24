@@ -11,7 +11,7 @@ class MisActivosWizard(models.TransientModel):
     
     grupo_ids = fields.Many2many(string='Grupos',   comodel_name='pg_equipos.grupo', relation='asset_mis_activos_grupo_wizard_rel', column1='mis_activos', column2='grupo_id',)
     categoria_ids = fields.Many2many(string='Categorias',   comodel_name='pg_equipos.categoria', relation='asset_mis_activos_categoria_wizard_rel', column1='mis_activos', column2='categoria_id',)
-    tipo_ids = fields.Many2many(string='Tipo',   comodel_name='pg_equipos.nombre_equipo', relation='asset_mis_activos_categoria_tipo_wizard_rel', column1='mis_activos', column2='tipo_id',)
+    nombre_equipos = fields.Many2many(string='Tipo',   comodel_name='pg_equipos.nombre_equipo', relation='asset_mis_activos_categoria_tipo_wizard_rel', column1='mis_activos', column2='nombre_equipo',)
     
     
     

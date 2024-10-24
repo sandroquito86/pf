@@ -78,6 +78,7 @@
         </record>
 
         <menuitem name="Marca" action="action_pg_equipos_marca" id="menu_action_pg_equipos_marca" parent="menu_configuracion_catalogo" sequence="10" />
+        <menuitem name="Marca" action="action_pg_equipos_marca" id="menu_action_mc_equipos_marca" parent="mc_menu_config_catalogo_equipos" sequence="10" />
 
     </data>
 </odoo>

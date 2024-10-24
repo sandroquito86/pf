@@ -9,6 +9,23 @@
         <menuitem name="Categorización" id="menu_configuracion_categorizacion" parent="pg_equipos_configuracion" sequence="20"/>
         <menuitem name="Características Generales" id="menu_configuracion_caracteristicas" parent="pg_equipos_configuracion" sequence="30"/>
 
+
+        <!-- MENU PARA MANZANA DE CUIDADOS -->
+        <!-- CONFIGURACION -->
+        <menuitem name="Catálogo Equipos" id="mc_menu_config_catalogo_equipos" parent="manzana_de_cuidados.menu_configuracion" groups="grupo_equipos_administrador_general" sequence="100"/>
+        <menuitem name="Categorización Equipos" id="mc_menu_config_categorizacion_equipos" parent="manzana_de_cuidados.menu_configuracion" groups="grupo_equipos_administrador_general" sequence="200"/>
+        <menuitem name="Características Generales Equipos" id="mc_menu_config_carac_generales_equipos" parent="manzana_de_cuidados.menu_configuracion" groups="grupo_equipos_administrador_general" sequence="300"/>
+
+        <!-- REGISTRO -->
+
+
+
+
+
+
+
+
+
         <!-- <menuitem name="Reportes" id="asset_menu_reportes" parent="asset_menu_mro_root" groups="grupo_equipos_administrador" sequence="20"/> -->
         <!-- <menuitem name="Operaciones" id="menu_configuracion_operaciones" parent="asset_menu_mro_root" groups="grupo_equipos_administrador" sequence="20"/>
 

@@ -1,0 +1,239 @@
+<odoo>
+    <data>
+        <!-- Modelos LG -->
+        <record id="modelo_lg_wm01" model="pg_equipos.modelo">
+            <field name="name">WT7800CW</field>
+            <field name="marca_id" ref="marca_lg"/>
+        </record>
+
+        <record id="modelo_lg_wm02" model="pg_equipos.modelo">
+            <field name="name">WM3400CW</field>
+            <field name="marca_id" ref="marca_lg"/>
+        </record>
+
+        <record id="modelo_lg_wm03" model="pg_equipos.modelo">
+            <field name="name">WM4200HWA</field>
+            <field name="marca_id" ref="marca_lg"/>
+        </record>
+
+        <!-- Modelos Samsung -->
+        <record id="modelo_samsung_wm01" model="pg_equipos.modelo">
+            <field name="name">WF45T6000AW</field>
+            <field name="marca_id" ref="marca_samsung"/>
+        </record>
+
+        <record id="modelo_samsung_wm02" model="pg_equipos.modelo">
+            <field name="name">WA50R5400AV</field>
+            <field name="marca_id" ref="marca_samsung"/>
+        </record>
+
+        <record id="modelo_samsung_wm03" model="pg_equipos.modelo">
+            <field name="name">WF45R6300AV</field>
+            <field name="marca_id" ref="marca_samsung"/>
+        </record>
+
+        <!-- Modelos Whirlpool -->
+        <record id="modelo_whirlpool_wm01" model="pg_equipos.modelo">
+            <field name="name">WTW4955HW</field>
+            <field name="marca_id" ref="marca_whirlpool"/>
+        </record>
+
+        <record id="modelo_whirlpool_wm02" model="pg_equipos.modelo">
+            <field name="name">WFW5620HW</field>
+            <field name="marca_id" ref="marca_whirlpool"/>
+        </record>
+
+        <record id="modelo_whirlpool_wm03" model="pg_equipos.modelo">
+            <field name="name">WTW7120HW</field>
+            <field name="marca_id" ref="marca_whirlpool"/>
+        </record>
+
+        <!-- Modelos Mabe -->
+        <record id="modelo_mabe_wm01" model="pg_equipos.modelo">
+            <field name="name">LMD74200WDAB0</field>
+            <field name="marca_id" ref="marca_mabe"/>
+        </record>
+
+        <record id="modelo_mabe_wm02" model="pg_equipos.modelo">
+            <field name="name">LMD72200WDAB0</field>
+            <field name="marca_id" ref="marca_mabe"/>
+        </record>
+
+        <record id="modelo_mabe_wm03" model="pg_equipos.modelo">
+            <field name="name">LMD76200WDAB0</field>
+            <field name="marca_id" ref="marca_mabe"/>
+        </record>
+
+        <!-- Modelos Electrolux -->
+        <record id="modelo_electrolux_wm01" model="pg_equipos.modelo">
+            <field name="name">EFLS627UTT</field>
+            <field name="marca_id" ref="marca_electrolux"/>
+        </record>
+
+        <record id="modelo_electrolux_wm02" model="pg_equipos.modelo">
+            <field name="name">EFLS527UIW</field>
+            <field name="marca_id" ref="marca_electrolux"/>
+        </record>
+
+        <record id="modelo_electrolux_wm03" model="pg_equipos.modelo">
+            <field name="name">EFLS617STT</field>
+            <field name="marca_id" ref="marca_electrolux"/>
+        </record>
+
+        <!-- Modelos Bosch -->
+        <record id="modelo_bosch_wm01" model="pg_equipos.modelo">
+            <field name="name">WAT28400UC</field>
+            <field name="marca_id" ref="marca_bosch"/>
+        </record>
+
+        <record id="modelo_bosch_wm02" model="pg_equipos.modelo">
+            <field name="name">WAW285H2UC</field>
+            <field name="marca_id" ref="marca_bosch"/>
+        </record>
+
+        <record id="modelo_bosch_wm03" model="pg_equipos.modelo">
+            <field name="name">WAT28402UC</field>
+            <field name="marca_id" ref="marca_bosch"/>
+        </record>
+
+        <!-- Modelos Panasonic -->
+        <record id="modelo_panasonic_wm01" model="pg_equipos.modelo">
+            <field name="name">NA-F70S7</field>
+            <field name="marca_id" ref="marca_panasonic"/>
+        </record>
+
+        <record id="modelo_panasonic_wm02" model="pg_equipos.modelo">
+            <field name="name">NA-F80B5</field>
+            <field name="marca_id" ref="marca_panasonic"/>
+        </record>
+
+        <!-- Modelos Daewoo -->
+        <record id="modelo_daewoo_wm01" model="pg_equipos.modelo">
+            <field name="name">DWF-DG1B386CSG</field>
+            <field name="marca_id" ref="marca_daewoo"/>
+        </record>
+
+        <record id="modelo_daewoo_wm02" model="pg_equipos.modelo">
+            <field name="name">DWF-DG2B386CSD</field>
+            <field name="marca_id" ref="marca_daewoo"/>
+        </record>
+
+        <!-- Modelos Frigidaire -->
+        <record id="modelo_frigidaire_wm01" model="pg_equipos.modelo">
+            <field name="name">FFRE4120SW</field>
+            <field name="marca_id" ref="marca_frigidaire"/>
+        </record>
+
+        <record id="modelo_frigidaire_wm02" model="pg_equipos.modelo">
+            <field name="name">FFRE4220SW</field>
+            <field name="marca_id" ref="marca_frigidaire"/>
+        </record>
+
+        <!-- Modelos Maytag -->
+        <record id="modelo_maytag_wm01" model="pg_equipos.modelo">
+            <field name="name">MVW6200KW</field>
+            <field name="marca_id" ref="marca_maytag"/>
+        </record>
+
+        <record id="modelo_maytag_wm02" model="pg_equipos.modelo">
+            <field name="name">MVW7232HW</field>
+            <field name="marca_id" ref="marca_maytag"/>
+        </record>
+
+        <!-- Modelos GE -->
+        <record id="modelo_ge_wm01" model="pg_equipos.modelo">
+            <field name="name">GTW465ASNWW</field>
+            <field name="marca_id" ref="marca_ge"/>
+        </record>
+
+        <record id="modelo_ge_wm02" model="pg_equipos.modelo">
+            <field name="name">GTW685BSLWS</field>
+            <field name="marca_id" ref="marca_ge"/>
+        </record>
+        <!-- archivo: modelo_data.xml -->
+
+        <!-- Modelos Informáticos -->
+        <!-- HP -->
+        <record id="modelo_hp_laptop1" model="pg_equipos.modelo">
+            <field name="name">ProBook 450 G8</field>
+            <field name="marca_id" ref="marca_hp"/>
+        </record>
+
+        <record id="modelo_hp_laptop2" model="pg_equipos.modelo">
+            <field name="name">EliteBook 840 G8</field>
+            <field name="marca_id" ref="marca_hp"/>
+        </record>
+
+        <!-- Dell -->
+        <record id="modelo_dell_laptop1" model="pg_equipos.modelo">
+            <field name="name">Latitude 5420</field>
+            <field name="marca_id" ref="marca_dell"/>
+        </record>
+
+        <record id="modelo_dell_laptop2" model="pg_equipos.modelo">
+            <field name="name">Precision 5560</field>
+            <field name="marca_id" ref="marca_dell"/>
+        </record>
+
+        <!-- Lenovo -->
+        <record id="modelo_lenovo_laptop1" model="pg_equipos.modelo">
+            <field name="name">ThinkPad T14</field>
+            <field name="marca_id" ref="marca_lenovo"/>
+        </record>
+
+        <!-- Herramientas Eléctricas -->
+        <!-- Bosch -->
+        <record id="modelo_bosch_taladro1" model="pg_equipos.modelo">
+            <field name="name">GSB 18V-50</field>
+            <field name="marca_id" ref="marca_bosch"/>
+        </record>
+
+        <record id="modelo_bosch_amoladora" model="pg_equipos.modelo">
+            <field name="name">GWS 850</field>
+            <field name="marca_id" ref="marca_bosch"/>
+        </record>
+
+        <!-- DeWalt -->
+        <record id="modelo_dewalt_taladro1" model="pg_equipos.modelo">
+            <field name="name">DCD777C2</field>
+            <field name="marca_id" ref="marca_dewalt"/>
+        </record>
+
+        <!-- Equipos de Seguridad -->
+        <!-- Hikvision -->
+        <record id="modelo_hikvision_cam1" model="pg_equipos.modelo">
+            <field name="name">DS-2CD2143G2-I</field>
+            <field name="marca_id" ref="marca_hikvision"/>
+        </record>
+
+        <record id="modelo_hikvision_nvr" model="pg_equipos.modelo">
+            <field name="name">DS-7608NI-K2/8P</field>
+            <field name="marca_id" ref="marca_hikvision"/>
+        </record>
+
+        <!-- Equipos de Red -->
+        <!-- Cisco -->
+        <record id="modelo_cisco_switch1" model="pg_equipos.modelo">
+            <field name="name">Catalyst 2960-X</field>
+            <field name="marca_id" ref="marca_cisco"/>
+        </record>
+
+        <record id="modelo_cisco_router1" model="pg_equipos.modelo">
+            <field name="name">ISR 4321</field>
+            <field name="marca_id" ref="marca_cisco"/>
+        </record>
+
+        <!-- UPS -->
+        <!-- APC -->
+        <record id="modelo_apc_ups1" model="pg_equipos.modelo">
+            <field name="name">Smart-UPS 1500VA</field>
+            <field name="marca_id" ref="marca_apc"/>
+        </record>
+
+        <record id="modelo_apc_ups2" model="pg_equipos.modelo">
+            <field name="name">Back-UPS 800VA</field>
+            <field name="marca_id" ref="marca_apc"/>
+        </record>
+
+    </data>
+</odoo>

@@ -39,6 +39,7 @@ Long description of module's purpose
         'views/stock/stock_ubicaciones_view.xml',
         'views/stock/stock_conf_tipo_operacion.xml',
         'views/stock/stock_tipo_operacion_view.xml',
+        'views/stock/stock_reabastecimineto_view.xml',
         'views/stock/stock_regla_almacenamiento_view.xml',
         'views/stock/stock_regla_reordenamiento_view.xml', 
         'views/stock/stock_product_view.xml', 

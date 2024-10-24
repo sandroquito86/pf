@@ -5,7 +5,6 @@
             <field name="model">pg_equipos.categoria</field>
             <field name="arch" type="xml">
                 <search string="Busqueda Categorías">
-                    <field name="abreviatura" />
                     <field name="name" />
                     <group>
                         <filter name="grupo" string="Agrupar por Grupo" context="{'group_by': 'grupo_id' }" />
@@ -20,7 +19,6 @@
             <field name="model">pg_equipos.categoria</field>
             <field name="arch" type="xml">
                 <tree string="Asset Tags">
-                    <field name="abreviatura" />
                     <field name="name" string="Categorìa"/>
                     <field name="grupo_id" />
                     <field name="marca_ids" widget="many2many_tags" />
@@ -42,24 +40,16 @@
                 <form string="NUEVO">
                     <sheet>
                         <group>
-                            <group colspan="2">
+                            <group>
                                 <field name="grupo_id" context="{'form_view_ref': 'prefectura_equipos.view_asset_grupo_form2'}" placeholder="Seleccione el grupo al que pertenece la categoría" />
-                            </group>
-                            <group>
-                                <field name="abreviatura" placeholder="Escriba la abreviatura de la categoría" style="text-transform: uppercase;" />
-                            </group>
-                            <group>
                                 <field name="name" placeholder="Escriba el nombre de la categoría"/>
-                            </group>
+                                 <field name="descripcion" placeholder="Escriba una breve descripción de la categoría"/>                              
+                            </group>                                                       
                             <group colspan="2">
-                                <field name="descripcion" placeholder="Escriba una breve descripción de la categoría"/>
-                                <field name="marca_ids" placeholder="Seleccione las MARCAS a usar para esta categoría" widget="many2many_tags" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"></field>
-                                <field name="active" widget="boolean_toggle"/>
-                            </group>
-                            <group colspan="2">
-                                <field name="tipo_ids">
+                            <field name="marca_ids" placeholder="Seleccione las MARCAS a usar para esta categoría" widget="many2many_tags" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"></field>
+                                <field name="active" widget="boolean_toggle"/>     
+                                <field name="nombre_equipos">
                                     <tree editable="top">
-                                        <field name="abreviatura" />
                                         <field name="name" />
                                         <field name="active" widget="boolean_toggle"/>
                                     </tree>
@@ -83,7 +73,6 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="abreviatura" placeholder="Escriba la abreviatura de la categoría" style="text-transform: uppercase;" />
                                 <field name="name" placeholder="Escriba el nombre de la categoría"/>
                             </group>
                             <group>
@@ -94,9 +83,8 @@
                                 <field name="marca_ids" placeholder="Seleccione las MARCAS a usar para esta categoría" widget="many2many_tags" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"></field>
                             </group>
                             <group colspan="2">
-                                <field name="tipo_ids">
+                                <field name="nombre_equipos">
                                     <tree editable="top">
-                                        <field name="abreviatura" />
                                         <field name="name" />
                                         <field name="active" widget="boolean_toggle"/>
                                     </tree>
@@ -116,5 +104,7 @@
         </record>
 
         <menuitem name="Categorías" id="menu_pg_equipos_categoria" action="action_pg_equipos_categoria" parent="menu_configuracion_categorizacion" sequence="20"/>
+        <menuitem name="Categorías" id="menu_mc_equipos_categoria" action="action_pg_equipos_categoria" parent="mc_menu_config_categorizacion_equipos" sequence="20"/>
+
     </data>
 </odoo>

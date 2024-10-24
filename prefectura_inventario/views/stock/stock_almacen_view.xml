@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>       
+    <data>
 
-        
+       
+
+   
         <!-- Modificar la vista de formulario para incluir el campo programa_id -->
         <record id="view_warehouse_inherited" model="ir.ui.view">
             <field name="name">stock.warehouse.inherited</field>
@@ -12,18 +14,16 @@
                 <xpath expr="//field[@name='code']" position="after">
                     <field name="adm"/>
                     <field name="programa_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" readonly="not adm" force_save="1"/>
-                </xpath>
-                <xpath expr="//page[@name='warehouse_config']" position="attributes">
+                </xpath>              
+              
+                <xpath expr="//page[@name='technical_info']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-
-                <!-- Ocultar campos relacionados con rutas en la vista general -->
-                <xpath expr="//field[@name='delivery_steps']" position="attributes">
+                 <xpath expr="//page[@name='warehouse_config']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-                <xpath expr="//field[@name='reception_steps']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
+                
+                
 
                 <xpath expr="//button[@name='action_view_all_routes']" position="attributes">
                     <attribute name="invisible">1</attribute>

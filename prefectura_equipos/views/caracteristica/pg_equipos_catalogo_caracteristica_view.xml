@@ -89,6 +89,7 @@
         </record>
 
         <menuitem name="Catálogo de características" id="menu_action_pg_equipos_catalogo_caracteristica" parent="menu_configuracion_caracteristicas" action="action_pg_equipos_catalogo_caracteristica" sequence="10" />
+        <menuitem name="Catálogo de características" id="menu_action_mc_equipos_catalogo_caracteristica" parent="mc_menu_config_carac_generales_equipos" action="action_pg_equipos_catalogo_caracteristica" sequence="10" />
 
     </data>
 </odoo>

@@ -1,0 +1,190 @@
+<odoo>
+    <data>
+        <!-- Categorías para Grupo Informático -->
+        <record id="categoria_computadora" model="pg_equipos.categoria">
+            <field name="name">Computadora</field>
+            <field name="grupo_id" ref="grupo_informatico"/>
+            <field name="descripcion">Equipos de computación como laptops y computadoras de escritorio</field>
+        </record>
+
+        <record id="categoria_impresora" model="pg_equipos.categoria">
+            <field name="name">Impresora</field>
+            <field name="grupo_id" ref="grupo_informatico"/>
+            <field name="descripcion">Dispositivos para impresión de documentos</field>
+            <field name="marca_ids" eval="[(6, 0, [ref('marca_panasonic'), ref('marca_samsung')])]"/>
+        </record>
+
+        <!-- Categorías para Grupo Electrodoméstico -->
+        <record id="categoria_lavadora" model="pg_equipos.categoria">
+            <field name="name">Lavadora</field>
+            <field name="grupo_id" ref="grupo_electrodomestico"/>
+            <field name="descripcion">Máquinas para lavado de ropa</field>
+            <field name="marca_ids" eval="[(6, 0, [
+        ref('marca_lg'),
+        ref('marca_samsung'),
+        ref('marca_whirlpool'),
+        ref('marca_mabe'),
+        ref('marca_electrolux'),
+        ref('marca_bosch'),
+        ref('marca_panasonic'),
+        ref('marca_daewoo'),
+        ref('marca_frigidaire'),
+        ref('marca_maytag')
+    ])]"/>
+        </record>
+
+        <record id="categoria_refrigeradora" model="pg_equipos.categoria">
+            <field name="name">Refrigeradora</field>
+            <field name="grupo_id" ref="grupo_electrodomestico"/>
+            <field name="descripcion">Equipos de refrigeración doméstica</field>
+            <field name="marca_ids" eval="[(6, 0, [
+        ref('marca_lg'),
+        ref('marca_samsung'),
+        ref('marca_whirlpool'),
+        ref('marca_mabe'),
+        ref('marca_electrolux'),
+        ref('marca_frigidaire'),
+        ref('marca_maytag')
+    ])]"/>
+        </record>
+
+        <!-- Categorías para Grupo Climatización -->
+        <record id="categoria_aire_acondicionado" model="pg_equipos.categoria">
+            <field name="name">Aire Acondicionado</field>
+            <field name="grupo_id" ref="grupo_climatizacion"/>
+            <field name="descripcion">Sistemas de aire acondicionado</field>
+            <field name="marca_ids" eval="[(6, 0, [
+        ref('marca_lg'),
+        ref('marca_samsung'),
+        ref('marca_panasonic'),
+        ref('marca_daewoo')
+    ])]"/>
+        </record>
+
+        <!-- Categorías para Grupo Audiovisual -->
+        <record id="categoria_television" model="pg_equipos.categoria">
+            <field name="name">Televisor</field>
+            <field name="grupo_id" ref="grupo_audiovisual"/>
+            <field name="descripcion">Televisores y pantallas</field>
+            <field name="marca_ids" eval="[(6, 0, [
+        ref('marca_lg'),
+        ref('marca_samsung'),
+        ref('marca_panasonic')
+    ])]"/>
+        </record>
+
+        <!-- Categorías para Grupo Comunicación -->
+        <record id="categoria_telefono" model="pg_equipos.categoria">
+            <field name="name">Teléfono</field>
+            <field name="grupo_id" ref="grupo_comunicacion"/>
+            <field name="descripcion">Equipos telefónicos</field>
+            <field name="marca_ids" eval="[(6, 0, [
+        ref('marca_panasonic'),
+        ref('marca_samsung')
+    ])]"/>
+        </record>
+
+        <!-- Categorías para Grupo Seguridad -->
+        <record id="categoria_camara" model="pg_equipos.categoria">
+            <field name="name">Cámara de Seguridad</field>
+            <field name="grupo_id" ref="grupo_seguridad"/>
+            <field name="descripcion">Sistemas de videovigilancia</field>
+            <field name="marca_ids" eval="[(6, 0, [ref('marca_panasonic'), ref('marca_samsung')])]"/>
+        </record>
+
+        <!-- Categorías para Grupo Industrial -->
+        <record id="categoria_compresor" model="pg_equipos.categoria">
+            <field name="name">Compresor</field>
+            <field name="grupo_id" ref="grupo_industrial"/>
+            <field name="descripcion">Compresores de aire industrial</field>
+            <field name="marca_ids" eval="[(6, 0, [ref('marca_bosch')])]"/>
+        </record>
+
+        <!-- Categorías para Grupo Oficina -->
+        <record id="categoria_fotocopiadora" model="pg_equipos.categoria">
+            <field name="name">Fotocopiadora</field>
+            <field name="grupo_id" ref="grupo_oficina"/>
+            <field name="descripcion">Equipos de fotocopiado</field>
+            <field name="marca_ids" eval="[(6, 0, [ref('marca_panasonic'), ref('marca_samsung')])]"/>
+        </record>
+
+        <!-- Categorías para Grupo Herramientas -->
+        <record id="categoria_herramienta_electrica" model="pg_equipos.categoria">
+            <field name="name">Herramienta Eléctrica</field>
+            <field name="grupo_id" ref="grupo_herramientas"/>
+            <field name="descripcion">Herramientas eléctricas profesionales</field>
+            <field name="marca_ids" eval="[(6, 0, [ref('marca_bosch')])]"/>
+        </record>
+
+        <!-- Categorías para Grupo Laboratorio -->
+        <record id="categoria_microscopio" model="pg_equipos.categoria">
+            <field name="name">Microscopio</field>
+            <field name="grupo_id" ref="grupo_laboratorio"/>
+            <field name="descripcion">Microscopios de laboratorio</field>
+        </record>
+
+        <!-- Categorías para Grupo Energía -->
+        <record id="categoria_ups" model="pg_equipos.categoria">
+            <field name="name">UPS</field>
+            <field name="grupo_id" ref="grupo_energia"/>
+            <field name="descripcion">Sistemas de alimentación ininterrumpida</field>
+        </record>
+        
+
+        <!-- Categorías Herramientas -->
+        <record id="categoria_herramienta_electrica" model="pg_equipos.categoria">
+            <field name="name">Herramienta Eléctrica</field>
+            <field name="grupo_id" ref="grupo_herramientas"/>
+            <field name="descripcion">Herramientas eléctricas profesionales</field>
+            <field name="marca_ids" eval="[(6, 0, [
+        ref('marca_bosch'),
+        ref('marca_dewalt'),
+        ref('marca_makita')
+    ])]"/>
+        </record>
+
+        <!-- Categorías Seguridad -->
+        <record id="categoria_cctv" model="pg_equipos.categoria">
+            <field name="name">CCTV</field>
+            <field name="grupo_id" ref="grupo_seguridad"/>
+            <field name="descripcion">Sistemas de video vigilancia</field>
+            <field name="marca_ids" eval="[(6, 0, [
+        ref('marca_hikvision'),
+        ref('marca_dahua')
+    ])]"/>
+        </record>
+
+        <!-- Categorías Comunicación -->
+        <record id="categoria_networking" model="pg_equipos.categoria">
+            <field name="name">Equipos de Red</field>
+            <field name="grupo_id" ref="grupo_comunicacion"/>
+            <field name="descripcion">Equipos de networking</field>
+            <field name="marca_ids" eval="[(6, 0, [
+        ref('marca_cisco'),
+        ref('marca_ubiquiti')
+    ])]"/>
+        </record>
+
+        <!-- Categorías Energía -->
+        <record id="categoria_ups" model="pg_equipos.categoria">
+            <field name="name">UPS</field>
+            <field name="grupo_id" ref="grupo_energia"/>
+            <field name="descripcion">Sistemas de alimentación ininterrumpida</field>
+            <field name="marca_ids" eval="[(6, 0, [
+        ref('marca_apc'),
+        ref('marca_eaton')
+    ])]"/>
+        </record>
+
+        <!-- Categorías Laboratorio -->
+        <record id="categoria_microscopio" model="pg_equipos.categoria">
+            <field name="name">Microscopio</field>
+            <field name="grupo_id" ref="grupo_laboratorio"/>
+            <field name="descripcion">Microscopios de laboratorio</field>
+            <field name="marca_ids" eval="[(6, 0, [
+        ref('marca_thermo'),
+        ref('marca_zeiss')
+    ])]"/>
+        </record>
+    </data>
+</odoo>

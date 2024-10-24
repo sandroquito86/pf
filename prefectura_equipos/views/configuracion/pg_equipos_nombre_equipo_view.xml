@@ -6,7 +6,6 @@
             <field name="model">pg_equipos.nombre_equipo</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="abreviatura" />
                     <field name="name" />
                     <field name="categoria_id" />
                 </tree>
@@ -20,15 +19,10 @@
                 <form string="NUEVO">
                     <sheet>
                         <group>
-                            <group colspan="2">
+                            <group>
                                 <field name="categoria_id" context="{'complete_name': 1}" placeholder="Seleccione una categoria" options="{'no_create_edit': True, 'no_open': True,'no_create': True}" />
-                            </group>
-                            <group>
-                                <field name="abreviatura" placeholder="Escriba abreviatura del tipo de activo.." />
-                                <field name="active" widget="boolean_toggle"/>
-                            </group>
-                            <group>
                                 <field name="name" placeholder="Escriba el nombre del tipo de activo.." />
+                                <field name="active" widget="boolean_toggle"/>
                             </group>
                         </group>
                         <div class="oe_chatter">
@@ -48,15 +42,10 @@
                 <form string="NUEVO">
                     <sheet>
                         <group>
-                            <group colspan="2">
+                            <group>
                                 <field name="categoria_id" invisible="1" placeholder="Seleccione una categoria" options="{'no_create_edit': True, 'no_open': True,'no_create': True}" />
-                            </group>
-                            <group>
-                                <field name="abreviatura" placeholder="Escriba abreviatura del tipo de activo.." />
-                                <field name="active" widget="boolean_toggle"/>
-                            </group>
-                            <group>
                                 <field name="name" placeholder="Escriba el nombre del tipo de activo.." />
+                                <field name="active" widget="boolean_toggle"/>
                             </group>
                         </group>
                         <div class="oe_chatter">
@@ -75,7 +64,6 @@
             <field name="arch" type="xml">
                 <search string="">
                     <field name="categoria_id" />
-                    <field name="abreviatura" />
                     <field name="name" />
                     <group>
                         <filter name="categoria" string="Agrupar por Categorìa" context="{'group_by': 'categoria_id' }" />
@@ -93,5 +81,7 @@
         </record>
 
         <menuitem name="Nombre del Equipo" id="menu_action_nombre_equipo" parent="menu_configuracion_categorizacion" action="action_nombre_equipo" sequence="30"/>
+        <menuitem name="Nombre del Equipo" id="menu_mc_conf_nombre_equipo" parent="mc_menu_config_categorizacion_equipos" action="action_nombre_equipo" sequence="30"/>
+
     </data>
 </odoo>

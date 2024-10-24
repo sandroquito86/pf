@@ -1,0 +1,151 @@
+<odoo>
+    <data>
+        <!-- archivo: marca_data.xml -->
+
+        <!-- Marcas Informáticas -->
+        <record id="marca_hp" model="pg_equipos.marca">
+            <field name="name">HP</field>
+        </record>
+
+        <record id="marca_dell" model="pg_equipos.marca">
+            <field name="name">Dell</field>
+        </record>
+
+        <record id="marca_lenovo" model="pg_equipos.marca">
+            <field name="name">Lenovo</field>
+        </record>
+
+        <record id="marca_acer" model="pg_equipos.marca">
+            <field name="name">Acer</field>
+        </record>
+
+        <record id="marca_asus" model="pg_equipos.marca">
+            <field name="name">Asus</field>
+        </record>
+
+        <!-- Marcas Electrodomésticos -->
+        <record id="marca_lg" model="pg_equipos.marca">
+            <field name="name">LG</field>
+        </record>
+
+        <record id="marca_samsung" model="pg_equipos.marca">
+            <field name="name">Samsung</field>
+        </record>
+
+        <record id="marca_whirlpool" model="pg_equipos.marca">
+            <field name="name">Whirlpool</field>
+        </record>
+
+        <record id="marca_mabe" model="pg_equipos.marca">
+            <field name="name">Mabe</field>
+        </record>
+
+        <!-- Marcas Herramientas -->
+        <record id="marca_bosch" model="pg_equipos.marca">
+            <field name="name">Bosch</field>
+        </record>
+
+        <record id="marca_dewalt" model="pg_equipos.marca">
+            <field name="name">DeWalt</field>
+        </record>
+
+        <record id="marca_makita" model="pg_equipos.marca">
+            <field name="name">Makita</field>
+        </record>
+
+        <!-- Marcas Seguridad -->
+        <record id="marca_hikvision" model="pg_equipos.marca">
+            <field name="name">Hikvision</field>
+        </record>
+
+        <record id="marca_dahua" model="pg_equipos.marca">
+            <field name="name">Dahua</field>
+        </record>
+
+        <!-- Marcas Comunicación -->
+        <record id="marca_cisco" model="pg_equipos.marca">
+            <field name="name">Cisco</field>
+        </record>
+
+        <record id="marca_ubiquiti" model="pg_equipos.marca">
+            <field name="name">Ubiquiti</field>
+        </record>
+
+        <!-- Marcas Energía -->
+        <record id="marca_apc" model="pg_equipos.marca">
+            <field name="name">APC</field>
+        </record>
+
+        <record id="marca_eaton" model="pg_equipos.marca">
+            <field name="name">Eaton</field>
+        </record>
+
+        <!-- Marcas Laboratorio -->
+        <record id="marca_thermo" model="pg_equipos.marca">
+            <field name="name">Thermo Fisher</field>
+        </record>
+
+        <record id="marca_zeiss" model="pg_equipos.marca">
+            <field name="name">Zeiss</field>
+        </record>
+        <record id="marca_lg" model="pg_equipos.marca">
+            <field name="name">LG</field>
+        </record>
+
+        <record id="marca_samsung" model="pg_equipos.marca">
+            <field name="name">Samsung</field>
+        </record>
+
+        <record id="marca_whirlpool" model="pg_equipos.marca">
+            <field name="name">Whirlpool</field>
+        </record>
+
+        <record id="marca_mabe" model="pg_equipos.marca">
+            <field name="name">Mabe</field>
+        </record>
+
+        <record id="marca_electrolux" model="pg_equipos.marca">
+            <field name="name">Electrolux</field>
+        </record>
+
+        <record id="marca_bosch" model="pg_equipos.marca">
+            <field name="name">Bosch</field>
+        </record>
+
+        <record id="marca_panasonic" model="pg_equipos.marca">
+            <field name="name">Panasonic</field>
+        </record>
+
+        <record id="marca_daewoo" model="pg_equipos.marca">
+            <field name="name">Daewoo</field>
+        </record>
+
+        <record id="marca_frigidaire" model="pg_equipos.marca">
+            <field name="name">Frigidaire</field>
+        </record>
+
+        <record id="marca_maytag" model="pg_equipos.marca">
+            <field name="name">Maytag</field>
+        </record>
+
+        <record id="marca_haceb" model="pg_equipos.marca">
+            <field name="name">Haceb</field>
+        </record>
+
+        <record id="marca_teka" model="pg_equipos.marca">
+            <field name="name">Teka</field>
+        </record>
+
+        <record id="marca_indurama" model="pg_equipos.marca">
+            <field name="name">Indurama</field>
+        </record>
+
+        <record id="marca_ge" model="pg_equipos.marca">
+            <field name="name">General Electric</field>
+        </record>
+
+        <record id="marca_kenmore" model="pg_equipos.marca">
+            <field name="name">Kenmore</field>
+        </record>
+    </data>
+</odoo>

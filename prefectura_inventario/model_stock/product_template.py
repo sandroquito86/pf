@@ -3,14 +3,10 @@ from odoo import models, fields, api
 class MedicineProduct(models.Model):
     _inherit = 'product.template'
 
-    sale_ok = fields.Boolean(      
-        default=False,
-        readonly=True
-    )
+    sale_ok = fields.Boolean(default=False, readonly=True, string='Se puede vender')
 
     # Modificamos list_price para que sea readonly con valor predeterminado 0
-    list_price = fields.Float(
-        'Sales Price', 
+    list_price = fields.Float(        
         default=0.0,
         digits='Product Price',
         readonly=True

@@ -1,0 +1,64 @@
+<odoo>
+    <data>
+        <!-- Grupos de Equipos -->
+        <record id="grupo_informatico" model="pg_equipos.grupo">
+            <field name="name">Informático</field>
+        </record>
+
+        <record id="grupo_electrodomestico" model="pg_equipos.grupo">
+            <field name="name">Electrodoméstico</field>
+        </record>
+
+        <record id="grupo_oficina" model="pg_equipos.grupo">
+            <field name="name">Mobiliario de Oficina</field>
+        </record>
+
+        <record id="grupo_comunicacion" model="pg_equipos.grupo">
+            <field name="name">Comunicación</field>
+        </record>
+
+        <record id="grupo_herramientas" model="pg_equipos.grupo">
+            <field name="name">Herramientas</field>
+        </record>
+
+        <record id="grupo_audiovisual" model="pg_equipos.grupo">
+            <field name="name">Audiovisual</field>
+        </record>
+
+        <record id="grupo_seguridad" model="pg_equipos.grupo">
+            <field name="name">Seguridad</field>
+        </record>
+
+        <record id="grupo_climatizacion" model="pg_equipos.grupo">
+            <field name="name">Climatización</field>
+        </record>
+
+        <record id="grupo_industrial" model="pg_equipos.grupo">
+            <field name="name">Industrial</field>
+        </record>
+
+        <record id="grupo_medico" model="pg_equipos.grupo">
+            <field name="name">Equipo Médico</field>
+        </record>
+
+        <record id="grupo_transporte" model="pg_equipos.grupo">
+            <field name="name">Transporte</field>
+        </record>
+
+        <record id="grupo_laboratorio" model="pg_equipos.grupo">
+            <field name="name">Laboratorio</field>
+        </record>
+
+        <record id="grupo_deportivo" model="pg_equipos.grupo">
+            <field name="name">Deportivo</field>
+        </record>
+
+        <record id="grupo_energia" model="pg_equipos.grupo">
+            <field name="name">Energía</field>
+        </record>
+
+        <record id="grupo_almacenamiento" model="pg_equipos.grupo">
+            <field name="name">Almacenamiento</field>
+        </record>
+    </data>
+</odoo>

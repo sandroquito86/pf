@@ -15,7 +15,7 @@
                         <group string="Criterios de busqueda" attrs="{'invisible':['|',('tipo_reporte','=','todo'),('tipo_reporte','=',False)]}">
                             <group colspan="2">
                                 <field name="grupo_ids" widget="many2many_tags"/>
-                                <field name="tipo_ids" widget="many2many_tags"/>
+                                <field name="nombre_equipos" widget="many2many_tags"/>
                                 <field name="categoria_ids" widget="many2many_tags"/>
                             </group>                          
                         </group>
