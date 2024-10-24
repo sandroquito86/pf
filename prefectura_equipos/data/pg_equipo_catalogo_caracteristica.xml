@@ -1,0 +1,100 @@
+<odoo>
+    <data>
+        <!-- Catálogo de Características -->
+        <record id="caracteristica_color" model="pg_equipos.catalogo_caracteristica">
+            <field name="name">Color</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Valores para la característica Color -->
+        <record id="valor_negro" model="pg_equipos.caracteristica_valor">
+            <field name="name">Negro</field>
+            <field name="caracteristica_id" ref="caracteristica_color"/>
+        </record>
+
+        <record id="valor_blanco" model="pg_equipos.caracteristica_valor">
+            <field name="name">Blanco</field>
+            <field name="caracteristica_id" ref="caracteristica_color"/>
+        </record>
+
+        <record id="valor_verde" model="pg_equipos.caracteristica_valor">
+            <field name="name">Verde</field>
+            <field name="caracteristica_id" ref="caracteristica_color"/>
+        </record>
+
+        <record id="valor_azul" model="pg_equipos.caracteristica_valor">
+            <field name="name">Azul</field>
+            <field name="caracteristica_id" ref="caracteristica_color"/>
+        </record>
+
+        <!-- Más características comunes -->
+        <record id="caracteristica_material" model="pg_equipos.catalogo_caracteristica">
+            <field name="name">Material</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="caracteristica_capacidad" model="pg_equipos.catalogo_caracteristica">
+            <field name="name">Capacidad</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="caracteristica_potencia" model="pg_equipos.catalogo_caracteristica">
+            <field name="name">Potencia</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Valores para Material -->
+        <record id="valor_plastico" model="pg_equipos.caracteristica_valor">
+            <field name="name">Plástico</field>
+            <field name="caracteristica_id" ref="caracteristica_material"/>
+        </record>
+
+        <record id="valor_metal" model="pg_equipos.caracteristica_valor">
+            <field name="name">Metal</field>
+            <field name="caracteristica_id" ref="caracteristica_material"/>
+        </record>
+
+        <!-- Valores para Capacidad -->
+        <record id="valor_cap_15kg" model="pg_equipos.caracteristica_valor">
+            <field name="name">15 KG</field>
+            <field name="caracteristica_id" ref="caracteristica_capacidad"/>
+        </record>
+
+        <record id="valor_cap_18kg" model="pg_equipos.caracteristica_valor">
+            <field name="name">18 KG</field>
+            <field name="caracteristica_id" ref="caracteristica_capacidad"/>
+        </record>
+
+        <!-- Valores para Potencia -->
+        <record id="valor_pot_110v" model="pg_equipos.caracteristica_valor">
+            <field name="name">110V</field>
+            <field name="caracteristica_id" ref="caracteristica_potencia"/>
+        </record>
+
+        <record id="valor_pot_220v" model="pg_equipos.caracteristica_valor">
+            <field name="name">220V</field>
+            <field name="caracteristica_id" ref="caracteristica_potencia"/>
+        </record>
+
+        <!-- Características adicionales para el catálogo -->
+        <record id="caracteristica_procesador" model="pg_equipos.catalogo_caracteristica">
+            <field name="name">Procesador</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="caracteristica_memoria" model="pg_equipos.catalogo_caracteristica">
+            <field name="name">Memoria RAM</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="caracteristica_disco" model="pg_equipos.catalogo_caracteristica">
+            <field name="name">Disco Duro</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="caracteristica_pantalla" model="pg_equipos.catalogo_caracteristica">
+            <field name="name">Tamaño de Pantalla</field>
+            <field name="active" eval="True"/>
+        </record>
+    </data>
+</odoo>

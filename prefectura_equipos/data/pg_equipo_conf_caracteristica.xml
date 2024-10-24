@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Primero los grupos -->
+        <record id="grupo_electrodomestico" model="pg_equipos.grupo">
+            <field name="name">Electrodoméstico</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="grupo_informatico" model="pg_equipos.grupo">
+            <field name="name">Informático</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="grupo_comunicacion" model="pg_equipos.grupo">
+            <field name="name">Comunicación</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Luego el catálogo de características -->
+        <record id="caracteristica_color" model="pg_equipos.catalogo_caracteristica">
+            <field name="name">Color</field>
+        </record>
+
+        <record id="caracteristica_capacidad" model="pg_equipos.catalogo_caracteristica">
+            <field name="name">Capacidad</field>
+        </record>
+
+        <record id="caracteristica_potencia" model="pg_equipos.catalogo_caracteristica">
+            <field name="name">Potencia</field>
+        </record>
+
+        <record id="caracteristica_procesador" model="pg_equipos.catalogo_caracteristica">
+            <field name="name">Procesador</field>
+        </record>
+
+        <record id="caracteristica_memoria" model="pg_equipos.catalogo_caracteristica">
+            <field name="name">Memoria</field>
+        </record>
+
+        <record id="caracteristica_material" model="pg_equipos.catalogo_caracteristica">
+            <field name="name">Material</field>
+        </record>
+
+        <!-- Después las configuraciones -->
+        <record id="config_caract_electrodomestico" model="pg_equipos.config_caracteristica">
+            <field name="grupo_id" ref="grupo_electrodomestico"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="config_caract_informatico" model="pg_equipos.config_caracteristica">
+            <field name="grupo_id" ref="grupo_informatico"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="config_caract_comunicacion" model="pg_equipos.config_caracteristica">
+            <field name="grupo_id" ref="grupo_comunicacion"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Finalmente las características -->
+        <record id="caract_electro_color" model="pg_equipos.caracteristica">
+            <field name="config_caracteristica_activo_id" ref="config_caract_electrodomestico"/>
+            <field name="caracteristica_id" ref="caracteristica_color"/>
+            <field name="es_obligatorio" eval="True"/>
+        </record>
+
+        <record id="caract_electro_capacidad" model="pg_equipos.caracteristica">
+            <field name="config_caracteristica_activo_id" ref="config_caract_electrodomestico"/>
+            <field name="caracteristica_id" ref="caracteristica_capacidad"/>
+            <field name="es_obligatorio" eval="True"/>
+        </record>
+
+        <record id="caract_electro_potencia" model="pg_equipos.caracteristica">
+            <field name="config_caracteristica_activo_id" ref="config_caract_electrodomestico"/>
+            <field name="caracteristica_id" ref="caracteristica_potencia"/>
+            <field name="es_obligatorio" eval="False"/>
+        </record>
+
+        <record id="caract_info_procesador" model="pg_equipos.caracteristica">
+            <field name="config_caracteristica_activo_id" ref="config_caract_informatico"/>
+            <field name="caracteristica_id" ref="caracteristica_procesador"/>
+            <field name="es_obligatorio" eval="True"/>
+        </record>
+
+        <record id="caract_info_memoria" model="pg_equipos.caracteristica">
+            <field name="config_caracteristica_activo_id" ref="config_caract_informatico"/>
+            <field name="caracteristica_id" ref="caracteristica_memoria"/>
+            <field name="es_obligatorio" eval="True"/>
+        </record>
+
+        <record id="caract_info_color" model="pg_equipos.caracteristica">
+            <field name="config_caracteristica_activo_id" ref="config_caract_informatico"/>
+            <field name="caracteristica_id" ref="caracteristica_color"/>
+            <field name="es_obligatorio" eval="False"/>
+        </record>
+
+        <record id="caract_com_potencia" model="pg_equipos.caracteristica">
+            <field name="config_caracteristica_activo_id" ref="config_caract_comunicacion"/>
+            <field name="caracteristica_id" ref="caracteristica_potencia"/>
+            <field name="es_obligatorio" eval="True"/>
+        </record>
+
+        <record id="caract_com_material" model="pg_equipos.caracteristica">
+            <field name="config_caracteristica_activo_id" ref="config_caract_comunicacion"/>
+            <field name="caracteristica_id" ref="caracteristica_material"/>
+            <field name="es_obligatorio" eval="False"/>
+        </record>
+    </data>
+</odoo>

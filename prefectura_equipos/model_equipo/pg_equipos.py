@@ -16,41 +16,34 @@ class Equipos(models.Model):
     grupo_id = fields.Many2one(string='Grupo', comodel_name='pg_equipos.grupo', required=True, ondelete='restrict', tracking=True, )    
     categoria_id = fields.Many2one(string='Categoria', comodel_name='pg_equipos.categoria', ondelete='restrict', required=True,tracking=True )   
     nombre_equipo = fields.Many2one(string='Nombre del equipo', comodel_name='pg_equipos.nombre_equipo', ondelete='restrict', required=True,tracking=True )  
-    serial = fields.Char('Serial no.', size=64,tracking=True)
+    serial = fields.Char('Serial no.', size=64,tracking=True, required=True)
     inicio_garantia = fields.Date('Inicio de Garantía', tracking=True)
     start_date = fields.Date('Fecha de puesta en producción', tracking=True)
     programa_id = fields.Many2one(string='Programa', comodel_name='pf.programas', ondelete='restrict', required=True,
                                  default=lambda s: s.env.programa_id) 
     empleado_id = fields.Many2one('hr.employee', domain="[('programa_id','!=',False),('programa_id','=',programa_id)]", string='Responsable del Equipo', tracking=True)    
-    user_id = fields.Many2one('res.users', 'Usuario', related='empleado_id.user_id', readonly=True, store=True,)  
-   
+    user_id = fields.Many2one('res.users', 'Usuario', related='empleado_id.user_id', readonly=True, store=True,)     
     pg_marca_id_domain = fields.Char ( compute = "_compute_pg_marca_id_domain" , readonly = True, store = False, )
     image = fields.Binary("Image", attachment=True)
     image_medium = fields.Binary("Medium-sized image", attachment=True)
     image_small = fields.Binary("Small-sized image", attachment=True)
     marca_id = fields.Many2one(string='Marca', comodel_name='pg_equipos.marca', ondelete='restrict',required=True, tracking=True)    
-    modelo_id = fields.Many2one(string='Modelo', comodel_name='pg_equipos.modelo', ondelete='restrict',required=True, tracking=True)      
-                                                                                                
-         
+    modelo_id = fields.Many2one(string='Modelo', comodel_name='pg_equipos.modelo', ondelete='restrict',required=True, tracking=True) 
     estado_id = fields.Selection(string='Estado', selection=[('op', 'Operativo'), ('mant', 'Mantenimiento'),('op_lim_men', 'Operativo con limitaciones menores'),
-                                                             ('op_lim_may', 'Operativo con limitaciones mayores'), ('no_op', 'No operativo')],tracking=True)
+                                                             ('op_lim_may', 'Operativo con limitaciones mayores'), ('no_op', 'No operativo')],tracking=True, required=True)
     detalle_caracteristicas_ids = fields.One2many('pg_equipos.det_caracteristica', 'pg_equipos_id', 'Características de activos',) 
-    #MODIFICACION DE CAMPOS EXISTENTES       @api.model
-    
     fecha_adquisicion = fields.Date('Fecha de Adquisiciòn', required=True, tracking=True )
     fin_garantia = fields.Date('Fin de Garantía', tracking=True)  
-    maintenance_date = fields.Datetime(string='Fecha de Mantenimiento', tracking=True)
-    tipo_activo = fields.Selection(string='Tipo de activo', selection=[('ordinario', 'Ordinario'), ('estrategico', 'Estratégico')],default='ordinario') 
     
-    descripcion = fields.Char(string='Descripcion',)    
-    
-    file_biblioteca_ids = fields.Many2many('ir.attachment', 'pg_equipos_biblioteca_rel', 'activo_id', 'archivo_id', string="Archivos",
-                                    help='Adjuntar los documentos del activo', copy=False)
               
     _sql_constraints = [('name_unique', 'UNIQUE(name)',"Nombre  del activo debe ser único!!"),
-                        ('pg_equipos_number_serie', 'UNIQUE(serial)',"Serial ingresado ya existe!!"),
-                        ] 
+                        ('pg_equipos_number_serie', 'UNIQUE(serial)',"Serial ingresado ya existe!!"),] 
 
+    def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
+        if self._context.get('filtrar_programa') and self.env.user.programa_id:
+            args = [('programa_id', '=', self.env.user.programa_id.id)] + (args or [])            
+        return super(Equipos, self)._search(args, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
+        
     @api.depends('nombre_equipo', 'marca_id', 'modelo_id', 'serial')
     def _compute_name(self):
         for record in self:
@@ -72,16 +65,8 @@ class Equipos(models.Model):
             record.name = " - ".join(filter(None, partes_nombre))            
             # Si no hay ningún dato, poner un valor por defecto
             if not record.name:
-                record.name = "Nuevo Equipo"    
-    
-    @api.constrains('name','serial')
-    def _check_pg_equipos_number(self):       
-        for record in self:         
-          if not(record.serial):
-            raise ValidationError("Debe ingresar el serial del Equipo")
-         
-            
-     
+                record.name = "Nuevo Equipo"  
+
     @api.constrains('detalle_caracteristicas_ids')
     def _check_caracteristica_obligatorio(self):
       for record in self:          
@@ -175,25 +160,7 @@ class Equipos(models.Model):
         return super(Equipos, self).write(vals)
    
     
-    def ver_activos(self):
-        _condicion = [(id,'=',False)]
-        if self.user_has_groups('prefectura_equipos.grupo_equipos_administrador_general') or self.user_has_groups('prefectura_equipos.grupo_equipos_registrador_general'):
-          _condicion = [(1,'=',1)]
-        elif self.user_has_groups('prefectura_equipos.grupo_equipos_registrador_sucursal'):
-          _condicion = [('programa_id','=',self.env.user.programa_id.id)]  
-        
-        diccionario= {
-                        'name': ('Equipos'),        
-                        'domain': _condicion,
-                        'res_model': 'pg_equipos.pg_equipos',
-                        'views': [(self.env.ref('prefectura_equipos.pg_equiposs_tree_view').id, 'tree'),(self.env.ref('prefectura_equipos.pg_equiposs_form_view').id, 'form')],
-                        'search_view_id':[self.env.ref('prefectura_equipos.pg_equiposs_search').id, 'search'],                           
-                        'view_mode': 'tree,form',
-                        'type': 'ir.actions.act_window',
-                        'context': {'search_default_reparto':1},
-                    } 
-        return diccionario 
-
+ 
     def ver_activos_caracteristicas_especificas(self):        
         _condicion = [(id,'=',False)]
         if self.user_has_groups('prefectura_equipos.grupo_equipos_administrador_general') or self.user_has_groups('prefectura_equipos.group_tecnico_general'):
@@ -226,18 +193,37 @@ class DetalleCaracteristicaEquipo(models.Model):
     caracteristica_id = fields.Many2one('pg_equipos.catalogo_caracteristica', string="Característica", required=True, ondelete='restrict', tracking=True)       
     valor_id = fields.Many2one('pg_equipos.caracteristica_valor', string="Valor Característica",  ondelete='restrict', tracking=True,
                                domain="[('caracteristica_id', '=', caracteristica_id)]")  
+    display_name = fields.Char(
+        string='Característica y Valor',
+        compute='_compute_display_name',
+        store=True
+    )
+
+    @api.depends('caracteristica_id', 'valor_id')
+    def _compute_display_name(self):
+        for record in self:
+            if record.caracteristica_id and record.valor_id:
+                record.display_name = f"{record.caracteristica_id.name}: {record.valor_id.name}"
+            else:
+                record.display_name = ''
     
-    @api.depends('caracteristica_id')
+    @api.depends('caracteristica_id', 'pg_equipos_id.grupo_id')
     def _compute_caracteristica_id_domain(self):
-      for record in self:        
-        all_caracteristicas= self.env['pg_equipos.config_caracteristica'].search([('nombre_equipo','=',record.pg_equipos_id.nombre_equipo.id)],limit=1).caracteristica_ids.caracteristica_id     
-        listado_caracteristicas = record.pg_equipos_id.detalle_caracteristicas_ids.caracteristica_id  
-        restantes = all_caracteristicas - listado_caracteristicas        
-        record.caracteristica_id_domain = json.dumps([('id' , 'in' , restantes.ids)])
-        
-  
-
-    
-
-
-    
+        for record in self:
+            if record.pg_equipos_id and record.pg_equipos_id.grupo_id:
+                # Buscar la configuración de características para este grupo
+                config_caracteristica = self.env['pg_equipos.config_caracteristica'].search([
+                    ('grupo_id', '=', record.pg_equipos_id.grupo_id.id)
+                ], limit=1)
+                
+                if config_caracteristica:
+                    # Obtener las características configuradas y ya asignadas
+                    all_caracteristicas = config_caracteristica.caracteristica_ids.caracteristica_id
+                    caracteristicas_asignadas = record.pg_equipos_id.detalle_caracteristicas_ids.caracteristica_id
+                    # Calcular características disponibles
+                    disponibles = all_caracteristicas - caracteristicas_asignadas
+                    record.caracteristica_id_domain = [('id', 'in', disponibles.ids)]
+                else:
+                    record.caracteristica_id_domain = [('id', '=', False)]
+            else:
+                record.caracteristica_id_domain = [('id', '=', False)]

@@ -3,49 +3,102 @@
     <record model="ir.ui.view" id="pg_equipos_graph_view">
       <field name="name">pg_equipos.pg_equipos.graph</field>
       <field name="model">pg_equipos.pg_equipos</field>
-      <field name="type">graph</field>
       <field name="arch" type="xml">
-        <graph string="Activo" type="bar">
-          <field name="categoria_id" />
-          <field name="programa_id" />
+        <graph string="Análisis de Capacidad Operativa" type="pie" sample="1">
+          <field name="programa_id"/>
+          <field name="estado_id"/>
         </graph>
       </field>
     </record>
 
-    <record model="ir.ui.view" id="pg_equipos_graph_view_estado">
-      <field name="name">pg_equipos.pg_equipos.graph</field>
+    <record id="view_equipos_pivot" model="ir.ui.view">
+      <field name="name">pg_equipos.pg_equipos.pivot</field>
       <field name="model">pg_equipos.pg_equipos</field>
-      <field name="type">graph</field>
       <field name="arch" type="xml">
-        <graph string="Activo" type="bar">
-          <field name="categoria_id" />
-          <field name="programa_id" />
-        </graph>
+        <pivot string="Análisis de Capacidad Operativa" sample="1">
+          <field name="programa_id" type="row"/>
+          <field name="estado_id" type="col"/>
+        </pivot>
       </field>
     </record>
+
+    <record model="ir.ui.view" id="pg_equipos_kanban_view">
+      <field name="name">pg_equipos.pg_equipos.kanban</field>
+      <field name="model">pg_equipos.pg_equipos</field>
+      <field name="arch" type="xml">
+        <kanban class="o_kanban_ungrouped" default_order="name">
+          <field name="id"/>
+          <field name="nombre_equipo"/>
+          <field name="image_medium"/>
+          <field name="marca_id"/>
+          <field name="modelo_id"/>
+          <field name="serial"/>
+          <field name="estado_id"/>
+          <field name="programa_id"/>
+          <templates>
+            <t t-name="kanban-box">
+              <div class="oe_kanban_global_click o_kanban_record_has_image">
+                <div class="o_kanban_image">
+                  <img t-att-src="kanban_image('pg_equipos.pg_equipos', 'image_medium', record.id.raw_value)" alt="Equipo" class="o_image_64_contain"/>
+                </div>
+                <div class="oe_kanban_details">
+                  <strong class="o_kanban_record_title">
+                    <field name="nombre_equipo"/>
+                  </strong>
+                  <div class="text-muted">
+                    <field name="programa_id"/>
+                  </div>
+                  <div>
+                    <field name="marca_id"/>
+ -                    <field name="modelo_id"/>
+                  </div>
+                  <div>
+                                Serial: <field name="serial"/>
+                  </div>
+                  <div class="mt-2">
+                    <span t-if="record.estado_id.raw_value === 'op'" class="badge text-bg-success">
+                      <field name="estado_id"/>
+                    </span>
+                    <span t-if="record.estado_id.raw_value === 'mant'" class="badge text-bg-warning">
+                      <field name="estado_id"/>
+                    </span>
+                    <span t-if="record.estado_id.raw_value === 'no_op'" class="badge text-bg-danger">
+                      <field name="estado_id"/>
+                    </span>
+                    <span t-if="record.estado_id.raw_value === 'op_lim_men'" class="badge text-bg-info">
+                      <field name="estado_id"/>
+                    </span>
+                    <span t-if="record.estado_id.raw_value === 'op_lim_may'" class="badge text-bg-warning">
+                      <field name="estado_id"/>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+
 
     <record id="pg_equiposs_form_view" model="ir.ui.view">
       <field name="name">pg_equipos.pg_equipos.form</field>
       <field name="model">pg_equipos.pg_equipos</field>
       <field name="arch" type="xml">
         <form duplicate="0">
-          <header>
-            <field name="estado_id" widget="statusbar" statusbar_visible="borrador,activo,inactivo,baja" />
-            <!-- Agregado options con clickable -->
-          </header>
+
           <sheet>
             <div class="d-flex justify-content-between align-items-start">
               <div class="flex-grow-1">
                 <h1>
                   <field name="name" placeholder="Nombre del Equipo" required="True" style="font-size: min(4vw, 2.6rem);"/>
                 </h1>
-
-
                 <group class="mt-4">
                   <field name="grupo_id" type="object" placeholder="Grupo...." options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
                   <field name="categoria_id" domain="[('grupo_id','=',grupo_id)]" placeholder="Categoria...." options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
                   <field name="nombre_equipo" domain="[('categoria_id','=',categoria_id)]" placeholder="Tipo...." options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
                   <field name="empleado_id" placeholder="Seleccione el responsable del activos.." context="{'form_view_ref': 'th_gestion_hr.view_hr_personal_lectura_form'}" options="{'no_create': True,  'no_create_edit': True}" />
+                  <field name="estado_id" />
                   <field name="programa_id" readonly="1" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
                   <field name="user_id" invisible="1" />
                 </group>
@@ -76,8 +129,8 @@
               <page name="caracteristicas" string="Características Generales">
                 <field name="detalle_caracteristicas_ids" widget="one2many">
                   <tree string="Caracteristicas" editable="bottom">
-                    <field name="caracteristica_id_domain" invisible="1" />
-                    <field name="caracteristica_id" domain="caracteristica_id_domain" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+                    <field name="caracteristica_id_domain" column_invisible="1"/>
+                    <field name="caracteristica_id" options="{'domain_field': 'caracteristica_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}" />
                     <field name="valor_id" context="{'default_caracteristica_id': caracteristica_id, 'show_attribute': False}" options="{'no_open': True, 'no_create_edit': True}" />
                   </tree>
                 </field>
@@ -134,7 +187,6 @@
           <field name="name" />
           <field name="programa_id" />
           <field name="empleado_id" />
-
           <field name="categoria_id" />
           <field name="marca_id" />
           <field name="detalle_caracteristicas_ids" string="Características Generales" filter_domain="[('detalle_caracteristicas_ids.valor_id', 'ilike', self)]" />
@@ -142,12 +194,12 @@
           <separator />
           <group expand="0" string="Group By">
             <filter name="programa" string="Programa" context="{'group_by': 'programa_id'}" />
-            <filter name="empleado" string="Empleado" context="{'group_by': 'empleado_id'}" />
             <filter name="grupo" string="Grupo" context="{'group_by': 'grupo_id'}" />
             <filter name="categoria" string="Categoria" context="{'group_by': 'categoria_id'}" />
-            <filter name="tipo" string="Tipo de activo" context="{'group_by': 'nombre_equipo'}" />
-            <filter name="marca" string="Marca" context="{'group_by': 'marca_id'}" />
+            <filter name="nombre_equipo" string="Nombre Equipo" context="{'group_by': 'nombre_equipo:day'}" />
             <filter name="estado" string="Estado" context="{'group_by': 'estado_id'}" />
+            <!-- Cambiado aquí -->
+            <filter name="marca" string="Marca" context="{'group_by': 'marca_id'}" />
           </group>
         </search>
       </field>
@@ -158,29 +210,30 @@
       <field name="model">pg_equipos.pg_equipos</field>
       <field name="arch" type="xml">
         <tree string="Assets" duplicate="0">
-          <field name="serial" />
           <field name="name" />
-          <field name="empleado_id" />
-          <field name="programa_id" optional="hide"/>
-          <field name="estado_id" optional="hide"/>
-          <field name="detalle_caracteristicas_ids" widget="many2many_tags" optional="hide"/>
+          <field name="programa_id"/>
+          <field name="estado_id" />
+          <field name="detalle_caracteristicas_ids" widget="many2many_tags" options="{'display_name': 'display_name'}"/>
         </tree>
       </field>
     </record>
 
-
-    <record id="action_activo_activo_server" model="ir.actions.server">
+    <record id="action_activo_activo" model="ir.actions.act_window">
       <field name="name">Equipos</field>
-      <field name="model_id" ref="model_pg_equipos_pg_equipos" />
-      <field name="binding_model_id" ref="model_pg_equipos_pg_equipos" />
-      <field name="state">code</field>
-      <field name="code">action = env['pg_equipos.pg_equipos'].ver_activos()</field>
+      <field name="res_model">pg_equipos.pg_equipos</field>
+      <field name="view_mode">tree,form,kanban,pivot,graph</field>
+      <field name="context">{'filtrar_programa': True}</field>
+    </record>
+    
+    <record id="action_equipo_all" model="ir.actions.act_window">
+      <field name="name">Equipos</field>
+      <field name="res_model">pg_equipos.pg_equipos</field>
+      <field name="view_mode">tree,form,kanban,pivot,graph</field>
     </record>
 
+    <menuitem name="Equipos" action="action_equipo_all" id="menu_action_pg_equiposs" parent="pg_equipos_equipos" groups="grupo_equipos_administrador_general,grupo_equipos_registrador_sucursal,grupo_equipos_registrador_general" sequence="20" />
 
-    <menuitem name="Equipos" action="action_activo_activo_server" id="menu_action_pg_equiposs" parent="pg_equipos_equipos" groups="grupo_equipos_administrador_general,grupo_equipos_registrador_sucursal,grupo_equipos_registrador_general" sequence="20" />
-
-    <menuitem name="Equipos" action="action_activo_activo_server" id="mc_menu_registro_equipos" parent="manzana_de_cuidados.menu_programas" groups="grupo_equipos_administrador_general" sequence="100"/>
+    <menuitem name="Equipos" action="action_activo_activo" id="mc_menu_registro_equipos" parent="manzana_de_cuidados.menu_programas" groups="grupo_equipos_administrador_general" sequence="100"/>
 
   </data>
 </odoo>

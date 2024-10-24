@@ -32,6 +32,8 @@
         'data/pg_equipo_categorizacion_grupo_data.xml', 
         'data/pg_equipo_categorizacion_categoria_data.xml', 
         'data/pg_equipo_categorizacion_nom_equipo_data.xml', 
+       'data/pg_equipo_catalogo_caracteristica.xml',  
+       'data/pg_equipo_conf_caracteristica.xml',   
         
         
     # #security
