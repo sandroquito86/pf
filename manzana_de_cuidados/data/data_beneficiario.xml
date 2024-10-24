@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Beneficiario 1 -->
+        <record id="res_user_juana_perez" model="res.users">
+            <field name="name">Juana Pérez</field>
+            <field name="login">juana.perez@example.com</field>
+            <field name="email">juana.perez@example.com</field>
+            <field name="groups_id" eval="[(6, 0, [ref('base.group_user')])]"/>
+        </record>
+
+        <record id="pf_beneficiario_1" model="pf.beneficiario">
+            <field name="primer_nombre">Juana</field>
+            <field name="segundo_nombre">Celia</field>
+            <field name="apellido_paterno">Pérez</field>
+            <field name="apellido_materno">García</field>
+            <field name="fecha_nacimiento">1985-05-15</field>
+            <field name="pais_id" ref="base.ec"/>
+            <field name="provincia_id">1411</field>
+            <field name="ciudad_id" ref="prefectura_base.guayaquil_city"/>
+            <field name="tipo_documento">dni</field>
+            <field name="numero_documento">1234567890</field>
+            <field name="direccion">Av. Francisco de Orellana</field>
+            <field name="telefono">+593 4 123 4567</field>
+            <field name="email">juana.perez@example.com</field>
+            <field name="genero">femenino</field>
+            <field name="image" type="base64" file="manzana_de_cuidados/static/img/beneficiario1.jpeg"/>
+            <field name="user_id" ref="res_user_juana_perez"/>
+        </record>
+
+        <record id="mz_beneficiario_1" model="mz.beneficiario">
+            <field name="beneficiario_id" ref="pf_beneficiario_1"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="programa_id" ref="prefectura_base.programa_manzana_cuidados_guayaquil_b10_004"/>
+        </record>
+
+        <!-- Beneficiario 2 -->
+        <record id="res_user_maria_rodriguez" model="res.users">
+            <field name="name">María Rodríguez</field>
+            <field name="login">maria.rodriguez@example.com</field>
+            <field name="email">maria.rodriguez@example.com</field>
+            <field name="groups_id" eval="[(6, 0, [ref('base.group_user')])]"/>
+        </record>
+
+        <record id="pf_beneficiario_2" model="pf.beneficiario">
+            <field name="primer_nombre">María</field>
+            <field name="segundo_nombre">Elena</field>
+            <field name="apellido_paterno">Rodríguez</field>
+            <field name="apellido_materno">López</field>
+            <field name="fecha_nacimiento">1990-08-25</field>
+            <field name="pais_id" ref="base.ec"/>
+            <field name="provincia_id">1411</field>
+            <field name="ciudad_id" ref="prefectura_base.guayaquil_city"/>
+            <field name="tipo_documento">dni</field>
+            <field name="numero_documento">0987654321</field>
+            <field name="direccion">Av. 25 de Julio</field>
+            <field name="telefono">+593 4 765 4321</field>
+            <field name="email">maria.rodriguez@example.com</field>
+            <field name="genero">femenino</field>
+            <field name="image" type="base64" file="manzana_de_cuidados/static/img/beneficiario2.jpeg"/>
+            <field name="user_id" ref="res_user_maria_rodriguez"/>
+        </record>
+
+        <record id="mz_beneficiario_2" model="mz.beneficiario">
+            <field name="beneficiario_id" ref="pf_beneficiario_2"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="programa_id" ref="prefectura_base.programa_manzana_cuidados_guayaquil_b10_004"/>
+        </record>
+
+        <!-- Beneficiario 3 -->
+        <record id="res_user_luis_martinez" model="res.users">
+            <field name="name">Luisa Martínez</field>
+            <field name="login">luisa.martinez@example.com</field>
+            <field name="email">luisa.martinez@example.com</field>
+            <field name="groups_id" eval="[(6, 0, [ref('base.group_user')])]"/>
+        </record>
+
+        <record id="pf_beneficiario_3" model="pf.beneficiario">
+            <field name="primer_nombre">Luisa</field>
+            <field name="segundo_nombre">Fernanda</field>
+            <field name="apellido_paterno">Martínez</field>
+            <field name="apellido_materno">Sánchez</field>
+            <field name="fecha_nacimiento">1975-12-10</field>
+            <field name="pais_id" ref="base.ec"/>
+            <field name="provincia_id">1411</field>
+            <field name="ciudad_id" ref="prefectura_base.guayaquil_city"/>
+            <field name="tipo_documento">dni</field>
+            <field name="numero_documento">1122334455</field>
+            <field name="direccion">Av. Nicolás Lapentti</field>
+            <field name="telefono">+593 4 234 5678</field>
+            <field name="email">luisa.martinez@example.com</field>
+            <field name="genero">femenino</field>
+            <field name="image" type="base64" file="manzana_de_cuidados/static/img/beneficiario3.jpg"/>
+            <field name="user_id" ref="res_user_luis_martinez"/>
+        </record>
+
+        <record id="mz_beneficiario_3" model="mz.beneficiario">
+            <field name="beneficiario_id" ref="pf_beneficiario_3"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="programa_id" ref="prefectura_base.programa_manzana_cuidados_guayaquil_b10_004"/>
+        </record>
+
+        <!-- Beneficiario 6 -->
+        <record id="res_user_karen_gomez" model="res.users">
+            <field name="name">Karen Gómez</field>
+            <field name="login">karen.gomez@example.com</field>
+            <field name="email">karen.gomez@example.com</field>
+            <field name="groups_id" eval="[(6, 0, [ref('base.group_user')])]"/>
+        </record>
+
+        <record id="pf_beneficiario_6" model="pf.beneficiario">
+            <field name="primer_nombre">Karen</field>
+            <field name="segundo_nombre">Antonia</field>
+            <field name="apellido_paterno">Gómez</field>
+            <field name="apellido_materno">Ramírez</field>
+            <field name="fecha_nacimiento">1980-03-22</field>
+            <field name="pais_id" ref="base.ec"/>
+            <field name="provincia_id">1411</field>
+            <field name="ciudad_id" ref="prefectura_base.guayaquil_city"/>
+            <field name="tipo_documento">dni</field>
+            <field name="numero_documento">5566778899</field>
+            <field name="direccion">Av. 9 de Octubre</field>
+            <field name="telefono">+593 4 567 8901</field>
+            <field name="email">karen.gomez@example.com</field>
+            <field name="genero">femenino</field>
+            <field name="image" type="base64" file="manzana_de_cuidados/static/img/beneficiario5.jpeg"/>
+            <field name="user_id" ref="res_user_karen_gomez"/>
+        </record>
+
+        <record id="mz_beneficiario_6" model="mz.beneficiario">
+            <field name="beneficiario_id" ref="pf_beneficiario_6"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="programa_id" ref="prefectura_base.programa_manzana_cuidados_guayaquil_b10_004"/>
+        </record>
+    </data>
+</odoo>

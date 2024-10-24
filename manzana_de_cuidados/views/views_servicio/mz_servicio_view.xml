@@ -46,6 +46,68 @@
         </field>
     </record>
 
+    <record id="view_servicio_kanban" model="ir.ui.view">
+        <field name="name">mz.servicio.kanban</field>
+        <field name="model">mz.servicio</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile o_kanban_renderer" default_group_by="tipo_servicio">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="descripcion"/>
+                <field name="tipo_servicio"/>
+                <field name="if_derivacion"/>
+                <field name="image"/>
+                <field name="active"/>
+                
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
+                            <div class="o_kanban_image_fill_left d-none d-md-block" 
+                                t-attf-style="background-image: url(#{kanban_image('mz.servicio', 'image', record.id.raw_value)})"
+                                role="img"/>
+                            
+                            <!-- Mobile view image -->
+                            <div class="o_kanban_image d-md-none rounded-circle" 
+                                t-attf-style="background-image: url(#{kanban_image('mz.servicio', 'image', record.id.raw_value)})"
+                                role="img"/>
+                            
+                            <div class="oe_kanban_details">
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                
+                                <div class="o_kanban_record_body">
+                                    <div class="text-muted mb-2" t-if="record.descripcion.raw_value">
+                                        <field name="descripcion"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <span class="badge rounded-pill" 
+                                            t-attf-class="bg-#{record.if_derivacion.raw_value ? 'success' : 'warning'}" 
+                                            title="Estado de Derivación">
+                                            <field name="if_derivacion" widget="boolean_toggle"/>
+                                        </span>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <span class="badge rounded-pill text-bg-info" title="Tipo de Servicio">
+                                            <field name="tipo_servicio"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <!-- Filtro -->
     <record id="view_servicio_search" model="ir.ui.view">
         <field name="name">mz.servicio.search</field>
@@ -66,7 +128,7 @@
     <record id="action_servicio" model="ir.actions.act_window">
         <field name="name">Servicios</field>
         <field name="res_model">mz.servicio</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">kanban,tree,form</field>
         <field name="view_id" ref="view_servicio_tree"/>
     </record>
 

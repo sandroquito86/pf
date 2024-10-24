@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sucursal Guayaquil Norte -->
+        <record id="sucursal_guayaquil_norte" model="pf.sucursal">
+            <field name="name">Guayaquil Norte</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="street">Av. Francisco de Orellana</field>
+            <field name="street2">Edificio XYZ</field>
+            <field name="zip">090150</field>
+            <field name="pais_id" ref="base.ec"/>
+            <field name="provincia_id">1411</field>
+            <field name="ciudad_id" ref="guayaquil_city"/>
+            <field name="email">guayaquil.norte@example.com</field>
+            <field name="phone">+593 4 123 4567</field>
+            <field name="mobile">+593 99 123 4567</field>
+            <field name="website">https://guayaquilnorte.example.com</field>
+            <field name="active">True</field>
+            <field name="image" type="base64" file="prefectura_base/static/img/prefectura.png"/>
+        </record>
+
+        <!-- Sucursal Guayaquil Sur -->
+        <record id="sucursal_guayaquil_sur" model="pf.sucursal">
+            <field name="name">Guayaquil Sur</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="street">Av. 25 de Julio</field>
+            <field name="street2">Centro Comercial ABC</field>
+            <field name="zip">090150</field>
+            <field name="pais_id" ref="base.ec"/>
+            <field name="provincia_id">1411</field>
+            <field name="ciudad_id" ref="guayaquil_city"/>
+            <field name="email">guayaquil.sur@example.com</field>
+            <field name="phone">+593 4 765 4321</field>
+            <field name="mobile">+593 98 765 4321</field>
+            <field name="website">https://guayaquilsur.example.com</field>
+            <field name="active">True</field>
+            <field name="image" type="base64" file="prefectura_base/static/img/prefectura.png"/>
+        </record>
+
+        <!-- Sucursal Durán -->
+        <record id="sucursal_duran" model="pf.sucursal">
+            <field name="name">Durán</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="street">Av. Nicolás Lapentti</field>
+            <field name="street2">Edificio DEF</field>
+            <field name="zip">090702</field>
+            <field name="pais_id" ref="base.ec"/>
+            <field name="provincia_id">1411</field>
+            <field name="ciudad_id" ref="guayaquil_city"/>
+            <field name="email">duran@example.com</field>
+            <field name="phone">+593 4 234 5678</field>
+            <field name="mobile">+593 97 234 5678</field>
+            <field name="website">https://duran.example.com</field>
+            <field name="active">True</field>
+            <field name="image" type="base64" file="prefectura_base/static/img/prefectura.png"/>
+        </record>
+    </data>
+</odoo>

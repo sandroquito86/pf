@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Servicio: Peluquería -->
+        <record id="servicio_peluqueria" model="mz.servicio">
+            <field name="name">Peluquería</field>
+            <field name="descripcion">Servicio de peluquería para cortes y peinados.</field>
+            <field name="active">True</field>
+            <field name="if_derivacion">False</field>
+            <field name="image" type="base64" file="manzana_de_cuidados/static/img/peluqueria.jpg"/>
+            <field name="tipo_servicio">normal</field>
+        </record>
+
+        <!-- Servicio: Lavandería -->
+        <record id="servicio_lavanderia" model="mz.servicio">
+            <field name="name">Lavandería</field>
+            <field name="descripcion">Servicio de lavandería para el lavado y planchado de ropa.</field>
+            <field name="active">True</field>
+            <field name="if_derivacion">False</field>
+            <field name="image" type="base64" file="manzana_de_cuidados/static/img/lavanderia.jpeg"/>
+            <field name="tipo_servicio">normal</field>
+        </record>
+
+        <!-- Servicio: Psicológico -->
+        <record id="servicio_psicologico" model="mz.servicio">
+            <field name="name">Psicológico</field>
+            <field name="descripcion">Servicio de atención psicológica para el bienestar mental.</field>
+            <field name="active">True</field>
+            <field name="if_derivacion">False</field>
+            <field name="image" type="base64" file="manzana_de_cuidados/static/img/psicologico.jpeg"/>
+            <field name="tipo_servicio">medico</field>
+        </record>
+
+        <!-- Servicio: Medicina General -->
+        <record id="servicio_medicina_general" model="mz.servicio">
+            <field name="name">Medicina General</field>
+            <field name="descripcion">Servicio de atención médica general para diagnósticos y tratamientos.</field>
+            <field name="active">True</field>
+            <field name="if_derivacion">False</field>
+            <field name="image" type="base64" file="manzana_de_cuidados/static/img/medicina_general.jpeg"/>
+            <field name="tipo_servicio">medico</field>
+        </record>
+    </data>
+</odoo>

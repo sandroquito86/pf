@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Asignación de Servicio: Peluquería -->
+        <record id="asignacion_servicio_peluqueria" model="mz.asignacion.servicio">
+            <field name="name">Peluquería - Manzana de Cuidados Guayaquil B10-004</field>
+            <field name="servicio_id" ref="servicio_peluqueria"/>
+            <field name="image" type="base64" file="manzana_de_cuidados/static/img/peluqueria.jpg"/>
+            <field name="active">True</field>
+            <field name="programa_id" ref="prefectura_base.programa_manzana_cuidados_guayaquil_b10_004"/>
+        </record>
+
+        <!-- Asignación de Servicio: Lavandería -->
+        <record id="asignacion_servicio_lavanderia" model="mz.asignacion.servicio">
+            <field name="name">Lavandería - Manzana de Cuidados Guayaquil B10-005</field>
+            <field name="servicio_id" ref="servicio_lavanderia"/>
+            <field name="image" type="base64" file="manzana_de_cuidados/static/img/lavanderia.jpeg"/>
+            <field name="active">True</field>
+            <field name="programa_id" ref="prefectura_base.programa_manzana_cuidados_guayaquil_b10_004"/>
+        </record>
+
+        <!-- Asignación de Servicio: Psicológico -->
+        <record id="asignacion_servicio_psicologico" model="mz.asignacion.servicio">
+            <field name="name">Psicológico - Manzana de Cuidados Durán B10-006</field>
+            <field name="servicio_id" ref="servicio_psicologico"/>
+            <field name="image" type="base64" file="manzana_de_cuidados/static/img/psicologico.jpeg"/>
+            <field name="active">True</field>
+            <field name="programa_id" ref="prefectura_base.programa_manzana_cuidados_guayaquil_b10_004"/>
+        </record>
+
+        <!-- Asignación de Servicio: Medicina General -->
+        <record id="asignacion_servicio_medicina_general" model="mz.asignacion.servicio">
+            <field name="name">Medicina General - Manzana de Cuidados Guayaquil B10-004</field>
+            <field name="servicio_id" ref="servicio_medicina_general"/>
+            <field name="image" type="base64" file="manzana_de_cuidados/static/img/medicina_general.jpeg"/>
+            <field name="active">True</field>
+            <field name="programa_id" ref="prefectura_base.programa_manzana_cuidados_guayaquil_b10_004"/>
+        </record>
+    </data>
+</odoo>

@@ -26,6 +26,9 @@ Long description of module's purpose
         'security/ir.model.access.csv',
         'data/data_base.xml',
         'data/ciudad_data.xml',
+        'data/data_sucursal.xml',
+        'data/data_programas.xml',
+        
         'views/pf_menu_view.xml',
         'views/pf_catalogo_items_views.xml',
         'views/pf_catalogo_views.xml',

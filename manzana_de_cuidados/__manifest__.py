@@ -26,6 +26,10 @@ Long description of module's purpose
         'security/mz_security.xml',
         'security/ir.model.access.csv',
         'data/data_base.xml',
+        'data/data_beneficiario.xml',
+        'data/data_servicios.xml',
+        'data/data_asig_servicios.xml',
+        
         'menu/mz_menu.xml',
         'views/mz_catalogo_views.xml',
         'views/mz_catalogo_items_views.xml',
