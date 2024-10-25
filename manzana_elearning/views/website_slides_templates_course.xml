@@ -109,100 +109,92 @@
                                 </ul>
                             </li>
 
-
-
-
                             <div t-att-id="'modal_task_' + str(assignment.id)" class="modal fade" tabindex="-1" role="dialog">
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-                        <div class="modal-content">
-                            <!-- Header del Modal -->
-                            <div class="modal-header bg-light">
-                                <h4 class="modal-title d-flex align-items-center">
-                                    <i class="fa fa-tasks me-2"></i>
-                                    Detalle de tarea
-                                </h4>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            
-                            <!-- Cuerpo del Modal -->
-                            <div class="modal-body">
-                                <!-- Título y Fecha -->
-                                <div class="task-header mb-4">
-                                    <h5 class="task-title fw-bold mb-3">
-                                        <t t-esc="assignment.name"/>
-                                    </h5>
-                                    <div class="task-meta d-flex align-items-center text-muted mb-3">
-                                        <i class="fa fa-calendar-alt me-2"></i>
-                                        <span class="fw-semibold me-2">Fecha de Entrega:</span>
-                                        <span t-esc="assignment.deadline"/>
-                                    </div>
-                                </div>
-
-                                <!-- Descripción -->
-                                <div class="task-description mb-4">
-                                    <h6 class="fw-bold mb-2">Descripción</h6>
-                                    <div class="p-3 bg-light rounded">
-                                        <p class="mb-0">
-                                            <t t-esc="assignment.description_task"/>
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <!-- Calificación y Feedback -->
-                                <div class="task-evaluation">
-                                    <!-- Calificación -->
-                                    <div class="grade-section mb-3">
-                                        <h6 class="fw-bold mb-2">Calificación</h6>
-                                        <div class="d-flex align-items-center">
-                                            <div class="grade-display p-3 bg-light rounded text-center" style="min-width: 100px;">
-                                                <span t-if="student_assignment.grade" class="h4 mb-0 text-primary">
-                                                    <t t-esc="student_assignment.grade"/>
-                                                </span>
-                                                <span t-else="" class="text-muted">Sin calificar</span>
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                                    <div class="modal-content">
+                                        <!-- Header del Modal -->
+                                        <div class="modal-header bg-light">
+                                            <h4 class="modal-title d-flex align-items-center">
+                                                <i class="fa fa-tasks me-2"></i>
+                                                Detalle de tarea
+                                            </h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        
+                                        <!-- Cuerpo del Modal -->
+                                        <div class="modal-body">
+                                            <!-- Título y Fecha -->
+                                            <div class="task-header mb-4">
+                                                <h5 class="task-title fw-bold mb-3">
+                                                    <t t-esc="assignment.name"/>
+                                                </h5>
+                                                <div class="task-meta d-flex align-items-center text-muted mb-3">
+                                                    <i class="fa fa-calendar-alt me-2"></i>
+                                                    <span class="fw-semibold me-2">Fecha de Entrega:</span>
+                                                    <span t-esc="assignment.deadline"/>
+                                                </div>
                                             </div>
-                                            <div t-if="student_assignment.grade" class="ms-3">
-                                                <div class="progress" style="width: 200px; height: 10px;">
-                                                    <!-- <div class="progress-bar" role="progressbar" 
-                                                        t-att-style="'width: ' + str(student_assignment.grade) + '%'" 
-                                                        t-att-aria-valuenow="student_assignment.grade" 
-                                                        aria-valuemin="0" 
-                                                        aria-valuemax="100">
-                                                    </div> -->
+
+                                            <!-- Descripción -->
+                                            <div class="task-description mb-4">
+                                                <h6 class="fw-bold mb-2">Descripción</h6>
+                                                <div class="p-3 bg-light rounded">
+                                                    <p class="mb-0">
+                                                        <t t-esc="assignment.description_task"/>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Calificación y Feedback -->
+                                            <div class="task-evaluation">
+                                                <!-- Calificación -->
+                                                <div class="grade-section mb-3">
+                                                    <h6 class="fw-bold mb-2">Calificación</h6>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="grade-display p-3 bg-light rounded text-center" style="min-width: 100px;">
+                                                            <span t-if="student_assignment.grade" class="h4 mb-0 text-primary">
+                                                                <t t-esc="student_assignment.grade"/>
+                                                            </span>
+                                                            <span t-else="" class="text-muted">Sin calificar</span>
+                                                        </div>
+                                                        <!-- <div t-if="student_assignment.grade" class="ms-3">
+                                                            <div class="progress" style="width: 200px; height: 10px;">
+                                                                <div class="progress-bar" role="progressbar" 
+                                                                    t-att-style="'width: ' + str(student_assignment.grade) + '%'" 
+                                                                    t-att-aria-valuenow="student_assignment.grade" 
+                                                                    aria-valuemin="0" 
+                                                                    aria-valuemax="100">
+                                                                </div>
+                                                            </div>
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+
+                                                <!-- Feedback -->
+                                                <div class="feedback-section">
+                                                    <h6 class="fw-bold mb-2">Feedback del Docente</h6>
+                                                    <div class="p-3 bg-light rounded">
+                                                        <t t-if="student_assignment.feedback">
+                                                            <p class="mb-0">
+                                                                <t t-esc="student_assignment.feedback"/>
+                                                            </p>
+                                                        </t>
+                                                        <p t-else="" class="text-muted mb-0">
+                                                            Aún no hay retroalimentación disponible.
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Feedback -->
-                                    <div class="feedback-section">
-                                        <h6 class="fw-bold mb-2">Feedback del Docente</h6>
-                                        <div class="p-3 bg-light rounded">
-                                            <t t-if="student_assignment.feedback">
-                                                <p class="mb-0">
-                                                    <t t-esc="student_assignment.feedback"/>
-                                                </p>
-                                            </t>
-                                            <p t-else="" class="text-muted mb-0">
-                                                Aún no hay retroalimentación disponible.
-                                            </p>
+                                        <!-- Footer del Modal -->
+                                        <div class="modal-footer bg-light">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Footer del Modal -->
-                            <div class="modal-footer bg-light">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-
-                            
                         </t>
                     </t>
                 </ul>

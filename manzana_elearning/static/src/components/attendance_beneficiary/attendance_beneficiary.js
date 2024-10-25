@@ -72,8 +72,8 @@ export class AttendanceBeneficiary extends Component {
         }
     }
 
-    displayNotification(text){
-        this.notification.add(text, { type: "success" });
+    displayNotification(text, alert){
+        this.notification.add(text, { type: alert });
     }
 
     async checkTodayAttendance() {
@@ -99,11 +99,10 @@ export class AttendanceBeneficiary extends Component {
             this.state.isAttendanceSubmitted = true
             const date = this.state.dateToday
             const msg = `La asistencia del día ${date} ha sido registrada correctamente.`
-            this.displayNotification(msg)
+            this.displayNotification(msg, "success")
         } catch (error) {
-            // const date = this.state.dateToday
-            // const msg = `La asistencia del día ${date} ha sido registrada correctamente.`
-            // this.displayNotification(msg)
+            const msg = `Ha existido un error al intentar guardar la asistencia del día de hoy.`
+            this.displayNotification(msg, "danger")
             console.error("Error al guardar las asistencias:", error);
         }
     }
