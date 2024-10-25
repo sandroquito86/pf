@@ -45,6 +45,13 @@ class ChannelBeneficiaryRelation(models.Model):
                 rec.student_id = False
 
 
+class MzElearningSlide(models.Model):
+    _inherit = 'slide.slide'
+    _description = 'Sección de contenidos'
+
+    
+
+
 
 
 

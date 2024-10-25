@@ -17,9 +17,11 @@ export class AttendanceBeneficiary extends Component {
     setup() {
         this.rpc = useService("rpc");
         this.orm = useService("orm");
+        this.notification = useService("notification");
         this.state = useState({
             slideChanel : this.env.model.root.evalContext.id,
             beneficiaries : [],
+            isAttendanceSubmitted: false,
             attend: false,
             dateToday: DateTime.local().toFormat('dd/MM/yyyy'),
             date: luxon.DateTime.now(),
@@ -27,6 +29,12 @@ export class AttendanceBeneficiary extends Component {
         });
 
         onMounted(async ()=>{
+            const hasAttendance = await this.checkTodayAttendance();
+            if (hasAttendance) {
+                this.state.isAttendanceSubmitted = true;
+                return;
+            }
+
             const { slideChanel } = this.state;
             let attendees = await this._showAttendees(slideChanel);
             this.state.beneficiaries = attendees?.course_attendees;
@@ -39,14 +47,11 @@ export class AttendanceBeneficiary extends Component {
             const configs = await this.rpc("/manzana_beneficiary/attendees", {
                 slideChanel: slideChanel
             });
-            return JSON.parse(configs)
+            const beneficiaries = JSON.parse(configs)
+            return beneficiaries
         } catch (error) {
             console.error("Error en la llamada RPC:", error);
         }
-    }
-
-    handleClick() {
-        console.log('Clic en el componente de Asistencias');
     }
 
     onDateChanged(ev) {
@@ -67,13 +72,38 @@ export class AttendanceBeneficiary extends Component {
         }
     }
 
+    displayNotification(text){
+        this.notification.add(text, { type: "success" });
+    }
+
+    async checkTodayAttendance() {
+        try {
+            const formattedDate = this.formattedDate(this.state.dateToday)
+            const attendance = await this.orm.searchCount('mz.attendance.student', [
+                ['course_id', '=', this.state.slideChanel],
+                ['date', '=', formattedDate]
+            ]);
+            return attendance > 0;
+        } catch (error) {
+            console.error("Error checking attendance:", error);
+            return false;
+        }
+    }
+
     async saveAttendances() {
         const beneficiariesStudents = this.state.beneficiaries.filter(b => b.student_id)
         const values = beneficiariesStudents.map(b => this.prepareValuesForCreate(b, this.state.slideChanel, this.state.dateToday))
         
         try {
             await this.orm.create('mz.attendance.student', values);
+            this.state.isAttendanceSubmitted = true
+            const date = this.state.dateToday
+            const msg = `La asistencia del día ${date} ha sido registrada correctamente.`
+            this.displayNotification(msg)
         } catch (error) {
+            // const date = this.state.dateToday
+            // const msg = `La asistencia del día ${date} ha sido registrada correctamente.`
+            // this.displayNotification(msg)
             console.error("Error al guardar las asistencias:", error);
         }
     }
@@ -82,6 +112,17 @@ export class AttendanceBeneficiary extends Component {
         let attendance = beneficiary.attendance ? 'present' : 'absent';
         let subState = attendance === 'absent' ? (beneficiary.justified ? 'jst' : 'wjst') : 'na';
     
+        const formattedDate = this.formattedDate(date)
+        return {
+            'student_id': beneficiary.student_id,
+            'course_id': course,
+            'date': formattedDate,
+            'state': attendance,
+            'sub_state': subState
+        };
+    }
+
+    formattedDate(date) {
         let dateObj;
         if (typeof date === 'string') {
             dateObj = DateTime.fromFormat(date, 'dd/MM/yyyy').toJSDate();
@@ -95,14 +136,7 @@ export class AttendanceBeneficiary extends Component {
             throw new Error('Fecha inválida');
         }
     
-        const formattedDate = dateObj.toISOString().split('T')[0];
-        return {
-            'student_id': beneficiary.student_id,
-            'course_id': course,
-            'date': formattedDate,
-            'state': attendance,
-            'sub_state': subState
-        };
+        return dateObj.toISOString().split('T')[0];
     }
 }
 

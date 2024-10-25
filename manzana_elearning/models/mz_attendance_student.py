@@ -1,37 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import pytz
-
-from collections import defaultdict
-from datetime import datetime, timedelta
-from operator import itemgetter
-from pytz import timezone
-
-from odoo import models, fields, api, exceptions, _
-from odoo.addons.resource.models.utils import Intervals
-from odoo.tools import format_datetime
-from odoo.osv.expression import AND, OR
-from odoo.tools.float_utils import float_is_zero
-from odoo.exceptions import AccessError
-from odoo.tools import format_duration
-
-# def get_google_maps_url(latitude, longitude):
-#     return "https://maps.google.com?q=%s,%s" % (latitude, longitude)
-
-
-class MzAttendanceStudent(models.Model):
-    _name = "mz.attendance.student"
-    _description = "Attendance Student"
-    _order = "check_in desc"
-    _inherit = "mail.thread"
-
-
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from datetime import date
 
-class StudentAttendance(models.Model):
+class MzStudentAttendance(models.Model):
     _name = 'mz.attendance.student'
     _description = 'Asistencia de Estudiantes'
     _rec_name = 'student_id'

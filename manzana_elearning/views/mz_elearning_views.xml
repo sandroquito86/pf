@@ -70,7 +70,7 @@
                                     </group>
                                     <field name="student_assignments_ids">
                                         <tree editable="bottom" create="0" >
-                                            <field name="name" readonly="1"/>
+                                            <field name="name" readonly="1" column_invisible="True" />
                                             <field name="student_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
                                             <field name="submitted_file" widget="binary" string="Archivo Subido" filename="submitted_filename" readonly="1"/>
                                             <field name="submitted_filename" column_invisible="True" />
@@ -96,6 +96,36 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='active']" position="before">
                     <field name="student_id"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_slide_slide_form_inherit" model="ir.ui.view">
+            <field name="name">view.slide_.lide.form.inherit</field>
+            <field name="model">slide.slide</field>
+            <field name="inherit_id" ref="website_slides.view_slide_slide_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='quiz']//group[@name='quiz_details']" position="replace">
+                    <!-- <group name="quiz_details"> -->
+                        <group name="quiz_rewards" string="Puntos de recompensa">
+                            <group>
+                                <field string="Primer intento" name="quiz_first_attempt_reward"/>
+                                <field string="Segundo intento" name="quiz_second_attempt_reward"/>
+                                <field string="Tercer intento" name="quiz_third_attempt_reward"/>
+                                <field string="Cuarto intento o superior" name="quiz_fourth_attempt_reward"/>
+                            </group>
+                        </group>
+                        <group name="questions" string="Preguntas">
+                            <field name="question_ids" nolabel="1" colspan="2">
+                                <tree>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="question" string="Preguntas"/>
+                                    <field name="answer_ids" string="Respuestas" widget="many2many_tags"/>
+                                </tree>
+                            </field>
+                        </group>
+                    <!-- </group> -->
                 </xpath>
             </field>
         </record>
