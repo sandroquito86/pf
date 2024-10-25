@@ -183,28 +183,48 @@ class Consulta(models.Model):
 
     def generar_orden_entrega(self):
         self.ensure_one()
+        
         if self.picking_id:
             raise UserError('Ya existe una orden de entrega para esta consulta.')
-
+        
         productos_en_stock = self.receta_ids.filtered(lambda r: r.en_inventario)
         
         if productos_en_stock:
-            picking_type = self.env['stock.picking.type'].search([('code', '=', 'outgoing')], limit=1)
+            # Buscar el tipo de operación para salidas
+            picking_type = self.env['stock.picking.type'].search([
+                ('code', '=', 'outgoing'),
+                ('company_id', '=', self.env.company.id)
+            ], limit=1)
+            
             if not picking_type:
                 raise UserError('No se encontró un tipo de operación para salida de inventario.')
-
+            
+            # Verificar que las ubicaciones existan
+            if not picking_type.default_location_src_id or not picking_type.default_location_dest_id:
+                raise UserError('Las ubicaciones origen y destino no están configuradas en el tipo de operación.')
+            
+            # Asegurarse que el partner_id sea válido
+            if not self.beneficiario_id.user_id.partner_id:
+                raise UserError('El beneficiario no tiene un contacto asociado.')
+            
             valores_picking = {
                 'partner_id': self.beneficiario_id.user_id.partner_id.id,
                 'picking_type_id': picking_type.id,
                 'location_id': picking_type.default_location_src_id.id,
                 'location_dest_id': picking_type.default_location_dest_id.id,
                 'origin': f'Consulta {self.codigo}',
+                'company_id': self.env.company.id,
+                'scheduled_date': fields.Datetime.now(),
+                'move_type': 'direct',  # Entrega directa
+                'state': 'draft',
             }
-
+            
+            # Crear el picking
             picking = self.env['stock.picking'].create(valores_picking)
-
+            
+            # Crear los movimientos de stock
             for linea in productos_en_stock:
-                self.env['stock.move'].create({
+                move_vals = {
                     'name': linea.producto_id.name,
                     'product_id': linea.producto_id.id,
                     'product_uom_qty': linea.cantidad,
@@ -212,8 +232,12 @@ class Consulta(models.Model):
                     'picking_id': picking.id,
                     'location_id': picking.location_id.id,
                     'location_dest_id': picking.location_dest_id.id,
-                })
-
+                    'company_id': self.env.company.id,
+                    'state': 'draft',
+                    'picking_type_id': picking_type.id,
+                }
+                self.env['stock.move'].create(move_vals)
+            
             self.picking_id = picking.id
             return True
         else:
