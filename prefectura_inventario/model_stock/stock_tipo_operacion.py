@@ -54,23 +54,12 @@ class StockPickingType(models.Model):
             vals['programa_id'] = warehouse.programa_id.id
         return super(StockPickingType, self).write(vals)
 
-    def filter_picking_types_by_program(self):
-        action = {
-            'name': 'Tipos de Operación',
-            'type': 'ir.actions.act_window',
-            'res_model': 'stock.picking.type',
-            'view_mode': 'tree,form',
-            'context': self.env.context,
-        }
-        if self.env.user.has_group('stock.group_stock_manager'):
-            # Administrador: ve todos los tipos de operación
-            return action
-        elif self.env.user.has_group('prefectura_inventario.group_stock_program_manager'):
-            # Administrador de programa: solo tipos de operación de su programa
-            user_programa = self.env.user.employee_id.programa_id
-            if user_programa:
-                action['domain'] = [('programa_id', '=', user_programa.id)]
-        else:
-            # Usuario regular: no ve tipos de operación (o ajusta según tus necesidades)
-            action['domain'] = [('id', '=', False)]
-        return action
+    def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
+        if self._context.get('filtrar_programa'):
+            args = args if args else []
+            if self.env.user.programa_id:
+                args = [('programa_id', '=', self.env.user.programa_id.id)] + args
+            else:
+                args = [('id', '=', False)]
+        return super()._search(args, offset=offset, limit=limit, order=order, 
+                             access_rights_uid=access_rights_uid)

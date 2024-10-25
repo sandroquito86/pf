@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <record id="stock.menu_reordering_rules_replenish" model="ir.ui.menu">
-        <field name="active" eval="False"/>
-    </record>
-    <record id="stock.menu_procurement_compute" model="ir.ui.menu">
-        <field name="active" eval="False"/>
-    </record>
-</odoo>

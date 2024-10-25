@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista de búsqueda -->
+    <record id="pf_view_stock_quant_search" model="ir.ui.view">
+        <field name="name">pf.stock.quant.search</field>
+        <field name="model">stock.quant</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="product_id"/>
+                <field name="location_id"/>
+                <separator/>
+                <filter string="En Stock" name="in_stock" domain="[('quantity', '>', 0)]"/>
+                <filter string="Mi Programa" name="my_program" 
+                        domain="[('location_id.warehouse_id', 'in', context.get('allowed_warehouse_ids', []))]"/>
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Producto" name="groupby_product" context="{'group_by': 'product_id'}"/>
+                    <filter string="Ubicación" name="groupby_location" context="{'group_by': 'location_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Vista de árbol -->
+    <record id="pf_view_stock_quant_tree" model="ir.ui.view">
+        <field name="name">pf.stock.quant.tree</field>
+        <field name="model">stock.quant</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="product_id"/>
+                <field name="location_id"/>
+                <field name="quantity"/>
+                <field name="product_uom_id" groups="uom.group_uom"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de formulario -->
+    <record id="pf_view_stock_quant_form" model="ir.ui.view">
+        <field name="name">pf.stock.quant.form</field>
+        <field name="model">stock.quant</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="company_id" invisible="1"/>
+                            <field name="product_id" options="{'no_create': True}"/>
+                            <field name="location_id" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="quantity"/>
+                            <field name="product_uom_id" groups="uom.group_uom"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción -->
+    <record id="action_pf_stock_quant" model="ir.actions.server">
+        <field name="name">Inventario del Programa</field>
+        <field name="model_id" ref="stock.model_stock_quant"/>
+        <field name="state">code</field>
+        <field name="code">
+programa = env.user.employee_id.programa_id
+if programa:
+    warehouse_ids = programa.warehouse_ids.ids
+    action = {
+        'type': 'ir.actions.act_window',
+        'res_model': 'stock.quant',
+        'view_mode': 'tree,form',
+        'name': 'Inventario del Programa',
+        'context': {
+            'search_default_in_stock': 1,
+            'search_default_my_program': 1,
+            'allowed_warehouse_ids': warehouse_ids,
+        },
+        'domain': [('location_id.warehouse_id', 'in', warehouse_ids)],
+        'views': [
+            (env.ref('prefectura_inventario.pf_view_stock_quant_tree').id, 'tree'),
+            (env.ref('prefectura_inventario.pf_view_stock_quant_form').id, 'form'),
+        ],
+        'search_view_id': env.ref('prefectura_inventario.pf_view_stock_quant_search').id,
+    }
+else:
+    action = {
+        'type': 'ir.actions.client',
+        'tag': 'display_notification',
+        'params': {
+            'title': 'Advertencia',
+            'message': 'No tiene un programa asignado',
+            'type': 'warning',
+            'sticky': False,
+        }
+    }
+        </field>
+    </record>
+
+    <!-- Menú -->
+    <menuitem id="menu_pf_stock_quant" 
+              name="Inventario del Programa" 
+              action="action_pf_stock_quant" 
+              parent="mc_reporte_reporte_inventario" 
+              sequence="10"/>
+</odoo>

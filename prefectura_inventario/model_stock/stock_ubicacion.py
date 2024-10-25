@@ -84,26 +84,17 @@ class StockLocation(models.Model):
                 vals['programa_id'] = parent_programa.id
         return super(StockLocation, self).write(vals)
 
-    def filter_locations_by_program(self):
-        action = {
-            'name': 'Ubicaciones',
-            'type': 'ir.actions.act_window',
-            'res_model': 'stock.location',
-            'view_mode': 'tree,form',
-            'context': self.env.context,
-        }
-        if self.env.user.has_group('stock.group_stock_manager'):
-            # Administrador: ve todas las ubicaciones
-            return action
-        elif self.env.user.has_group('prefectura_inventario.group_stock_program_manager'):
-            # Administrador de programa: solo ubicaciones de su programa
-            user_programa = self.env.user.employee_id.programa_id            
-            if user_programa:
-                action['domain'] = [('programa_id', '=', user_programa.id)]          
-        else:
-            # Usuario regular: no ve ubicaciones (o ajusta según tus necesidades)
-            action['domain'] = [('id', '=', False)]
-        return action
-
+    def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
+        if self._context.get('filtrar_programa'):
+            # Aseguramos que args sea una lista antes de modificarla
+            args = args if args else []
+            # Agregamos el dominio para filtrar por programa
+            if self.env.user.programa_id:
+                args = [('programa_id', '=', self.env.programa_id.id)] + args
+            else:
+                # Si el usuario no tiene programa asignado, no mostramos ningún almacén
+                args = [('id', '=', False)]  # Dominio que no retornará resultados
+        
+        return super()._search(args, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
 
       

@@ -147,13 +147,6 @@
                   </group>
                 </group>
               </page>
-
-
-              <page name="biblioteca" string="Biblioteca">
-                <group>
-                  <field name="file_biblioteca_ids" widget="many2many_binary" />
-                </group>
-              </page>
             </notebook>
           </sheet>
           <div class="oe_chatter">

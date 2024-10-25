@@ -2,10 +2,13 @@
 <odoo>
     <data>
         <!-- Dar acceso al menú de configuración de inventario -->
-        <record id="stock.menu_warehouse_config" model="ir.ui.menu">
-            <field name="groups_id" eval="[(4, ref('group_stock_program_manager'))]"/>
-        </record>
+    
+        <menuitem name="Gestión del Almacen" id="mc_conf_gestion_almacen" parent="manzana_de_cuidados.menu_configuracion" groups="group_stock_program_manager"  sequence="400"/>
+        
+        <menuitem name="Reporte Inventario" id="mc_reporte_reporte_inventario" parent="manzana_de_cuidados.menu_principal" groups="group_stock_program_manager"  sequence="400"/>
+       
+ 
 
-        <menuitem id="menu_pf_inventario_catalogos" name="Catálogos" parent="stock.menu_stock_config_settings" sequence="100"/>
+        <!-- <menuitem id="menu_pf_inventario_catalogos" name="Catálogos" parent="stock.menu_stock_config_settings" sequence="100"/> -->
     </data>
 </odoo>

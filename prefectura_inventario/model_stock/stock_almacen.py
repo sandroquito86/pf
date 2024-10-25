@@ -5,14 +5,7 @@ class StockWarehouse(models.Model):
     _inherit = 'stock.warehouse'
 
     programa_id = fields.Many2one('pf.programas', string='Programa Asociado', ondelete='restrict')
-    adm = fields.Boolean(string='Administrador', compute='_compute_administrador_programa')
     code = fields.Char('Código', size=10)
-
-    @api.depends('programa_id')
-    def _compute_administrador_programa(self):
-        for record in self:
-            user = self.env.user
-            record.adm = user.has_group('stock.group_stock_manager')
 
     @api.model
     def default_get(self, fields_list):
@@ -24,25 +17,18 @@ class StockWarehouse(models.Model):
                 defaults['programa_id'] = employee.programa_id.id
         return defaults
 
-    def filter_warehouses_by_program(self):
-        action = {
-            'name': 'Almacenes',
-            'type': 'ir.actions.act_window',
-            'res_model': 'stock.warehouse',
-            'view_mode': 'tree,form',
-            'context': self.env.context,
-        }
-        if self.env.user.has_group('stock.group_stock_manager'):
-            # Administrador: ve todos los almacenes
-            return action
-        elif self.env.user.has_group('prefectura_inventario.group_stock_program_manager'):
-            # Administrador de programa: solo almacenes de su programa
-            user_programa = self.env.user.employee_id.programa_id
-            if user_programa:
-                action['domain'] = [('programa_id', '=', user_programa.id)]
+
+    def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
+        if self._context.get('filtrar_programa'):
+            # Aseguramos que args sea una lista antes de modificarla
+            args = args if args else []
+            # Agregamos el dominio para filtrar por programa
+            if self.env.user.programa_id:
+                args = [('programa_id', '=', self.env.user.programa_id.id)] + args
             else:
-                action['domain'] = [('id', '=', False)]
-        else:
-            # Usuario regular: no ve almacenes (o ajusta según tus necesidades)
-            action['domain'] = [('id', '=', False)]
-        return action
+                # Si el usuario no tiene programa asignado, no mostramos ningún almacén
+                args = [('id', '=', False)]  # Dominio que no retornará resultados
+        
+        return super()._search(args, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
+
+   
