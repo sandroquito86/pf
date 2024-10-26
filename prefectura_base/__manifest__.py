@@ -28,6 +28,7 @@ Long description of module's purpose
         'data/ciudad_data.xml',
         'data/data_sucursal.xml',
         'data/data_programas.xml',
+        'data/cie10_data.xml',
         
         'views/pf_menu_view.xml',
         'views/pf_catalogo_items_views.xml',

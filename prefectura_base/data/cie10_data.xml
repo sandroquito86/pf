@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Capítulo I: Ciertas enfermedades infecciosas y parasitarias (A00-B99) -->
+        <record id="cie10_a00" model="pf.cie10">
+            <field name="code">A00</field>
+            <field name="name">Cólera</field>
+            <field name="category">Enfermedades Infecciosas Intestinales</field>
+            <field name="description">Enfermedad bacteriana intestinal aguda causada por Vibrio cholerae</field>
+        </record>
+
+        <record id="cie10_a01" model="pf.cie10">
+            <field name="code">A01</field>
+            <field name="name">Fiebres tifoidea y paratifoidea</field>
+            <field name="category">Enfermedades Infecciosas Intestinales</field>
+        </record>
+
+        <!-- Enfermedades respiratorias comunes -->
+        <record id="cie10_j00" model="pf.cie10">
+            <field name="code">J00</field>
+            <field name="name">Rinofaringitis aguda [resfriado común]</field>
+            <field name="category">Enfermedades del sistema respiratorio</field>
+        </record>
+
+        <record id="cie10_j01" model="pf.cie10">
+            <field name="code">J01</field>
+            <field name="name">Sinusitis aguda</field>
+            <field name="category">Enfermedades del sistema respiratorio</field>
+        </record>
+
+        <!-- Enfermedades tropicales relevantes para Ecuador -->
+        <record id="cie10_a90" model="pf.cie10">
+            <field name="code">A90</field>
+            <field name="name">Dengue [dengue clásico]</field>
+            <field name="category">Fiebres virales transmitidas por artrópodos</field>
+            <field name="description">Fiebre del dengue clásico sin signos de alarma</field>
+        </record>
+
+        <record id="cie10_a91" model="pf.cie10">
+            <field name="code">A91</field>
+            <field name="name">Dengue hemorrágico</field>
+            <field name="category">Fiebres virales transmitidas por artrópodos</field>
+        </record>
+
+        <!-- Enfermedades del sistema digestivo -->
+        <record id="cie10_k29" model="pf.cie10">
+            <field name="code">K29</field>
+            <field name="name">Gastritis y duodenitis</field>
+            <field name="category">Enfermedades del sistema digestivo</field>
+        </record>
+
+        <record id="cie10_k30" model="pf.cie10">
+            <field name="code">K30</field>
+            <field name="name">Dispepsia</field>
+            <field name="category">Enfermedades del sistema digestivo</field>
+        </record>
+
+        <!-- Traumatismos -->
+        <record id="cie10_s00" model="pf.cie10">
+            <field name="code">S00</field>
+            <field name="name">Traumatismo superficial de la cabeza</field>
+            <field name="category">Traumatismos</field>
+        </record>
+
+        <!-- Hipertensión -->
+        <record id="cie10_i10" model="pf.cie10">
+            <field name="code">I10</field>
+            <field name="name">Hipertensión esencial (primaria)</field>
+            <field name="category">Enfermedades hipertensivas</field>
+            <field name="description">Presión arterial alta sin causa identificable</field>
+        </record>
+
+        <!-- Diabetes -->
+        <record id="cie10_e11" model="pf.cie10">
+            <field name="code">E11</field>
+            <field name="name">Diabetes mellitus tipo 2</field>
+            <field name="category">Enfermedades endocrinas</field>
+        </record>
+
+        <!-- Estructura jerárquica para subcategorías -->
+        <record id="cie10_j45" model="pf.cie10">
+            <field name="code">J45</field>
+            <field name="name">Asma</field>
+            <field name="category">Enfermedades del sistema respiratorio</field>
+        </record>
+
+        <record id="cie10_j45_0" model="pf.cie10">
+            <field name="code">J45.0</field>
+            <field name="name">Asma predominantemente alérgica</field>
+            <field name="category">Enfermedades del sistema respiratorio</field>
+            <field name="parent_id" ref="cie10_j45"/>
+        </record>
+
+        <record id="cie10_j45_1" model="pf.cie10">
+            <field name="code">J45.1</field>
+            <field name="name">Asma no alérgica</field>
+            <field name="category">Enfermedades del sistema respiratorio</field>
+            <field name="parent_id" ref="cie10_j45"/>
+        </record>
+
+        <!-- Más enfermedades comunes en Ecuador -->
+        <record id="cie10_b51" model="pf.cie10">
+            <field name="code">B51</field>
+            <field name="name">Paludismo [malaria] por Plasmodium vivax</field>
+            <field name="category">Enfermedades parasitarias</field>
+        </record>
+
+        <record id="cie10_a06" model="pf.cie10">
+            <field name="code">A06</field>
+            <field name="name">Amebiasis</field>
+            <field name="category">Enfermedades Infecciosas Intestinales</field>
+        </record>
+
+        <!-- COVID-19 -->
+        <record id="cie10_u07_1" model="pf.cie10">
+            <field name="code">U07.1</field>
+            <field name="name">COVID-19, virus identificado</field>
+            <field name="category">Códigos para situaciones especiales</field>
+            <field name="description">Caso confirmado de COVID-19</field>
+        </record>
+
+    </data>
+</odoo>
