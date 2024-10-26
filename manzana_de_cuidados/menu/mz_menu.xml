@@ -5,7 +5,7 @@
     <menuitem id="menu_principal" name="Manzana De Cuidados"/>
 
     <menuitem id="menu_programas"
-              name="Programas"
+              name="Registro"
               parent="menu_principal"
               sequence="4"/>
     <menuitem id="menu_planificacion_curso"

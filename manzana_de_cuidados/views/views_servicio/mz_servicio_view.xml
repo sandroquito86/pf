@@ -125,14 +125,14 @@
 
 
     <!-- Acción -->
-    <record id="action_servicio" model="ir.actions.act_window">
+    <record id="action_servicios" model="ir.actions.act_window">
         <field name="name">Servicios</field>
         <field name="res_model">mz.servicio</field>
         <field name="view_mode">kanban,tree,form</field>
-        <field name="view_id" ref="view_servicio_tree"/>
+        <field name="view_id" ref="view_servicio_kanban"/>
     </record>
 
     <!-- Menú -->
-    <menuitem id="menu_servicio" name="Servicios" parent="menu_configuracion" action="action_servicio" sequence="5"/>
+    <menuitem id="menu_servicio" name="Servicios" parent="menu_configuracion" action="action_servicios" sequence="5"/>
 </data>
 </odoo>

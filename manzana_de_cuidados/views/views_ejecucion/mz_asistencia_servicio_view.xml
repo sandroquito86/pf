@@ -18,8 +18,18 @@
                 <field name="atendido" widget="boolean_toggle" readonly="1"/>
                 <button name="action_asistio" type="object" string="Asistió" icon="fa-check" class="btn-primary" invisible="asistio != 'pendiente'"/>
                 <button name="action_no_asistio" type="object" string="No Asistió" icon="fa-times" class="btn-danger" invisible="asistio != 'pendiente'"/>
-                <button name="%(action_consulta_form)d" type="action" string="Consulta Médica" icon="fa-stethoscope" class="btn-info" invisible="atendido or tipo_servicio != 'medico'"
-                    context="{'default_personal_id': personal_id, 'default_beneficiario_id': beneficiario_id, 'default_servicio_id': servicio_id, 'default_programa_id': programa_id, 'default_fecha': fecha, 'default_codigo': codigo}"/>
+                <button name="ingresar_signos" type="object" string="Signos Vitales" icon="fa-heartbeat" class="btn-primary" invisible="atendido or tipo_servicio != 'medico' or asistio != 'si'"/>
+                <button name="%(action_consulta_form)d" type="action" string="Consulta Médica" icon="fa-stethoscope" class="btn-info" invisible="atendido or tipo_servicio != 'medico' or asistio != 'si'"
+                    context="{'default_personal_id': personal_id, 'default_beneficiario_id': beneficiario_id, 'default_servicio_id': servicio_id, 'default_programa_id': programa_id, 'default_fecha': fecha, 'default_codigo': codigo, 'default_asistencia_servicio_id': id, 'default_presion_arterial': presion_arterial, 'default_frecuencia_cardiaca': frecuencia_cardiaca, 'default_frecuencia_respiratoria': frecuencia_respiratoria, 'default_temperatura': temperatura, 'default_peso': peso, 'default_altura': altura, 'default_imc': imc}"/>
+                <button name="action_ver_consulta" type="object" string="Ver Consulta Médica" icon="fa-eye" class="btn-secondary" invisible="not consulta_id"/>
+                <field name="consulta_id" optional="hide"/>
+                <field name="presion_arterial" optional="hide"/>
+                <field name="frecuencia_cardiaca" optional="hide"/>
+                <field name="frecuencia_respiratoria" optional="hide"/>
+                <field name="temperatura" optional="hide"/>
+                <field name="peso" optional="hide"/>
+                <field name="altura" optional="hide"/>
+                <field name="imc" optional="hide"/>
             </tree>
         </field>
     </record>
@@ -53,6 +63,35 @@
             </form>
         </field>
     </record>
+
+    <record id="view_asistencia_servicio_signos_vitales_form" model="ir.ui.view">
+        <field name="name">mz.asistencia_servicio.form</field>
+        <field name="model">mz.asistencia_servicio</field>
+        <field name="arch" type="xml">
+            <form>
+                 <h1 class="d-flex flex-row align-items-center">
+                    <field name="beneficiario_id" readonly="1" style="font-size: min(4vw, 2.6rem);"/>
+                </h1>
+                
+                <group string="Signos Vitales">
+                    <group>
+                        <field name="presion_arterial"/>
+                        <field name="frecuencia_cardiaca"/>
+                        <field name="frecuencia_respiratoria"/>
+                        <field name="temperatura"/>
+                    </group>
+                    <group>
+                        <field name="peso"/>
+                        <field name="altura"/>
+                        <field name="imc"/>
+                    </group>
+                </group>
+                
+                <!-- ... resto del formulario ... -->
+            </form>
+        </field>
+    </record>
+
 
     <!-- Search View -->
     <record id="view_asistencia_servicio_search" model="ir.ui.view">

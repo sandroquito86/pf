@@ -21,7 +21,7 @@ class Consulta(models.Model):
     programa_id = fields.Many2one('pf.programas', string='Programa', required=True, default=lambda self: self.env.programa_id)
     servicio_id = fields.Many2one(string='Servicio', comodel_name='mz.asignacion.servicio', ondelete='restrict', domain="[('programa_id', '=?', programa_id)]")
     personal_id = fields.Many2one(string='Personal Médico', comodel_name='hr.employee', ondelete='restrict', tracking=True)
-    
+    asistencia_servicio_id = fields.Many2one('mz.asistencia.servicio', string='Asistencia Servicio')
     # Información del paciente
     genero = fields.Selection([
         ('masculino', 'Masculino'),
@@ -67,10 +67,25 @@ class Consulta(models.Model):
 
     receta_ids = fields.One2many('mz.receta.linea', 'consulta_id', string='Receta Médica')
     picking_id = fields.Many2one('stock.picking', string='Orden de Entrega', readonly=True)
+
+    # Añadimos campo computado para contar historias clínicas
+    historial_count = fields.Integer(
+        string='Cantidad de Historias',
+        compute='_compute_historial_count'
+    )
+    
+    # Campo relacionado para acceder a las historias clínicas del beneficiario
+    historial_ids = fields.One2many(
+        related='beneficiario_id.historia_clinica_ids',
+        string='Historias Clínicas'
+    )
+    
     
     _sql_constraints = [
         ('codigo_unique', 'unique(codigo)', 'El código de la consulta debe ser único.')
     ]
+
+   
 
     @api.constrains('codigo')
     def _check_codigo(self):
@@ -79,6 +94,27 @@ class Consulta(models.Model):
                 codigo_existente = self.search([('codigo', '=', record.codigo), ('id', '!=', record.id)], limit=1)
                 if codigo_existente:
                     raise UserError('Este servicio ya genero una consulta con el mismo código.')
+                
+    @api.depends('beneficiario_id')
+    def _compute_historial_count(self):
+        for record in self:
+            record.historial_count = len(record.beneficiario_id.historia_clinica_ids)
+    
+    def action_view_historial(self):
+        self.ensure_one()
+        return {
+            'name': f'Historial Clínico - {self.beneficiario_id.name}',
+            'type': 'ir.actions.act_window',
+            'res_model': 'mz.historia.clinica',
+            'view_mode': 'tree,form',
+            'domain': [('beneficiario_id', '=', self.beneficiario_id.id)],
+            'context': {
+                'default_beneficiario_id': self.beneficiario_id.id,
+                'search_default_beneficiario_id': self.beneficiario_id.id,
+            },
+            'target': 'current',
+        }
+
 
     @api.model
     def default_get(self, fields_list):
@@ -138,7 +174,7 @@ class Consulta(models.Model):
     def create(self, vals):
         consulta = super(Consulta, self).create(vals)
         consulta.crear_historia_clinica()
-        self.env['mz.asistencia_servicio'].search([('codigo', '=', vals['codigo'])]).write({'atendido': True})
+        self.env['mz.asistencia_servicio'].search([('codigo', '=', vals['codigo'])]).write({'atendido': True, 'consulta_id': consulta.id})
         return consulta
 
     def write(self, vals):
@@ -251,4 +287,5 @@ class Consulta(models.Model):
                     'sticky': False,
                 }
             }
+    
     

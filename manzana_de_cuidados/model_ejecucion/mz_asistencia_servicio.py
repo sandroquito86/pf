@@ -22,13 +22,31 @@ class AsistenciaServicio(models.Model):
     personal_id = fields.Many2one(string='Personal', comodel_name='hr.employee', ondelete='restrict') 
     codigo = fields.Char(string='Código', readonly=True, store=True)
     tipo_servicio = fields.Selection([('normal', 'Normal'), ('medico', 'Medico')], string='Tipo de Servicio', compute='_compute_tipo_servicio')
+    consulta_id = fields.Many2one('mz.consulta', string='Consulta Médica')
 
+    # Signos vitales
+    presion_arterial = fields.Char(string='Presión Arterial', tracking=True)
+    frecuencia_cardiaca = fields.Integer(string='Frecuencia Cardíaca', tracking=True)
+    frecuencia_respiratoria = fields.Integer(string='Frecuencia Respiratoria', tracking=True)
+    temperatura = fields.Float(string='Temperatura (°C)', tracking=True)
+    peso = fields.Float(string='Peso (kg)', tracking=True)
+    altura = fields.Float(string='Altura (cm)', tracking=True)
+    imc = fields.Float(string='IMC', compute='_compute_imc', store=True)
 
     _sql_constraints = [
         ('unique_planificacion_beneficiario', 'unique(planificacion_id, beneficiario_id)', 
          'Ya existe un registro de asistencia para este beneficiario en esta planificación.'),
          ('unique_codigo', 'unique(codigo)', 'El código de asistencia debe ser único.')]
     
+    @api.depends('peso', 'altura')
+    def _compute_imc(self):
+        for record in self:
+            if record.peso and record.altura:
+                altura_m = record.altura / 100  # convertir cm a m
+                record.imc = record.peso / (altura_m * altura_m)
+            else:
+                record.imc = 0
+                
     @api.depends('servicio_id')
     def _compute_tipo_servicio(self):
         for record in self:
@@ -41,6 +59,30 @@ class AsistenciaServicio(models.Model):
 
     def action_no_asistio(self):
         self.asistio = 'no'
+
+    def action_ver_consulta(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Consulta Médica',
+            'res_model': 'mz.consulta',
+            'view_mode': 'form',
+            'res_id': self.consulta_id.id,
+            'target': 'new',
+            'context': {'form_view_initial_mode': 'readonly'},
+        }
+    
+    def ingresar_signos(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Ingreso de Signos Vitales',
+            'res_model': 'mz.asistencia_servicio',
+            'view_mode': 'form',
+            'views': [(self.env.ref('manzana_de_cuidados.view_asistencia_servicio_signos_vitales_form').id, 'form')],
+            'res_id': self.id,
+            'target': 'new',
+        }
 
 
 class PlanificacionServicio(models.Model):

@@ -6,6 +6,7 @@
         <field name="model">mz.historia.clinica</field>
         <field name="arch" type="xml">
             <tree string="Historial Clínico">
+                <field name="beneficiario_id"/>
                 <field name="fecha"/>
                 <field name="motivo_consulta"/>
                 <field name="diagnostico"/>
