@@ -39,6 +39,8 @@
               </group>
               <group>
                 <field name="maximo_beneficiarios" readonly = "not personal_id"  />
+                <field name="fecha_inicio" required="1" readonly = "not personal_id" />
+                <field name="fecha_fin" required="1" readonly = "not personal_id" />
                 <field name="anio" readonly = "not personal_id"  />
                 <field name="mes_genera" readonly = "not personal_id" />
                 <field name="programa_id" invisible="1" /> 

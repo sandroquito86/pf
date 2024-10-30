@@ -1,0 +1,28 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Catálogos -->
+        <record id="tipo_servicio" model="mz.catalogo">
+            <field name="name">Tipo de Servicio</field>
+            <field name="descripcion">Catálogo de Tipo de Servicios</field>
+        </record>
+        
+
+       
+        <!-- Tipo de servicios -->
+        <record id="tipo_servicio_cuidado" model="mz.items">
+            <field name="name">Cuidado</field>
+            <field name="descripcion">Tipo de Servicio Cuidado</field>
+            <field name="catalogo_id" ref="tipo_servicio"/>
+        </record>
+        <record id="tipo_servicio_bienestar" model="mz.items">
+            <field name="name">Bienestar  y Autocuidado</field>
+            <field name="descripcion">Tipo de Servicio Bienestar  y Autocuidado</field>
+            <field name="catalogo_id" ref="tipo_servicio"/>
+        </record>
+        <record id="tipo_servicio_formacion" model="mz.items">
+            <field name="name">Formación y generación de ingresos</field>
+            <field name="descripcion">Tipo de Servicio Formación y generación de ingresos</field>
+            <field name="catalogo_id" ref="tipo_servicio"/>
+        </record>
+    </data>    
+</odoo>

@@ -27,6 +27,8 @@ class GenerarHorarios(models.Model):
     name = fields.Char(string='Descripción', required=True, compute='_compute_name',)
     servicio_id = fields.Many2one(string='Servicio', comodel_name='mz.asignacion.servicio', ondelete='restrict',domain="[('programa_id', '=?', programa_id)]", required=True, tracking=True)  
     personal_id = fields.Many2one(string='Personal', comodel_name='hr.employee', ondelete='restrict',) 
+    
+    # hay que eliminar estos campos ya que fuerin reemplados por fecha inicio y fecha de fin
     mes_genera = fields.Selection([('1', 'ENERO'), ('2', 'FEBRERO'), ('3', 'MARZO'), ('4', 'ABRIL'), ('5', 'MAYO'), ('6', 'JUNIO'), ('7', 'JULIO'), ('8', 'AGOSTO'), 
                                    ('9', 'SEPTIEMBRE'), ('10', 'OCTUBRE'), ('11', 'NOVIEMBRE'), ('12', 'DICIEMBRE')],string='Mes a Generar')
     anio = fields.Char(string='Año', default=_default_anio)
@@ -39,6 +41,9 @@ class GenerarHorarios(models.Model):
     active = fields.Boolean(default=True, string='Activo', tracking=True)
     _sql_constraints = [('name_unique', 'UNIQUE(servicio_id,personal_id,mes_genera, anio)',
                          "Ya existe AGENDA para esta persona en el MES seleccionado !!"),]
+    
+    fecha_inicio = fields.Date(string='Fecha Inicio', required=True)
+    fecha_fin = fields.Date(string='Fecha Fin', required=True)
     
     @api.depends('servicio_id')
     def _compute_domain_programas(self):
@@ -130,25 +135,37 @@ class GenerarHorarios(models.Model):
     def action_generar_horas(self):
         for record in self:
             record.turno_disponibles_ids = False
-            horarios = self.env['mz.horarios.servicio'].search([('servicio_id', '=', record.servicio_id.id), ('personal_id', '=', record.personal_id.id)],limit=1)
+            horarios = self.env['mz.horarios.servicio'].search([
+                ('servicio_id', '=', record.servicio_id.id), 
+                ('personal_id', '=', record.personal_id.id)
+            ], limit=1)
+            
             if not horarios:
                 raise UserError("No se ha registrado horarios para este empleado en este servicio!!")
-            mes = int(record.mes_genera)
-            anio = int(record.anio)
-            dias = record.obtener_dias_del_mes(mes, anio)
+
+            # Asumiendo que agregamos campos para fecha_inicio y fecha_fin de la semana
+            fecha_inicio = record.fecha_inicio
+            fecha_fin = record.fecha_fin
+            
+            # Validar que el rango sea de una semana
+            diferencia_dias = (fecha_fin - fecha_inicio).days
+            if diferencia_dias > 7:
+                raise UserError("El rango de fechas debe ser de máximo 7 días")
+                
             maximo_beneficiarios = record.maximo_beneficiarios
-            for horario in horarios:        
-                for dia in range(dias):
-                    # fecha_asignar = datetime.strptime(f'{str(anio)}-{str(mes)}-{str(dia + 1)}', '%Y-%m-%d')
-                    text = str(anio)+"-"+str(mes)+"-"+str(dia+1)
-                    fecha_asignar = datetime.datetime.strptime(
-                        text, "%Y-%m-%d")
-                    ultimo_dia_asignar = fecha_asignar.weekday()
-                    #raise UserError("a {}".format(ultimo_dia_asignar))
-                    horas_dia = self.env['mz.detalle.horarios'].search([('asignacion_horario_id', '=', horario.id), ('dias', '=', ultimo_dia_asignar)])                    
+            
+            for horario in horarios:
+                fecha_actual = fecha_inicio
+                while fecha_actual <= fecha_fin:
+                    ultimo_dia_asignar = fecha_actual.weekday()
+                    
+                    horas_dia = self.env['mz.detalle.horarios'].search([
+                        ('asignacion_horario_id', '=', horario.id), 
+                        ('dias', '=', ultimo_dia_asignar)
+                    ])
+                    
                     if horas_dia:
                         for horas in horas_dia:
-                            
                             hora_ini = horas.horainicio
                             hi = horas.horainicio * 60
                             h1, m1 = divmod(hi, 60)
@@ -156,26 +173,72 @@ class GenerarHorarios(models.Model):
                             hf = horas.horafin * 60
                             h2, m2 = divmod(hf, 60)
                             duracion = horas.duracionconsulta
-                            # ahora si estamos
-                            #raise UserError("si estamos {}".format(horas))
+                            
                             hora = '%02d:%02d-%02d:%02d' % (h1, m1, h2, m2)
-                            #raise UserError("h1 {} m1 {} h2 {} m2 {}".format(h1, m1, h2, m2))
+                            
                             while round(hora_ini + duracion, 2) <= round(horafin, 2):
-                                record.turno_disponibles_ids = [(0, 0, {'fecha': fecha_asignar, 'horainicio': hora_ini, 'horafin': hora_ini +
-                                                                   duracion, 'hora': hora, 'maximo_beneficiarios': maximo_beneficiarios})]
+                                record.turno_disponibles_ids = [(0, 0, {
+                                    'fecha': fecha_actual,
+                                    'horainicio': hora_ini,
+                                    'horafin': hora_ini + duracion,
+                                    'hora': hora,
+                                    'maximo_beneficiarios': maximo_beneficiarios
+                                })]
+                                hora_ini = hora_ini + duracion
+                    
+                    fecha_actual += timedelta(days=1)
+                    
+        return True
+
+    # def action_generar_horas(self):
+    #     for record in self:
+    #         record.turno_disponibles_ids = False
+    #         horarios = self.env['mz.horarios.servicio'].search([('servicio_id', '=', record.servicio_id.id), ('personal_id', '=', record.personal_id.id)],limit=1)
+    #         if not horarios:
+    #             raise UserError("No se ha registrado horarios para este empleado en este servicio!!")
+    #         mes = int(record.mes_genera)
+    #         anio = int(record.anio)
+    #         dias = record.obtener_dias_del_mes(mes, anio)
+    #         maximo_beneficiarios = record.maximo_beneficiarios
+    #         for horario in horarios:        
+    #             for dia in range(dias):
+    #                 # fecha_asignar = datetime.strptime(f'{str(anio)}-{str(mes)}-{str(dia + 1)}', '%Y-%m-%d')
+    #                 text = str(anio)+"-"+str(mes)+"-"+str(dia+1)
+    #                 fecha_asignar = datetime.datetime.strptime(
+    #                     text, "%Y-%m-%d")
+    #                 ultimo_dia_asignar = fecha_asignar.weekday()
+    #                 #raise UserError("a {}".format(ultimo_dia_asignar))
+    #                 horas_dia = self.env['mz.detalle.horarios'].search([('asignacion_horario_id', '=', horario.id), ('dias', '=', ultimo_dia_asignar)])                    
+    #                 if horas_dia:
+    #                     for horas in horas_dia:
+                            
+    #                         hora_ini = horas.horainicio
+    #                         hi = horas.horainicio * 60
+    #                         h1, m1 = divmod(hi, 60)
+    #                         horafin = horas.horafin
+    #                         hf = horas.horafin * 60
+    #                         h2, m2 = divmod(hf, 60)
+    #                         duracion = horas.duracionconsulta
+    #                         # ahora si estamos
+    #                         #raise UserError("si estamos {}".format(horas))
+    #                         hora = '%02d:%02d-%02d:%02d' % (h1, m1, h2, m2)
+    #                         #raise UserError("h1 {} m1 {} h2 {} m2 {}".format(h1, m1, h2, m2))
+    #                         while round(hora_ini + duracion, 2) <= round(horafin, 2):
+    #                             record.turno_disponibles_ids = [(0, 0, {'fecha': fecha_asignar, 'horainicio': hora_ini, 'horafin': hora_ini +
+    #                                                                duracion, 'hora': hora, 'maximo_beneficiarios': maximo_beneficiarios})]
                                 
-                                hora_ini = hora_ini + duracion 
+    #                             hora_ini = hora_ini + duracion 
+    #     return True
 
     # generar la planificacion de las horas de las citas disponibles por especialidad, unidadmedica y medico
-    @api.onchange('mes_genera', 'anio')
-    def _onchange_mes_genera(self):
+    @api.onchange('fecha_inicio', 'fecha_fin')
+    def _onchange_genera_planificacion(self):
         for record in self:            
-            if (record.mes_genera):
-                if record.anio:
-                    self.action_generar_horas()
+            if record.fecha_inicio and record.fecha_fin:
+                if record.fecha_inicio > record.fecha_fin:
+                    raise UserError("La fecha de inicio no puede ser mayor a la fecha de fin")
+                self.action_generar_horas()
                     #raise UserError("a")
-                else:
-                    raise UserError("Debe registrar el año a generar!!")
             else:
                 record.turno_disponibles_ids = False
 

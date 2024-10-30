@@ -8,8 +8,18 @@
     </record>
 
     <!-- Definir el Grupo de Acceso para Beneficiarios -->
+    <record id="group_manzana_lider_estrategia" model="res.groups">
+        <field name="name">Líder de la Estrategia de Manzanas</field>
+        <field name="category_id" ref="module_category_manzana_cuidados"/>
+    </record>
+
+    <record id="group_coordinador_manzana" model="res.groups">
+        <field name="name">Coordinador de Manzana</field>
+        <field name="category_id" ref="module_category_manzana_cuidados"/>
+    </record>
+
     <record id="group_beneficiario_manager" model="res.groups">
-        <field name="name">Beneficiario Manager</field>
+        <field name="name">Sistema</field>
         <field name="category_id" ref="module_category_manzana_cuidados"/>
     </record>
 </odoo>

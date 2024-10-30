@@ -33,6 +33,7 @@
                     </div>
                     <group>
                         <field name="descripcion" placeholder="Detalle sel Servicio"/>
+                        <field name="catalogo_tipo_servicio_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
                         <field name="tipo_servicio"/>
                         <field name="if_derivacion" widget="boolean_toggle"/>
                         <field name="active" widget="boolean_toggle" readonly="1" force_save="1"/>
@@ -50,11 +51,11 @@
         <field name="name">mz.servicio.kanban</field>
         <field name="model">mz.servicio</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_mobile o_kanban_renderer" default_group_by="tipo_servicio">
+            <kanban class="o_kanban_mobile o_kanban_renderer" default_group_by="catalogo_tipo_servicio_id">
                 <field name="id"/>
                 <field name="name"/>
                 <field name="descripcion"/>
-                <field name="tipo_servicio"/>
+                <field name="catalogo_tipo_servicio_id"/>
                 <field name="if_derivacion"/>
                 <field name="image"/>
                 <field name="active"/>
@@ -96,7 +97,7 @@
                                     </div>
                                     <div class="oe_kanban_bottom_right">
                                         <span class="badge rounded-pill text-bg-info" title="Tipo de Servicio">
-                                            <field name="tipo_servicio"/>
+                                            <field name="catalogo_tipo_servicio_id"/>
                                         </span>
                                     </div>
                                 </div>
@@ -115,9 +116,9 @@
         <field name="arch" type="xml">
             <search string="Servicios">
                 <field name="name"/>
-                <field name="tipo_servicio"/>
+                <field name="catalogo_tipo_servicio_id"/>
                 <searchpanel>
-                    <field name="tipo_servicio" icon="fa-cogs" string="Tipo Servicio"/>
+                    <field name="catalogo_tipo_servicio_id" icon="fa-cogs" string="Tipo Servicio"/>
                 </searchpanel>
             </search>
         </field>
