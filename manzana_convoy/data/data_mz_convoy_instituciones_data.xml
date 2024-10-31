@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Catálogo de Instituciones Públicas -->
+        <record id="catalogo_instituciones_publicas" model="mz_convoy.catalogo">
+            <field name="name">Instituciones Públicas</field>
+            <field name="descripcion">Instituciones y organismos públicos del Ecuador</field>
+            <field name="sequence">3</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Items de Instituciones Públicas -->
+        <record id="item_policia_nacional" model="mz_convoy.items">
+            <field name="name">Policía Nacional del Ecuador</field>
+            <field name="descripcion">Institución encargada de la seguridad ciudadana y el orden público</field>
+            <field name="catalogo_id" ref="catalogo_instituciones_publicas"/>
+        </record>
+
+        <record id="item_bomberos" model="mz_convoy.items">
+            <field name="name">Benemérito Cuerpo de Bomberos</field>
+            <field name="descripcion">Institución encargada de la prevención y control de incendios y atención de emergencias</field>
+            <field name="catalogo_id" ref="catalogo_instituciones_publicas"/>
+        </record>
+
+        <record id="item_ff_aa" model="mz_convoy.items">
+            <field name="name">Fuerzas Armadas del Ecuador</field>
+            <field name="descripcion">Institución militar encargada de la defensa nacional</field>
+            <field name="catalogo_id" ref="catalogo_instituciones_publicas"/>
+        </record>
+
+        <record id="item_ministerio_salud" model="mz_convoy.items">
+            <field name="name">Ministerio de Salud Pública</field>
+            <field name="descripcion">Institución rectora de la salud pública en Ecuador</field>
+            <field name="catalogo_id" ref="catalogo_instituciones_publicas"/>
+        </record>
+
+        <record id="item_ecu911" model="mz_convoy.items">
+            <field name="name">ECU 911</field>
+            <field name="descripcion">Servicio Integrado de Seguridad ECU 911</field>
+            <field name="catalogo_id" ref="catalogo_instituciones_publicas"/>
+        </record>
+
+        <record id="item_sngr" model="mz_convoy.items">
+            <field name="name">Servicio Nacional de Gestión de Riesgos</field>
+            <field name="descripcion">Institución encargada de la gestión de riesgos y emergencias</field>
+            <field name="catalogo_id" ref="catalogo_instituciones_publicas"/>
+        </record>
+
+        <record id="item_gad_provincial" model="mz_convoy.items">
+            <field name="name">Gobierno Autónomo Descentralizado Provincial</field>
+            <field name="descripcion">Gobierno provincial</field>
+            <field name="catalogo_id" ref="catalogo_instituciones_publicas"/>
+        </record>
+
+        <record id="item_gad_municipal" model="mz_convoy.items">
+            <field name="name">Gobierno Autónomo Descentralizado Municipal</field>
+            <field name="descripcion">Gobierno municipal</field>
+            <field name="catalogo_id" ref="catalogo_instituciones_publicas"/>
+        </record>
+
+        <record id="item_ministerio_educacion" model="mz_convoy.items">
+            <field name="name">Ministerio de Educación</field>
+            <field name="descripcion">Institución rectora de la educación en Ecuador</field>
+            <field name="catalogo_id" ref="catalogo_instituciones_publicas"/>
+        </record>
+
+        <record id="item_agr_transito" model="mz_convoy.items">
+            <field name="name">Agencia Nacional de Tránsito</field>
+            <field name="descripcion">Institución reguladora del tránsito y transporte terrestre</field>
+            <field name="catalogo_id" ref="catalogo_instituciones_publicas"/>
+        </record>
+
+        <record id="item_registro_civil" model="mz_convoy.items">
+            <field name="name">Registro Civil</field>
+            <field name="descripcion">Dirección General de Registro Civil, Identificación y Cedulación</field>
+            <field name="catalogo_id" ref="catalogo_instituciones_publicas"/>
+        </record>
+
+        <record id="item_iess" model="mz_convoy.items">
+            <field name="name">IESS</field>
+            <field name="descripcion">Instituto Ecuatoriano de Seguridad Social</field>
+            <field name="catalogo_id" ref="catalogo_instituciones_publicas"/>
+        </record>
+
+        <record id="item_senescyt" model="mz_convoy.items">
+            <field name="name">SENESCYT</field>
+            <field name="descripcion">Secretaría de Educación Superior, Ciencia, Tecnología e Innovación</field>
+            <field name="catalogo_id" ref="catalogo_instituciones_publicas"/>
+        </record>
+
+        <record id="item_ministerio_trabajo" model="mz_convoy.items">
+            <field name="name">Ministerio del Trabajo</field>
+            <field name="descripcion">Institución rectora de las relaciones laborales</field>
+            <field name="catalogo_id" ref="catalogo_instituciones_publicas"/>
+        </record>
+    </data>
+</odoo>

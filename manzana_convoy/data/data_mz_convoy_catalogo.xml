@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Catálogo de Participación Específica -->
+        <record id="catalogo_participacion_especifica" model="mz_convoy.catalogo">
+            <field name="name">Participación Específica</field>
+            <field name="descripcion">Tipos de participación de la prefecta en eventos</field>
+            <field name="sequence">1</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Items de Participación Específica -->
+        <record id="item_inauguracion" model="mz_convoy.items">
+            <field name="name">Inauguración</field>
+            <field name="descripcion">Participación en inauguración de evento</field>
+            <field name="catalogo_id" ref="catalogo_participacion_especifica"/>
+        </record>
+
+        <record id="item_clausura" model="mz_convoy.items">
+            <field name="name">Clausura</field>
+            <field name="descripcion">Participación en clausura de evento</field>
+            <field name="catalogo_id" ref="catalogo_participacion_especifica"/>
+        </record>
+
+        <record id="item_ponencia" model="mz_convoy.items">
+            <field name="name">Ponencia</field>
+            <field name="descripcion">Participación como ponente</field>
+            <field name="catalogo_id" ref="catalogo_participacion_especifica"/>
+        </record>
+
+        <record id="item_panel" model="mz_convoy.items">
+            <field name="name">Panel</field>
+            <field name="descripcion">Participación en panel</field>
+            <field name="catalogo_id" ref="catalogo_participacion_especifica"/>
+        </record>
+
+        <!-- Catálogo de Tipo de Evento -->
+        <record id="catalogo_tipo_evento" model="mz_convoy.catalogo">
+            <field name="name">Tipo de Evento</field>
+            <field name="descripcion">Clasificación del tipo de evento</field>
+            <field name="sequence">2</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Items de Tipo de Evento -->
+        <record id="item_privado" model="mz_convoy.items">
+            <field name="name">Privado</field>
+            <field name="descripcion">Evento de carácter privado</field>
+            <field name="catalogo_id" ref="catalogo_tipo_evento"/>
+        </record>
+
+        <record id="item_publico" model="mz_convoy.items">
+            <field name="name">Público</field>
+            <field name="descripcion">Evento de carácter público</field>
+            <field name="catalogo_id" ref="catalogo_tipo_evento"/>
+        </record>
+    </data>
+</odoo>

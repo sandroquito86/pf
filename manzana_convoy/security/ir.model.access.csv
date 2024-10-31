@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mz_convoy_catalogo_user,mz_convoy.catalogo.user,model_mz_convoy_catalogo,,1,1,1,1
+access_mz_convoy_items_user,mz_convoy_items.user,model_mz_convoy_items,,1,1,1,1
+access_mz_convoy_mesa_tecnica_user,mz_convoy.mesa_tecnica.user,model_mz_convoy_mesa_tecnica,,1,1,1,1
+access_mz_convoy_user,mz.convoy.user,model_mz_convoy,,1,1,1,1
+access_mz_convoy_autoridades_user,mz_convoy.autoridades.user,model_mz_convoy_autoridades,,1,1,1,1
+access_mz_convoy_alertas_quejas_user,mz_convoy.alertas_quejas.user,model_mz_convoy_alertas_quejas,,1,1,1,1
+
+
+
+
