@@ -41,3 +41,4 @@ access_mz_asistencia_servicio_administrador,mz.asistencia_servicio.administrador
 access_mz_consulta_admin,mz.consulta.admin,model_mz_consulta,prefectura_base.group_administrador,1,1,1,1
 access_mz_historia_clinica_admin,mz.historia_clinica.admin,model_mz_historia_clinica,prefectura_base.group_administrador,1,1,1,1
 access_mz_receta_linea_admin,mz.receta_linea.admin,model_mz_receta_linea,prefectura_base.group_administrador,1,1,1,1
+access_mz_wizard_replanificar_turnos_admin,mz.wizard.replanificar.turnos.admin,model_mz_wizard_replanificar_turnos,prefectura_base.group_administrador,1,1,1,1

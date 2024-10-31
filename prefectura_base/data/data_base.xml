@@ -38,6 +38,9 @@
         <record id="modulo_3" model="pf.modulo">
             <field name="name">Escuela y Programas de Deportes</field>
         </record>
+        <record id="modulo_4" model="pf.modulo">
+            <field name="name">Convoy</field>
+        </record>
         <!-- Items -->
         <!-- Estado Civil -->
         <record id="estado_civil_soltero" model="pf.items">
