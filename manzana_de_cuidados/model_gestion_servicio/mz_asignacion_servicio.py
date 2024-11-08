@@ -37,6 +37,10 @@ class AsignarServicio(models.Model):
 
     mostrar_boton_publicar = fields.Boolean(string='Mostrar Botón Publicar', compute='_compute_mostrar_boton_publicar')
     mostrar_bot_retirar_public = fields.Boolean(string='Mostrar Botón Retirar Publicar', compute='_compute_mostrar_bot_retirar_public')
+    sub_servicio_ids = fields.Many2many('mz.sub.servicio', string='Sub Servicios',relation='asignacion_servicio_sub_servicio_rel')
+    domain_sub_servicio_ids = fields.Char(string='Domain Sub servicios',compute='_compute_domain_sub_servicio_ids')
+    
+
 
     @api.constrains('name', 'programa_id')
     def _check_name_unique_per_programa(self):
@@ -57,6 +61,16 @@ class AsignarServicio(models.Model):
                 record.domain_personal_ids = [('id', 'in', employees.ids)]
             else:
                 record.domain_personal_ids = [('id', 'in', [])]
+
+    @api.depends('servicio_id')
+    def _compute_domain_sub_servicio_ids(self):
+        for record in self:
+            if record.servicio_id:
+                sub_servicios = self.env['mz.sub.servicio'].search([('id', 'in', self.servicio_id.sub_servicio_ids.ids)])
+                record.domain_sub_servicio_ids = [('id', 'in', sub_servicios.ids)]
+            else:
+                record.domain_sub_servicio_ids = [('id', 'in', [])]
+
 
     @api.depends('active', 'if_publicado')
     def _compute_mostrar_boton_publicar(self):

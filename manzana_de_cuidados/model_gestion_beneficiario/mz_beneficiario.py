@@ -21,6 +21,43 @@ class Beneficiario(models.Model):
     aistencia_servicio_ids = fields.One2many('mz.asistencia_servicio', 'beneficiario_id', string='Servicios recibidos')
     asis_servicio_count = fields.Integer(string='Número de Servicios', compute='_compute_asis_servicios_count')
 
+    autoriza_consentimiento = fields.Boolean(string='Autoriza Consentimiento de Datos Socioeconómicos', default=False)
+    file = fields.Binary(string='Archivo', attachment=True)
+    name_file = fields.Char(string='Nombre de Archivo')
+
+    # datos socioeconomicos
+    tiene_discapacidad = fields.Boolean('¿Tiene usted alguna discapacidad?')
+    recibe_bono = fields.Boolean('¿Recibe algún tipo de bono?')
+    tipo_discapacidad_id = fields.Many2one('pf.items', string='Tipo de Discapacidad', 
+                                           domain=lambda self: [('catalogo_id', '=', self.env.ref('prefectura_base.tipos_discapacidad').id)])
+    nivel_instruccion_id = fields.Many2one('pf.items', string='Nivel de Instrucción',
+                                           domain=lambda self: [('catalogo_id', '=', self.env.ref('prefectura_base.catalogo_nivel_instruccion').id)])
+    situacion_laboral_id = fields.Many2one('pf.items', string='Situación Laboral',
+                                           domain=lambda self: [('catalogo_id', '=', self.env.ref('prefectura_base.catalogo_situacion_laboral').id)])
+    tipo_vivienda_id = fields.Many2one('pf.items', string='La vivienda donde habita es?', 
+                                       domain=lambda self: [('catalogo_id', '=', self.env.ref('prefectura_base.catalogo_tipo_vivienda').id)])
+    tiene_internet = fields.Selection([('si', 'SI'), ('no', 'NO')], string='¿Su hogar cuenta con internet?')
+    tiene_agua_potable = fields.Selection([('si', 'SI'), ('no', 'NO')], string='¿La vivienda donde habita tiene servicio de agua potable por tubería?')
+    tiene_luz_electrica = fields.Selection([('si', 'SI'), ('no', 'NO')], string='¿La vivienda donde habita cuenta con luz eléctrica?')
+    tiene_alcantarillado = fields.Selection([('si', 'SI'), ('no', 'NO')], string='¿La vivienda donde habita tiene servicio de alcantarillado?')
+    es_cuidador = fields.Selection([('si', 'SI'), ('no', 'NO')], string='¿Es cuidador/a?')
+    hora_tarea_domestica = fields.Integer(string='Horas a tareas domésticas',)
+    sostiene_hogar = fields.Selection([('si', 'SI'), ('no', 'NO')], string='¿Usted sostiene económicamente su hogar?')
+    enfermedad_catastrofica = fields.Selection([('si', 'SI'), ('no', 'NO')], string='¿Padece alguna enfermedad catastrófica?')
+    hombres_hogar = fields.Integer(string='¿Cuántos hombres viven en el hogar(contando niños)?',)
+    mujer_hogar = fields.Integer(string='¿Cuántos mujeres viven en el hogar(contando niñas)?',)
+    ninos_menores = fields.Integer(string='¿Cuántos niños menores de edad habitan en el hogar?',)
+    ninos_5_estudiando = fields.Integer(string='¿Cuántos niños mayores de 5 años que habitan en el hogar estan estudiando?',)
+    mujeres_embarazadas = fields.Integer(string='¿Cuántas mujeres embarazadas habitan en su hogar?', default=0)
+    mujeres_embarazadas_chequeos = fields.Integer(string='¿Cuántas mujeres embarazadas que habitan en el hogar asisten a chequeos médicos?', default=0)
+    mujeres_embarazadas_menores = fields.Integer(string='¿Cuántas de las mujeres embarazadas son menores de 18 años?', default=0)
+    mayor_65 = fields.Selection([('si', 'SI'), ('no', 'NO')], string='¿Hay mayores de 65 años viviendo en su hogar?')
+    discapacidad_hogar = fields.Selection([('si', 'SI'), ('no', 'NO')], string='¿Hay personas con discapacidad viviendo en su hogar?')
+    tiene_discapacidad_hogar = fields.Selection([('si', 'SI'),('no', 'NO')], string='¿Hay personas con discapacidad viviendo en su hogar?', default='no')
+    tipo_discapacidad_hogar_id = fields.Many2one('pf.items', string='¿Qué tipo de discapacidad tiene?',
+                                                 domain=lambda self: [('catalogo_id', '=', self.env.ref('prefectura_base.tipos_discapacidad').id)])   
+
+
     @api.depends('historia_clinica_ids')
     def _compute_consulta_count(self):
         for beneficiario in self:

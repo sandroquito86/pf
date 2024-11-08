@@ -20,4 +20,13 @@ class Servicio(models.Model):
     image = fields.Binary(string='Imagen', attachment=True)
     tipo_servicio = fields.Selection([('normal', 'Normal'), ('medico', 'Medico')], string='Clasificación de Servicio', default='normal')
     catalogo_tipo_servicio_id = fields.Many2one('mz.items', string='Tipo de Servicio',  domain=_get_tipo_servicio_domain)
-    
+    sub_servicio_ids = fields.One2many('mz.sub.servicio', 'servicio_id', string='Sub Servicios')
+
+class SubServicio(models.Model):
+    _name = 'mz.sub.servicio'
+    _description = 'Sub Servicio'
+
+    name = fields.Char(string='Nombre', required=True)
+    descripcion = fields.Text(string='Descripción')
+    servicio_id = fields.Many2one('mz.servicio', string='Servicio', required=True, ondelete='cascade')
+    active = fields.Boolean(default=True, string='Activo')  

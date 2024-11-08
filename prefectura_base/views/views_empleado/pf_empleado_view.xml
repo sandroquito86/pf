@@ -15,7 +15,6 @@
                     <field name="hr_icon_display"/>
                     <field name="show_hr_icon_display"/>
                     <field name="image_128" />
-                    <field name="company_id"/>
                     <templates>
                         <t t-name="kanban-box">
                             <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
@@ -100,7 +99,9 @@
                     <field name="last_activity_time" invisible="1"/>
                     <field name="last_activity" invisible="1"/>
                     <field name="work_contact_id" invisible="1"/>
-
+                    <header>
+                        <button name="action_inactivar_empleado" type="object" string="Inactivar Empleado" class="btn-danger" invisible="not active"/>
+                    </header>
                     <sheet>
                         <div name="button_box" class="oe_button_box">
                         </div>
@@ -162,7 +163,7 @@
                                 <field name="mobile_phone" widget="phone"/>
                                 <field name="work_phone" widget="phone"/>
                                 <field name="work_email" widget="email"/>
-                                <field name="company_id" />
+                                <field name="company_id" invisible="1" />
                                 <field name="sucursal_id"/>
                                  <field name="programa_id"/>
                                 <field name="company_country_id" invisible="1"/>

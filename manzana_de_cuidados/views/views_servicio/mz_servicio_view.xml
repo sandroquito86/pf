@@ -38,6 +38,13 @@
                         <field name="if_derivacion" widget="boolean_toggle"/>
                         <field name="active" widget="boolean_toggle" readonly="1" force_save="1"/>
                     </group>
+                    <field name="sub_servicio_ids">
+                        <tree string="Sub Servicios">
+                            <field name="name"/>
+                            <field name="descripcion"/>
+                            <field name="active"/>
+                        </tree>
+                    </field>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers" />
                         <field name="message_ids" widget="mail_thread" />

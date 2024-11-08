@@ -193,7 +193,7 @@
             <field name="descripcion">Discapacidad psicosocial</field>
             <field name="catalogo_id" ref="tipos_discapacidad"/>
         </record>
-    </data>
+    
 
     <!-- Tipo de Documento -->
         <record id="tipo_documentos" model="pf.catalogo">
@@ -211,4 +211,135 @@
             <field name="descripcion">Documento de memorando</field>
             <field name="catalogo_id" ref="tipo_documentos"/>
         </record>
+
+        <!-- Catálogo de Niveles de Instrucción -->
+        <record id="catalogo_nivel_instruccion" model="pf.catalogo">
+            <field name="name">Niveles de Instrucción</field>
+            <field name="descripcion">Catálogo de niveles de instrucción</field>
+            <field name="sequence">5</field>
+            
+        </record>
+
+        <!-- Items de Nivel de Instrucción -->
+        <record id="nivel_instruccion_ninguna" model="pf.items">
+            <field name="name">NINGUNA</field>
+            <field name="descripcion">Sin instrucción formal</field>
+            <field name="catalogo_id" ref="catalogo_nivel_instruccion"/>
+            
+        </record>
+
+        <record id="nivel_instruccion_bachillerato" model="pf.items">
+            <field name="name">BACHILLERATO</field>
+            <field name="descripcion">Bachillerato completo</field>
+            <field name="catalogo_id" ref="catalogo_nivel_instruccion"/>
+            
+        </record>
+
+        <record id="nivel_instruccion_basica" model="pf.items">
+            <field name="name">EDUCACIÓN BÁSICA</field>
+            <field name="descripcion">Educación básica</field>
+            <field name="catalogo_id" ref="catalogo_nivel_instruccion"/>
+            
+        </record>
+
+        <record id="nivel_instruccion_tercer" model="pf.items">
+            <field name="name">TERCER NIVEL</field>
+            <field name="descripcion">Educación superior tercer nivel</field>
+            <field name="catalogo_id" ref="catalogo_nivel_instruccion"/>
+            
+        </record>
+
+        <record id="nivel_instruccion_cuarto" model="pf.items">
+            <field name="name">CUARTO NIVEL</field>
+            <field name="descripcion">Educación superior cuarto nivel</field>
+            <field name="catalogo_id" ref="catalogo_nivel_instruccion"/>
+            
+        </record>
+        <record id="catalogo_situacion_laboral" model="pf.catalogo">
+            <field name="name">Situación Laboral</field>
+            <field name="descripcion">Catálogo de situaciones laborales</field>
+            <field name="sequence">6</field>
+            
+        </record>
+
+        <!-- Items de Situación Laboral -->
+        <record id="situacion_laboral_empleado" model="pf.items">
+            <field name="name">EMPLEADO</field>
+            <field name="descripcion">Persona empleada</field>
+            <field name="catalogo_id" ref="catalogo_situacion_laboral"/>
+            
+        </record>
+
+        <record id="situacion_laboral_desempleado" model="pf.items">
+            <field name="name">DESEMPLEADO</field>
+            <field name="descripcion">Persona desempleada</field>
+            <field name="catalogo_id" ref="catalogo_situacion_laboral"/>
+            
+        </record>
+
+        <record id="situacion_laboral_jubilado" model="pf.items">
+            <field name="name">JUBILADO</field>
+            <field name="descripcion">Persona jubilada</field>
+            <field name="catalogo_id" ref="catalogo_situacion_laboral"/>
+            
+        </record>
+
+        <record id="situacion_laboral_comercio_informal" model="pf.items">
+            <field name="name">COMERCIO INFORMAL</field>
+            <field name="descripcion">Trabaja en comercio informal</field>
+            <field name="catalogo_id" ref="catalogo_situacion_laboral"/>
+            
+        </record>
+
+        <record id="situacion_laboral_sector_productivo" model="pf.items">
+            <field name="name">ACTIVIDAD DEL SECTOR PRODUCTIVO</field>
+            <field name="descripcion">Trabaja en sector productivo</field>
+            <field name="catalogo_id" ref="catalogo_situacion_laboral"/>
+            
+        </record>
+
+        <record id="situacion_laboral_emprendedor" model="pf.items">
+            <field name="name">EMPRENDEDOR</field>
+            <field name="descripcion">Persona emprendedora</field>
+            <field name="catalogo_id" ref="catalogo_situacion_laboral"/>
+            
+        </record>
+
+        <!-- Catálogo de Tipo de Vivienda -->
+        <record id="catalogo_tipo_vivienda" model="pf.catalogo">
+            <field name="name">Tipo de Vivienda</field>
+            <field name="descripcion">Catálogo de tipos de vivienda</field>
+            <field name="sequence">7</field>
+            
+        </record>
+
+        <!-- Items de Tipo de Vivienda -->
+        <record id="tipo_vivienda_alquilada" model="pf.items">
+            <field name="name">ALQUILADA</field>
+            <field name="descripcion">Vivienda alquilada</field>
+            <field name="catalogo_id" ref="catalogo_tipo_vivienda"/>
+            
+        </record>
+
+        <record id="tipo_vivienda_compartida" model="pf.items">
+            <field name="name">COMPARTIDA</field>
+            <field name="descripcion">Vivienda compartida</field>
+            <field name="catalogo_id" ref="catalogo_tipo_vivienda"/>
+            
+        </record>
+
+        <record id="tipo_vivienda_prestada" model="pf.items">
+            <field name="name">PRESTADA</field>
+            <field name="descripcion">Vivienda prestada</field>
+            <field name="catalogo_id" ref="catalogo_tipo_vivienda"/>
+            
+        </record>
+
+        <record id="tipo_vivienda_propia" model="pf.items">
+            <field name="name">PROPIA</field>
+            <field name="descripcion">Vivienda propia</field>
+            <field name="catalogo_id" ref="catalogo_tipo_vivienda"/>
+            
+        </record>
+  </data>
 </odoo>

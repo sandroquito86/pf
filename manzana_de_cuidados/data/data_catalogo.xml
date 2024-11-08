@@ -24,5 +24,7 @@
             <field name="descripcion">Tipo de Servicio Formación y generación de ingresos</field>
             <field name="catalogo_id" ref="tipo_servicio"/>
         </record>
+
+        
     </data>    
 </odoo>

@@ -23,6 +23,7 @@ class AsistenciaServicio(models.Model):
     codigo = fields.Char(string='Código', readonly=True, store=True)
     tipo_servicio = fields.Selection([('normal', 'Normal'), ('medico', 'Medico')], string='Tipo de Servicio', compute='_compute_tipo_servicio')
     consulta_id = fields.Many2one('mz.consulta', string='Consulta Médica')
+    active = fields.Boolean(string='Activo', default=True)
 
     # Signos vitales
     presion_arterial = fields.Char(string='Presión Arterial', tracking=True)

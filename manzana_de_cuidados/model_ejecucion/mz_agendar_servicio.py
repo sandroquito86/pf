@@ -10,8 +10,9 @@ class AgendarServicio(models.Model):
     _name = 'mz.agendar_servicio'
     _description = 'Agendar Servicio'
     _inherit = ['mail.thread', 'mail.activity.mixin'] 
+    _rec_name = 'codigo'
     
-    STATE_SELECTION = [('borrador', 'Borrador'), ('solicitud', 'Solicitado'),
+    STATE_SELECTION = [('borrador', 'Borrador'), ('solicitud', 'Solicitado'),('por_reeplanificar', 'Por Reeplanificar'),
                        ('atendido', 'Atendido'), ('anulado', 'Anulado')]
 
     state = fields.Selection(STATE_SELECTION, 'Estado', readonly=True, tracking=True, default='borrador', )
@@ -26,10 +27,31 @@ class AgendarServicio(models.Model):
     personal_id = fields.Many2one(string='Personal', comodel_name='hr.employee', ondelete='restrict',)
     horario_id_domain = fields.Char(compute="_compute_horario_id_domain", readonly=True, store=False, )
     fecha_solicitud = fields.Date(string='Fecha', required=True, tracking=True)
-    horario_id = fields.Many2one(string='Horarios', comodel_name='mz.planificacion.servicio', ondelete='restrict')  
+    horario_id = fields.Many2one(string='Horario', comodel_name='mz.planificacion.servicio', ondelete='restrict')  
     codigo = fields.Char(string='Código', readonly=True, store=True)
     mensaje = fields.Text(string='Mensaje', compute='_compute_mensaje')
     active = fields.Boolean(default=True, string='Activo', tracking=True)
+    if_sub_servicio = fields.Boolean(string='Sub Servicio', compute='_compute_if_sub_servicio')
+    sub_servicio_id = fields.Many2one('mz.sub.servicio', string="Sub Servicio", ondelete='restrict')
+    domain_sub_servicio_ids = fields.Char(string='Domain Sub servicios',compute='_compute_domain_sub_servicio_ids')
+
+    @api.depends('servicio_id')
+    def _compute_domain_sub_servicio_ids(self):
+        for record in self:
+            if record.servicio_id:
+                sub_servicios = self.env['mz.sub.servicio'].search([('id', 'in', self.servicio_id.sub_servicio_ids.ids)])
+                record.domain_sub_servicio_ids = [('id', 'in', sub_servicios.ids)]
+            else:
+                record.domain_sub_servicio_ids = [('id', 'in', [])]
+    
+    @api.depends('servicio_id')
+    def _compute_if_sub_servicio(self):
+        for record in self:
+            if record.servicio_id.sub_servicio_ids:
+                record.if_sub_servicio = True
+            else:
+                record.if_sub_servicio = False
+    
 
     @api.depends('servicio_id', 'personal_id')
     def _compute_mensaje(self):
@@ -98,6 +120,7 @@ class AgendarServicio(models.Model):
                     ('generar_horario_id.servicio_id', '=', record.servicio_id.id),
                     ('generar_horario_id.personal_id', '=', record.personal_id.id),
                     ('fecha', '=', record.fecha_solicitud),
+                    ('estado', '=', 'activo'),
                 ]
                 horarios_planificados = self.env['mz.planificacion.servicio'].search(domain)
                 
@@ -225,7 +248,20 @@ class AgendarServicio(models.Model):
     def anular_horario(self):
         for record in self:
             raise UserError("No se puede anular la solicitud. Por favor, contacte al administrador del sistema.")
-            record.state = 'anulado'
+        
+    def action_wizard_reasignar_solicitud(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Reasignar Solicitud',
+            'res_model': 'mz.wizard.reasignar.solicitud',
+            'view_mode': 'form',
+            'view_id': self.env.ref('manzana_de_cuidados.view_wizard_reasignar_solicitud_form').id,
+            'target': 'new',
+            'context': {
+                'default_solicitud_id': self.id,
+            },
+        }
 
     def unlink(self):
         for record in self:
@@ -234,6 +270,51 @@ class AgendarServicio(models.Model):
         return super(AgendarServicio, self).unlink()
     
 
+class WizardReasignarSolicitud(models.TransientModel):
+    _name = 'mz.wizard.reasignar.solicitud'
+    _description = 'Wizard para Reasignar Solicitud'
 
+    solicitud_id = fields.Many2one('mz.agendar_servicio', string='Solicitud', required=True)
+    nueva_fecha = fields.Date(string='Nueva Fecha', required=True)
+    nuevo_horario_id = fields.Many2one('mz.planificacion.servicio', string='Nuevo Turno', required=True)
+    horario_id_domain = fields.Char(compute="_compute_horario_id_domain", readonly=True, store=False, )
+
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        if 'solicitud_id' in fields_list and self.env.context.get('active_id'):
+            res['solicitud_id'] = self.env.context['active_id']
+        return res
+    
+    def action_reasignar(self):
+        self.ensure_one()
+        solicitud = self.solicitud_id
+        solicitud.write({
+            'fecha_solicitud': self.nueva_fecha,
+            'horario_id': self.nuevo_horario_id.id,
+            'state': 'solicitud',
+        })
+        solicitud.solicitar_horario()
+        return {'type': 'ir.actions.act_window_close'}
+
+    @api.depends('solicitud_id.servicio_id', 'solicitud_id.personal_id','nueva_fecha')
+    def _compute_horario_id_domain(self):
+        for record in self:
+            if record.solicitud_id.servicio_id and record.solicitud_id.personal_id and record.nueva_fecha:
+                domain = [
+                    ('generar_horario_id.servicio_id', '=', record.solicitud_id.servicio_id.id),
+                    ('generar_horario_id.personal_id', '=', record.solicitud_id.personal_id.id),
+                    ('fecha', '=', record.nueva_fecha),
+                    ('estado', '=', 'activo'),
+                ]
+                horarios_planificados = self.env['mz.planificacion.servicio'].search(domain)
+                
+                horarios_disponibles = horarios_planificados.filtered(
+                    lambda h: h.beneficiarios_count < h.maximo_beneficiarios
+                )
+                
+                record.horario_id_domain = [('id', 'in', horarios_disponibles.ids)]
+            else:
+                record.horario_id_domain = [('id', 'in', [])]
        
        

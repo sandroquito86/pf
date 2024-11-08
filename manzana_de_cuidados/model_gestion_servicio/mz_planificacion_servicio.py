@@ -2,7 +2,7 @@
 
 from logging.config import valid_ident
 import string
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from babel.dates import format_date
 # from datetime import datetime,time, datetime
@@ -44,13 +44,14 @@ class GenerarHorarios(models.Model):
     fecha_fin = fields.Date(string='Fecha Fin', required=True)
 
     es_replanificacion = fields.Boolean('Es Replanificación', default=False)
-    planificacion_original_id = fields.Many2one('nombre.de.tu.modelo', 'Planificación Original')
+    planificacion_original_id = fields.Many2one('mz.genera.planificacion.servicio', 'Planificación Original')
     estado = fields.Selection([
         ('borrador', 'Borrador'),
         ('confirmado', 'Confirmado'),
         ('replanificado', 'Replanificado'),
         ('cancelado', 'Cancelado')
     ], string='Estado', default='borrador')
+
     
     # Constrain que valida que no existan planificacion que se crucen entre fechas de la misma persona y servicio 
     @api.constrains('servicio_id', 'personal_id', 'fecha_inicio', 'fecha_fin')
@@ -63,7 +64,8 @@ class GenerarHorarios(models.Model):
                 ('personal_id', '=', record.personal_id.id),
                 # Condiciones para detectar superposición
                 ('fecha_inicio', '<=', record.fecha_fin),
-                ('fecha_fin', '>=', record.fecha_inicio)
+                ('fecha_fin', '>=', record.fecha_inicio),
+                ('estado', '=', 'confirmado')
             ])
             
             if overlapping_schedules:
@@ -108,7 +110,7 @@ class GenerarHorarios(models.Model):
     @api.constrains('servicio_id', 'personal_id')
     def _check_detalle_generahorario(self):
         for record in self:
-            if not (record.turno_disponibles_ids):
+            if not (record.turno_disponibles_ids) and not record.es_replanificacion:
                 raise UserError("No se puede guardar AGENDA sino genera detalle de Agenda!!")
 
     @api.constrains('servicio_id', 'personal_id')
@@ -121,7 +123,8 @@ class GenerarHorarios(models.Model):
     def _check_fecha(self):
         for record in self:
             if not record.fecha_inicio or not record.fecha_fin:
-                raise UserError("Debe elegir las FECHAS A GENERAR!!")
+                if not record.es_replanificacion:
+                    raise UserError("Debe elegir las FECHAS A GENERAR!!")
             
     @api.onchange('fecha_inicio')
     def _onchange_fecha_inicio(self):
@@ -242,18 +245,30 @@ class GenerarHorarios(models.Model):
             'turno_disponibles_ids': False  # Los turnos se generarán después
         })
         
-        # Abrir wizard para configurar las nuevas fechas
-        return {
+        # Crear y retornar la acción del wizard con todos los parámetros necesarios
+        action = {
             'name': _('Replanificar Turnos'),
             'type': 'ir.actions.act_window',
             'res_model': 'mz.wizard.replanificar.turnos',
             'view_mode': 'form',
+            'view_type': 'form',
             'target': 'new',
+            'views': [(False, 'form')],
             'context': {
                 'default_planificacion_id': nueva_planificacion.id,
-                'default_planificacion_original_id': self.id
+                'default_planificacion_original_id': self.id,
+                'default_fecha_inicio': fields.Date.today(),
+                'form_view_ref': False,
+                'active_model': self._name,
+                'active_id': self.id,
+                'active_ids': [self.id],
+            },
+            'flags': {
+                'action_buttons': True,
+                'headless': True,
             }
         }
+        return action
     
     def action_confirmar(self):
         self.ensure_one()
@@ -280,13 +295,13 @@ class PlanificacionServicio(models.Model):
     horario = fields.Char(string='Horario',
                           compute='_compute_horario')
      
-    generar_horario_id = fields.Many2one(string='detalle', comodel_name='mz.genera.planificacion.servicio', ondelete='restrict',)
+    generar_horario_id = fields.Many2one(string='Cabecera', comodel_name='mz.genera.planificacion.servicio', ondelete='restrict',)
     fecha = fields.Date()
     horainicio = fields.Float(string='Hora de Inicio', index=True,)
     horafin = fields.Float(string='Hora Fin', index=True,)
     hora = fields.Char(string='Hora')    
     beneficiario_ids = fields.Many2many(string='Beneficiarios', comodel_name='mz.beneficiario', relation='mz_planificacion_servicio_beneficiario_rel',)
-    estado = fields.Boolean(default='True')    
+    estado = fields.Selection([('activo', 'Activo'), ('inactivo', 'Inactivo')], string='Estado', default='activo')
     observacion = fields.Char(string='Observación')
     fecha_actualizacion = fields.Date(string='Fecha Actualiza', readonly=True, default=fields.Datetime.now, )
     maximo_beneficiarios = fields.Integer(string='Beneficiarios Maximos', default=1, required=True)
@@ -314,23 +329,71 @@ class PlanificacionServicio(models.Model):
 class WizardReplanificarTurnos(models.TransientModel):
     _name = 'mz.wizard.replanificar.turnos'
     _description = 'Wizard para Replanificar Turnos'
-    
-    planificacion_id = fields.Many2one('nombre.de.tu.modelo', 'Nueva Planificación')
-    planificacion_original_id = fields.Many2one('nombre.de.tu.modelo', 'Planificación Original')
-    fecha_inicio = fields.Date('Nueva Fecha Inicio', required=True)
-    fecha_fin = fields.Date('Nueva Fecha Fin', required=True)
-    motivo_replanificacion = fields.Text('Motivo de Replanificación', required=True)
-    
-    @api.onchange('fecha_inicio')
-    def _onchange_fecha_inicio(self):
-        if self.fecha_inicio:
-            self.fecha_fin = self.fecha_inicio + timedelta(days=6)
+
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        if 'fecha_inicio' in fields_list and not res.get('fecha_inicio'):
+            res['fecha_inicio'] = fields.Date.today()
+        if 'fecha_fin' in fields_list and not res.get('fecha_fin'):
+            res['fecha_fin'] = fields.Date.today() + timedelta(days=6)
+        return res
+
+    planificacion_id = fields.Many2one(
+        'mz.genera.planificacion.servicio', 
+        'Nueva Planificación',
+        required=True
+    )
+    planificacion_original_id = fields.Many2one(
+        'mz.genera.planificacion.servicio', 
+        'Planificación Original',
+        required=True
+    )
+    fecha_inicio = fields.Date(
+        'Nueva Fecha Inicio', 
+        required=True
+    )
+    fecha_fin = fields.Date(
+        'Nueva Fecha Fin', 
+        required=True
+    )
+    motivo_replanificacion = fields.Text(
+        'Motivo de Replanificación', 
+        required=True
+    )
+
+    # @api.onchange('fecha_inicio')
+    # def _onchange_fecha_inicio(self):
+    #     if self.fecha_inicio:
+    #         self.fecha_fin = self.fecha_inicio + timedelta(days=6)
     
     def action_replanificar(self):
         self.ensure_one()       
         if self.fecha_inicio < fields.Date.today():
             raise UserError('No se puede replanificar para fechas pasadas')
         
+        self.planificacion_original_id.write({
+            'estado': 'replanificado'
+        })
+        turnos_a_inactivar = self.env['mz.planificacion.servicio'].search([
+            ('generar_horario_id', '=', self.planificacion_original_id.id), ('fecha', '>=', self.fecha_inicio), ('fecha', '<=', self.fecha_fin)
+        ])
+        if turnos_a_inactivar:
+            turnos_a_inactivar.write({
+                'estado': 'inactivo'
+            })
+            reagendar_servicio = self.env['mz.agendar_servicio'].search([('horario_id', 'in', turnos_a_inactivar.ids)])
+            if reagendar_servicio:
+                reagendar_servicio.write({
+                'state': 'por_reeplanificar'
+                })
+            archivar_asistencia = self.env['mz.asistencia_servicio'].search([('planificacion_id', 'in', turnos_a_inactivar.ids)])
+            if archivar_asistencia:
+                archivar_asistencia.write({
+                'active': False
+                })
+
+            
         # Actualizar la nueva planificación
         self.planificacion_id.write({
             'fecha_inicio': self.fecha_inicio,
@@ -342,7 +405,7 @@ class WizardReplanificarTurnos(models.TransientModel):
         
         return {
             'type': 'ir.actions.act_window',
-            'res_model': 'nombre.de.tu.modelo',
+            'res_model': 'mz.genera.planificacion.servicio',
             'res_id': self.planificacion_id.id,
             'view_mode': 'form',
             'target': 'current',

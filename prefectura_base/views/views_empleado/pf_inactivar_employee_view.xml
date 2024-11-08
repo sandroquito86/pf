@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+    <record id="view_wizard_reasignar_turnos_form" model="ir.ui.view">
+        <field name="name">wizard.inactivar.employee.reasignar.turnos.form</field>
+        <field name="model">wizard.inactivar.employee.reasignar.turnos</field>
+        <field name="arch" type="xml">
+            <form string="Reasignar Turnos">
+                <div>
+                    <field name="mensaje_alerta" widget="html" readonly="1"/>
+                </div>
+                <group>
+                    <field name="empleado_id" readonly="1"/>
+                    <field name="reasignar"  widget="boolean_toggle"/>
+                    <field name="fecha_Inactivacion"/>
+                    <field name="nuevo_empleado_id" invisible="not reasignar"/>
+                </group>
+                <footer>
+                    <button string="Guardar" type="object" name="action_reasignar_turnos" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wizard_reasignar_turnos" model="ir.actions.act_window">
+        <field name="name">Reasignar Turnos</field>
+        <field name="res_model">wizard.inactivar.employee.reasignar.turnos</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_wizard_reasignar_turnos_form"/>
+        <field name="target">new</field>
+        <field name="context">{'active_id': active_id}</field>
+    </record>
+</data>
+</odoo>

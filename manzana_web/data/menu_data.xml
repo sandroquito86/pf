@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+         <record id="menu_solicitudes_manzana" model="website.menu">
+            <field name="name">Manzana de Cuidados</field>
+            <field name="url">/solicitud/beneficiario</field>
+            <!-- <field name="page_id" ref="website.solicitud_manzana_page"/> -->
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence" type="int">30</field>
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,214 @@
+<?xml version="1.0" ?>
+<odoo><data>
+
+<!-- Channels sub-template: header -->
+
+
+
+<!-- Channel main template -->
+
+<template id="solicitud_beneficiario_template" name="Solicitud de Beneficiario">
+        <t t-call="website.layout">
+            <div class="wrap o_wslides_wrap">
+                <div class="oe_structure oe_empty">
+                    <section class="s_banner overflow-hidden position-relative" style="min-height: 400px;" data-snippet="s_banner">
+                        <!-- Imagen de fondo con gradiente -->
+                        <div class="position-absolute w-100 h-100" style="top: 0; left: 0; 
+                            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/manzana_web/static/src/img/portada_manzana.webp');
+                            background-repeat: no-repeat;
+                            background-size: cover;
+                            background-position: center;"></div>
+                        
+                        <!-- Contenido -->
+                        <div class="position-relative container d-flex align-items-center" style="min-height: 400px;">
+                            <div class="text-white py-5">
+                                <h1 class="display-3 mb-0 fw-bold" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+                                    Solicitud de Beneficiario
+                                </h1>
+                                <h2 class="mb-4" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">
+                                    ¡Únete a nuestros programas!
+                                </h2>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="container mt-4">
+                    <form id="beneficiary_registration_form" t-attf-action="/solicitud/beneficiario/submit" method="post" class="js_website_submit_form">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        
+                        <!-- Datos Personales -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h3 class="mb-0">Datos Personales</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="apellido_paterno">Apellido Paterno <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="apellido_paterno" required="1" maxlength="100"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="apellido_materno">Apellido Materno <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="apellido_materno" required="1" maxlength="100"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="primer_nombre">Primer Nombre <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="primer_nombre" required="1" maxlength="100"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="segundo_nombre">Segundo Nombre</label>
+                                            <input type="text" class="form-control" name="segundo_nombre" maxlength="100"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Documentación -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h3 class="mb-0">Documentación</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="tipo_documento">Tipo de Documento <span class="text-danger">*</span></label>
+                                            <select class="form-select" name="tipo_documento" required="1">
+                                                <option value="">Seleccione...</option>
+                                                <option value="dni">DNI</option>
+                                                <option value="pasaporte">Pasaporte</option>
+                                                <option value="carnet_extranjeria">Carnet de Extranjería</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="numero_documento">Número de Documento <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="numero_documento" required="1" maxlength="20"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="fecha_nacimiento">Fecha de Nacimiento <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control" name="fecha_nacimiento" required="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contacto y Ubicación -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h3 class="mb-0">Contacto y Ubicación</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="email">Correo Electrónico <span class="text-danger">*</span></label>
+                                            <input type="email" class="form-control" name="email" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="telefono">Teléfono <span class="text-danger">*</span></label>
+                                            <input type="tel" class="form-control" name="telefono" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="direccion">Dirección</label>
+                                            <input type="text" class="form-control" name="direccion"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="pais_id">País</label>
+                                            <select class="form-select" name="pais_id">
+                                                <option value="">Seleccione...</option>
+                                                <t t-foreach="request.env['res.country'].sudo().search([])" t-as="pais">
+                                                    <option t-att-value="pais.id">
+                                                        <t t-esc="pais.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="provincia_id">Provincia</label>
+                                            <select class="form-select" name="provincia_id" disabled="disabled">
+                                                <option value="">Seleccione un país primero</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="ciudad_id">Ciudad</label>
+                                            <select class="form-select" name="ciudad_id" disabled="disabled">
+                                                <option value="">Seleccione una provincia primero</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Programa -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h3 class="mb-0">Programa</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="programa_id">Programa <span class="text-danger">*</span></label>
+                                            <select class="form-select" name="programa_id" required="1">
+                                                <option value="">Seleccione un programa...</option>
+                                                <t t-foreach="programas" t-as="programa">
+                                                    <option t-att-value="programa.id">
+                                                        <t t-esc="programa.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4 mb-5">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="fa fa-paper-plane me-2"/>Enviar Solicitud
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="solicitud_success_template" name="Solicitud Enviada">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="alert alert-success">
+                    <h2>¡Gracias por tu solicitud!</h2>
+                    <p>Tu solicitud ha sido recibida y está siendo procesada.</p>
+                    <p>Número de solicitud: <t t-esc="solicitud.name"/></p>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+</data></odoo>

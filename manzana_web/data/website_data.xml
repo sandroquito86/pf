@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="manzana_web.cover_default_image_logo" model="ir.attachment">
+            <field name="public" eval="True"/>
+            <field name="name">cover_default_image_logo.jpg</field>
+            <field name="type">url</field>
+            <field name="url">/manzana_web/static/src/img/logo_pref.png</field>
+        </record>
+
+</odoo>

@@ -1,0 +1,29 @@
+<odoo>
+    <record id="view_wizard_reasignar_solicitud_form" model="ir.ui.view">
+        <field name="name">wizard.reasignar.solicitud.form</field>
+        <field name="model">mz.wizard.reasignar.solicitud</field>
+        <field name="arch" type="xml">
+            <form string="Reasignar Solicitud">
+                <group>
+                    <field name="solicitud_id" readonly="1"/>
+                    <field name="horario_id_domain" invisible="1"/>
+                    <field name="nueva_fecha"/>
+                    <field name="nuevo_horario_id"  options="{'domain_field': 'horario_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+                </group>
+                <footer>
+                    <button string="Guardar" type="object" name="action_reasignar" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wizard_reasignar_solicitud" model="ir.actions.act_window">
+        <field name="name">Reasignar Solicitud</field>
+        <field name="res_model">mz.wizard.reasignar.solicitud</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_wizard_reasignar_solicitud_form"/>
+        <field name="target">new</field>
+        <field name="context">{'active_id': active_id}</field>
+    </record>
+</odoo>

@@ -42,6 +42,8 @@ class Beneficiarios(models.Model):
         ('femenino', 'Femenino'),
         ('otro', 'Otro')
     ], string='Género')
+
+    
     
     @api.depends('apellido_paterno', 'apellido_materno', 'primer_nombre', 'segundo_nombre')
     def _compute_name(self):

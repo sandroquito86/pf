@@ -30,9 +30,10 @@
                                 <field name="programa_id"  readonly="1" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_programa_id'}"  />
                                 <field name="servicio_id" readonly="not programa_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
                                 <field name="asi_servicio_id" string="Categoria" invisible="1" force_save="1"/>
+                                <field name="personal_id"  options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_personal_id'}" />
                             </group>
                             <group>
-                                <field name="personal_id"  options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_personal_id'}" />
+                               
                                 <field name="domain_personal_id" invisible="1"/>
                                 <field name="domain_programa_id" invisible="1" />
                             </group>

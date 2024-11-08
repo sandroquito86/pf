@@ -37,6 +37,8 @@ Long description of module's purpose
         'views/pf_beneficiarios_view.xml',
         'views/pf_sucursal_views.xml',
         'views/views_empleado/pf_empleado_view.xml',
+
+        'views/views_empleado/pf_inactivar_employee_view.xml',
     ],
     'post_load': 'environment_extend',
     # only loaded in demonstration mode

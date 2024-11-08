@@ -24,6 +24,7 @@ class PfEmployee(models.Model):
     modulo_ids = fields.Many2many('pf.modulo', string="Módulos", help="Selecciona los módulos a los que pertenece este beneficiario")
     ciudad_id = fields.Many2one('res.country.ciudad', string='Ciudad' , ondelete='restrict', 
                                    domain="[('state_id', '=?', private_state_id)]")
+    fecha_inactivacion = fields.Date(string='Fecha de Inactivación')
 
     @api.constrains('user_id')
     def _check_unique_user(self):
@@ -106,3 +107,24 @@ class PfEmployee(models.Model):
         for record in self:
             if not record.nombre:
                 raise ValidationError("El nombre no puede estar vacío. Por favor, proporcione al menos un nombre o apellido.")
+            
+
+    def action_inactivar_empleado(self):
+        self.ensure_one()
+        planificaciones = self.env['mz.planificacion.servicio'].search([('generar_horario_id.personal_id', '=', self.id), ('estado', '=', 'activo'), ('fecha', '>=', date.today())])
+        if planificaciones:
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Reasignar Turnos',
+                'res_model': 'wizard.inactivar.employee.reasignar.turnos',
+                'view_mode': 'form',
+                'view_id': self.env.ref('prefectura_base.view_wizard_reasignar_turnos_form').id,
+                'target': 'new',
+                'context': {
+                    'default_empleado_id': self.id,
+                },
+            }
+        else:
+            self.active = False
+            self.fecha_inactivacion = date.today()
+            return {'type': 'ir.actions.act_window_close'}

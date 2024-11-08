@@ -8,3 +8,4 @@ from . import pf_sucursal
 from . import pf_modulos
 from . import pf_programa
 from . import pf_cie10
+from . import pf_inactivar_employee
