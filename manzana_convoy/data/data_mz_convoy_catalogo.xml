@@ -54,5 +54,286 @@
             <field name="descripcion">Evento de carácter público</field>
             <field name="catalogo_id" ref="catalogo_tipo_evento"/>
         </record>
+
+        <record id="catalogo_operadoras" model="mz_convoy.catalogo">
+            <field name="name">Operadoras Telefónicas</field>
+            <field name="descripcion">Catálogo de operadoras telefónicas disponibles en Ecuador</field>
+            <field name="sequence">1</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Items del catálogo de operadoras -->
+        <record id="operadora_claro" model="mz_convoy.items">
+            <field name="name">CLARO</field>
+            <field name="descripcion">Operadora móvil Claro Ecuador</field>
+            <field name="catalogo_id" ref="catalogo_operadoras"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="operadora_movistar" model="mz_convoy.items">
+            <field name="name">MOVISTAR</field>
+            <field name="descripcion">Operadora móvil Movistar Ecuador</field>
+            <field name="catalogo_id" ref="catalogo_operadoras"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="operadora_cnt" model="mz_convoy.items">
+            <field name="name">CNT</field>
+            <field name="descripcion">Corporación Nacional de Telecomunicaciones</field>
+            <field name="catalogo_id" ref="catalogo_operadoras"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="operadora_tuenti" model="mz_convoy.items">
+            <field name="name">TUENTI</field>
+            <field name="descripcion">Operadora móvil Tuenti Ecuador</field>
+            <field name="catalogo_id" ref="catalogo_operadoras"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="catalogo_estado_civil" model="mz_convoy.catalogo">
+            <field name="name">Estados Civiles</field>
+            <field name="descripcion">Catálogo de estados civiles</field>
+            <field name="sequence">2</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Items de Estado Civil -->
+        <record id="estado_civil_soltero" model="mz_convoy.items">
+            <field name="name">SOLTERO</field>
+            <field name="descripcion">Estado civil soltero</field>
+            <field name="catalogo_id" ref="catalogo_estado_civil"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="estado_civil_casado" model="mz_convoy.items">
+            <field name="name">CASADO</field>
+            <field name="descripcion">Estado civil casado</field>
+            <field name="catalogo_id" ref="catalogo_estado_civil"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="estado_civil_divorciado" model="mz_convoy.items">
+            <field name="name">DIVORCIADO</field>
+            <field name="descripcion">Estado civil divorciado</field>
+            <field name="catalogo_id" ref="catalogo_estado_civil"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="estado_civil_viudo" model="mz_convoy.items">
+            <field name="name">VIUDO</field>
+            <field name="descripcion">Estado civil viudo</field>
+            <field name="catalogo_id" ref="catalogo_estado_civil"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="estado_civil_union_hecho" model="mz_convoy.items">
+            <field name="name">UNION DE HECHO</field>
+            <field name="descripcion">Estado civil unión de hecho</field>
+            <field name="catalogo_id" ref="catalogo_estado_civil"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Catálogo de Géneros -->
+        <record id="catalogo_genero" model="mz_convoy.catalogo">
+            <field name="name">Géneros</field>
+            <field name="descripcion">Catálogo de géneros</field>
+            <field name="sequence">3</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Items de Género -->
+        <record id="genero_masculino" model="mz_convoy.items">
+            <field name="name">MASCULINO</field>
+            <field name="descripcion">Género masculino</field>
+            <field name="catalogo_id" ref="catalogo_genero"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="genero_femenino" model="mz_convoy.items">
+            <field name="name">FEMENINO</field>
+            <field name="descripcion">Género femenino</field>
+            <field name="catalogo_id" ref="catalogo_genero"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Catálogo de Niveles de Instrucción -->
+        <record id="catalogo_nivel_instruccion" model="mz_convoy.catalogo">
+            <field name="name">Niveles de Instrucción</field>
+            <field name="descripcion">Catálogo de niveles de instrucción</field>
+            <field name="sequence">5</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Items de Nivel de Instrucción -->
+        <record id="nivel_instruccion_ninguna" model="mz_convoy.items">
+            <field name="name">NINGUNA</field>
+            <field name="descripcion">Sin instrucción formal</field>
+            <field name="catalogo_id" ref="catalogo_nivel_instruccion"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="nivel_instruccion_bachillerato" model="mz_convoy.items">
+            <field name="name">BACHILLERATO</field>
+            <field name="descripcion">Bachillerato completo</field>
+            <field name="catalogo_id" ref="catalogo_nivel_instruccion"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="nivel_instruccion_basica" model="mz_convoy.items">
+            <field name="name">EDUCACIÓN BÁSICA</field>
+            <field name="descripcion">Educación básica</field>
+            <field name="catalogo_id" ref="catalogo_nivel_instruccion"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="nivel_instruccion_tercer" model="mz_convoy.items">
+            <field name="name">TERCER NIVEL</field>
+            <field name="descripcion">Educación superior tercer nivel</field>
+            <field name="catalogo_id" ref="catalogo_nivel_instruccion"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="nivel_instruccion_cuarto" model="mz_convoy.items">
+            <field name="name">CUARTO NIVEL</field>
+            <field name="descripcion">Educación superior cuarto nivel</field>
+            <field name="catalogo_id" ref="catalogo_nivel_instruccion"/>
+            <field name="active" eval="True"/>
+        </record>
+        <record id="catalogo_situacion_laboral" model="mz_convoy.catalogo">
+            <field name="name">Situación Laboral</field>
+            <field name="descripcion">Catálogo de situaciones laborales</field>
+            <field name="sequence">6</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Items de Situación Laboral -->
+        <record id="situacion_laboral_empleado" model="mz_convoy.items">
+            <field name="name">EMPLEADO</field>
+            <field name="descripcion">Persona empleada</field>
+            <field name="catalogo_id" ref="catalogo_situacion_laboral"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="situacion_laboral_desempleado" model="mz_convoy.items">
+            <field name="name">DESEMPLEADO</field>
+            <field name="descripcion">Persona desempleada</field>
+            <field name="catalogo_id" ref="catalogo_situacion_laboral"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="situacion_laboral_jubilado" model="mz_convoy.items">
+            <field name="name">JUBILADO</field>
+            <field name="descripcion">Persona jubilada</field>
+            <field name="catalogo_id" ref="catalogo_situacion_laboral"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="situacion_laboral_comercio_informal" model="mz_convoy.items">
+            <field name="name">COMERCIO INFORMAL</field>
+            <field name="descripcion">Trabaja en comercio informal</field>
+            <field name="catalogo_id" ref="catalogo_situacion_laboral"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="situacion_laboral_sector_productivo" model="mz_convoy.items">
+            <field name="name">ACTIVIDAD DEL SECTOR PRODUCTIVO</field>
+            <field name="descripcion">Trabaja en sector productivo</field>
+            <field name="catalogo_id" ref="catalogo_situacion_laboral"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="situacion_laboral_emprendedor" model="mz_convoy.items">
+            <field name="name">EMPRENDEDOR</field>
+            <field name="descripcion">Persona emprendedora</field>
+            <field name="catalogo_id" ref="catalogo_situacion_laboral"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Catálogo de Tipo de Vivienda -->
+        <record id="catalogo_tipo_vivienda" model="mz_convoy.catalogo">
+            <field name="name">Tipo de Vivienda</field>
+            <field name="descripcion">Catálogo de tipos de vivienda</field>
+            <field name="sequence">7</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Items de Tipo de Vivienda -->
+        <record id="tipo_vivienda_alquilada" model="mz_convoy.items">
+            <field name="name">ALQUILADA</field>
+            <field name="descripcion">Vivienda alquilada</field>
+            <field name="catalogo_id" ref="catalogo_tipo_vivienda"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="tipo_vivienda_compartida" model="mz_convoy.items">
+            <field name="name">COMPARTIDA</field>
+            <field name="descripcion">Vivienda compartida</field>
+            <field name="catalogo_id" ref="catalogo_tipo_vivienda"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="tipo_vivienda_prestada" model="mz_convoy.items">
+            <field name="name">PRESTADA</field>
+            <field name="descripcion">Vivienda prestada</field>
+            <field name="catalogo_id" ref="catalogo_tipo_vivienda"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="tipo_vivienda_propia" model="mz_convoy.items">
+            <field name="name">PROPIA</field>
+            <field name="descripcion">Vivienda propia</field>
+            <field name="catalogo_id" ref="catalogo_tipo_vivienda"/>
+            <field name="active" eval="True"/>
+        </record>
+        <record id="catalogo_convoy_tipo_discapacidad" model="mz_convoy.catalogo">
+            <field name="name">Tipos de Discapacidad</field>
+            <field name="descripcion">Catálogo de tipos de discapacidad</field>
+            <field name="sequence">6</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Items de Tipo de Discapacidad -->
+        <record id="tipo_discapacidad_ninguna" model="mz_convoy.items">
+            <field name="name">NINGUNA</field>
+            <field name="descripcion">Sin discapacidad</field>
+            <field name="catalogo_id" ref="catalogo_convoy_tipo_discapacidad"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="tipo_discapacidad_auditiva" model="mz_convoy.items">
+            <field name="name">AUDITIVO</field>
+            <field name="descripcion">Discapacidad auditiva</field>
+            <field name="catalogo_id" ref="catalogo_convoy_tipo_discapacidad"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="tipo_discapacidad_fisica" model="mz_convoy.items">
+            <field name="name">FISICA</field>
+            <field name="descripcion">Discapacidad física</field>
+            <field name="catalogo_id" ref="catalogo_convoy_tipo_discapacidad"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="tipo_discapacidad_intelectual" model="mz_convoy.items">
+            <field name="name">INTELECTUAL</field>
+            <field name="descripcion">Discapacidad intelectual</field>
+            <field name="catalogo_id" ref="catalogo_convoy_tipo_discapacidad"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="tipo_discapacidad_psicosocial" model="mz_convoy.items">
+            <field name="name">PSICOSOCIAL</field>
+            <field name="descripcion">Discapacidad psicosocial</field>
+            <field name="catalogo_id" ref="catalogo_convoy_tipo_discapacidad"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="tipo_discapacidad_visual" model="mz_convoy.items">
+            <field name="name">VISUAL</field>
+            <field name="descripcion">Discapacidad visual</field>
+            <field name="catalogo_id" ref="catalogo_convoy_tipo_discapacidad"/>
+            <field name="active" eval="True"/>
+        </record>
     </data>
 </odoo>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Form -->
+    <record id="view_mz_convoy_beneficiario_socioeconomico_form" model="ir.ui.view">
+        <field name="name">mz.convoy.beneficiario.socioeconomico.form</field>
+        <field name="model">mz_convoy.convoy_beneficiario</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="num_documento" required="1"/>
+                            <field name="nombres" required="1"/>
+                            <field name="apellidos" required="1"/>
+                            <field name="es_extranjero"/>
+                            <field name="pais"/>
+                            <field name="celular"/>
+                            <field name="operadora_id" options="{'no_create': True, 'no_create_edit': True}"/>
+                        </group>
+                        <group>
+                            <field name="fecha_nacimiento"/>
+                            <field name="edad"/>
+                            <field name="estado_civil_id" options="{'no_create': True, 'no_create_edit': True}"/>
+                            <field name="genero_id" options="{'no_create': True, 'no_create_edit': True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Información Laboral" name="laboral">
+                            <group>
+                                <group>
+                                    <field name="situacion_laboral_id" options="{'no_create': True, 'no_create_edit': True}"/>
+                                    <field name="sostiene_hogar"/>
+                                    <field name="hora_tarea_domestica"/>
+                                    <field name="es_cuidador"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Información de Salud" name="salud">
+                            <group>
+                                <group>
+                                    <field name="enfermedad_catastrofica"/>
+                                    <field name="tiene_discapacidad"/>
+                                    <field name="tipo_discapacidad_id" invisible="tiene_discapacidad == False" options="{'no_create': True, 'no_create_edit': True}"/>
+                                    <field name="recibe_bono"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Información de Vivienda" name="vivienda">
+                            <group>
+                                <group>
+                                    <field name="tipo_vivienda_id" options="{'no_create': True, 'no_create_edit': True}"/>
+                                    <field name="tiene_internet"/>
+                                    <field name="tiene_agua_potable"/>
+                                    <field name="tiene_luz_electrica"/>
+                                </group>
+                                <group>
+                                    <field name="tiene_alcantarillado"/>
+                                    <field name="direccion_domicilio"/>
+                                    <field name="canton"/>
+                                    <field name="parroquia"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Composición Familiar" name="familiar">
+                            <group>
+                                <group>
+                                    <field name="hombres_hogar"/>
+                                    <field name="mujer_hogar"/>
+                                    <field name="ninos_menores"/>
+                                    <field name="ninos_5_estudiando"/>
+                                    <field name="mujeres_embarazadas"/>
+                                </group>
+                                <group>
+                                    <field name="mujeres_embarazadas_chequeos"/>
+                                    <field name="mujeres_embarazadas_menores"/>
+                                    <field name="mayor_65"/>
+                                    <field name="tiene_discapacidad_hogar"/>
+                                    <field name="tipo_discapacidad_hogar_id" invisible="tiene_discapacidad_hogar == 'no'" options="{'no_create': True, 'no_create_edit': True}"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                    <field name="convoy_id" invisible="1"/>
+                    <field name="tipo_registro" invisible="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista Tree -->
+    <record id="view_mz_convoy_beneficiario_socioeconomico_tree" model="ir.ui.view">
+        <field name="name">mz.convoy.beneficiario.socioeconomico.tree</field>
+        <field name="model">mz_convoy.convoy_beneficiario</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="num_documento"/>
+                <field name="nombres"/>
+                <field name="apellidos"/>
+                <field name="genero_id"/>
+                <field name="situacion_laboral_id"/>
+                <field name="tipo_vivienda_id"/>
+                <field name="sostiene_hogar"/>
+                <field name="tiene_discapacidad"/>
+                <field name="recibe_bono"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Search -->
+    <record id="view_mz_convoy_beneficiario_socioeconomico_search" model="ir.ui.view">
+        <field name="name">mz.convoy.beneficiario.socioeconomico.search</field>
+        <field name="model">mz_convoy.convoy_beneficiario</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="num_documento"/>
+                <field name="nombres"/>
+                <field name="apellidos"/>
+                <field name="canton"/>
+                <field name="parroquia"/>
+                <separator/>
+                <filter string="Sostiene Hogar" name="sostiene_hogar" domain="[('sostiene_hogar', '=', 'si')]"/>
+                <filter string="Con Discapacidad" name="discapacidad" domain="[('tiene_discapacidad', '=', True)]"/>
+                <filter string="Recibe Bono" name="bono" domain="[('recibe_bono', '=', True)]"/>
+                <filter string="Enfermedad Catastrófica" name="enfermedad" domain="[('enfermedad_catastrofica', '=', 'si')]"/>
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Situación Laboral" name="situacion_laboral" context="{'group_by': 'situacion_laboral_id'}"/>
+                    <filter string="Tipo de Vivienda" name="tipo_vivienda" context="{'group_by': 'tipo_vivienda_id'}"/>
+                    <filter string="Cantón" name="canton" context="{'group_by': 'canton'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acción -->
+    <record id="action_mz_convoy_beneficiario_socioeconomico" model="ir.actions.act_window">
+        <field name="name">Registro Socioeconómico</field>
+        <field name="res_model">mz_convoy.convoy_beneficiario</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+        (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz_convoy_beneficiario_socioeconomico_tree')}),
+        (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz_convoy_beneficiario_socioeconomico_form')})
+    ]"/>
+        <field name="context">{
+        'default_convoy_id': active_id,
+        'default_tipo_registro': 'socioeconomico'
+    }</field>
+        <field name="domain">[
+        ('convoy_id', '=', active_id),
+        ('tipo_registro', '=', 'socioeconomico')
+    ]</field>
+    </record>
+
+
+</odoo>

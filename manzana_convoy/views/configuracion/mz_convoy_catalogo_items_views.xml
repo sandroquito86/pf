@@ -84,7 +84,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem name="Items de Catálogos" id="menu_action_mz_convoy_items" parent="mz_convoy_menu_configuracion" action="action_mz_convoy_items" sequence="2" />
+        <menuitem name="Items de Catálogos" id="menu_action_mz_convoy_items" parent="mz_convoy_conf_catalogo" action="action_mz_convoy_items" sequence="2" />
 
     </data>
 </odoo>

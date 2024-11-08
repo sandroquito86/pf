@@ -7,6 +7,8 @@
         <menuitem id="mz_convoy_menu_registro" name="Registro" parent="mz_convoy_menu_prinicipal" sequence="10"/>
 
         <menuitem id="mz_convoy_menu_configuracion" name="Configuración" parent="mz_convoy_menu_prinicipal" sequence="50"/>
+        <menuitem id="mz_convoy_conf_catalogo" name="Catálogo" parent="mz_convoy_menu_configuracion" sequence="1000"/>
+
 
     </data>
 </odoo>

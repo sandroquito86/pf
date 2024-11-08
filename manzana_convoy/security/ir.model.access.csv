@@ -6,6 +6,5 @@ access_mz_convoy_user,mz.convoy.user,model_mz_convoy,,1,1,1,1
 access_mz_convoy_autoridades_user,mz_convoy.autoridades.user,model_mz_convoy_autoridades,,1,1,1,1
 access_mz_convoy_alertas_quejas_user,mz_convoy.alertas_quejas.user,model_mz_convoy_alertas_quejas,,1,1,1,1
 
-
-
-
+access_mz_convoy_beneficiario_user,mz_convoy.beneficiario.user,model_mz_convoy_beneficiario,,1,1,1,1
+access_mz_convoy.convoy_beneficiario_user,mz_convoy.beneficiario.user,model_mz_convoy_convoy_beneficiario,,1,1,1,1

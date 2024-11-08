@@ -22,8 +22,10 @@ Long description of module's purpose
 
     # always loaded
     'data': [
+        'security/mz_convoy_security.xml',
         'security/ir.model.access.csv',
         # DATA
+        'data/asignacion_permiso_operador_ir_cron.xml',  
         'data/data_mz_convoy_catalogo.xml',  
         'data/data_mz_convoy_instituciones_data.xml', 
         # MENU
@@ -31,9 +33,13 @@ Long description of module's purpose
         # CONFIGURACION
         'views/configuracion/mz_convoy_catalogo_views.xml', 
         'views/configuracion/mz_convoy_catalogo_items_views.xml',
-        
-        
+        # REGISTRO
+        'views/registro/mz_convoy_beneficiario_masivo_view.xml', 
+        'views/registro/mz_convoy_beneficiario_asistencia_view.xml', 
+        'views/registro/mz_convoy_beneficiario_socioeconomico_view.xml',                 
         'views/registro/mz_convoy_programas_view.xml', 
+        'views/registro/mz_convoy_asignacion_servicio_view.xml', 
+        
         # 'views/registro/convoy_view.xml',   
     ],
     # only loaded in demonstration mode

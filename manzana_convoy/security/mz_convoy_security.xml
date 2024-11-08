@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Definir la Categoría del Módulo -->
+    <record id="module_category_mz_convoy" model="ir.module.category">
+        <field name="name">Convoy</field>
+        <field name="description">Categoría para el módulo CONVOY</field>
+        <field name="sequence">100</field>
+    </record>
+
+    <!-- Definir el Grupo de Acceso para Beneficiarios -->
+    <record id="group_mz_convoy_operador" model="res.groups">
+        <field name="name">Operador</field>
+        <field name="category_id" ref="module_category_mz_convoy"/>
+    </record>
+</odoo>

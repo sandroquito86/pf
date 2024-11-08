@@ -7,9 +7,12 @@
         <field name="arch" type="xml">
             <form string="Programas">
                 <header>
-                    <button name="action_activar" string="Activar Programa" type="object" class="btn-primary" invisible="active"/>
-                    <button name="action_publish" string="Publicar Programa" type="object" class="btn-primary" invisible="not mostrar_boton_publicar"/>
-                    <button name="action_unpublish_wizard" string="Retirar Publicación" type="object" class="btn-secondary" invisible="not mostrar_bot_retirar_public"/>
+                    <field name="state" widget="statusbar"/>
+                    <button name="aprobar_convoy" string="Aprobar" type="object" class="oe_highlight" invisible="state != 'borrador'"/>
+                    <button name="action_finalizar" string="Finalizar" type="object" class="oe_highlight" invisible="state != 'aprobado'"/>
+                    <button name="%(action_mz_convoy_convoy_beneficiario)d" string="Beneficiario Masivo" type="action" class="oe_stat_button" icon="fa-users"/>
+                    <button name="%(action_mz_convoy_beneficiario_asistencia)d" string="Registro Asistencia" type="action" class="oe_stat_button" icon="fa-address-card"/>
+                    <button name="%(action_mz_convoy_beneficiario_socioeconomico)d" string="Registro Socioeconómico" type="action" class="oe_stat_button" icon="fa-list-alt"/>
                 </header>
                 <sheet>
                     <div class="row justify-content-between position-relative w-100 m-0 mb-2">
@@ -122,12 +125,27 @@
                             </field>
                         </page>
                         <page string="Servicios">
-                            <field name="can_edit_services"/>
-                             <field name="programa_id"/>
-                            <field name="servicio_ids" readonly="not can_edit_services" context="{'default_programa_id': programa_id}">
+                            <div class="alert alert-info mb-0" role="alert">
+                                <i class="fa fa-info-circle me-2"/>
+Guarde el registro antes de agregar servicios
+                            </div>
+                            <field name="can_edit_services" invisible="1" />
+                            <field name="programa_id" invisible="1" />
+                            <field name="servicio_ids" readonly="not can_edit_services" context="{
+                                    'default_programa_id': programa_id,
+                                    'form_view_ref': 'manzana_convoy.view_mz_convoy_asignacion_servicio_form'
+                                }">
                                 <tree>
                                     <field name="servicio_id"/>
                                     <field name="personal_ids" widget="many2many_tags"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Operadores">
+                            <field name="operadores_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="user_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
                                 </tree>
                             </field>
                         </page>
@@ -147,6 +165,7 @@
         <field name="model">mz.convoy</field>
         <field name="arch" type="xml">
             <tree string="Programas">
+                <field name="state" widget="badge" decoration-info="state == 'borrador'" decoration-success="state == 'aprobado'"/>
                 <field name="name"/>
                 <field name="sucursal_id"/>
                 <field name="phone"/>
@@ -250,7 +269,7 @@
         <field name="context">{'default_modulo_id':4}</field>
     </record>
 
-    <menuitem id="menu_action_mz_mz_convoy" name="Programas" parent="mz_convoy_menu_registro" action="action_mz_mz_convoy" sequence="10"/>
+    <menuitem id="menu_action_mz_mz_convoy" name="Convoy" parent="mz_convoy_menu_registro" action="action_mz_mz_convoy" sequence="10"/>
 
 </odoo>
 

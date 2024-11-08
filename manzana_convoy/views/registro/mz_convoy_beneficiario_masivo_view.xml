@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Tree Editable -->
+    <record id="view_mz_convoy_convoy_beneficiario_tree" model="ir.ui.view">
+        <field name="name">mz.convoy.beneficiario.masivo.tree</field>
+        <field name="model">mz_convoy.convoy_beneficiario</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" create="1" delete="1" multi_edit="1">
+                <field name="num_documento" required="1"/>
+                <field name="nombres" required="1"/>
+                <field name="apellidos" required="1"/>
+                <field name="es_extranjero"/>
+                <field name="pais"/>
+                <field name="celular"/>
+                <field name="operadora_id" options="{'no_create': True, 'no_create_edit': True}"/>
+                <field name="convoy_id" column_invisible="True"/>
+                 <field name="programa_id"/>
+                 <field name="servicio_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Search -->
+    <record id="view_mz_convoy_convoy_beneficiario_search" model="ir.ui.view">
+        <field name="name">mz.convoy.beneficiario.masivo.search</field>
+        <field name="model">mz_convoy.convoy_beneficiario</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="num_documento"/>
+                <field name="nombres"/>
+                <field name="apellidos"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acción para abrir la vista tree -->
+    <record id="action_mz_convoy_convoy_beneficiario" model="ir.actions.act_window">
+        <field name="name">Registro Masivo de Beneficiarios</field>
+        <field name="res_model">mz_convoy.convoy_beneficiario</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_mz_convoy_convoy_beneficiario_tree"/>
+        <field name="target">current</field>
+        <field name="context">{
+        'default_convoy_id': active_id,
+        'default_tipo_registro': 'masivo'
+    }</field>
+        <field name="domain">[
+        ('convoy_id', '=', active_id),
+        ('tipo_registro', '=', 'masivo')
+    ]</field>
+    </record>
+
+
+
+</odoo>

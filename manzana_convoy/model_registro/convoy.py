@@ -1,4 +1,7 @@
 from odoo import models, fields, api
+from datetime import date, datetime, timedelta
+from odoo.exceptions import UserError
+
 
 class FichaEvento(models.Model):
     _name = 'mz.convoy'
@@ -7,22 +10,9 @@ class FichaEvento(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin'] 
 
     # Corrección del campo programa_id para apuntar al modelo correcto
-    programa_id = fields.Many2one(
-        'pf.programas',  # Cambiado de hr.employee a pf.programas
-        string='Programa',
-        ondelete='restrict',
-        required=True,  # Es importante marcarlo como required en herencia por delegación
-        auto_join=True  # Mejora el rendimiento en consultas
-    )
-
-    institucion_anfitriona = fields.Char(string='Institución Anfitriona')  
-    
-    director_coordinador = fields.Many2one(
-        string='Coordinador Responsable',
-        comodel_name='hr.employee',
-        ondelete='restrict'
-    )   
-    
+    programa_id = fields.Many2one('pf.programas', string='Programa', ondelete='restrict',  required=True, auto_join=True)
+    institucion_anfitriona = fields.Char(string='Institución Anfitriona') 
+    director_coordinador = fields.Many2one(string='Coordinador Responsable', comodel_name='hr.employee', ondelete='restrict')       
     # El resto de los campos permanecen igual
     fecha_evento = fields.Date(string='Fecha del Evento')
     dia_semana = fields.Char(string='Día', compute='_compute_dia_semana', store=True)
@@ -30,59 +20,64 @@ class FichaEvento(models.Model):
     hora_inicio = fields.Float(string='Hora Inicio')
     hora_fin = fields.Float(string='Hora Fin')
     duracion = fields.Char(string='Duración', compute='_compute_duracion', store=True)    
-    tipo_evento = fields.Many2one(
-        'mz_convoy.items',
-        string='Tipo Evento',
-        domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_tipo_evento').id)]
-    )
+    tipo_evento = fields.Many2one('mz_convoy.items', string='Tipo Evento', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_tipo_evento').id)])
     formato_evento = fields.Char(string='Formato de Evento')
     numero_asistentes = fields.Integer(string='Número de Asistentes')
     codigo_vestimenta = fields.Char(string='Código de Vestimenta')   
-    participacion_prefecta = fields.Many2one(
-        'mz_convoy.items',
-        string='Participación  Prefecta',
-        domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_participacion_especifica').id)]
-    )
+    participacion_prefecta = fields.Many2one('mz_convoy.items', string='Participación  Prefecta', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_participacion_especifica').id)])
     tiempo_intervencion = fields.Float(string='Tiempo de Intervención')    
     prensa = fields.Selection([('si', 'Sí'), ('no', 'No')], string='Prensa')
     data_politica = fields.Char(string='Data Política')    
     mesa_tecnica_ids = fields.One2many('mz_convoy.mesa_tecnica', 'evento_id', string='Miembros Mesa Técnica')    
     sillas_requeridas = fields.Integer(string='Sillas Requeridas')
     carpas_requeridas = fields.Integer(string='Carpas Requeridas')
-    responsable_convoy = fields.Many2one(
-        string='Responsable del Convoy',
-        comodel_name='hr.employee',
-        ondelete='restrict'
-    )
+    responsable_convoy = fields.Many2one(string='Responsable del Convoy', comodel_name='hr.employee', ondelete='restrict')
     responsables_avanzada = fields.Many2many('hr.employee', string='Responsables de Avanzada')
-    responsable_socializacion = fields.Many2one(
-        string='Responsable de Socialización',
-        comodel_name='hr.employee',
-        ondelete='restrict'
-    )
-    responsable_mesa_tecnica = fields.Many2one(
-        string='Responsable de Mesa Técnica',
-        comodel_name='hr.employee',
-        ondelete='restrict'
-    )
-    responsable_convocatoria = fields.Many2one(
-        string='Responsable de Convocatoria del Cantón',
-        comodel_name='hr.employee',
-        ondelete='restrict'
-    )
+    responsable_socializacion = fields.Many2one(string='Responsable de Socialización', comodel_name='hr.employee', ondelete='restrict')
+    responsable_mesa_tecnica = fields.Many2one(string='Responsable de Mesa Técnica', comodel_name='hr.employee', ondelete='restrict')
+    responsable_convocatoria = fields.Many2one(string='Responsable de Convocatoria del Cantón', comodel_name='hr.employee', ondelete='restrict')
     autoridades_externa_ids = fields.One2many('mz_convoy.autoridades', 'convoy_id', string='Autoridades')
     alertas_quejas_ids = fields.One2many('mz_convoy.alertas_quejas', 'convoy_id', string='Alertas/Quejas')
+    mostrar_boton_publicar = fields.Boolean(compute='_compute_mostrar_boton_publicar', compute_sudo=True)
+    mostrar_bot_retirar_public = fields.Boolean(compute='_compute_mostrar_bot_retirar_public', compute_sudo=True)
+    can_edit_services = fields.Boolean(compute='_compute_can_edit_services')    
+    state = fields.Selection([('borrador', 'Borrador'),('aprobado', 'Aprobado'),('aprobado', 'Aprobado'),('fin', 'Finalizado')], string='Estado', default='borrador', tracking=True)   
+    domain_operadores_ids = fields.Char(string='Domain Operadores',compute='_compute_domain_programas')
 
-    mostrar_boton_publicar = fields.Boolean(
-        compute='_compute_mostrar_boton_publicar',
-        compute_sudo=True
-    )
-    mostrar_bot_retirar_public = fields.Boolean(
-        compute='_compute_mostrar_bot_retirar_public',
-        compute_sudo=True
-    )
+    operadores_ids = fields.Many2many(string='Operadores', comodel_name='hr.employee', relation='convoy_operador_rel', 
+                                      column1='convoy_id', column2='employee_id',domain="[('user_id','!=',False)]")
+        
+    @api.model
+    def asignacion_permiso_operador(self):
+        current_datetime = datetime.now() - timedelta(hours=5)
+        today = current_datetime.date()  # Convertir a date
+        convoys = self.search([('state', '=', 'aprobado'), ('fecha_evento', '=', today)])        
+        grupo_operador = self.env.ref('manzana_convoy.group_mz_convoy_operador')      
+        for convoy in convoys:           
+            for empleado in convoy.operadores_ids:                
+                if empleado.user_id:  # Verificamos que el empleado tenga usuario
+                    empleado.user_id.write({'groups_id': [(4, grupo_operador.id)]})
 
-    can_edit_services = fields.Boolean(compute='_compute_can_edit_services')
+    def aprobar_convoy(self):
+        self.write({'state': 'aprobado'})
+
+    def action_finalizar(self):
+        grupo_operador = self.env.ref('manzana_convoy.group_mz_convoy_operador')
+        
+        for record in self:
+            # Quitar permisos a operadores
+            for empleado in record.operadores_ids:
+                if empleado.user_id:
+                    empleado.user_id.write({
+                        'groups_id': [(3, grupo_operador.id)]  # Remueve el grupo
+                    })
+            
+            # Cambiar estado a finalizado
+            record.write({
+                'state': 'fin'
+            })
+
+    
 
     @api.depends('programa_id')
     def _compute_can_edit_services(self):
