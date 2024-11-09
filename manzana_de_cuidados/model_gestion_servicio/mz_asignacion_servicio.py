@@ -40,18 +40,12 @@ class AsignarServicio(models.Model):
     sub_servicio_ids = fields.Many2many('mz.sub.servicio', string='Sub Servicios',relation='asignacion_servicio_sub_servicio_rel')
     domain_sub_servicio_ids = fields.Char(string='Domain Sub servicios',compute='_compute_domain_sub_servicio_ids')
     
-
-
-    @api.constrains('name', 'programa_id')
-    def _check_name_unique_per_programa(self):
+    @api.constrains('personal_ids')
+    def _check_personal_ids(self):
         for record in self:
-            domain = [
-                ('name', '=', record.name),
-                ('programa_id', '=', record.programa_id.id),
-                ('id', '!=', record.id),  # Excluye el registro actual para permitir actualizaciones
-            ]
-            if self.search_count(domain) > 0:
-                raise UserError("El servicio no puede estar duplicado en el mismo programa.")
+            if not record.personal_ids:
+                raise UserError("Por favor ingresar al menos un responsable")
+
 
     @api.depends('programa_id')
     def _compute_domain_personal_ids(self):

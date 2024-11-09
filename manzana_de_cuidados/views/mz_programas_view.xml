@@ -117,7 +117,6 @@
             <kanban default_order="name" action="action_brand_model" type="object">
                 <field name="id"/>
                 <field name="name"/>
-                <field name="active"/>
                 <templates>
                     <t t-name="kanban-menu">
                         <a role="menuitem" type="open" class="dropdown-item">Configuration</a>

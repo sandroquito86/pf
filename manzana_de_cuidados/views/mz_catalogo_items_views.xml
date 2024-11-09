@@ -23,7 +23,6 @@
                                 <field name="catalogo_id"/>
                                 <field name="name" />
                                 <field name="descripcion" />
-                                <field name="active"/>
                             </group>
                         </group>
                         <div class="oe_chatter">
@@ -46,7 +45,6 @@
                                 <field name="catalogo_id" options="{'no_create_edit': True, 'no_open': True,'no_create': True}" readonly="1" />
                                 <field name="name" />
                                 <field name="descripcion" />
-                                <field name="active"/>
                             </group>
                         </group>
                     </sheet>

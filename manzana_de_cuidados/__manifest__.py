@@ -18,7 +18,7 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['hr','base','mail', 'stock','prefectura_base','website_slides'],
+    'depends': ['hr','base','mail','sh_message','stock','prefectura_base','website_slides'],
 
     # always loaded
     'data': [
