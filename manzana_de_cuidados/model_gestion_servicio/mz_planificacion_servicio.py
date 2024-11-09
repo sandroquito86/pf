@@ -40,8 +40,8 @@ class GenerarHorarios(models.Model):
     # _sql_constraints = [('name_unique', 'UNIQUE(servicio_id,personal_id)',
     #                      "Ya existe AGENDA para esta persona en el MES seleccionado !!"),]
     
-    fecha_inicio = fields.Date(string='Fecha Inicio', required=True)
-    fecha_fin = fields.Date(string='Fecha Fin', required=True)
+    fecha_inicio = fields.Date(string='Fecha Inicio')
+    fecha_fin = fields.Date(string='Fecha Fin')
 
     es_replanificacion = fields.Boolean('Es Replanificación', default=False)
     planificacion_original_id = fields.Many2one('mz.genera.planificacion.servicio', 'Planificación Original')

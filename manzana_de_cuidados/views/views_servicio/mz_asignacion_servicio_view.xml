@@ -121,6 +121,7 @@
             <field name="name">Asignación de Responsables de Servicios</field>
             <field name="res_model">mz.asignacion.servicio</field>
             <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('programa_id.modulo_id', '=', 2)]</field>
         </record>
 
         <record id="action_mz_asignacion_servicio_form" model="ir.actions.act_window">

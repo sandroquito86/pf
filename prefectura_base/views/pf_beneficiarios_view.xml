@@ -165,7 +165,7 @@
     <field name="view_mode">tree,form</field>
   </record>
 
-  <menuitem name="Beneficiarios" id="menu_pf_beneficiario" parent="menu_pf_registro" action="pf_beneficiario_act_windows" sequence="20"/>
+  <menuitem name="Beneficiarios" id="menu_pf_beneficiario" parent="menu_pf_beneficiarios" action="pf_beneficiario_act_windows" sequence="10"/>
 
 
 </data>

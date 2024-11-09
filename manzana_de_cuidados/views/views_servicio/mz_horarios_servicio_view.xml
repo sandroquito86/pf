@@ -7,6 +7,7 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="servicio_id" />
+                    <field name="programa_id" />
                     <field name="personal_id"/>
                 </tree>
             </field>
@@ -65,6 +66,7 @@
                     <!-- Panel de búsqueda del lado izquierdo -->
                 <searchpanel>
                     <field name="asi_servicio_id" icon="fa-cogs" string="Servicio"/>
+                    <field name="programa_id" icon="fa-building" string="Programa"/>
                 </searchpanel>
                 </search>
             </field>
@@ -75,6 +77,7 @@
             <field name="name">Configuración de Horarios de Personal </field>
             <field name="res_model">mz.horarios.servicio</field>
             <field name="view_mode">tree,form</field>
+            <field name="domain">[('programa_id.modulo_id', '=', 2)]</field>
         </record>
 
         <menuitem id="menu_action_mz_horarios_servicio" name="Configuración de Horarios de Personal " action="action_mz_horarios_servicio" parent="menu_planificacion_curso" sequence="20" />

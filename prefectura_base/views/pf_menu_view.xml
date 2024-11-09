@@ -3,7 +3,7 @@
         <menuitem name="Prefectura" id="menu_prefectura_root" sequence="10"/>
         <menuitem name="Configuración" id="menu_pf_configuracion" parent="menu_prefectura_root" sequence="30"/>
         <menuitem name="Registro" id="menu_pf_registro" parent="menu_prefectura_root" sequence="10"/>
-        <menuitem id="menu_pf_empleado" name="Empleado"  parent="menu_prefectura_root" sequence="8"/>
-    
+        <menuitem name="Beneficiario" id="menu_pf_beneficiarios" parent="menu_prefectura_root" sequence="15"/>
+        <menuitem id="menu_pf_empleado" name="Empleado"  parent="menu_prefectura_root" sequence="8"/>    
     </data>
 </odoo>
