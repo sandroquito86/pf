@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record model="ir.ui.view" id="view_mz_items_tree">
-            <field name="name">mz.items</field>
-            <field name="model">mz.items</field>
+        <record model="ir.ui.view" id="view_mz_sub_servicio_tree">
+            <field name="name">mz.sub.servicio</field>
+            <field name="model">mz.sub.servicio</field>
             <field name="arch" type="xml">
                 <tree>
                     <field name="name" />
@@ -12,15 +12,15 @@
             </field>
         </record>
 
-        <record id="view_mz_items_form" model="ir.ui.view">
-            <field name="name">mz.items</field>
-            <field name="model">mz.items</field>
+        <record id="view_mz_sub_servicio_form" model="ir.ui.view">
+            <field name="name">mz.sub.servicio</field>
+            <field name="model">mz.sub.servicio</field>
             <field name="arch" type="xml">
                 <form string="NUEVO">
                     <sheet>
                         <group>
                             <group>
-                                <field name="catalogo_id"/>
+                                <field name="servicio_id"/>
                                 <field name="name" />
                                 <field name="descripcion" />
                                 <field name="active"/>
@@ -35,15 +35,15 @@
             </field>
         </record>
 
-        <record id="view_mz_items_form2" model="ir.ui.view">
-            <field name="name">mz.items</field>
-            <field name="model">mz.items</field>
+        <record id="view_mz_sub_servicio_form2" model="ir.ui.view">
+            <field name="name">mz.sub.servicio</field>
+            <field name="model">mz.sub.servicio</field>
             <field name="arch" type="xml">
                 <form string="NUEVO">
                     <sheet>
                         <group>
                             <group>
-                                <field name="catalogo_id" options="{'no_create_edit': True, 'no_open': True,'no_create': True}" readonly="1" />
+                                <field name="servicio_id" options="{'no_create_edit': True, 'no_open': True,'no_create': True}" readonly="1" />
                                 <field name="name" />
                                 <field name="descripcion" />
                                 <field name="active"/>
@@ -56,29 +56,29 @@
 
 
 
-        <record id="view_mz_items_search" model="ir.ui.view">
-            <field name="name">mz.items</field>
-            <field name="model">mz.items</field>
+        <record id="view_mz_sub_servicio_search" model="ir.ui.view">
+            <field name="name">mz.sub.servicio</field>
+            <field name="model">mz.sub.servicio</field>
             <field name="arch" type="xml">
                 <search string="">
                     <field name="name" />
                     <field name="descripcion" />
                     <group>
-                        <filter name="catalogo_id" string="Agrupar Catalogo" context="{'group_by': 'catalogo_id' }" />
+                        <filter name="servicio_id" string="Agrupar Servicios" context="{'group_by': 'servicio_id' }" />
                         <filter string="Eliminado" name="inactive" domain="[('active','=',False)]"/>
                     </group>
                 </search>
             </field>
         </record>
 
-        <record model="ir.actions.act_window" id="action_mz_items">
-            <field name="name">ITEMS DE CATÁLOGOS</field>
-            <field name="res_model">mz.items</field>
-            <field name="context" eval="{'search_default_catalogo_id':1}"></field>
+        <record model="ir.actions.act_window" id="action_mz_sub_servicio">
+            <field name="name">SUB SERVICIOS</field>
+            <field name="res_model">mz.sub.servicio</field>
+            <field name="context" eval="{'search_default_servicio_id':1}"></field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem name="Items de Catálogos" id="menu_action_mz_items" parent="menu_configuracion" action="action_mz_items" sequence="2" />
+        <menuitem name="Sub servicios" id="menu_action_mz_sub_servicio" parent="menu_configuracion" action="action_mz_sub_servicio" sequence="100" />
 
     </data>
 </odoo>

@@ -19,10 +19,7 @@ class Catalogo(models.Model):
     descripcion = fields.Char(string="descripcion", required=True)
     sequence = fields.Integer(
         'Secuencia', help="Usado para ordenar los catálogos.", default=1)
-    active = fields.Boolean(
-        string='Activo',
-        default=True, tracking=True,
-    )
+    active = fields.Boolean(string='Activo', default=True, tracking=True,)
     
     _sql_constraints = [('name_unique', 'UNIQUE(name)', "Catálogo debe ser único"),]    
 
@@ -35,7 +32,7 @@ class Items(models.Model):
     name = fields.Char(string="Nombre del Item", help='Escriba el nombre del item asociado a su catálogo', required=True, tracking=True)   
     descripcion = fields.Char(string="Descripcion", tracking=True )    
     catalogo_id = fields.Many2one(string='Catalogo', comodel_name='mz.catalogo', ondelete='restrict',required=True, tracking=True)   
-       
+    active = fields.Boolean(string='Activo', default=True, tracking=True,)   
     
     _sql_constraints = [('name_unique', 'UNIQUE(catalogo_id,name)', "Items debe ser único dentro de cada catálogo"),]    
     

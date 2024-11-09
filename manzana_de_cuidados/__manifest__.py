@@ -37,6 +37,8 @@ Long description of module's purpose
         'views/mz_programas_view.xml',
         
         'views/views_servicio/mz_servicio_view.xml',
+        'views/views_servicio/mz_sub_servicios_view.xml',
+        
         'views/views_servicio/mz_asignacion_servicio_view.xml',
         'views/views_servicio/mz_horarios_servicio_view.xml',
         'views/views_servicio/mz_planificacion_servicio_view.xml',

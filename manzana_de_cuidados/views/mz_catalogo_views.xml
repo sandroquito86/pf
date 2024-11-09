@@ -8,7 +8,7 @@
                 <tree>
                     <field name="name" />
                     <field name="descripcion" />
-                   
+
                 </tree>
             </field>
         </record>
@@ -23,8 +23,11 @@
                             <group>
                                 <field name="name" />
                                 <field name="descripcion" />
+                                <field name="active" />
                             </group>
-                            
+                        </group>
+                        <group string="Items">
+                            <field name="items_ids" nolabel="1" colspan="2" context="{'form_view_ref': 'manzana_de_cuidados.view_mz_items_form2'}"/>
                         </group>
                         <div class="oe_chatter">
                             <field name="message_follower_ids" widget="mail_followers" />
@@ -35,7 +38,21 @@
             </field>
         </record>
 
-        
+        <record id="view_mz_catalogo_search" model="ir.ui.view">
+            <field name="name">mz.catalogo</field>
+            <field name="model">mz.catalogo</field>
+            <field name="arch" type="xml">
+                <search string="">
+                    <field name="name" />
+                    <field name="descripcion" />
+                    <group>
+                          <filter string="Eliminado" name="inactive" domain="[('active','=',False)]"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
 
         <record model="ir.actions.act_window" id="action_mz_catalogo">
             <field name="name">CATÁLOGOS</field>
@@ -43,11 +60,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="menu_action_mz_catalogo"
-              name="Catálogo"
-              action="action_mz_catalogo"
-              parent="menu_configuracion"
-              sequence="1" />
+        <menuitem id="menu_action_mz_catalogo" name="Catálogo" action="action_mz_catalogo" parent="menu_configuracion" sequence="1" />
 
     </data>
 </odoo>

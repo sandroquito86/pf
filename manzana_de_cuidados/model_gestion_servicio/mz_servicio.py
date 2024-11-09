@@ -24,6 +24,7 @@ class Servicio(models.Model):
 
 class SubServicio(models.Model):
     _name = 'mz.sub.servicio'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Sub Servicio'
 
     name = fields.Char(string='Nombre', required=True)
