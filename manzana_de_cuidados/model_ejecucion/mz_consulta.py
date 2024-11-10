@@ -36,7 +36,13 @@ class Consulta(models.Model):
     sintomas = fields.Text(string='Síntomas', tracking=True)
     
     # Signos vitales
-    presion_arterial = fields.Char(string='Presión Arterial', tracking=True)
+    presion_arterial = fields.Char(
+        string="Presión Arterial",
+        compute="_compute_presion_arterial",
+        store=True
+    )
+    presion_sistolica = fields.Integer(string="Presión Sistólica", tracking=True)
+    presion_diastolica = fields.Integer(string="Presión Diastólica", tracking=True)
     frecuencia_cardiaca = fields.Integer(string='Frecuencia Cardíaca', tracking=True)
     frecuencia_respiratoria = fields.Integer(string='Frecuencia Respiratoria', tracking=True)
     temperatura = fields.Float(string='Temperatura (°C)', tracking=True)
@@ -48,7 +54,12 @@ class Consulta(models.Model):
     examen_fisico = fields.Text(string='Examen Físico', tracking=True)
     
     # Diagnóstico y tratamiento
-    diagnostico = fields.Text(string='Diagnóstico', tracking=True)
+    # Reemplazar los campos anteriores con la nueva relación
+    diagnostico_ids = fields.One2many(
+        'mz.diagnostico.linea',
+        'consulta_id',
+        string='Diagnósticos'
+    )
     tratamiento = fields.Text(string='Tratamiento', tracking=True)
     
     # Historial médico
@@ -63,7 +74,6 @@ class Consulta(models.Model):
 
     historia_clinica_id = fields.Many2one('mz.historia.clinica', string='Historia Clínica', readonly=True)
 
-    cie10_id = fields.Many2one('pf.cie10', string='Diagnóstico CIE-10', tracking=True)
 
     receta_ids = fields.One2many('mz.receta.linea', 'consulta_id', string='Receta Médica')
     picking_id = fields.Many2one('stock.picking', string='Orden de Entrega', readonly=True)
@@ -85,6 +95,24 @@ class Consulta(models.Model):
         ('codigo_unique', 'unique(codigo)', 'El código de la consulta debe ser único.')
     ]
 
+    @api.constrains('diagnostico_ids')
+    def _check_diagnosticos(self):
+        for record in self:
+            if not record.diagnostico_ids:
+                raise UserError('Debe ingresar al menos un diagnóstico.')
+            
+            # Verificar que haya exactamente un diagnóstico principal
+            principales = record.diagnostico_ids.filtered(lambda d: d.es_principal)
+            if len(principales) != 1:
+                raise UserError('Debe haber exactamente un diagnóstico principal.')
+            
+    @api.depends('presion_sistolica', 'presion_diastolica')
+    def _compute_presion_arterial(self):
+        for record in self:
+            if record.presion_sistolica and record.presion_diastolica:
+                record.presion_arterial = f"{record.presion_sistolica}/{record.presion_diastolica}"
+            else:
+                record.presion_arterial = "N/A"
    
 
     @api.constrains('codigo')
@@ -187,10 +215,10 @@ class Consulta(models.Model):
             historia_clinica = self.env['mz.historia.clinica'].create({
                 'beneficiario_id': consulta.beneficiario_id.id,
                 'consulta_id': consulta.id,
+                'personal_id': consulta.personal_id.id,
+                'sintomas': consulta.sintomas,
                 'fecha': consulta.fecha,
                 'motivo_consulta': consulta.motivo_consulta,
-                'diagnostico': consulta.diagnostico,
-                'cie10_id': consulta.cie10_id.id,
                 'tratamiento': consulta.tratamiento,
                 'observaciones': consulta.observaciones,
                 'antecedentes_personales': consulta.antecedentes_personales,
@@ -200,21 +228,24 @@ class Consulta(models.Model):
                 'signos_vitales': f"PA: {consulta.presion_arterial}, FC: {consulta.frecuencia_cardiaca}, FR: {consulta.frecuencia_respiratoria}, Temp: {consulta.temperatura}"
             })
             consulta.historia_clinica_id = historia_clinica.id
+            for diagnostico in consulta.diagnostico_ids:
+                diagnostico.write({'historia_clinica_id': historia_clinica.id})
 
     def actualizar_historia_clinica(self):
         for consulta in self:
             if consulta.historia_clinica_id:
                 consulta.historia_clinica_id.write({
                     'motivo_consulta': consulta.motivo_consulta,
-                    'diagnostico': consulta.diagnostico,
+                    'personal_id': consulta.personal_id.id,
+                    'sintomas': consulta.sintomas,
                     'tratamiento': consulta.tratamiento,
-                    'cie10_id': consulta.cie10_id.id,
                     'observaciones': consulta.observaciones,
                     'antecedentes_personales': consulta.antecedentes_personales,
                     'antecedentes_familiares': consulta.antecedentes_familiares,
                     'alergias': consulta.alergias,
                     'medicamentos_actuales': consulta.medicamentos_actuales,
                     'signos_vitales': f"PA: {consulta.presion_arterial}, FC: {consulta.frecuencia_cardiaca}, FR: {consulta.frecuencia_respiratoria}, Temp: {consulta.temperatura}"
+                    
                 })
 
     def generar_orden_entrega(self):
@@ -288,4 +319,25 @@ class Consulta(models.Model):
                 }
             }
     
+class MzDiagnosticoLinea(models.Model):
+    _name = 'mz.diagnostico.linea'
+    _description = 'Línea de Diagnóstico'
+
+    consulta_id = fields.Many2one('mz.consulta', string='Consulta', required=True, ondelete='cascade')
+    cie10_id = fields.Many2one('pf.cie10', string='Diagnóstico CIE-10', tracking=True)
+    detalle = fields.Text(string='Detalle del diagnóstico')
+    es_principal = fields.Boolean(string='Diagnóstico Principal', default=False)
+    historia_clinica_id = fields.Many2one('mz.historia.clinica', string='Historia Clinica', ondelete='cascade')
     
+    @api.constrains('es_principal', 'consulta_id')
+    def _check_diagnostico_principal(self):
+        for record in self:
+            if record.es_principal:
+                # Verifica que no haya otro diagnóstico principal en la misma consulta
+                otros_principales = self.search([
+                    ('consulta_id', '=', record.consulta_id.id),
+                    ('es_principal', '=', True),
+                    ('id', '!=', record.id)
+                ])
+                if otros_principales:
+                    raise UserError('Solo puede haber un diagnóstico principal por consulta.')

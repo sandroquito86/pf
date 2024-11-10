@@ -164,7 +164,7 @@ class AgendarServicio(models.Model):
     def _generate_codigo(self):
         current_year = datetime.now().year
         current_month = datetime.now().month
-        prefix = 'PRE-GUAYAS'
+        prefix = self.env.ref('manzana_de_cuidados.codigo_prefectura_items').name
         
         # Buscar el último código generado este año, excluyendo los registros en estado borrador
         last_record = self.search([
@@ -179,7 +179,7 @@ class AgendarServicio(models.Model):
         new_number = last_number + 1
         new_number_str = str(new_number).zfill(7)
         
-        return f'{prefix}-{new_number_str}-{current_month:02d}-{current_year}'
+        return f'{prefix}-{self.programa_id.sigla}-{new_number_str}-{current_month:02d}-{current_year}'
 
     def aprobar_horario(self):
         for record in self:

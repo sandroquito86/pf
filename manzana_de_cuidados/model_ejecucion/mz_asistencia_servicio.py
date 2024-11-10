@@ -26,7 +26,13 @@ class AsistenciaServicio(models.Model):
     active = fields.Boolean(string='Activo', default=True)
 
     # Signos vitales
-    presion_arterial = fields.Char(string='Presión Arterial', tracking=True)
+    presion_arterial = fields.Char(
+        string="Presión Arterial",
+        compute="_compute_presion_arterial",
+        store=True
+    )
+    presion_sistolica = fields.Integer(string="Presión Sistólica", tracking=True)
+    presion_diastolica = fields.Integer(string="Presión Diastólica", tracking=True)
     frecuencia_cardiaca = fields.Integer(string='Frecuencia Cardíaca', tracking=True)
     frecuencia_respiratoria = fields.Integer(string='Frecuencia Respiratoria', tracking=True)
     temperatura = fields.Float(string='Temperatura (°C)', tracking=True)

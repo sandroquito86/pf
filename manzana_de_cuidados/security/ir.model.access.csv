@@ -44,3 +44,5 @@ access_mz_receta_linea_admin,mz.receta_linea.admin,model_mz_receta_linea,prefect
 access_mz_wizard_replanificar_turnos_admin,mz.wizard.replanificar.turnos.admin,model_mz_wizard_replanificar_turnos,prefectura_base.group_administrador,1,1,1,1
 access_mz_wizard_reasignar_solicitud_admin,mz.wizard.reasignar.solicitud.admin,model_mz_wizard_reasignar_solicitud,prefectura_base.group_administrador,1,1,1,1
 access_mz_sub_servicio_admin,mz.sub.servicio.admin,model_mz_sub_servicio,prefectura_base.group_administrador,1,1,1,1
+
+access_mz_diagnostico_linea_admin,mz.mz.diagnostico.linea.admin,model_mz_diagnostico_linea,prefectura_base.group_administrador,1,1,1,1

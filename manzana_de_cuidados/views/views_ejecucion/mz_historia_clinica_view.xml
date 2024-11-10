@@ -7,9 +7,9 @@
         <field name="arch" type="xml">
             <tree string="Historial Clínico">
                 <field name="beneficiario_id"/>
+                <field name="personal_id"/>
                 <field name="fecha"/>
                 <field name="motivo_consulta"/>
-                <field name="diagnostico"/>
                 <field name="tratamiento"/>
             </tree>
         </field>
@@ -24,6 +24,7 @@
                     <group>
                         <group>
                             <field name="beneficiario_id" options="{'no_create': True, 'no_open': True}" readonly="1"/>
+                            <field name="personal_id" options="{'no_create': True, 'no_open': True}" readonly="1"/>
                             <field name="fecha" readonly="1"/>
                             <field name="consulta_id" options="{'no_create': True, 'no_open': True}" readonly="1"/>
                         </group>
@@ -35,10 +36,20 @@
                         <page string="Detalles de la Consulta">
                             <group>
                                 <field name="motivo_consulta" readonly="1"/>
-                                <field name="diagnostico" readonly="1"/>
-                                <field name="cie10_id" readonly="1" options="{'no_create': True, 'no_open': True}" />
                                 <field name="tratamiento" readonly="1"/>
+                                <field name="sintomas" readonly="1"/>
                                 <field name="observaciones" readonly="1"/>
+                            </group>
+                        </page>
+                        <page string="Diagnósticos">
+                            <group>                           
+                                <field name="diagnostico_ids" readonly="1">
+                                        <tree editable="bottom">
+                                            <field name="cie10_id" options="{'no_create': True, 'no_open': True}"/>
+                                            <field name="detalle"/>
+                                            <field name="es_principal" widget="boolean_toggle" readonly="1"/>
+                                        </tree>
+                                    </field>
                             </group>
                         </page>
                         <page string="Historial Antecedente Médico">

@@ -76,6 +76,8 @@
                 <group string="Signos Vitales">
                     <group>
                         <field name="presion_arterial"/>
+                        <field name="presion_sistolica"/>
+                        <field name="presion_diastolica"/>
                         <field name="frecuencia_cardiaca"/>
                         <field name="frecuencia_respiratoria"/>
                         <field name="temperatura"/>

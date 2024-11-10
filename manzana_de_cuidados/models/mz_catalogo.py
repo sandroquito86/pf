@@ -44,3 +44,16 @@ class Items(models.Model):
             if record.name.upper() in list_names:
                 raise UserError("Ya existe items: %s , no se permiten valores duplicados dentro del mismo catálogo" % (record.name.upper()))    
  
+    @api.constrains('catalogo_id')
+    def _check_unique_item_per_catalogo_tipo(self):
+        for record in self:
+            # Solo aplica la restricción si el catálogo es de tipo "tipo_unico"
+            tipo_unico_catalogo_id = self.env.ref('manzana_de_cuidados.codigo_prefectura').id
+            if record.catalogo_id.id == tipo_unico_catalogo_id:
+                # Contar cuántos items existen para este catálogo
+                existing_items = self.search_count([
+                    ('catalogo_id', '=', record.catalogo_id.id)
+                ])
+                # Si ya existe otro item en este tipo de catálogo, lanza un error
+                if existing_items > 1:
+                    raise UserError("Solo puede haber un único Item en este tipo de catálogo.")

@@ -25,6 +25,20 @@
             <field name="catalogo_id" ref="tipo_servicio"/>
         </record>
 
+        <!-- Catálogos -->
+        <record id="codigo_prefectura" model="mz.catalogo">
+            <field name="name">Codigo Prefectura</field>
+            <field name="descripcion">Codigo Prefectura</field>
+        </record>
+        
+
+       
+        <!-- Tipo de servicios -->
+        <record id="codigo_prefectura_items" model="mz.items">
+            <field name="name">GADM-PG</field>
+            <field name="descripcion">Esta abreviatura se utilizará para generar los códigos únicos.</field>
+            <field name="catalogo_id" ref="codigo_prefectura"/>
+        </record>
         
     </data>    
 </odoo>

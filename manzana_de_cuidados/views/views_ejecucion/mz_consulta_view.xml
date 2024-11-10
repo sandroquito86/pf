@@ -37,6 +37,8 @@
                                 <group>
                                     <group>
                                         <field name="presion_arterial"/>
+                                        <field name="presion_sistolica"/>
+                                        <field name="presion_diastolica"/>
                                         <field name="frecuencia_cardiaca"/>
                                         <field name="frecuencia_respiratoria"/>
                                     </group>
@@ -57,9 +59,14 @@
                             <page string="Examen Físico y Diagnóstico">
                                 <group>
                                     <field name="examen_fisico" placeholder="Registre los hallazgos del examen físico"/>
-                                    <field name="diagnostico" placeholder="Anote el diagnóstico del paciente"/>
-                                    <field name="cie10_id" options="{'no_create': True, 'no_open': True}" />
                                     <field name="tratamiento" placeholder="Detalle el plan de tratamiento"/>
+                                    <field name="diagnostico_ids" context="{'default_consulta_id': active_id}">
+                                        <tree editable="bottom">
+                                            <field name="cie10_id" options="{'no_create': True, 'no_open': True}"/>
+                                            <field name="detalle"/>
+                                            <field name="es_principal"/>
+                                        </tree>
+                                    </field>
                                 </group>
                             </page>
                             <page string="Historial Médico">
@@ -179,6 +186,8 @@
                                 <group>
                                     <group>
                                         <field name="presion_arterial"/>
+                                        <field name="presion_sistolica"/>
+                                        <field name="presion_diastolica"/>
                                         <field name="frecuencia_cardiaca"/>
                                         <field name="frecuencia_respiratoria"/>
                                     </group>
@@ -193,9 +202,14 @@
                             <page string="Examen Físico y Diagnóstico">
                                 <group>
                                     <field name="examen_fisico" placeholder="Registre los hallazgos del examen físico"/>
-                                    <field name="diagnostico" placeholder="Anote el diagnóstico del paciente"/>
-                                    <field name="cie10_id" options="{'no_create': True, 'no_open': True}" />
                                     <field name="tratamiento" placeholder="Detalle el plan de tratamiento"/>
+                                    <field name="diagnostico_ids" context="{'default_consulta_id': active_id}">
+                                        <tree editable="bottom">
+                                            <field name="cie10_id" options="{'no_create': True, 'no_open': True}"/>
+                                            <field name="detalle"/>
+                                            <field name="es_principal"/>
+                                        </tree>
+                                    </field>
                                 </group>
                             </page>
                             <page string="Historial Médico">
