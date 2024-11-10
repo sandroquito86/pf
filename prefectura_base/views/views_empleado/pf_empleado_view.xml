@@ -114,15 +114,13 @@
                                     <div invisible="not user_id" class="me-2">
                                         <widget name="hr_employee_chat" invisible="not context.get('chat_icon')"/>
                                     </div>
-                                    <field name="name" 
-                                    invisible="1"
-                                     force_save='1' style="font-size: min(4vw, 2.6rem);" required="0"/>
+                                    <field name="name" invisible="1" force_save='1' style="font-size: min(4vw, 2.6rem);" required="0"/>
                                     <field name="nombre" placeholder="Employee's Name" required="1" style="font-size: min(4vw, 2.6rem);"/>
                                 </h1>
                                 <div>
                                     <field name="modulo_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" placeholder="Dependencia" />
                                 </div>
-                                <div>                                
+                                <div>
                                     <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" placeholder="Etiquetas" groups="hr.group_hr_user"/>
                                 </div>
                             </div>
@@ -145,7 +143,7 @@
                                 <field name="parent_id" widget="many2one_avatar_user"/>
                                 <field name="coach_id" widget="many2one_avatar_user"/>
                             </group>
-                            
+
                         </group>
 
                         <group>
@@ -166,17 +164,17 @@
                                 <field name="work_email" widget="email"/>
                                 <field name="company_id" invisible="1"/>
                                 <field name="sucursal_id"/>
-                                 <field name="programa_id"/>
+                                <field name="programa_id"/>
                                 <field name="company_country_id" invisible="1"/>
                                 <field name="company_country_code" invisible="1"/>
                             </group>
-                            
+
                         </group>
 
                         <field name="employee_properties" columns="2"/>
                         <notebook>
-                            <page name="public" string="Información de trabajo">
-                                <div id="o_work_employee_container" class="d-lg-flex"> <!-- These two div are used to position org_chart -->
+                            <page name="public" string="Información de trabajo" invisible="1">
+                                <div id="o_work_employee_container" class="d-lg-flex">                                    <!-- These two div are used to position org_chart -->
                                     <div id="o_work_employee_main" class="flex-grow-1">
                                         <group string="UBICACIÓN">
                                             <field name="address_id" context="{'show_address': 1}" options="{&quot;highlight_first_line&quot;: True}"/>
@@ -207,7 +205,7 @@
                                             <field name="private_street2" placeholder="Calle 2..." class="o_address_street"/>
                                             <field name="private_country_id" placeholder="PAís" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
                                             <field name="private_state_id" class="o_address_state" placeholder="Estado" options="{'no_open': True, 'no_quick_create': True}" context="{'default_country_id': private_country_id}"/>
-                                            <field name="ciudad_id" placeholder="Ciudad" options="{'no_open': True, 'no_quick_create': True}" class="o_address_city"/>                                            
+                                            <field name="ciudad_id" placeholder="Ciudad" options="{'no_open': True, 'no_quick_create': True}" class="o_address_city"/>
                                             <field name="private_zip" placeholder="C.P." class="o_address_zip"/>
                                         </div>
                                         <field name="private_email" string="Email"/>
@@ -242,7 +240,7 @@
                                 <group>
                                     <group string="ESTADO" name="active_group">
                                         <field name="employee_type"/>
-                                        <field name="user_id" string="Related User" domain="[('company_ids', 'in', company_id), ('share', '=', False)]" context="{'default_create_employee_id': id}" widget="many2one_avatar_user"/>
+                                        <field name="user_id" string="Usuario" domain="[('company_ids', 'in', company_id), ('share', '=', False)]" context="{'default_create_employee_id': id}" widget="many2one_avatar_user"/>
                                     </group>
                                     <!-- <group string="Attendance/Point of Sale" name="identification_group">
                                         <field name="pin" string="PIN Code"/>
@@ -288,7 +286,9 @@
             <field name="name">Empleados</field>
             <field name="res_model">hr.employee</field>
             <field name="view_mode">kanban,tree,form</field>
-            <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'kanban', 'view_id': ref('hr_employee_kanban_view')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_hr_employee_form')})]"/>        </record>
+            <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'kanban', 'view_id': ref('hr_employee_kanban_view')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_hr_employee_form')})]"/>
+            <field name="domain">[('tipo_personal', '=', 'interno')]</field>
+        </record>
 
         <menuitem id="menu_hr_employee" name="Empleados" action="action_pf_hr_employee" parent="menu_pf_empleado" sequence="10"/>
 

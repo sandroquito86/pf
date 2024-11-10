@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Departamentos -->
+        <record id="dep_direccion_general" model="hr.department">
+            <field name="name">Dirección General</field>
+            <field name="color" eval="1"/>
+        </record>
+
+        <record id="dep_planificacion" model="hr.department">
+            <field name="name">Dirección de Planificación</field>
+            <field name="parent_id" ref="dep_direccion_general"/>
+            <field name="color" eval="2"/>
+        </record>
+
+        <record id="dep_administrativo" model="hr.department">
+            <field name="name">Dirección Administrativa</field>
+            <field name="parent_id" ref="dep_direccion_general"/>
+            <field name="color" eval="3"/>
+        </record>
+
+        <record id="dep_talento_humano" model="hr.department">
+            <field name="name">Dirección de Talento Humano</field>
+            <field name="parent_id" ref="dep_direccion_general"/>
+            <field name="color" eval="4"/>
+        </record>
+
+        <record id="dep_financiero" model="hr.department">
+            <field name="name">Dirección Financiera</field>
+            <field name="parent_id" ref="dep_direccion_general"/>
+            <field name="color" eval="5"/>
+        </record>
+
+        <record id="dep_tecnologia" model="hr.department">
+            <field name="name">Dirección de Tecnología</field>
+            <field name="parent_id" ref="dep_direccion_general"/>
+            <field name="color" eval="6"/>
+        </record>
+
+        <record id="dep_juridico" model="hr.department">
+            <field name="name">Dirección Jurídica</field>
+            <field name="parent_id" ref="dep_direccion_general"/>
+            <field name="color" eval="7"/>
+        </record>
+
+        <!-- Puestos de trabajo -->
+        <record id="job_prefecto" model="hr.job">
+            <field name="name">Prefecto/a Provincial</field>
+            <field name="department_id" ref="dep_direccion_general"/>
+            <field name="no_of_recruitment">1</field>
+            <field name="description">Máxima autoridad de la Prefectura, responsable de la dirección y administración de la institución.</field>
+        </record>
+
+        <record id="job_director_planificacion" model="hr.job">
+            <field name="name">Director/a de Planificación</field>
+            <field name="department_id" ref="dep_planificacion"/>
+            <field name="no_of_recruitment">1</field>
+            <field name="description">Responsable de la planificación estratégica y operativa institucional.</field>
+        </record>
+
+        <record id="job_director_administrativo" model="hr.job">
+            <field name="name">Director/a Administrativo</field>
+            <field name="department_id" ref="dep_administrativo"/>
+            <field name="no_of_recruitment">1</field>
+            <field name="description">Responsable de la gestión administrativa y logística institucional.</field>
+        </record>
+
+        <record id="job_director_talento_humano" model="hr.job">
+            <field name="name">Director/a de Talento Humano</field>
+            <field name="department_id" ref="dep_talento_humano"/>
+            <field name="no_of_recruitment">1</field>
+            <field name="description">Responsable de la gestión del talento humano institucional.</field>
+        </record>
+
+        <record id="job_director_financiero" model="hr.job">
+            <field name="name">Director/a Financiero</field>
+            <field name="department_id" ref="dep_financiero"/>
+            <field name="no_of_recruitment">1</field>
+            <field name="description">Responsable de la gestión financiera institucional.</field>
+        </record>
+
+        <record id="job_director_tecnologia" model="hr.job">
+            <field name="name">Director/a de Tecnología</field>
+            <field name="department_id" ref="dep_tecnologia"/>
+            <field name="no_of_recruitment">1</field>
+            <field name="description">Responsable de la gestión tecnológica y sistemas informáticos institucionales.</field>
+        </record>
+
+        <record id="job_director_juridico" model="hr.job">
+            <field name="name">Director/a Jurídico</field>
+            <field name="department_id" ref="dep_juridico"/>
+            <field name="no_of_recruitment">1</field>
+            <field name="description">Responsable de la gestión jurídica y legal institucional.</field>
+        </record>
+
+        <!-- Puestos Operativos -->
+        <record id="job_analista" model="hr.job">
+            <field name="name">Analista</field>
+            <field name="description">Responsable del análisis y gestión de procesos específicos en su área.</field>
+        </record>
+
+        <record id="job_tecnico" model="hr.job">
+            <field name="name">Técnico</field>
+            <field name="description">Responsable de la ejecución técnica de procesos en su área.</field>
+        </record>
+
+        <record id="job_asistente" model="hr.job">
+            <field name="name">Asistente</field>
+            <field name="description">Apoyo en la gestión administrativa y operativa del área.</field>
+        </record>
+
+        <record id="job_secretaria" model="hr.job">
+            <field name="name">Secretario/a</field>
+            <field name="description">Responsable de la gestión documental y apoyo administrativo.</field>
+        </record>
+    </data>
+</odoo>

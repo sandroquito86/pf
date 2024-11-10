@@ -18,18 +18,19 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['hr','base','mail'],
+    'depends': ['hr','base','mail','ps_m2m_field_attachment_preview','crnd_web_field_domain'],
 
     # always loaded
     'data': [
         'security/pf_security.xml',
         'security/ir.model.access.csv',
+        'data/departmentos_job_data.xml',
         'data/data_base.xml',
         'data/ciudad_data.xml',
         'data/data_sucursal.xml',
         'data/data_programas.xml',
         'data/cie10_data.xml',
-        
+        'data/personal_data.xml',
         'views/pf_menu_view.xml',
         'views/pf_catalogo_items_views.xml',
         'views/pf_catalogo_views.xml',

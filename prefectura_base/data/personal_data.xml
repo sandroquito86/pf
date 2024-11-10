@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Empleado 1: Director de Programa -->
+        <record id="empleado_mc_001" model="hr.employee">
+            <field name="apellido_paterno">Mendoza</field>
+            <field name="apellido_materno">Cedeño</field>
+            <field name="primer_nombre">María</field>
+            <field name="segundo_nombre">Isabel</field>
+            <!-- Ciudadanía -->
+            
+            <field name="ssnid">0923456789</field>
+            <field name="identification_id">0912345678</field>
+            <field name="passport_id">P1234567</field>
+            <field name="gender">female</field>
+            <field name="birthday">1985-06-15</field>
+            <field name="place_of_birth">Guayaquil</field>
+            
+            <!-- Organización -->
+            <field name="department_id" ref="dep_direccion_general"/>
+            <field name="job_id" ref="job_director_administrativo"/>
+            <field name="coach_id" eval="False"/>
+            <!-- Información -->
+            <field name="mobile_phone">+593 98 765 4321</field>
+            <field name="work_phone">+593 4 234 5678</field>
+            <field name="work_email">maria.mendoza@prefectura.gob.ec</field>
+            <field name="sucursal_id" ref="sucursal_guayaquil_norte"/>
+            <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
+            <field name="programa_id" ref="programa_manzana_cuidados_guayaquil_b10_004"/>
+        </record>
+
+        <!-- Empleado 2: Analista -->
+        <record id="empleado_mc_002" model="hr.employee">
+            <field name="apellido_paterno">Rivera</field>
+            <field name="apellido_materno">Molina</field>
+            <field name="primer_nombre">Juan</field>
+            <field name="segundo_nombre">Carlos</field>
+            
+            <field name="ssnid">0934567890</field>
+            <field name="identification_id">0923456789</field>
+            <field name="gender">male</field>
+            <field name="birthday">1990-03-22</field>
+            <field name="place_of_birth">Guayaquil</field>
+            
+            <field name="department_id" ref="dep_planificacion"/>
+            <field name="job_id" ref="job_analista"/>
+            <field name="coach_id" eval="True"/>
+            <field name="mobile_phone">+593 99 876 5432</field>
+            <field name="work_phone">+593 4 345 6789</field>
+            <field name="work_email">juan.rivera@prefectura.gob.ec</field>
+            <field name="sucursal_id" ref="sucursal_guayaquil_norte"/>
+            <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
+            <field name="programa_id" ref="programa_manzana_cuidados_guayaquil_b10_004"/>
+        </record>
+
+        <!-- Empleado 3: Técnico -->
+        <record id="empleado_mc_003" model="hr.employee">
+            <field name="apellido_paterno">Velasco</field>
+            <field name="apellido_materno">Paredes</field>
+            <field name="primer_nombre">Ana</field>
+            <field name="segundo_nombre">Lucía</field>
+            
+            <field name="ssnid">0945678901</field>
+            <field name="identification_id">0934567890</field>
+            <field name="gender">female</field>
+            <field name="birthday">1988-09-10</field>
+            <field name="place_of_birth">Durán</field>
+            
+            <field name="department_id" ref="dep_tecnologia"/>
+            <field name="job_id" ref="job_tecnico"/>
+            <field name="coach_id" eval="True"/>
+            <field name="mobile_phone">+593 97 654 3210</field>
+            <field name="work_phone">+593 4 456 7890</field>
+            <field name="work_email">ana.velasco@prefectura.gob.ec</field>
+            <field name="sucursal_id" ref="sucursal_guayaquil_sur"/>
+            <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
+            <field name="programa_id" ref="programa_manzana_cuidados_guayaquil_b10_005"/>
+        </record>
+
+        <!-- Empleado 4: Asistente -->
+        <record id="empleado_mc_004" model="hr.employee">
+            <field name="apellido_paterno">Castro</field>
+            <field name="apellido_materno">Jiménez</field>
+            <field name="primer_nombre">Pedro</field>
+            <field name="segundo_nombre">José</field>
+            
+            <field name="ssnid">0956789012</field>
+            <field name="identification_id">0945678901</field>
+            <field name="gender">male</field>
+            <field name="birthday">1992-12-05</field>
+            <field name="place_of_birth">Guayaquil</field>
+            
+            <field name="department_id" ref="dep_administrativo"/>
+            <field name="job_id" ref="job_asistente"/>
+            <field name="coach_id" eval="False"/>
+            <field name="mobile_phone">+593 96 543 2109</field>
+            <field name="work_phone">+593 4 567 8901</field>
+            <field name="work_email">pedro.castro@prefectura.gob.ec</field>
+            <field name="sucursal_id" ref="sucursal_guayaquil_sur"/>
+            <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
+            <field name="programa_id" ref="programa_manzana_cuidados_guayaquil_b10_005"/>
+        </record>
+
+        <!-- Empleado 5: Secretaria -->
+        <record id="empleado_mc_005" model="hr.employee">
+            <field name="apellido_paterno">Morales</field>
+            <field name="apellido_materno">Zambrano</field>
+            <field name="primer_nombre">Carmen</field>
+            <field name="segundo_nombre">Elena</field>
+            
+            <field name="ssnid">0967890123</field>
+            <field name="identification_id">0956789012</field>
+            <field name="gender">female</field>
+            <field name="birthday">1987-04-18</field>
+            <field name="place_of_birth">Durán</field>
+            
+            <field name="department_id" ref="dep_direccion_general"/>
+            <field name="job_id" ref="job_secretaria"/>
+            <field name="coach_id" eval="False"/>
+            <field name="mobile_phone">+593 95 432 1098</field>
+            <field name="work_phone">+593 4 678 9012</field>
+            <field name="work_email">carmen.morales@prefectura.gob.ec</field>
+            <field name="sucursal_id" ref="sucursal_duran"/>
+            <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
+            <field name="programa_id" ref="programa_manzana_cuidados_duran_b10_006"/>
+        </record>
+
+        <!-- Empleado 6: Analista -->
+        <record id="empleado_mc_006" model="hr.employee">
+            <field name="apellido_paterno">Torres</field>
+            <field name="apellido_materno">Aguirre</field>
+            <field name="primer_nombre">Luis</field>
+            <field name="segundo_nombre">Alberto</field>
+            
+            <field name="ssnid">0978901234</field>
+            <field name="identification_id">0967890123</field>
+            <field name="gender">male</field>
+            <field name="birthday">1991-07-30</field>
+            <field name="place_of_birth">Guayaquil</field>
+            
+            <field name="department_id" ref="dep_planificacion"/>
+            <field name="job_id" ref="job_analista"/>
+            <field name="coach_id" eval="True"/>
+            <field name="mobile_phone">+593 94 321 0987</field>
+            <field name="work_phone">+593 4 789 0123</field>
+            <field name="work_email">luis.torres@prefectura.gob.ec</field>
+            <field name="sucursal_id" ref="sucursal_duran"/>
+            <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
+            <field name="programa_id" ref="programa_manzana_cuidados_duran_b10_006"/>
+        </record>
+
+        <!-- Empleado 7: Técnico -->
+        <record id="empleado_mc_007" model="hr.employee">
+            <field name="apellido_paterno">Ruiz</field>
+            <field name="apellido_materno">Vera</field>
+            <field name="primer_nombre">Patricia</field>
+            <field name="segundo_nombre">Alexandra</field>
+            
+            <field name="ssnid">0989012345</field>
+            <field name="identification_id">0978901234</field>
+            <field name="gender">female</field>
+            <field name="birthday">1989-11-25</field>
+            <field name="place_of_birth">Guayaquil</field>
+            
+            <field name="department_id" ref="dep_tecnologia"/>
+            <field name="job_id" ref="job_tecnico"/>
+            <field name="coach_id" eval="True"/>
+            <field name="mobile_phone">+593 93 210 9876</field>
+            <field name="work_phone">+593 4 890 1234</field>
+            <field name="work_email">patricia.ruiz@prefectura.gob.ec</field>
+            <field name="sucursal_id" ref="sucursal_guayaquil_norte"/>
+            <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
+            <field name="programa_id" ref="programa_manzana_cuidados_guayaquil_b10_004"/>
+        </record>
+
+        <!-- Empleado 8: Asistente -->
+        <record id="empleado_mc_008" model="hr.employee">
+            <field name="apellido_paterno">López</field>
+            <field name="apellido_materno">Cevallos</field>
+            <field name="primer_nombre">Roberto</field>
+            <field name="segundo_nombre">Carlos</field>
+            
+            <field name="ssnid">0990123456</field>
+            <field name="identification_id">0989012345</field>
+            <field name="gender">male</field>
+            <field name="birthday">1993-02-14</field>
+            <field name="place_of_birth">Durán</field>
+            
+            <field name="department_id" ref="dep_administrativo"/>
+            <field name="job_id" ref="job_asistente"/>
+            <field name="coach_id" eval="False"/>
+            <field name="mobile_phone">+593 92 109 8765</field>
+            <field name="work_phone">+593 4 901 2345</field>
+            <field name="work_email">roberto.lopez@prefectura.gob.ec</field>
+            <field name="sucursal_id" ref="sucursal_guayaquil_sur"/>
+            <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
+            <field name="programa_id" ref="programa_manzana_cuidados_guayaquil_b10_005"/>
+        </record>
+
+        <!-- Empleado 9: Técnico -->
+        <record id="empleado_mc_009" model="hr.employee">
+            <field name="apellido_paterno">Sánchez</field>
+            <field name="apellido_materno">García</field>
+            <field name="primer_nombre">Martha</field>
+            <field name="segundo_nombre">Cecilia</field>
+            
+            <field name="ssnid">0901234567</field>
+            <field name="identification_id">0990123456</field>
+            <field name="gender">female</field>
+            <field name="birthday">1986-08-08</field>
+            <field name="place_of_birth">Guayaquil</field>
+            
+            <field name="department_id" ref="dep_tecnologia"/>
+            <field name="job_id" ref="job_tecnico"/>
+            <field name="coach_id" eval="True"/>
+            <field name="mobile_phone">+593 91 098 7654</field>
+            <field name="work_phone">+593 4 012 3456</field>
+            <field name="work_email">martha.sanchez@prefectura.gob.ec</field>
+            <field name="sucursal_id" ref="sucursal_duran"/>
+            <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
+            <field name="programa_id" ref="programa_manzana_cuidados_duran_b10_006"/>
+        </record>
+
+    </data>
+</odoo>

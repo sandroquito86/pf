@@ -25,6 +25,9 @@ class PfEmployee(models.Model):
     ciudad_id = fields.Many2one('res.country.ciudad', string='Ciudad' , ondelete='restrict', 
                                    domain="[('state_id', '=?', private_state_id)]")
     fecha_inactivacion = fields.Date(string='Fecha de Inactivación')
+    tipo_personal = fields.Selection([('interno', 'Empleado Interno'), ('externo', 'Colaborador Externo')], string='Tipo de Personal', 
+                                     default='interno', tracking=True, required=True, help="Indica si es un empleado de la institución o un colaborador externo")
+
 
     @api.constrains('user_id')
     def _check_unique_user(self):

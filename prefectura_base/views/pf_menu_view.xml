@@ -1,6 +1,6 @@
 <odoo>
     <data>
-        <menuitem name="Prefectura" id="menu_prefectura_root" sequence="10"/>
+        <menuitem name="Prefectura" id="menu_prefectura_root" sequence="10" web_icon="prefectura_base,static/img/prefectura.png"/>
         <menuitem name="Configuración" id="menu_pf_configuracion" parent="menu_prefectura_root" sequence="30"/>
         <menuitem name="Registro" id="menu_pf_registro" parent="menu_prefectura_root" sequence="10"/>
         <menuitem name="Beneficiario" id="menu_pf_beneficiarios" parent="menu_prefectura_root" sequence="15"/>
