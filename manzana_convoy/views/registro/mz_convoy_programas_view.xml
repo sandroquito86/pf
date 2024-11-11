@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!--  <button name="%(action_mz_convoy_beneficiario_asistencia)d" string="Registro Asistencia" type="action" class="oe_stat_button" icon="fa-address-card"/>
+                    <button name="%(action_mz_convoy_beneficiario_socioeconomico)d" string="Registro Socioeconómico" type="action" class="oe_stat_button" icon="fa-list-alt"/> -->
+     
     <!-- Vista de formulario -->
     <record id="view_mz_mz_convoy_form" model="ir.ui.view">
         <field name="name">mz.convoy.form</field>
@@ -10,10 +13,8 @@
                     <field name="state" widget="statusbar"/>
                     <button name="aprobar_convoy" string="Aprobar" type="object" class="oe_highlight" invisible="state != 'borrador'"/>
                     <button name="action_finalizar" string="Finalizar" type="object" class="oe_highlight" invisible="state != 'aprobado'"/>
-                    <button name="%(action_mz_convoy_convoy_beneficiario)d" string="Beneficiario Masivo" type="action" class="oe_stat_button" icon="fa-users"/>
-                    <button name="%(action_mz_convoy_beneficiario_asistencia)d" string="Registro Asistencia" type="action" class="oe_stat_button" icon="fa-address-card"/>
-                    <button name="%(action_mz_convoy_beneficiario_socioeconomico)d" string="Registro Socioeconómico" type="action" class="oe_stat_button" icon="fa-list-alt"/>
-                </header>
+                     <button name="%(action_mz_convoy_convoy_beneficiario)d" string="Beneficiario Masivo" type="action" class="oe_stat_button" icon="fa-users"/>
+                         </header>
                 <sheet>
                     <div class="row justify-content-between position-relative w-100 m-0 mb-2">
                         <div class="oe_title">
@@ -149,6 +150,12 @@ Guarde el registro antes de agregar servicios
                                 </tree>
                             </field>
                         </page>
+                        <page string="Fichas Legalizadas">
+                            <group>
+                                <field name="ficha_evento_legalizada" widget="many2many_binary_preview"/>
+                                <field name="ficha_implantacion_legalizada" widget="many2many_binary_preview"/>
+                            </group>
+                        </page>
                     </notebook>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers" />
@@ -269,7 +276,7 @@ Guarde el registro antes de agregar servicios
         <field name="context">{'default_modulo_id':4}</field>
     </record>
 
-    <menuitem id="menu_action_mz_mz_convoy" name="Convoy" parent="mz_convoy_menu_registro" action="action_mz_mz_convoy" sequence="10"/>
+    <menuitem id="menu_action_mz_mz_convoy" name="Convoy" parent="mz_convoy_menu_registro" action="action_mz_mz_convoy" sequence="10" groups="group_mz_convoy_operador,group_mz_convoy_asistente_coordinador,group_mz_convoy_coordinador,group_mz_convoy_administrador"/>
 
 </odoo>
 

@@ -2,12 +2,15 @@
 <odoo>
     <data>
         <!-- Configuración Menu -->
-        <menuitem id="mz_convoy_menu_prinicipal" name="Convoy"/>
+        <menuitem id="mz_convoy_menu_prinicipal" name="Convoy" web_icon="manzana_convoy,static/img/convoy.png"/>
 
         <menuitem id="mz_convoy_menu_registro" name="Registro" parent="mz_convoy_menu_prinicipal" sequence="10"/>
 
-        <menuitem id="mz_convoy_menu_configuracion" name="Configuración" parent="mz_convoy_menu_prinicipal" sequence="50"/>
-        <menuitem id="mz_convoy_conf_catalogo" name="Catálogo" parent="mz_convoy_menu_configuracion" sequence="1000"/>
+        <menuitem id="mz_convoy_menu_planificacion" name="Planificación" parent="mz_convoy_menu_prinicipal" groups="group_mz_convoy_coordinador,group_mz_convoy_administrador" sequence="20"/>
+
+        <menuitem id="mz_convoy_menu_configuracion" name="Configuración" parent="mz_convoy_menu_prinicipal" sequence="50" groups="group_mz_convoy_coordinador,group_mz_convoy_administrador"/>
+        <menuitem id="mz_convoy_conf_catalogo" name="Catálogo General" parent="mz_convoy_menu_configuracion" sequence="10"/>
+        <menuitem id="mz_convoy_conf_catalogo_especifico" name="Catálogo Específico" parent="mz_convoy_menu_configuracion" sequence="20"/>
 
 
     </data>

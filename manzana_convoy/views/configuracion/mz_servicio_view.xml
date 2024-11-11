@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<data> 
+    <menuitem id="mz_convoy_menu_servicio" name="Servicios" parent="mz_convoy_conf_catalogo_especifico" action="manzana_de_cuidados.action_servicios" sequence="10"/>
+</data>
+</odoo>

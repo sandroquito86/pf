@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_mz__convoy_asignacion_servicio_tree">
+            <field name="name">mz.asignacion.servicio.tree</field>
+            <field name="model">mz.asignacion.servicio</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="servicio_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
+                    <field name="programa_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
+                    <field name="numero_turnos" />
+                    <field name="personal_ids" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_mz__convoy_asignacion_servicio_form" model="ir.ui.view">
+            <field name="name">mz.asignacion.servicio.form</field>
+            <field name="model">mz.asignacion.servicio</field>
+            <field name="arch" type="xml">
+                <form string="Nuevo">
+                    <sheet>
+                        <div class="row justify-content-between position-relative w-100 m-0 mb-2">
+                            <div class="oe_title">
+                                <h1>
+                                    <field name="name" placeholder="Nombre del Servicio" force_save="1"/>
+                                </h1>
+                            </div>
+                            <div class="o_employee_avatar m-0 p-0">
+                                <field name="image" widget="image" class="oe_avatar" options="{'preview_image': 'image'}"/>
+                            </div>
+                        </div>
+                        <group>
+                            <field name="servicio_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+                            <field name="convoy_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_convoy_id'}" />
+                            <field name="programa_id" invisible="1" force_save="1"/>
+                            <field name="domain_sub_servicio_ids" invisible="1"/>
+                            <field name="sub_servicio_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_sub_servicio_ids', 'create': False}"/>
+                            <field name="numero_turnos" help="Si el valor es 0, los turnos serán ilimitados"/>
+                            <field name="personal_ids" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+                            <field name="domain_convoy_id" invisible="1"/>
+                        </group>                       
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers" />
+                            <field name="message_ids" widget="mail_thread" />
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="mz_convoy_asignacion_servicio_kanban" model="ir.ui.view">
+            <field name="name">mz.asignacion.servicio.kanban</field>
+            <field name="model">mz.asignacion.servicio</field>
+            <field name="arch" type="xml">
+                <kanban default_order="name">
+                    <field name="id"/>
+                    <field name="name"/>
+                    <templates>
+                        <t t-name="kanban-menu">
+                            <a role="menuitem" type="open" class="dropdown-item">Configuration</a>
+                            <a role="menuitem" type="object" name="toggle_active" class="dropdown-item">
+                                <t t-if="record.active.raw_value">Archive</t>
+                                <t t-else="">Restore</t>
+                            </a>
+                            <a role="menuitem" t-if="widget.deletable" type="delete" class="dropdown-item">Delete</a>
+                        </t>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_vignette oe_semantic_html_override oe_kanban_global_click" t-att-data-id="record.id.raw_value" t-att-data-action-id="'action_mz_asignacion_servicio_form'">
+                                <div class="o_kanban_image">
+                                    <img alt="img" t-att-src="kanban_image('pf.programas', 'image_128', record.id.raw_value)" class="o_image_64_max" height="52"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <h4 class="oe_partner_heading">
+                                        <a type="open" class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </a>
+                                    </h4>
+                                    <div>
+                                        <span class="fa fa-users"/>
+                                        <field name="count_responsables" invisible="1"/>
+                                        <field name="responsables_text"/>
+                                    </div>
+                                    <div>
+                                        <strong>Turnos: </strong>
+                                        <field name="numero_turnos"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action__convoy_mz_asignacion_servicio">
+            <field name="name">Responsables de Servicios (CONVOY)</field>
+            <field name="res_model">mz.asignacion.servicio</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('mz_convoy_asignacion_servicio_kanban')}),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz__convoy_asignacion_servicio_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz__convoy_asignacion_servicio_form')})
+        ]"/>
+            <field name="domain">[('programa_id.modulo_id', '=', 4)]</field>
+        </record>
+
+
+        <menuitem id="menu_action__convoy_mz_asignacion_servicio" name="Responsables de Servicios" action="action__convoy_mz_asignacion_servicio" parent="mz_convoy_menu_planificacion" sequence="10" />
+
+
+
+    </data>
+</odoo>

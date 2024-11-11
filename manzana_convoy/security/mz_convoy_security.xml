@@ -12,4 +12,17 @@
         <field name="name">Operador</field>
         <field name="category_id" ref="module_category_mz_convoy"/>
     </record>
+    <record id="group_mz_convoy_asistente_coordinador" model="res.groups">
+        <field name="name">Asistente Coordinador del Convoy</field>
+        <field name="category_id" ref="module_category_mz_convoy"/>
+    </record>
+    <record id="group_mz_convoy_coordinador" model="res.groups">
+        <field name="name">Coordinador del Convoy</field>
+        <field name="category_id" ref="module_category_mz_convoy"/>
+    </record>
+     <record id="group_mz_convoy_administrador" model="res.groups">
+        <field name="name">Administrador</field>
+        <field name="category_id" ref="module_category_mz_convoy"/>
+    </record>
+    
 </odoo>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+
+  <!-- Menu item -->
+  <menuitem id="menu_action_mz_convoy_agendar_servicio" name="Agendar Servicio" parent="mz_convoy_menu_registro" action="manzana_de_cuidados.action_mz_agendar_servicio" sequence="100"/>
+
+
+</odoo>

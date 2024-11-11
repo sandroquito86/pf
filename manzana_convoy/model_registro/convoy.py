@@ -20,11 +20,11 @@ class FichaEvento(models.Model):
     hora_inicio = fields.Float(string='Hora Inicio')
     hora_fin = fields.Float(string='Hora Fin')
     duracion = fields.Char(string='Duración', compute='_compute_duracion', store=True)    
-    tipo_evento = fields.Many2one('mz_convoy.items', string='Tipo Evento', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_tipo_evento').id)])
+    tipo_evento = fields.Many2one('mz.items', string='Tipo Evento', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_tipo_evento').id)])
     formato_evento = fields.Char(string='Formato de Evento')
     numero_asistentes = fields.Integer(string='Número de Asistentes')
     codigo_vestimenta = fields.Char(string='Código de Vestimenta')   
-    participacion_prefecta = fields.Many2one('mz_convoy.items', string='Participación  Prefecta', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_participacion_especifica').id)])
+    participacion_prefecta = fields.Many2one('mz.items', string='Participación  Prefecta', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_participacion_especifica').id)])
     tiempo_intervencion = fields.Float(string='Tiempo de Intervención')    
     prensa = fields.Selection([('si', 'Sí'), ('no', 'No')], string='Prensa')
     data_politica = fields.Char(string='Data Política')    
@@ -41,11 +41,23 @@ class FichaEvento(models.Model):
     mostrar_boton_publicar = fields.Boolean(compute='_compute_mostrar_boton_publicar', compute_sudo=True)
     mostrar_bot_retirar_public = fields.Boolean(compute='_compute_mostrar_bot_retirar_public', compute_sudo=True)
     can_edit_services = fields.Boolean(compute='_compute_can_edit_services')    
-    state = fields.Selection([('borrador', 'Borrador'),('aprobado', 'Aprobado'),('aprobado', 'Aprobado'),('fin', 'Finalizado')], string='Estado', default='borrador', tracking=True)   
-    domain_operadores_ids = fields.Char(string='Domain Operadores',compute='_compute_domain_programas')
-
+    state = fields.Selection([('borrador', 'Borrador'),('aprobado', 'Aprobado'),('fin', 'Finalizado')], string='Estado', default='borrador', tracking=True)  
     operadores_ids = fields.Many2many(string='Operadores', comodel_name='hr.employee', relation='convoy_operador_rel', 
                                       column1='convoy_id', column2='employee_id',domain="[('user_id','!=',False)]")
+    colaboradores_ids = fields.Many2many(string='Colaboradores', comodel_name='hr.employee', relation='mz_convoy_colaborador_rel', 
+                                      column1='convoy_id', column2='colaborador_id')
+
+    ficha_evento_legalizada = fields.Many2many(comodel_name='ir.attachment', relation='pf_mz_convoy_ficha_evento_legalizada', 
+                                      column1='convoy_id', column2='ficha_id', string='Ficha Evento Legalizada')
+    ficha_implantacion_legalizada = fields.Many2many(comodel_name='ir.attachment', relation='pf_mz_convoy_ficha_impantacion_legalizada', 
+                                      column1='convoy_id', column2='ficha_id', string='Ficha Implantación Legalizada')
+    
+    @api.constrains('ficha_evento_legalizada', 'ficha_implantacion_legalizada')
+    def _check_fichas_legalizadas(self):
+        for record in self:
+            if not record.ficha_evento_legalizada or not record.ficha_implantacion_legalizada:
+                raise UserError("Es obligatorio adjuntar documentos en  fichas legalizadas")
+    
         
     @api.model
     def asignacion_permiso_operador(self):
@@ -53,24 +65,28 @@ class FichaEvento(models.Model):
         today = current_datetime.date()  # Convertir a date
         convoys = self.search([('state', '=', 'aprobado'), ('fecha_evento', '=', today)])        
         grupo_operador = self.env.ref('manzana_convoy.group_mz_convoy_operador')      
+        grupo_coordinador = self.env.ref('manzana_convoy.group_mz_convoy_operador')   
         for convoy in convoys:           
             for empleado in convoy.operadores_ids:                
                 if empleado.user_id:  # Verificamos que el empleado tenga usuario
                     empleado.user_id.write({'groups_id': [(4, grupo_operador.id)]})
+            convoy.director_coordinador.user_id.write({'groups_id': [(4, grupo_coordinador.id)]})
 
     def aprobar_convoy(self):
         self.write({'state': 'aprobado'})
 
     def action_finalizar(self):
-        grupo_operador = self.env.ref('manzana_convoy.group_mz_convoy_operador')
-        
+        grupo_operador = self.env.ref('manzana_convoy.group_mz_convoy_operador')       
+        grupo_coordinador = self.env.ref('manzana_convoy.group_mz_convoy_operador')  
         for record in self:
+            record.director_coordinador.user_id.write({'groups_id': [(3, grupo_coordinador.id)]})
             # Quitar permisos a operadores
             for empleado in record.operadores_ids:
                 if empleado.user_id:
                     empleado.user_id.write({
                         'groups_id': [(3, grupo_operador.id)]  # Remueve el grupo
                     })
+
             
             # Cambiar estado a finalizado
             record.write({
@@ -152,7 +168,7 @@ class ConvoyMiembroMesaTecnica(models.Model):
 
     evento_id = fields.Many2one('mz.convoy', string='Evento')
     nombre = fields.Char(string='Nombre', required=True)
-    cargo_institucion_id = fields.Many2one('mz_convoy.items', string='Cargo/Institución',
+    cargo_institucion_id = fields.Many2one('mz.items', string='Cargo/Institución',
                                              domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_instituciones_publicas').id)])
     contacto = fields.Char(string='Número de Contacto')
 

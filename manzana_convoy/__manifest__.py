@@ -30,15 +30,24 @@ Long description of module's purpose
         'data/data_mz_convoy_instituciones_data.xml', 
         # MENU
         'views/menu/convoy_menu.xml', 
-        # CONFIGURACION
-        'views/configuracion/mz_convoy_catalogo_views.xml', 
-        'views/configuracion/mz_convoy_catalogo_items_views.xml',
+        # CONFIGURACION       
+        'views/configuracion/mz_catalogo_views.xml',
+        'views/configuracion/mz_catalogo_items_views.xml',
+        'views/configuracion/mz_servicio_view.xml',
+        'views/configuracion/mz_sub_servicios_view.xml',
+
+        # PLANIFICACION
+        'views/planificacion/mz_asignacion_servicio_view.xml',
+        
         # REGISTRO
+        'views/registro/mz_convoy_colaborar_view.xml', 
         'views/registro/mz_convoy_beneficiario_masivo_view.xml', 
-        'views/registro/mz_convoy_beneficiario_asistencia_view.xml', 
-        'views/registro/mz_convoy_beneficiario_socioeconomico_view.xml',                 
+        # 'views/registro/mz_convoy_beneficiario_asistencia_view.xml', 
+        # 'views/registro/mz_convoy_beneficiario_socioeconomico_view.xml',                 
         'views/registro/mz_convoy_programas_view.xml', 
         'views/registro/mz_convoy_asignacion_servicio_view.xml', 
+        'views/registro/mz_convoy_agendar_servicio_view.xml', 
+        
         
         # 'views/registro/convoy_view.xml',   
     ],

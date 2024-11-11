@@ -8,7 +8,7 @@ class ConvoyBeneficiario(models.Model):
     _name = 'mz_convoy.convoy_beneficiario'
     _description = 'Registro Masivo de Beneficiarios Convoy'
 
-    beneficiario_id = fields.Many2one('mz_convoy.beneficiario', string='Beneficiario', ondelete='restrict')
+    beneficiario_id = fields.Many2one('mz.beneficiario', string='Beneficiario', ondelete='restrict')
     tipo_registro = fields.Selection([('masivo', 'Registro Masivo'), ('asistencia', 'Registro por Asistencia'), ('socioeconomico', 'Registro Socioeconómico')], 
                                      string='Tipo de Registro', required=True, default='masivo')
     # Campos comunes
@@ -20,25 +20,25 @@ class ConvoyBeneficiario(models.Model):
     es_extranjero = fields.Boolean('¿Es Migrante Extranjero?')
     pais = fields.Char('País', default='Ecuador')
     celular = fields.Char('Celular')
-    operadora_id = fields.Many2one('mz_convoy.items', string='Operadora', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_operadoras').id)])
+    operadora_id = fields.Many2one('mz.items', string='Operadora', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_operadoras').id)])
     # Campos de asistencia
     fecha_nacimiento = fields.Date('Fecha de Nacimiento')
     edad = fields.Integer('Edad', compute='_compute_edad', store=True)
-    estado_civil_id = fields.Many2one('mz_convoy.items', string='Estado Civil', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_estado_civil').id)])
-    genero_id = fields.Many2one('mz_convoy.items', string='Género', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_genero').id)])
+    estado_civil_id = fields.Many2one('mz.items', string='Estado Civil', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_estado_civil').id)])
+    genero_id = fields.Many2one('mz.items', string='Género', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_genero').id)])
     canton = fields.Char('Cantón')
     parroquia = fields.Char('Parroquia')
     direccion_domicilio = fields.Char('Dirección de domicilio')
     correo_electronico = fields.Char('Correo Electrónico')
     tiene_discapacidad = fields.Boolean('¿Tiene usted alguna discapacidad?')
     recibe_bono = fields.Boolean('¿Recibe algún tipo de bono?')
-    tipo_discapacidad_id = fields.Many2one('mz_convoy.items', string='Tipo de Discapacidad', 
+    tipo_discapacidad_id = fields.Many2one('mz.items', string='Tipo de Discapacidad', 
                                            domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_convoy_tipo_discapacidad').id)])
-    nivel_instruccion_id = fields.Many2one('mz_convoy.items', string='Nivel de Instrucción',
+    nivel_instruccion_id = fields.Many2one('mz.items', string='Nivel de Instrucción',
                                            domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_nivel_instruccion').id)])
-    situacion_laboral_id = fields.Many2one('mz_convoy.items', string='Situación Laboral',
+    situacion_laboral_id = fields.Many2one('mz.items', string='Situación Laboral',
                                            domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_situacion_laboral').id)])
-    tipo_vivienda_id = fields.Many2one('mz_convoy.items', string='La vivienda donde habita es?', 
+    tipo_vivienda_id = fields.Many2one('mz.items', string='La vivienda donde habita es?', 
                                        domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_tipo_vivienda').id)])
     tiene_internet = fields.Selection([('si', 'SI'), ('no', 'NO')], string='¿Su hogar cuenta con internet?')
     tiene_agua_potable = fields.Selection([('si', 'SI'), ('no', 'NO')], string='¿La vivienda donde habita tiene servicio de agua potable por tubería?')
@@ -58,7 +58,7 @@ class ConvoyBeneficiario(models.Model):
     mayor_65 = fields.Selection([('si', 'SI'), ('no', 'NO')], string='¿Hay mayores de 65 años viviendo en su hogar?')
     discapacidad_hogar = fields.Selection([('si', 'SI'), ('no', 'NO')], string='¿Hay personas con discapacidad viviendo en su hogar?')
     tiene_discapacidad_hogar = fields.Selection([('si', 'SI'),('no', 'NO')], string='¿Hay personas con discapacidad viviendo en su hogar?', default='no')
-    tipo_discapacidad_hogar_id = fields.Many2one('mz_convoy.items', string='¿Qué tipo de discapacidad tiene?',
+    tipo_discapacidad_hogar_id = fields.Many2one('mz.items', string='¿Qué tipo de discapacidad tiene?',
                                                  domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_convoy_tipo_discapacidad').id)])
     servicio_id = fields.Many2one('mz.asignacion.servicio', string='Servicio', domain="[('programa_id', '=', programa_id)]",)  
     
@@ -69,7 +69,7 @@ class ConvoyBeneficiario(models.Model):
             self.tipo_discapacidad_hogar_id = False
         elif self.tiene_discapacidad_hogar == 'si' and not self.tipo_discapacidad_hogar_id:
             # Buscar el registro "NINGUNA" por defecto
-            ninguna = self.env['mz_convoy.items'].search([
+            ninguna = self.env['mz.items'].search([
                 ('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_convoy_tipo_discapacidad').id),
                 ('name', '=', 'NINGUNA')
             ], limit=1)
@@ -110,10 +110,40 @@ class ConvoyBeneficiario(models.Model):
          'Este beneficiario ya está registrado en este convoy con este tipo de registro.')
     ]
 
+    def crear_asistencia(self):
+        for record in self:
+            # if not record.horario_id:
+            #     raise UserError("Debe seleccionar un horario.")
+            # codigo = self._generate_codigo()
+            # record.codigo = codigo
+            # Verificar nuevamente la capacidad antes de aprobar
+            # asistencias_count = self.env['mz.asistencia_servicio'].search_count([
+            #     ('planificacion_id', '=', record.horario_id.id)
+            # ])
+            # if asistencias_count >= record.horario_id.maximo_beneficiarios:
+            #     raise UserError(f"No se puede aprobar. El horario ya ha alcanzado su capacidad máxima de {record.horario_id.maximo_beneficiarios} beneficiarios.")
+            # existe_asistencia = self.env['mz.asistencia_servicio'].search([
+            #     ('beneficiario_id', '=', record.beneficiario_id.id),
+            #     ('asistio', '=', 'pendiente'),
+            #     ('servicio_id', '=', record.servicio_id.id)
+            # ],limit=1)
+            # if existe_asistencia:
+            #     raise UserError(f'El beneficiario ya tiene una solicitud pendiente en {existe_asistencia.servicio_id.name} con {existe_asistencia.personal_id.name}. para la fecha {existe_asistencia.fecha}.')
+            beneficiario = self.env['pf.beneficiario'].search([('id','=',1)])
+            
+            self.env['mz.asistencia_servicio'].create({
+                'beneficiario_id': beneficiario.id,
+                # 'fecha': record.fecha_solicitud,
+                'programa_id': record.programa_id.id,
+                'servicio_id': record.servicio_id.id,
+                # 'personal_id': record.personal_id.id,
+                # 'codigo': record.codigo,
+            })
+
     @api.model
     def create(self, vals):
         # Primero buscar si existe el beneficiario
-        beneficiario = self.env['mz_convoy.beneficiario'].search([
+        beneficiario = self.env['mz.beneficiario'].search([
             ('num_documento', '=', vals.get('num_documento'))
         ], limit=1)
 
@@ -166,24 +196,13 @@ class ConvoyBeneficiario(models.Model):
             })
 
         if not beneficiario:
-            beneficiario = self.env['mz_convoy.beneficiario'].create(beneficiario_vals)
+            beneficiario = self.env['mz.beneficiario'].create(beneficiario_vals)
         else:
             beneficiario.write(beneficiario_vals)
 
         vals['beneficiario_id'] = beneficiario.id
         record = super(ConvoyBeneficiario, self).create(vals)
-
-        if record.servicio_id:
-            self.env['mz.agendar_servicio'].create({
-                'state': 'borrador',
-                'modulo_id': self.env.ref('prefectura_base.modulo_2').id,
-                'beneficiario_id': record.beneficiario_id.id,
-                'programa_id': record.programa_id.id,
-                'servicio_id': record.servicio_id.id,
-                'fecha_solicitud': fields.Date.today(),  # Cambiado para usar la fecha actual
-                'personal_id': record.servicio_id.personal_ids[0].id if record.servicio_id.personal_ids else False,
-            })
-
+        record.crear_asistencia()
         return record
 
     

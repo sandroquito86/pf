@@ -2,8 +2,8 @@
 <odoo>
     <data>
         <record model="ir.ui.view" id="view_mz_convoy_items_tree">
-            <field name="name">mz_convoy.items</field>
-            <field name="model">mz_convoy.items</field>
+            <field name="name">mz.items</field>
+            <field name="model">mz.items</field>
             <field name="arch" type="xml">
                 <tree>
                     <field name="name" />
@@ -13,8 +13,8 @@
         </record>
 
         <record id="view_mz_convoy_items_form" model="ir.ui.view">
-            <field name="name">mz_convoy.items</field>
-            <field name="model">mz_convoy.items</field>
+            <field name="name">mz.items</field>
+            <field name="model">mz.items</field>
             <field name="arch" type="xml">
                 <form string="NUEVO">
                     <sheet>
@@ -40,8 +40,8 @@
         </record>
 
         <record id="view_mz_convoy_items_form2" model="ir.ui.view">
-            <field name="name">mz_convoy.items</field>
-            <field name="model">mz_convoy.items</field>
+            <field name="name">mz.items</field>
+            <field name="model">mz.items</field>
             <field name="arch" type="xml">
                 <form string="NUEVO">
                     <sheet>
@@ -64,8 +64,8 @@
         </record>
 
         <record id="view_mz_convoy_items_search" model="ir.ui.view">
-            <field name="name">mz_convoy.items</field>
-            <field name="model">mz_convoy.items</field>
+            <field name="name">mz.items</field>
+            <field name="model">mz.items</field>
             <field name="arch" type="xml">
                 <search string="">
                     <field name="name" />
@@ -79,7 +79,7 @@
 
         <record model="ir.actions.act_window" id="action_mz_convoy_items">
             <field name="name">ITEMS DE CATÁLOGOS</field>
-            <field name="res_model">mz_convoy.items</field>
+            <field name="res_model">mz.items</field>
             <field name="context" eval="{'search_default_catalogo_id':1}"></field>
             <field name="view_mode">tree,form</field>
         </record>
