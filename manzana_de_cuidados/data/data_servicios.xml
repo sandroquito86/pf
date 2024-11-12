@@ -9,6 +9,7 @@
             <field name="if_derivacion">False</field>
             <field name="image" type="base64" file="manzana_de_cuidados/static/img/peluqueria.jpg"/>
             <field name="tipo_servicio">normal</field>
+            <field name="catalogo_tipo_servicio_id" ref="tipo_servicio_bienestar"/>
         </record>
 
         <!-- Servicio: Lavandería -->
@@ -19,6 +20,7 @@
             <field name="if_derivacion">False</field>
             <field name="image" type="base64" file="manzana_de_cuidados/static/img/lavanderia.jpeg"/>
             <field name="tipo_servicio">normal</field>
+            <field name="catalogo_tipo_servicio_id" ref="tipo_servicio_cuidado"/>
         </record>
 
         <!-- Servicio: Psicológico -->
@@ -29,6 +31,7 @@
             <field name="if_derivacion">False</field>
             <field name="image" type="base64" file="manzana_de_cuidados/static/img/psicologico.jpeg"/>
             <field name="tipo_servicio">medico</field>
+            <field name="catalogo_tipo_servicio_id" ref="tipo_servicio_bienestar"/>
         </record>
 
         <!-- Servicio: Medicina General -->
@@ -39,6 +42,7 @@
             <field name="if_derivacion">False</field>
             <field name="image" type="base64" file="manzana_de_cuidados/static/img/medicina_general.jpeg"/>
             <field name="tipo_servicio">medico</field>
+            <field name="catalogo_tipo_servicio_id" ref="tipo_servicio_bienestar"/>
         </record>
     </data>
 </odoo>

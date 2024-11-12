@@ -98,7 +98,7 @@
                             </div>
                             <div >
                                 <label for="name" string="Parentesco"/>
-                                <h1><field class="o_text_overflow" name="tipo_dependiente"  /></h1>
+                                <h1><field class="o_text_overflow" name="tipo_dependiente"  options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/></h1>
                             </div>
                             <group>
                                 <group>

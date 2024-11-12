@@ -23,6 +23,17 @@ class AsignacionHorarios(models.Model):
     domain_personal_id = fields.Char(string='Domain Personal',compute='_compute_author_domain_field') 
     active = fields.Boolean(default=True, string='Activo', tracking=True)   
     detalle_horario_ids = fields.One2many(string='Detalle Horarios', comodel_name='mz.detalle.horarios', inverse_name='asignacion_horario_id',)
+    if_admin = fields.Boolean(string='Es administrador', compute='_compute_if_administrador', default=False)
+
+    @api.depends('servicio_id')
+    def _compute_if_administrador(self):
+        for record in self:
+            # Captura los permisos del que esta logeado y valida si tiene el permiso de sistemas
+            groups = self.env.user.groups_id
+            if self.env.ref('manzana_de_cuidados.group_beneficiario_manager') in groups:
+                record.if_admin = True
+            else:
+                record.if_admin = False
     
     @api.depends('servicio_id')
     def _compute_domain_programas(self):

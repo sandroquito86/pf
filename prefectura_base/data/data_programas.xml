@@ -14,6 +14,7 @@
             <field name="fecha_documento">2024-01-01</field>
             <field name="name_file">documento_cuidados.pdf</field>
             <field name="if_publicado">True</field>
+            <field name="modulo_id" ref="modulo_2"/>
             <field name="normativa_texto">
                 <![CDATA[
                 <p>Este programa está diseñado para proporcionar cuidados integrales en la región norte de Guayaquil.</p>
@@ -36,6 +37,7 @@
             <field name="fecha_documento">2024-02-01</field>
             <field name="name_file">documento_cuidados.pdf</field>
             <field name="if_publicado">True</field>
+            <field name="modulo_id" ref="modulo_2"/>
             <field name="normativa_texto">
                 <![CDATA[
                 <p>Este programa está diseñado para proporcionar cuidados integrales en la región sur de Guayaquil.</p>
@@ -58,27 +60,7 @@
             <field name="fecha_documento">2024-03-01</field>
             <field name="name_file">documento_cuidados.pdf</field>
             <field name="if_publicado">True</field>
-            <field name="normativa_texto">
-                <![CDATA[
-                <p>Este programa está diseñado para proporcionar cuidados integrales en Durán.</p>
-                ]]>
-            </field>
-            <field name="active">True</field>
-            <field name="image" type="base64" file="prefectura_base/static/img/prefectura.png"/>
-        </record>
-        <!-- Programa Manzana de Cuidados Durán B10-006 -->
-        <record id="programa_manzana_cuidados_duran_b10_006" model="pf.programas">
-            <field name="name">Manzana de Cuidados Centro B10-006</field>
-            <field name="sigla">MAA-B12</field>
-            <field name="sucursal_id" ref="sucursal_duran"/>
-            <field name="email">mcd.b12@example.com</field>
-            <field name="phone">+593 4 234 5678</field>
-            <field name="mobile">+593 97 234 5678</field>
-            <field name="tipo_documento" ref="tipo_documento_oficio"/>
-            <field name="numero_documento">B10-006</field>
-            <field name="fecha_documento">2024-03-01</field>
-            <field name="name_file">documento_cuidados.pdf</field>
-            <field name="if_publicado">True</field>
+            <field name="modulo_id" ref="modulo_2"/>
             <field name="normativa_texto">
                 <![CDATA[
                 <p>Este programa está diseñado para proporcionar cuidados integrales en Durán.</p>

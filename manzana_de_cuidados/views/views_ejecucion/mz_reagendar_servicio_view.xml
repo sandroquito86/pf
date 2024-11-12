@@ -4,7 +4,7 @@
 
 
   <!-- Tree View -->
-  <record id="view_agendar_servicio_tree" model="ir.ui.view">
+  <record id="view_reagendar_servicio_tree" model="ir.ui.view">
     <field name="name">mz.agendar.servicio.tree</field>
     <field name="model">mz.agendar_servicio</field>
     <field name="arch" type="xml">
@@ -25,7 +25,7 @@
   </record>
 
   <!-- Form View -->
-  <record id="view_agendar_servicio_form" model="ir.ui.view">
+  <record id="view_reagendar_servicio_form" model="ir.ui.view">
     <field name="name">mz.agendar.servicio.form</field>
     <field name="model">mz.agendar_servicio</field>
     <field name="arch" type="xml">
@@ -53,7 +53,7 @@
         <header>
           <button name="solicitar_horario" invisible="state != 'borrador'" type="object" string="Solicitar" class="oe_highlight"/>
           <button name="anular_horario" invisible="state != 'solicitud'" type="object" string="Anular"/>
-          <button name="%(action_wizard_reasignar_solicitud)d" invisible="state != 'por_reeplanificar'" type="action" string="Replanificar solicitud"/>
+          <button name="%(action_wizard_reasignar_solicitud)d" invisible="state != 'por_reeplanificar'" type="action" string="Reajendar solicitud"/>
           <field name="state" widget="statusbar" statusbar_visible="borrador,solicitud"/>
          
         </header>
@@ -101,7 +101,7 @@
 
 
   <!-- Search View -->
-    <record id="view_agendar_servicio_search" model="ir.ui.view">
+    <record id="view_reagendar_servicio_search" model="ir.ui.view">
         <field name="name">mz.agendar.servicio.search</field>
         <field name="model">mz.agendar_servicio</field>
         <field name="arch" type="xml">
@@ -127,15 +127,16 @@
     </record>
   
 
-  <record id="action_mz_agendar_servicio" model="ir.actions.act_window">
+  <record id="action_mz_reagendar_servicio" model="ir.actions.act_window">
     <field name="name">Agendar Servicio</field>
     <field name="res_model">mz.agendar_servicio</field>
     <field name="view_mode">tree,form</field>
     <field name="context">{'group_by': ['fecha_solicitud:year', 'fecha_solicitud:month', 'fecha_solicitud:day']}</field>
+    <field name="domain">[('state', '=', 'por_reeplanificar')]</field>
   </record>
 
   <!-- Menu item -->
-  <menuitem id="menu_action_mz_agendar_servicio" name="Agendar Servicio" parent="menu_mz_ejecucion" action="action_mz_agendar_servicio" sequence="10"/>
+  <menuitem id="menu_action_mz_reagendar_servicio" name="Reagendar Servicio" parent="menu_mz_ejecucion" action="action_mz_reagendar_servicio" sequence="40"/>
 
 
 </odoo>

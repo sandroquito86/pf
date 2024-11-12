@@ -2,7 +2,8 @@
 <odoo>
     <data>
 <!-- Configuración Menu -->
-    <menuitem id="menu_principal" name="Manzana De Cuidados"/>
+    <menuitem id="menu_principal" name="Manzana De Cuidados" web_icon="manzana_de_cuidados,static/description/manzana.png"/>
+    
 
     <menuitem id="menu_programas"
               name="Registro"

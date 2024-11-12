@@ -12,7 +12,7 @@ class AgendarServicio(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin'] 
     _rec_name = 'codigo'
     
-    STATE_SELECTION = [('borrador', 'Borrador'), ('solicitud', 'Solicitado'),('por_reeplanificar', 'Por Reeplanificar'),
+    STATE_SELECTION = [('borrador', 'Borrador'), ('solicitud', 'Solicitado'),('por_reeplanificar', 'Por Reagendar'),
                        ('atendido', 'Atendido'), ('anulado', 'Anulado')]
 
     state = fields.Selection(STATE_SELECTION, 'Estado', readonly=True, tracking=True, default='borrador', )
@@ -227,6 +227,9 @@ class AgendarServicio(models.Model):
                     'personal_id': record.personal_id.id,
                     'codigo': record.codigo,
                 })
+            record.horario_id.write({
+            'estado': 'asignado',
+            })
 
     @api.constrains('fecha_solicitud')
     def _check_date(self):

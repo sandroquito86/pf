@@ -38,10 +38,20 @@ class PfProgramas(models.Model):
     autoridades_ids = fields.Many2many(
         'hr.employee',
         string='Autoridades',
-        domain="[('if_autoridad', '=', True)]"
+        # domain="[('if_autoridad', '=', True)]"
     )
+    domain_autoridades_ids = fields.Char(string='Domain Autoridades',compute='_compute_autoridades_ids')
     
     image_128 = fields.Image(string='Imagen', max_width=128, max_height=128)
+
+    @api.depends('modulo_id')
+    def _compute_autoridades_ids(self):
+        for record in self:
+            if record.modulo_id:
+                employees = self.env['hr.employee'].search([('modulo_ids', 'in', [self.modulo_id.id]), ('if_autoridad', '=', True)])
+                record.domain_autoridades_ids = [('id', 'in', employees.ids)]
+            else:
+                record.domain_autoridades_ids = [('id', 'in', [])]
 
     @api.depends('sucursal_id')
     def _compute_domain_tipo_documento(self):

@@ -52,6 +52,17 @@ class GenerarHorarios(models.Model):
         ('cancelado', 'Cancelado')
     ], string='Estado', default='borrador')
 
+    if_admin = fields.Boolean(string='Es administrador', compute='_compute_if_administrador', default=False)
+
+    @api.depends('servicio_id')
+    def _compute_if_administrador(self):
+        for record in self:
+            # Captura los permisos del que esta logeado y valida si tiene el permiso de sistemas
+            groups = self.env.user.groups_id
+            if self.env.ref('manzana_de_cuidados.group_beneficiario_manager') in groups:
+                record.if_admin = True
+            else:
+                record.if_admin = False
     
     # Constrain que valida que no existan planificacion que se crucen entre fechas de la misma persona y servicio 
     @api.constrains('servicio_id', 'personal_id', 'fecha_inicio', 'fecha_fin')
@@ -148,6 +159,15 @@ class GenerarHorarios(models.Model):
             record.fecha_inicio = False
             record.fecha_fin = False
             record.turno_disponibles_ids = False
+            if record.servicio_id and record.personal_id:
+                horarios = self.env['mz.horarios.servicio'].search([
+                    ('servicio_id', '=', record.servicio_id.id), 
+                    ('personal_id', '=', record.personal_id.id)
+                ], limit=1)
+                
+                if not horarios:
+                    raise UserError("No se ha registrado horarios para este empleado en este servicio!!")
+            
             
     # def obtener_dias_del_mes(self, mes, anio):
     #     # Abril, junio, septiembre y noviembre tienen 30
@@ -301,7 +321,7 @@ class PlanificacionServicio(models.Model):
     horafin = fields.Float(string='Hora Fin', index=True,)
     hora = fields.Char(string='Hora')    
     beneficiario_ids = fields.Many2many(string='Beneficiarios', comodel_name='mz.beneficiario', relation='mz_planificacion_servicio_beneficiario_rel',)
-    estado = fields.Selection([('activo', 'Activo'), ('inactivo', 'Inactivo')], string='Estado', default='activo')
+    estado = fields.Selection([('activo', 'Activo'), ('inactivo', 'Inactivo'), ('asignado', 'Asignado')], string='Estado', default='activo')
     observacion = fields.Char(string='Observación')
     fecha_actualizacion = fields.Date(string='Fecha Actualiza', readonly=True, default=fields.Datetime.now, )
     maximo_beneficiarios = fields.Integer(string='Beneficiarios Maximos', default=1, required=True)

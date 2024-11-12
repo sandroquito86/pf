@@ -34,12 +34,26 @@ class AsignarServicio(models.Model):
     responsables_text = fields.Char(string='Responsables Texto', compute='_compute_responsables_text')
 
     if_publicado = fields.Boolean(string='Publicado', default=False)
+    if_admin = fields.Boolean(string='Es administrador', compute='_compute_if_administrador', default=False)
+    get_sub_servicio= fields.Boolean(string='Tiene Subservicios', compute='_compute_get_sub_servicio', default=False)
 
     mostrar_boton_publicar = fields.Boolean(string='Mostrar Botón Publicar', compute='_compute_mostrar_boton_publicar')
     mostrar_bot_retirar_public = fields.Boolean(string='Mostrar Botón Retirar Publicar', compute='_compute_mostrar_bot_retirar_public')
     sub_servicio_ids = fields.Many2many('mz.sub.servicio', string='Sub Servicios',relation='asignacion_servicio_sub_servicio_rel')
     domain_sub_servicio_ids = fields.Char(string='Domain Sub servicios',compute='_compute_domain_sub_servicio_ids')
     
+
+    @api.constrains('servicio_id', 'programa_id')
+    def _check_unique_servicio_programa(self):
+        for record in self:
+            domain = [
+                ('servicio_id', '=', record.servicio_id.id),
+                ('programa_id', '=', record.programa_id.id),
+                ('id', '!=', record.id)  # Excluir el registro actual
+            ]
+            if self.search_count(domain) > 0:
+                raise UserError('Ya existe una asignación para este servicio en el programa seleccionado.')
+            
     @api.constrains('personal_ids')
     def _check_personal_ids(self):
         for record in self:
@@ -64,6 +78,24 @@ class AsignarServicio(models.Model):
                 record.domain_sub_servicio_ids = [('id', 'in', sub_servicios.ids)]
             else:
                 record.domain_sub_servicio_ids = [('id', 'in', [])]
+
+    @api.depends('servicio_id')
+    def _compute_get_sub_servicio(self):
+        for record in self:
+            if record.servicio_id.sub_servicio_ids:
+                record.get_sub_servicio = True
+            else:
+                record.get_sub_servicio = False
+    
+    @api.depends('servicio_id')
+    def _compute_if_administrador(self):
+        for record in self:
+            # Captura los permisos del que esta logeado y valida si tiene el permiso de sistemas
+            groups = self.env.user.groups_id
+            if self.env.ref('manzana_de_cuidados.group_beneficiario_manager') in groups:
+                record.if_admin = True
+            else:
+                record.if_admin = False
 
 
     @api.depends('active', 'if_publicado')

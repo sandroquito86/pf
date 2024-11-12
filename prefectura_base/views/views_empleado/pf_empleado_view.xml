@@ -140,6 +140,7 @@
                             <group string="ORGANIZACIÓN">
                                 <field name="department_id"/>
                                 <field name="job_id"/>
+                                <field name="if_autoridad" witget="boolean_toggle"/>
                                 <field name="parent_id" widget="many2one_avatar_user"/>
                                 <field name="coach_id" widget="many2one_avatar_user"/>
                             </group>

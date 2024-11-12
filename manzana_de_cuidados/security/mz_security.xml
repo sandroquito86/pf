@@ -22,4 +22,16 @@
         <field name="name">Sistema</field>
         <field name="category_id" ref="module_category_manzana_cuidados"/>
     </record>
+
+    <!-- reglas para Líder de la Estrategia de Manzanas -->
+    <record id="access_manzana_lider_estrategia" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Líder de la Estrategia</field>
+        <field name="model_id" ref="model_mz_beneficiario"/>
+        <field name="domain_force">[('programa_id', '=', user.programa_id.id)]</field>
+    </record>
+    <!-- <record id="access_manzana_lider_estrategia_personal" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Líder de la Estrategia Personal</field>
+        <field name="model_id" ref="model_mz_personal"/>
+        <field name="domain_force">['|', ('programa_id', '=', user.programa_id.id), ('create_uid', '=', user.id)]</field>
+    </record> -->
 </odoo>

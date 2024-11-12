@@ -26,7 +26,6 @@ Long description of module's purpose
         'security/mz_security.xml',
         'security/ir.model.access.csv',
         'data/data_catalogo.xml',
-        'data/data_base.xml',
         'data/data_beneficiario.xml',
         'data/data_servicios.xml',
         'data/data_asig_servicios.xml',
@@ -48,6 +47,7 @@ Long description of module's purpose
         
         'views/views_ejecucion/mz_wizard_reasignar_solicitud_turno_view.xml',
         'views/views_ejecucion/mz_agendar_servicio_view.xml',
+        'views/views_ejecucion/mz_reagendar_servicio_view.xml',
         'views/views_ejecucion/mz_consulta_view.xml',
         'views/views_ejecucion/mz_asistencia_servicio_view.xml',
         'views/views_ejecucion/mz_historia_clinica_view.xml',

@@ -38,6 +38,7 @@
                             <field name="email"/>
                             <field name="phone"/>
                             <field name="mobile"/>
+                            <field name="domain_autoridades_ids" invisible="1"/>
                             <field name="modulo_id" invisible="1"/>
                             <field name="active" readonly="1" widget = "boolean_toggle" />
                             <field name="if_publicado" readonly="1" widget="boolean_toggle"/>
@@ -52,7 +53,7 @@
                             </field>
                         </page>
                         <page string="Autoridades">
-                            <field name="autoridades_ids" context="{'tree_view_ref': 'manzana_de_cuidados.view_autoridades_hr_employee_tree'}">
+                            <field name="autoridades_ids" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_autoridades_ids'}" context="{'tree_view_ref': 'manzana_de_cuidados.view_autoridades_hr_employee_tree'}">
                             </field>
                         </page>
                         <page string="Normativa">
@@ -129,7 +130,7 @@
                     <t t-name="kanban-box">
                         <div class="oe_kanban_vignette oe_semantic_html_override oe_kanban_global_click">
                             <div class="o_kanban_image">
-                                <img alt="img" t-att-src="kanban_image('pf.programas', 'image_128', record.id.raw_value)" class="o_image_64_max" height="52"/>
+                                <img alt="img" t-att-src="kanban_image('pf.programas', 'image', record.id.raw_value)" class="o_image_64_max" height="52"/>
                             </div>
                             <div class="oe_kanban_details">
                                 <h4 class="oe_partner_heading">
