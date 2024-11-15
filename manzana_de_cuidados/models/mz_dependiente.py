@@ -28,6 +28,8 @@ class Dependiente(models.Model):
     primer_nombre = fields.Char(string='Primer Nombre', required=True, tracking=True)
     segundo_nombre = fields.Char(string='Segundo Nombre', tracking=True)
     fecha_nacimiento = fields.Date(string='Fecha de Nacimiento', tracking=True)
+    historia_clinica_ids = fields.One2many('mz.historia.clinica', 'beneficiario_id', string='Historias Clínicas')
+    consulta_count = fields.Integer(string='Número de Consultas', compute='_compute_consulta_count')
     tipo_documento = fields.Selection([
         ('dni', 'DNI'),
         ('pasaporte', 'Pasaporte'),
@@ -36,6 +38,24 @@ class Dependiente(models.Model):
     numero_documento = fields.Char(string='Número de Documento', required=True, tracking=True)
     beneficiario_id = fields.Many2one('mz.beneficiario', string='Beneficiario', ondelete='cascade', required=True)
     edad = fields.Char(string="Edad", compute="_compute_edad", store=True)
+
+    @api.depends('historia_clinica_ids')
+    def _compute_consulta_count(self):
+        for dependiente in self:
+            dependiente.consulta_count = len(dependiente.historia_clinica_ids)
+
+
+    def action_view_historia_clinica(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Historial Clínico',
+            'view_mode': 'tree,form',
+            'res_model': 'mz.historia.clinica',
+            'domain': [('dependiente_id', '=', self.id)],
+            'context': dict(self.env.context, create=False)
+        }
+    
 
     
     @api.depends('fecha_nacimiento')

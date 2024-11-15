@@ -4,6 +4,8 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError
 from datetime import datetime
 from datetime import date
+from datetime import timedelta
+from babel.dates import format_date
 
 
 class AgendarServicio(models.Model):
@@ -20,6 +22,8 @@ class AgendarServicio(models.Model):
                                 default=lambda self: self.env.ref('prefectura_base.modulo_2').id,tracking=True)
     beneficiario_id_domain = fields.Char(compute="_compute_beneficiario_id_domain", readonly=True, store=False, )
     beneficiario_id = fields.Many2one(string='Beneficiario', comodel_name='mz.beneficiario', ondelete='restrict', tracking=True, required=True)
+    tipo_beneficiario = fields.Selection([('titular', 'Titular'),('dependiente', 'Dependiente')], string='Tipo de Beneficiario', default='titular', required=True, tracking=True)    
+    dependiente_id = fields.Many2one('mz.dependiente',string='Dependiente',tracking=True,domain="[('beneficiario_id', '=', beneficiario_id)]" )
     programa_id = fields.Many2one('pf.programas', string='Programa', required=True, default=lambda self: self.env.programa_id)
     servicio_id = fields.Many2one(string='Servicio', comodel_name='mz.asignacion.servicio', ondelete='restrict',domain="[('programa_id', '=?', programa_id)]")  
     # generar_horario_id
@@ -27,13 +31,23 @@ class AgendarServicio(models.Model):
     personal_id = fields.Many2one(string='Personal', comodel_name='hr.employee', ondelete='restrict',)
     horario_id_domain = fields.Char(compute="_compute_horario_id_domain", readonly=True, store=False, )
     fecha_solicitud = fields.Date(string='Fecha', required=True, tracking=True)
-    horario_id = fields.Many2one(string='Horario', comodel_name='mz.planificacion.servicio', ondelete='restrict')  
+    horario_id = fields.Many2one(string='Turno', comodel_name='mz.planificacion.servicio', ondelete='restrict')  
     codigo = fields.Char(string='Código', readonly=True, store=True)
     mensaje = fields.Text(string='Mensaje', compute='_compute_mensaje')
     active = fields.Boolean(default=True, string='Activo', tracking=True)
     if_sub_servicio = fields.Boolean(string='Sub Servicio', compute='_compute_if_sub_servicio')
     sub_servicio_id = fields.Many2one('mz.sub.servicio', string="Sub Servicio", ondelete='restrict')
     domain_sub_servicio_ids = fields.Char(string='Domain Sub servicios',compute='_compute_domain_sub_servicio_ids')
+    if_admin = fields.Boolean(string='Es administrador', compute='_compute_if_administrador', default=False)
+    dias_disponibles_html = fields.Html(    string='Días Disponibles',    compute='_compute_dias_disponibles_html',    sanitize=False)
+    codigo_int = fields.Integer(string='Código', store=True)
+    
+    @api.constrains('tipo_beneficiario', 'dependiente_id')
+    def _check_dependiente(self):
+        for record in self:
+            if record.tipo_beneficiario == 'dependiente' and not record.dependiente_id:
+                raise UserError('Debe seleccionar un dependiente cuando el tipo de beneficiario es "Dependiente"')
+
 
     @api.depends('servicio_id')
     def _compute_domain_sub_servicio_ids(self):
@@ -51,6 +65,19 @@ class AgendarServicio(models.Model):
                 record.if_sub_servicio = True
             else:
                 record.if_sub_servicio = False
+
+    @api.onchange('servicio_id')
+    def _onchange_if_administrador(self):
+        for record in self:
+            record.if_admin = bool(self.env.ref('manzana_de_cuidados.group_beneficiario_manager') in self.env.user.groups_id)
+
+   
+
+
+    @api.depends('servicio_id')
+    def _compute_if_administrador(self):
+        for record in self:
+            record.if_admin = bool(self.env.ref('manzana_de_cuidados.group_beneficiario_manager') in self.env.user.groups_id)
     
 
     @api.depends('servicio_id', 'personal_id')
@@ -66,9 +93,9 @@ class AgendarServicio(models.Model):
                 horarios_planificados = self.env['mz.horarios.servicio'].search(domain)
                 if horarios_planificados:
                     dias_nombres = [dia_dict.get(horario.dias, '') for horario in horarios_planificados.detalle_horario_ids]
-                    record.mensaje = 'La disponibilidad de horarios es: ' + ' - '.join(dias_nombres)
+                    record.mensaje = f'Horarios de {record.personal_id.name}: ' + ' - '.join(dias_nombres)
                 else:
-                    record.mensaje = 'No hay horarios disponibles'
+                    record.mensaje = 'No Tiene Horarios Asignados'
             else:
                 record.mensaje = ''
 
@@ -95,7 +122,7 @@ class AgendarServicio(models.Model):
                 
                 # Verificar si se excede la capacidad máxima
                 if asistencias_count >= record.horario_id.maximo_beneficiarios:
-                    raise UserError(f"El horario seleccionado ya ha alcanzado su capacidad máxima de {record.horario_id.maximo_beneficiarios} beneficiarios.")
+                    raise UserError(f"El turno seleccionado ya ha alcanzado su capacidad máxima de {record.horario_id.maximo_beneficiarios} beneficiarios.")
 
             
                 
@@ -131,8 +158,93 @@ class AgendarServicio(models.Model):
                 record.horario_id_domain = [('id', 'in', horarios_disponibles.ids)]
             else:
                 record.horario_id_domain = [('id', 'in', [])]
+        
 
+    def _get_nombre_dia_espanol(self, fecha):
+        # Diccionario de traducción de días
+        dias = {
+            'Monday': 'Lunes',
+            'Tuesday': 'Martes',
+            'Wednesday': 'Miércoles',
+            'Thursday': 'Jueves',
+            'Friday': 'Viernes',
+            'Saturday': 'Sábado',
+            'Sunday': 'Domingo'
+        }
+        # Obtener el nombre del día en inglés y traducirlo
+        nombre_dia_ingles = format_date(fecha, format='EEEE', locale='en')
+        return dias.get(nombre_dia_ingles, nombre_dia_ingles)
 
+    @api.depends('servicio_id', 'personal_id')
+    def _compute_dias_disponibles_html(self):
+        for record in self:
+            if record.servicio_id and record.personal_id:
+                fecha_inicio = datetime.now().date()
+                fecha_fin = fecha_inicio + timedelta(days=30)
+                
+                domain = [
+                    ('generar_horario_id.servicio_id', '=', record.servicio_id.id),
+                    ('generar_horario_id.personal_id', '=', record.personal_id.id),
+                    ('fecha', '>=', fecha_inicio),
+                    ('fecha', '<=', fecha_fin),
+                    ('estado', '=', 'activo'),
+                ]
+                
+                horarios_planificados = self.env['mz.planificacion.servicio'].search(domain)
+                horarios_disponibles = horarios_planificados.filtered(
+                    lambda h: h.beneficiarios_count < h.maximo_beneficiarios
+                )
+                
+                fechas_disponibles = set(h.fecha for h in horarios_disponibles)
+                
+                if fechas_disponibles:
+                    # Calculamos cuántas columnas necesitamos (3 fechas por columna)
+                    num_fechas = len(fechas_disponibles)
+                    fechas_por_columna = 3
+                    num_columnas = min(4, (num_fechas + fechas_por_columna - 1) // fechas_por_columna)
+                    
+                    html = '''
+                    <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px;">
+                        <h4 style="color: #2c3e50; margin-bottom: 10px;">Días con turnos disponibles:</h4>
+                        <div style="display: grid; grid-template-columns: repeat(''' + str(num_columnas) + ''', 1fr); gap: 10px;">
+                    '''
+                    
+                    fechas_ordenadas = sorted(fechas_disponibles)
+                    for fecha in fechas_ordenadas:
+                        nombre_dia = self._get_nombre_dia_espanol(fecha)
+                        html += f'''
+                            <div style="background-color: #3498db; color: white; padding: 8px; 
+                                      border-radius: 4px; text-align: center; margin-bottom: 5px;">
+                                <div style="font-weight: bold;">{fecha.strftime('%d/%m/%Y')}</div>
+                                <div style="font-size: 0.9em;">{nombre_dia}</div>
+                            </div>
+                        '''
+                    
+                    html += '</div></div>'
+                    record.dias_disponibles_html = html
+                else:
+                    record.dias_disponibles_html = '''
+                        <div style="background-color: #fff3cd; padding: 10px; border-radius: 5px; color: #856404;">
+                            No hay turnos disponibles en los próximos 30 días
+                        </div>
+                    '''
+            else:
+                record.dias_disponibles_html = '''
+                    <div style="background-color: #e2e3e5; padding: 10px; border-radius: 5px; color: #383d41;">
+                        Seleccione un servicio y personal para ver días disponibles
+                    </div>
+                '''
+
+    @api.onchange('programa_id')
+    def _onchange_programa_id(self):
+        for record in self:
+            record.beneficiario_id = False
+            record.servicio_id = False
+            record.personal_id = False
+            record.fecha_solicitud = False
+            record.horario_id = False
+            record.tipo_beneficiario = 'titular'
+            self.dependiente_id = False
     
     @api.onchange('beneficiario_id')
     def _onchange_beneficiario_id(self):
@@ -141,6 +253,8 @@ class AgendarServicio(models.Model):
             record.personal_id = False
             record.fecha_solicitud = False
             record.horario_id = False
+            record.tipo_beneficiario = 'titular'
+            self.dependiente_id = False
 
     @api.onchange('servicio_id')
     def _onchange_servicio_id(self):
@@ -149,16 +263,37 @@ class AgendarServicio(models.Model):
             record.fecha_solicitud = False
             record.horario_id = False
 
+    @api.onchange('tipo_beneficiario')
+    def _onchange_tipo_beneficiario(self):
+        self.dependiente_id = False
+
+
     @api.onchange('personal_id')
     def _onchange_personal_id(self):
         for record in self:
             record.fecha_solicitud = False
             record.horario_id = False
+            if record.servicio_id and record.personal_id:
+                domain = [
+                    ('generar_horario_id.servicio_id', '=', record.servicio_id.id),
+                    ('generar_horario_id.personal_id', '=', record.personal_id.id),
+                    ('fecha', '>=', fields.Date.today()),
+                    ('estado', '=', 'activo'),
+                ]
+                horarios_planificados = self.env['mz.planificacion.servicio'].search(domain)
+                
+                horarios_disponibles = horarios_planificados.filtered(
+                    lambda h: h.beneficiarios_count < h.maximo_beneficiarios
+                )
+                if not horarios_disponibles:
+                    raise UserError(f"No hay Turnos disponibles para el servicio de {record.servicio_id.servicio_id.name} con {record.personal_id.name}.")
+            
 
     @api.onchange('fecha_solicitud')
     def _onchange_fecha_solicitud(self):
         for record in self:
             record.horario_id = False
+            
 
     
     def _generate_codigo(self):
@@ -169,34 +304,60 @@ class AgendarServicio(models.Model):
         # Buscar el último código generado este año, excluyendo los registros en estado borrador
         last_record = self.search([
             ('create_date', '>=', f'{current_year}-01-01 00:00:00'),
-            ('state', '!=', 'borrador')
+            ('state', '!=', 'borrador'),
+            ('programa_id', '=', self.programa_id.id),
         ], order='create_date desc', limit=1)
-        if last_record and last_record.codigo:
-            last_number = int(last_record.codigo.split('-')[2])
+        if last_record and last_record.codigo and last_record.codigo_int:
+            last_number = last_record.codigo_int
         else:
             last_number = 0
 
         new_number = last_number + 1
+        # asigna valor al codigo_int del nuevo registro
+        self.codigo_int = new_number
         new_number_str = str(new_number).zfill(7)
         
         return f'{prefix}-{self.programa_id.sigla}-{new_number_str}-{current_month:02d}-{current_year}'
 
-    def aprobar_horario(self):
-        for record in self:
-            # Verificar nuevamente la capacidad antes de aprobar
-            asistencias_count = self.env['mz.asistencia_servicio'].search_count([
-                ('planificacion_id', '=', record.horario_id.id)
-            ])
-            if asistencias_count >= record.horario_id.maximo_beneficiarios:
-                raise UserError(f"No se puede aprobar. El horario ya ha alcanzado su capacidad máxima de {record.horario_id.maximo_beneficiarios} beneficiarios.")
+    # def aprobar_horario(self):
+    #     for record in self:
+    #         # Verificar nuevamente la capacidad antes de aprobar
+    #         asistencias_count = self.env['mz.asistencia_servicio'].search_count([
+    #             ('planificacion_id', '=', record.horario_id.id)
+    #         ])
+    #         if asistencias_count >= record.horario_id.maximo_beneficiarios:
+    #             raise UserError(f"No se puede aprobar. El turno ya ha alcanzado su capacidad máxima de {record.horario_id.maximo_beneficiarios} beneficiarios.")
             
-            record.state = 'aprobado'
-            if record.horario_id and record.beneficiario_id:
-                self.env['mz.asistencia_servicio'].create({
-                    'planificacion_id': record.horario_id.id,
-                    'beneficiario_id': record.beneficiario_id.id,
-                    'codigo': record.codigo,
-                })
+    #         record.state = 'aprobado'
+    #         if record.horario_id and record.beneficiario_id:
+    #             self.env['mz.asistencia_servicio'].create({
+    #                 'planificacion_id': record.horario_id.id,
+    #                 'beneficiario_id': record.beneficiario_id.id,
+    #                 'codigo': record.codigo,
+    #             })
+
+    # quiero capturar el metodo create para validar que el beneficiario o el dependiente no tenga una solicitud pendiente en el mismo servicio
+    @api.model
+    def create(self, vals):
+        if vals.get('tipo_beneficiario') == 'titular':
+            existe_asistencia = self.env['mz.asistencia_servicio'].search([
+                ('beneficiario_id', '=', vals.get('beneficiario_id')),
+                ('asistio', '=', 'pendiente'),
+                ('servicio_id', '=', vals.get('servicio_id'))
+            ],limit=1)
+            if existe_asistencia:
+                raise UserError(f'El beneficiario ya tiene una solicitud pendiente en {existe_asistencia.servicio_id.name} con {existe_asistencia.personal_id.name}. para la fecha {existe_asistencia.fecha}.')
+        else:
+            existe_asistencia = self.env['mz.asistencia_servicio'].search([
+                ('beneficiario_id', '=', vals.get('beneficiario_id')),
+                ('dependiente_id', '=', vals.get('dependiente_id')),
+                ('asistio', '=', 'pendiente'),
+                ('servicio_id', '=', vals.get('servicio_id'))
+            ],limit=1)
+            if existe_asistencia:
+                raise UserError(f'El dependiente ya tiene una solicitud pendiente en {existe_asistencia.servicio_id.name} con {existe_asistencia.personal_id.name}. para la fecha {existe_asistencia.fecha}.')
+        return super(AgendarServicio, self).create(vals)
+
     def solicitar_horario(self):
         for record in self:
             if not record.horario_id:
@@ -208,14 +369,24 @@ class AgendarServicio(models.Model):
                 ('planificacion_id', '=', record.horario_id.id)
             ])
             if asistencias_count >= record.horario_id.maximo_beneficiarios:
-                raise UserError(f"No se puede aprobar. El horario ya ha alcanzado su capacidad máxima de {record.horario_id.maximo_beneficiarios} beneficiarios.")
-            existe_asistencia = self.env['mz.asistencia_servicio'].search([
-                ('beneficiario_id', '=', record.beneficiario_id.id),
-                ('asistio', '=', 'pendiente'),
-                ('servicio_id', '=', record.servicio_id.id)
-            ],limit=1)
-            if existe_asistencia:
-                raise UserError(f'El beneficiario ya tiene una solicitud pendiente en {existe_asistencia.servicio_id.name} con {existe_asistencia.personal_id.name}. para la fecha {existe_asistencia.fecha}.')
+                raise UserError(f"No se puede aprobar. El turno ya ha alcanzado su capacidad máxima de {record.horario_id.maximo_beneficiarios} beneficiarios.")
+            if record.tipo_beneficiario == 'titular':
+                existe_asistencia = self.env['mz.asistencia_servicio'].search([
+                    ('beneficiario_id', '=', record.beneficiario_id.id),
+                    ('asistio', '=', 'pendiente'),
+                    ('servicio_id', '=', record.servicio_id.id)
+                ],limit=1)
+                if existe_asistencia:
+                    raise UserError(f'El beneficiario ya tiene una solicitud pendiente en {existe_asistencia.servicio_id.name} con {existe_asistencia.personal_id.name}. para la fecha {existe_asistencia.fecha}.')
+            else:
+                existe_asistencia = self.env['mz.asistencia_servicio'].search([
+                    ('beneficiario_id', '=', record.beneficiario_id.id),
+                    ('dependiente_id', '=', record.dependiente_id.id),
+                    ('asistio', '=', 'pendiente'),
+                    ('servicio_id', '=', record.servicio_id.id)
+                ],limit=1)
+                if existe_asistencia:
+                    raise UserError(f'El dependiente ya tiene una solicitud pendiente en {existe_asistencia.servicio_id.name} con {existe_asistencia.personal_id.name}. para la fecha {existe_asistencia.fecha}.')
             record.state = 'solicitud'
             if record.horario_id and record.beneficiario_id:
                 self.env['mz.asistencia_servicio'].create({
@@ -226,10 +397,14 @@ class AgendarServicio(models.Model):
                     'servicio_id': record.servicio_id.id,
                     'personal_id': record.personal_id.id,
                     'codigo': record.codigo,
+                    'tipo_beneficiario': record.tipo_beneficiario,
+                    'dependiente_id': record.dependiente_id.id if record.dependiente_id else False,
                 })
             record.horario_id.write({
             'estado': 'asignado',
+            'beneficiario_ids': [(4, record.beneficiario_id.id)],
             })
+        return True
 
     @api.constrains('fecha_solicitud')
     def _check_date(self):
@@ -256,7 +431,7 @@ class AgendarServicio(models.Model):
         self.ensure_one()
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Reasignar Solicitud',
+            'name': 'Reagendar nuevo Turno',
             'res_model': 'mz.wizard.reasignar.solicitud',
             'view_mode': 'form',
             'view_id': self.env.ref('manzana_de_cuidados.view_wizard_reasignar_solicitud_form').id,
@@ -275,7 +450,7 @@ class AgendarServicio(models.Model):
 
 class WizardReasignarSolicitud(models.TransientModel):
     _name = 'mz.wizard.reasignar.solicitud'
-    _description = 'Wizard para Reasignar Solicitud'
+    _description = 'Wizard para Reagendar Solicitud/turno'
 
     solicitud_id = fields.Many2one('mz.agendar_servicio', string='Solicitud', required=True)
     nueva_fecha = fields.Date(string='Nueva Fecha', required=True)

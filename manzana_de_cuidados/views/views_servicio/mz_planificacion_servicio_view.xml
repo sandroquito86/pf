@@ -28,6 +28,7 @@
           <header>
                 <button name="action_confirmar" string="Confirmar" type="object" class="oe_highlight" invisible="estado != 'borrador'" />
                 <button name="action_replanificar" string="Replanificar" type="object" class="oe_highlight" invisible="estado != 'confirmado'" />
+                <button name="Agregar_turnos_extras" string="Agregar Turnos Extras" type="object" class="oe_highlight" invisible="estado != 'confirmado'" />
                 <button name="action_cancelar" string="Cancelar" type="object" invisible="estado != 'confirmado'"/>
                 <field name="estado" widget="statusbar" statusbar_visible="confirmado,Replanificar,Cancelar"/>
             </header>
@@ -65,13 +66,17 @@
                 <field name="fecha" readonly="1" force_save="1"/>
                 <field name="horainicio" widget="float_time" force_save="1" readonly="1" />
                 <field name="horafin" widget="float_time" force_save="1" readonly="1"  />
-                <field name="hora" invisible="1" />                
+                 <field name="turno_extra" widget="badge"
+                                    decoration-info="turno_extra == 'no'"
+                                    decoration-warning="turno_extra == 'si'"/>
+                <field name="hora" optional="hide" />            
                 <field name="beneficiario_ids" />
                 <field name="maximo_beneficiarios" />
                 <field name="estado" widget="badge"
                                     decoration-info="estado == 'activo'"
-                                    decoration-success="estado == 'asignado'"
-                                    decoration-danger="estado == 'inactivo'"/>
+                                    decoration-success="estado == 'concluido'"
+                                    decoration-danger="estado == 'inactivo'"
+                                    decoration-warning="estado == 'asignado'"/>
               </tree>
             </field>
             <div class="oe_chatter">

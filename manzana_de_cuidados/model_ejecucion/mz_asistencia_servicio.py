@@ -13,6 +13,8 @@ class AsistenciaServicio(models.Model):
 
     planificacion_id = fields.Many2one('mz.planificacion.servicio', string='Planificación', required=True, ondelete='cascade')
     beneficiario_id = fields.Many2one('mz.beneficiario', string='Beneficiario', required=True)
+    tipo_beneficiario = fields.Selection([('titular', 'Titular'),('dependiente', 'Dependiente') ], string='Tipo de Beneficiario', default='titular')    
+    dependiente_id = fields.Many2one('mz.dependiente', string='Dependiente')
     fecha = fields.Date('Fecha')
     asistio = fields.Selection([('si', 'Si'), ('no', 'No'), ('pendiente', 'Pendiente')], string='Asistió', default='pendiente')
     atendido = fields.Boolean(string='Atendido', default=False)
@@ -62,6 +64,9 @@ class AsistenciaServicio(models.Model):
     def action_asistio(self):
         self.asistio = 'si'
         self.env['mz.agendar_servicio'].search([('codigo', '=', self.codigo)]).write({'state': 'atendido'})
+        self.planificacion_id.write({'estado': 'concluido'})
+        if not self.fecha == fields.Date.today():
+            raise UserError('No puede dar asistencia a un servicio que no es del día de hoy.')
         
 
     def action_no_asistio(self):

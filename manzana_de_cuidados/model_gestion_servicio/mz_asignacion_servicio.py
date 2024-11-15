@@ -86,16 +86,33 @@ class AsignarServicio(models.Model):
                 record.get_sub_servicio = True
             else:
                 record.get_sub_servicio = False
-    
-    @api.depends('servicio_id')
-    def _compute_if_administrador(self):
+
+    @api.onchange('servicio_id')
+    def _onchange_if_administrador(self):
         for record in self:
-            # Captura los permisos del que esta logeado y valida si tiene el permiso de sistemas
             groups = self.env.user.groups_id
             if self.env.ref('manzana_de_cuidados.group_beneficiario_manager') in groups:
                 record.if_admin = True
             else:
                 record.if_admin = False
+
+    @api.onchange('programa_id')
+    def _onchange_programa_id(self):
+        for record in self:
+            record.servicio_id = False
+            record.sub_servicio_ids = False
+            record.personal_ids = False
+
+    @api.onchange('servicio_id')
+    def _onchange_servicio_id(self):
+        for record in self:
+            record.sub_servicio_ids = False
+            record.personal_ids = False
+
+    @api.depends('servicio_id')
+    def _compute_if_administrador(self):
+        for record in self:
+            record.if_admin = bool(self.env.ref('manzana_de_cuidados.group_beneficiario_manager') in self.env.user.groups_id)
 
 
     @api.depends('active', 'if_publicado')

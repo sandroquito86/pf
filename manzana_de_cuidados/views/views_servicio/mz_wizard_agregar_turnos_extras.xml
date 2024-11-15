@@ -1,0 +1,47 @@
+<odoo>
+    <data>
+    <record id="view_wizard_agregar_turnos_extras_form" model="ir.ui.view">
+        <field name="name">wizard.agregar.turnos.extras.form</field>
+        <field name="model">mz.wizard.agregar.turnos.extras</field>
+        <field name="arch" type="xml">
+            <form string="Agregar Turnos Extras">
+                <div class="alert alert-warning">
+                    Al agregar estos nuevos turnos, estos se verán en la planificación y podrán ser consumidos por los beneficiarios.
+                </div>
+                <group>
+                    <field name="planificacion_id" invisible="1" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
+                    <field name="personal_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
+                    <field name="servicio_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
+                    <field name="fecha_inicio"/>
+                    <field name="fecha_fin"/>
+                </group>
+                <group>
+                    <field name="turnos_extras_ids" widget="one2many_list">
+                        <tree editable="bottom">
+                            <field name="dia"/>
+                            <field name="fecha"/>
+                            <field name="horainicio" widget="float_time"/>
+                            <field name="horafin" widget="float_time"/>
+                            <field name="maximo_beneficiarios"/>
+                            <field name="horario" readonly="1" optional="hide"/>
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button string="Agregar Turnos" type="object" name="action_agregar_turnos_extras" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wizard_agregar_turnos_extras" model="ir.actions.act_window">
+        <field name="name">Agregar Turnos Extras</field>
+        <field name="res_model">mz.wizard.agregar.turnos.extras</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_wizard_agregar_turnos_extras_form"/>
+        <field name="target">new</field>
+        <field name="context">{'active_id': active_id}</field>
+    </record>
+    </data>
+</odoo>

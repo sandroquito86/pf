@@ -3,7 +3,7 @@
         <field name="name">wizard.reasignar.solicitud.form</field>
         <field name="model">mz.wizard.reasignar.solicitud</field>
         <field name="arch" type="xml">
-            <form string="Reasignar Solicitud">
+            <form string="Reagendar nuevo Turno">
                 <group>
                     <field name="solicitud_id" readonly="1"/>
                     <field name="horario_id_domain" invisible="1"/>
@@ -19,7 +19,7 @@
     </record>
 
     <record id="action_wizard_reasignar_solicitud" model="ir.actions.act_window">
-        <field name="name">Reasignar Solicitud</field>
+        <field name="name">Reagendar nuevo Turno</field>
         <field name="res_model">mz.wizard.reasignar.solicitud</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="view_wizard_reasignar_solicitud_form"/>

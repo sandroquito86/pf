@@ -6,6 +6,9 @@ from random import randint
 from datetime import datetime
 from odoo.exceptions import UserError
 import pytz
+from datetime import timedelta
+from babel.dates import format_date
+
 
 class Consulta(models.Model):
     _name = 'mz.consulta'
@@ -71,6 +74,9 @@ class Consulta(models.Model):
     # Seguimiento
     observaciones = fields.Text(string='Observaciones', tracking=True)
     proxima_cita = fields.Date(string='Próxima Cita', tracking=True)
+    horario_id_domain = fields.Char(compute="_compute_horario_id_domain", readonly=True, store=False, )
+    horario_id = fields.Many2one(string='Turno', comodel_name='mz.planificacion.servicio', ondelete='restrict') 
+    dias_disponibles_html = fields.Html(    string='Días Disponibles',    compute='_compute_dias_disponibles_html',    sanitize=False)
 
     historia_clinica_id = fields.Many2one('mz.historia.clinica', string='Historia Clínica', readonly=True)
 
@@ -89,7 +95,9 @@ class Consulta(models.Model):
         related='beneficiario_id.historia_clinica_ids',
         string='Historias Clínicas'
     )
-    
+    estado_new_solicitud = fields.Selection([
+    ('borrador', 'Borrador'),
+    ('solicitado', 'Solicitado')], string='Estado Solicitud', default='borrador', tracking=True)
     
     _sql_constraints = [
         ('codigo_unique', 'unique(codigo)', 'El código de la consulta debe ser único.')
@@ -105,6 +113,26 @@ class Consulta(models.Model):
             principales = record.diagnostico_ids.filtered(lambda d: d.es_principal)
             if len(principales) != 1:
                 raise UserError('Debe haber exactamente un diagnóstico principal.')
+            
+    @api.depends('servicio_id', 'personal_id','proxima_cita')
+    def _compute_horario_id_domain(self):
+        for record in self:
+            if record.servicio_id and record.personal_id and record.proxima_cita:
+                domain = [
+                    ('generar_horario_id.servicio_id', '=', record.servicio_id.id),
+                    ('generar_horario_id.personal_id', '=', record.personal_id.id),
+                    ('fecha', '=', record.proxima_cita),
+                    ('estado', '=', 'activo'),
+                ]
+                horarios_planificados = self.env['mz.planificacion.servicio'].search(domain)
+                
+                horarios_disponibles = horarios_planificados.filtered(
+                    lambda h: h.beneficiarios_count < h.maximo_beneficiarios
+                )
+                
+                record.horario_id_domain = [('id', 'in', horarios_disponibles.ids)]
+            else:
+                record.horario_id_domain = [('id', 'in', [])]
             
     @api.depends('presion_sistolica', 'presion_diastolica')
     def _compute_presion_arterial(self):
@@ -196,8 +224,167 @@ class Consulta(models.Model):
             else:
                 record.imc = 0
 
+    def _get_nombre_dia_espanol(self, fecha):
+        # Diccionario de traducción de días
+        dias = {
+            'Monday': 'Lunes',
+            'Tuesday': 'Martes',
+            'Wednesday': 'Miércoles',
+            'Thursday': 'Jueves',
+            'Friday': 'Viernes',
+            'Saturday': 'Sábado',
+            'Sunday': 'Domingo'
+        }
+        # Obtener el nombre del día en inglés y traducirlo
+        nombre_dia_ingles = format_date(fecha, format='EEEE', locale='en')
+        return dias.get(nombre_dia_ingles, nombre_dia_ingles)
+
+    @api.depends('servicio_id', 'personal_id')
+    def _compute_dias_disponibles_html(self):
+        for record in self:
+            if record.servicio_id and record.personal_id:
+                fecha_inicio = datetime.now().date()
+                fecha_fin = fecha_inicio + timedelta(days=30)
+                
+                domain = [
+                    ('generar_horario_id.servicio_id', '=', record.servicio_id.id),
+                    ('generar_horario_id.personal_id', '=', record.personal_id.id),
+                    ('fecha', '>=', fecha_inicio),
+                    ('fecha', '<=', fecha_fin),
+                    ('estado', '=', 'activo'),
+                ]
+                
+                horarios_planificados = self.env['mz.planificacion.servicio'].search(domain)
+                horarios_disponibles = horarios_planificados.filtered(
+                    lambda h: h.beneficiarios_count < h.maximo_beneficiarios
+                )
+                
+                fechas_disponibles = set(h.fecha for h in horarios_disponibles)
+                
+                if fechas_disponibles:
+                    # Calculamos cuántas columnas necesitamos (3 fechas por columna)
+                    num_fechas = len(fechas_disponibles)
+                    fechas_por_columna = 3
+                    num_columnas = min(4, (num_fechas + fechas_por_columna - 1) // fechas_por_columna)
+                    
+                    html = '''
+                    <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px;">
+                        <h4 style="color: #2c3e50; margin-bottom: 10px;">Días con turnos disponibles:</h4>
+                        <div style="display: grid; grid-template-columns: repeat(''' + str(num_columnas) + ''', 1fr); gap: 10px;">
+                    '''
+                    
+                    fechas_ordenadas = sorted(fechas_disponibles)
+                    for fecha in fechas_ordenadas:
+                        nombre_dia = self._get_nombre_dia_espanol(fecha)
+                        html += f'''
+                            <div style="background-color: #3498db; color: white; padding: 8px; 
+                                      border-radius: 4px; text-align: center; margin-bottom: 5px;">
+                                <div style="font-weight: bold;">{fecha.strftime('%d/%m/%Y')}</div>
+                                <div style="font-size: 0.9em;">{nombre_dia}</div>
+                            </div>
+                        '''
+                    
+                    html += '</div></div>'
+                    record.dias_disponibles_html = html
+                else:
+                    record.dias_disponibles_html = '''
+                        <div style="background-color: #fff3cd; padding: 10px; border-radius: 5px; color: #856404;">
+                            No hay turnos disponibles en los próximos 30 días
+                        </div>
+                    '''
+            else:
+                record.dias_disponibles_html = '''
+                    <div style="background-color: #e2e3e5; padding: 10px; border-radius: 5px; color: #383d41;">
+                        Seleccione un servicio y personal para ver días disponibles
+                    </div>
+                '''
+    def _generate_codigo(self):
+        current_year = datetime.now().year
+        current_month = datetime.now().month
+        prefix = self.env.ref('manzana_de_cuidados.codigo_prefectura_items').name
+        
+        # Buscar el último código generado este año, excluyendo los registros en estado borrador
+        last_record = self.env['mz.agendar_servicio'].search([
+            ('create_date', '>=', f'{current_year}-01-01 00:00:00'),
+            ('state', '!=', 'borrador'),
+            ('programa_id', '=', self.programa_id.id),
+        ], order='create_date desc', limit=1)
+        if last_record and last_record.codigo and last_record.codigo_int:
+            last_number = last_record.codigo_int
+        else:
+            last_number = 0
+
+        new_number = last_number + 1
+        # asigna valor al codigo_int del nuevo registro
+        codigo_int = new_number
+        new_number_str = str(new_number).zfill(7)
+        # quiero retornar el codigo_int 2 valores
+        return codigo_int, f'{prefix}-{self.programa_id.sigla}-{new_number_str}-{current_month:02d}-{current_year}'
     
-    
+    def solicitar_horario(self):
+        """
+        Método que se ejecuta al hacer clic en el botón 'Solicitar'.
+        Crea un registro en mz.agendar_servicio y ejecuta la creación de asistencia.
+        """
+        if not self.horario_id:
+                raise UserError("Debe seleccionar un horario.")
+        if self.estado_new_solicitud == 'solicitado':
+            raise UserError("Ya se ha solicitado el Turno.")
+        codigo_int, codigo = self._generate_codigo()
+        self.ensure_one()
+        
+        # Crear el registro en mz.agendar_servicio
+        agendar_servicio_obj = self.env['mz.agendar_servicio']
+        
+        # Preparar los valores para el nuevo registro
+        vals = {
+            'beneficiario_id': self.beneficiario_id.id,
+            'programa_id': self.programa_id.id,
+            'servicio_id': self.servicio_id.id,
+            'personal_id': self.personal_id.id,
+            'fecha_solicitud': self.fecha,
+            'horario_id': self.horario_id.id,
+            'codigo': codigo,
+            'codigo_int': codigo_int,
+            'state': 'borrador',  # Estado inicial
+        }
+        
+        # Crear el nuevo registro
+        nuevo_agendamiento = agendar_servicio_obj.create(vals)
+        
+        # Llamar al método para solicitar el horario en el nuevo registro
+        try:
+            resultado = nuevo_agendamiento.solicitar_horario()
+            
+            # Si la creación fue exitosa, actualizar el registro de consulta
+            if resultado:
+                nuevo_agendamiento.write({'state': 'solicitud'})
+                self.estado_new_solicitud = 'solicitado'
+                
+                # Mostrar mensaje de éxito
+                return {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'title': 'Éxito',
+                        'message': 'Se ha creado el agendamiento y la asistencia correctamente',
+                        'type': 'success',
+                        'sticky': False,
+                    }
+                }
+        except Exception as e:
+            # En caso de error, mostrar mensaje y hacer rollback
+            self.env.cr.rollback()
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Error',
+                    'message': f'Error al crear el agendamiento: {str(e)}',
+                    'type': 'danger',
+                    'sticky': True,
+                }
+            }
 
     def create(self, vals):
         consulta = super(Consulta, self).create(vals)
@@ -318,6 +505,11 @@ class Consulta(models.Model):
                     'sticky': False,
                 }
             }
+        
+    @api.onchange('proxima_cita')
+    def _onchange_proxima_cita(self):
+        if self.proxima_cita:
+            self.horario_id = False
     
 class MzDiagnosticoLinea(models.Model):
     _name = 'mz.diagnostico.linea'

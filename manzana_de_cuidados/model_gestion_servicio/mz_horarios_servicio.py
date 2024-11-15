@@ -34,7 +34,36 @@ class AsignacionHorarios(models.Model):
                 record.if_admin = True
             else:
                 record.if_admin = False
-    
+
+    @api.onchange('servicio_id')
+    def _onchange_if_administrador(self):
+        for record in self:
+            groups = self.env.user.groups_id
+            if self.env.ref('manzana_de_cuidados.group_beneficiario_manager') in groups:
+                record.if_admin = True
+            else:
+                record.if_admin = False
+
+    @api.onchange('programa_id')
+    def _onchange_programa_id(self):
+        for record in self:
+            record.asi_servicio_id = False
+            record.servicio_id = False
+            record.personal_id = False
+            record.detalle_horario_ids = False
+
+
+    @api.onchange('servicio_id')
+    def _onchange_servicio_id(self):
+        for record in self:
+            record.personal_id = False
+            record.detalle_horario_ids = False
+
+    @api.onchange('personal_id')
+    def _onchange_personal_id(self):
+        for record in self:
+            record.detalle_horario_ids = False
+   
     @api.depends('servicio_id')
     def _compute_domain_programas(self):
         for record in self:

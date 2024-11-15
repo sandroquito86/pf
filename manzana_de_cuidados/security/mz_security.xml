@@ -24,11 +24,37 @@
     </record>
 
     <!-- reglas para Líder de la Estrategia de Manzanas -->
-    <record id="access_manzana_lider_estrategia" model="ir.rule">
-        <field name="name">Manzana de Cuidados: Líder de la Estrategia</field>
+    <record id="access_manzana_lider_estrategia_to_beneficiario" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Líder de la Estrategia ver Beneficiario</field>
         <field name="model_id" ref="model_mz_beneficiario"/>
+        <field name="groups" eval="[(4, ref('group_manzana_lider_estrategia'))]"/>
         <field name="domain_force">[('programa_id', '=', user.programa_id.id)]</field>
     </record>
+    <record id="access_manzana_lider_estrategia_to_programa" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Líder de la Estrategia ver programas</field>
+        <field name="model_id" ref="prefectura_base.model_pf_programas"/>
+        <field name="groups" eval="[(4, ref('group_manzana_lider_estrategia'))]"/>
+        <field name="domain_force">['|', ('id', '=', user.programa_id.id), ('create_uid', '=', user.id)]</field>
+    </record>
+    <record id="access_manzana_lider_estrategia_to_asig_servicio" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Líder de la Estrategia ver Servicio de Programa y Responsables Asignados</field>
+        <field name="model_id" ref="model_mz_asignacion_servicio"/>
+        <field name="groups" eval="[(4, ref('group_manzana_lider_estrategia'))]"/>
+        <field name="domain_force">[('programa_id', '=', user.programa_id.id)]</field>
+    </record>
+    <record id="access_manzana_lider_estrategia_to_horario_personas" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Líder de la Estrategia ver Configuración de Horarios de Personal</field>
+        <field name="model_id" ref="model_mz_horarios_servicio"/>
+        <field name="groups" eval="[(4, ref('group_manzana_lider_estrategia'))]"/>
+        <field name="domain_force">[('programa_id', '=', user.programa_id.id)]</field>
+    </record>
+    <record id="access_manzana_lider_estrategia_to_pllanificacion_turnos" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Líder de la Estrategia ver Planificación Turnos</field>
+        <field name="model_id" ref="model_mz_genera_planificacion_servicio"/>
+        <field name="groups" eval="[(4, ref('group_manzana_lider_estrategia'))]"/>
+        <field name="domain_force">[('programa_id', '=', user.programa_id.id)]</field>
+    </record>
+    
     <!-- <record id="access_manzana_lider_estrategia_personal" model="ir.rule">
         <field name="name">Manzana de Cuidados: Líder de la Estrategia Personal</field>
         <field name="model_id" ref="model_mz_personal"/>

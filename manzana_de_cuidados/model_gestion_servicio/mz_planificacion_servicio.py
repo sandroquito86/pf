@@ -249,23 +249,37 @@ class GenerarHorarios(models.Model):
             else:
                 record.turno_disponibles_ids = False
 
+    def Agregar_turnos_extras(self):
+        """Abrir el wizard para agregar turnos extras"""
+        self.ensure_one()
+        action = {
+            'name': _('Agregar Turnos Extras'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'mz.wizard.agregar.turnos.extras',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'target': 'new',
+            'views': [(False, 'form')],
+            'context': {
+                'default_planificacion_id': self.id,
+                'form_view_ref': False,
+                'active_model': self._name,
+                'active_id': self.id,
+                'active_ids': [self.id],
+            },
+            'flags': {
+                'action_buttons': True,
+                'headless': True,
+            }
+        }
+        return action
+
     def action_replanificar(self):
-        """Crear una nueva planificación basada en la actual"""
+        """Abrir el wizard para crear una nueva planificación basada en la actual"""
         self.ensure_one()
         if self.estado != 'confirmado':
             raise UserError('Solo se pueden replanificar turnos confirmados')
-            
-        # Crear nueva planificación
-        nueva_planificacion = self.copy({
-            'es_replanificacion': True,
-            'planificacion_original_id': self.id,
-            'estado': 'borrador',
-            'fecha_inicio': False,  # Se establecerá en el wizard
-            'fecha_fin': False,     # Se establecerá en el wizard
-            'turno_disponibles_ids': False  # Los turnos se generarán después
-        })
-        
-        # Crear y retornar la acción del wizard con todos los parámetros necesarios
+
         action = {
             'name': _('Replanificar Turnos'),
             'type': 'ir.actions.act_window',
@@ -275,7 +289,7 @@ class GenerarHorarios(models.Model):
             'target': 'new',
             'views': [(False, 'form')],
             'context': {
-                'default_planificacion_id': nueva_planificacion.id,
+                'default_planificacion_id': self.id,
                 'default_planificacion_original_id': self.id,
                 'default_fecha_inicio': fields.Date.today(),
                 'form_view_ref': False,
@@ -321,11 +335,13 @@ class PlanificacionServicio(models.Model):
     horafin = fields.Float(string='Hora Fin', index=True,)
     hora = fields.Char(string='Hora')    
     beneficiario_ids = fields.Many2many(string='Beneficiarios', comodel_name='mz.beneficiario', relation='mz_planificacion_servicio_beneficiario_rel',)
-    estado = fields.Selection([('activo', 'Activo'), ('inactivo', 'Inactivo'), ('asignado', 'Asignado')], string='Estado', default='activo')
+    estado = fields.Selection([('activo', 'Activo'), ('inactivo', 'Inactivo'), ('asignado', 'Asignado'),('concluido', 'Concluido')], string='Estado', default='activo')
     observacion = fields.Char(string='Observación')
     fecha_actualizacion = fields.Date(string='Fecha Actualiza', readonly=True, default=fields.Datetime.now, )
     maximo_beneficiarios = fields.Integer(string='Beneficiarios Maximos', default=1, required=True)
     dia = fields.Char(string='Dia', compute='_compute_dia', store=True)
+    turno_extra = fields.Selection([('si', 'Si'), ('no', 'No')], string='Turno Extra', default='no')
+    creado_por_usuario_id = fields.Many2one('res.users', string='Creado por')
 
     @api.depends('fecha')
     def _compute_dia(self):
@@ -354,7 +370,7 @@ class WizardReplanificarTurnos(models.TransientModel):
     def default_get(self, fields_list):
         res = super().default_get(fields_list)
         if 'fecha_inicio' in fields_list and not res.get('fecha_inicio'):
-            res['fecha_inicio'] = fields.Date.today()
+            res['fecha_inicio'] = fields.Date.today() + timedelta(days=1)
         if 'fecha_fin' in fields_list and not res.get('fecha_fin'):
             res['fecha_fin'] = fields.Date.today() + timedelta(days=6)
         return res
@@ -382,51 +398,162 @@ class WizardReplanificarTurnos(models.TransientModel):
         required=True
     )
 
+    
     # @api.onchange('fecha_inicio')
     # def _onchange_fecha_inicio(self):
     #     if self.fecha_inicio:
     #         self.fecha_fin = self.fecha_inicio + timedelta(days=6)
     
+
+    @api.onchange('fecha_inicio')
+    def _onchange_fecha_inicio(self):
+        for record in self:
+            if record.fecha_inicio:
+                fecha_actual = fields.Date.today()
+                fecha_inicio = record.fecha_inicio
+                if fecha_actual > fecha_inicio:
+                    self.fecha_inicio = fecha_actual + timedelta(days=1)
+                    raise UserError("La fecha de inicio no puede ser menor o igual al la fecha actual!!")
+                
+    
+
     def action_replanificar(self):
-        self.ensure_one()       
+        self.ensure_one()
+
         if self.fecha_inicio < fields.Date.today():
             raise UserError('No se puede replanificar para fechas pasadas')
         
-        self.planificacion_original_id.write({
-            'estado': 'replanificado'
+        # Actualizar la planificación original
+        self.planificacion_original_id.write({'estado': 'replanificado'})
+
+        # Crear la nueva planificación
+        nueva_planificacion = self.env['mz.genera.planificacion.servicio'].create({
+            'es_replanificacion': True,
+            'planificacion_original_id': self.planificacion_original_id.id,
+            'estado': 'borrador',
+            'fecha_inicio': self.fecha_inicio,
+            'fecha_fin': self.fecha_fin,
+            'servicio_id': self.planificacion_original_id.servicio_id.id,
+            'personal_id': self.planificacion_original_id.personal_id.id,
+            'maximo_beneficiarios': self.planificacion_original_id.maximo_beneficiarios,
+            'programa_id': self.planificacion_original_id.programa_id.id,
+            'active': True,
+
         })
+        self.planificacion_id = nueva_planificacion.id
+
+        # Inactivar los turnos de la planificación original
         turnos_a_inactivar = self.env['mz.planificacion.servicio'].search([
-            ('generar_horario_id', '=', self.planificacion_original_id.id), ('fecha', '>=', self.fecha_inicio), ('fecha', '<=', self.fecha_fin)
+            ('generar_horario_id', '=', self.planificacion_original_id.id),
+            ('fecha', '>=', self.fecha_inicio),
+            ('fecha', '<=', self.fecha_fin)
         ])
         if turnos_a_inactivar:
-            turnos_a_inactivar.write({
-                'estado': 'inactivo'
-            })
-            reagendar_servicio = self.env['mz.agendar_servicio'].search([('horario_id', 'in', turnos_a_inactivar.ids)])
-            if reagendar_servicio:
-                reagendar_servicio.write({
-                'state': 'por_reeplanificar'
-                })
-            archivar_asistencia = self.env['mz.asistencia_servicio'].search([('planificacion_id', 'in', turnos_a_inactivar.ids)])
-            if archivar_asistencia:
-                archivar_asistencia.write({
-                'active': False
-                })
+            turnos_a_inactivar.write({'estado': 'inactivo'})
 
-            
+            # Actualizar los agendamientos y asistencias relacionados
+            reagendar_servicio = self.env['mz.agendar_servicio'].search([
+                ('horario_id', 'in', turnos_a_inactivar.ids)
+            ])
+            if reagendar_servicio:
+                reagendar_servicio.write({'state': 'por_reeplanificar'})
+
+            archivar_asistencia = self.env['mz.asistencia_servicio'].search([
+                ('planificacion_id', 'in', turnos_a_inactivar.ids)
+            ])
+            if archivar_asistencia:
+                archivar_asistencia.write({'active': False})
+
         # Actualizar la nueva planificación
-        self.planificacion_id.write({
+        nueva_planificacion.write({
             'fecha_inicio': self.fecha_inicio,
             'fecha_fin': self.fecha_fin
         })
-        
+
         # Generar nuevos turnos
-        self.planificacion_id.action_generar_horas()
-        
+        nueva_planificacion.action_generar_horas()
+
+
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'mz.genera.planificacion.servicio',
-            'res_id': self.planificacion_id.id,
+            'res_id': nueva_planificacion.id,
             'view_mode': 'form',
             'target': 'current',
-        }
+    }
+
+
+class WizardAgregarTurnosExtras(models.TransientModel):
+    _name = 'mz.wizard.agregar.turnos.extras'
+    _description = 'Wizard para Agregar Turnos Extras'
+
+    planificacion_id = fields.Many2one(
+        'mz.genera.planificacion.servicio', 
+        'Planificación',
+        required=True
+    )
+    personal_id = fields.Many2one('hr.employee', string='Personal', related='planificacion_id.personal_id', readonly=True)
+    servicio_id = fields.Many2one('mz.asignacion.servicio', string='Servicio', related='planificacion_id.servicio_id', readonly=True)
+    fecha_inicio = fields.Date('Fecha Inicio Planificación', related='planificacion_id.fecha_inicio', readonly=True)
+    fecha_fin = fields.Date('Fecha Fin Planificación', related='planificacion_id.fecha_fin', readonly=True)
+    turnos_extras_ids = fields.One2many('mz.turnos.extras', 'wizard_turnos_extras_id', string='Turnos Extras')
+    user_id = fields.Many2one('res.users', string='Usuario', default=lambda self: self.env.user, readonly=True)
+    
+    def action_agregar_turnos_extras(self):
+        self.ensure_one()
+        for turno in self.turnos_extras_ids:
+            self.planificacion_id.turno_disponibles_ids = [(0, 0, {
+                'fecha': turno.fecha,
+                'horainicio': turno.horainicio,
+                'horafin': turno.horafin,
+                'maximo_beneficiarios': turno.maximo_beneficiarios,
+                'estado': 'activo',
+                'creado_por_usuario_id': self.env.user.id,
+                'turno_extra': 'si'
+            })]
+
+class TurnosExtras(models.TransientModel):
+    _name = 'mz.turnos.extras'
+    _description = 'Planificacion de Turnos'
+    _rec_name = 'horario'
+    _order = 'fecha, horainicio ASC'
+
+    horario = fields.Char(string='Horario',
+                          compute='_compute_horario')
+     
+    wizard_turnos_extras_id = fields.Many2one(string='Cabecera', comodel_name='mz.wizard.agregar.turnos.extras', ondelete='restrict',)
+    fecha = fields.Date()
+    horainicio = fields.Float(string='Hora de Inicio', index=True,)
+    horafin = fields.Float(string='Hora Fin', index=True,)
+    hora = fields.Char(string='Hora')  
+    maximo_beneficiarios = fields.Integer(string='Beneficiarios Maximos', default=1, required=True)
+    dia = fields.Char(string='Dia', compute='_compute_dia', store=True)
+
+    @api.depends('fecha')
+    def _compute_dia(self):
+        for record in self:
+            if record.fecha:
+                record.dia = format_date(record.fecha, 'EEEE', locale='es_ES')
+            else:
+                record.dia = ''
+
+    @api.depends('fecha', 'horainicio', 'horafin', 'dia')
+    def _compute_horario(self):
+        for record in self:
+            if record.fecha and record.horainicio and record.horafin:
+                hora_inicio = str(timedelta(hours=record.horainicio)).rsplit(':', 1)[0]
+                hora_fin = str(timedelta(hours=record.horafin)).rsplit(':', 1)[0]
+                record.horario = f"{record.dia} (hora inicio: {hora_inicio}, hora fin: {hora_fin})"
+            else:
+                record.horario = ''    
+
+    @api.onchange('fecha')
+    def _onchange_fecha(self):
+        for record in self:
+            if record.fecha:
+                # valida prmero que la fecha sea mayor o igual a la fecha actual
+                fecha_actual = fields.Date.today()
+                if fecha_actual > record.fecha:
+                    raise UserError("La fecha de inicio no puede ser menor al la fecha actual!!")
+                if record.fecha < record.wizard_turnos_extras_id.fecha_inicio or record.fecha > record.wizard_turnos_extras_id.fecha_fin:
+                    raise UserError('La fecha seleccionada no está dentro del rango de fechas de la planificación')
