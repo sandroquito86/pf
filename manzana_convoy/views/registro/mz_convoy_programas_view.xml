@@ -2,7 +2,7 @@
 <odoo>
     <!--  <button name="%(action_mz_convoy_beneficiario_asistencia)d" string="Registro Asistencia" type="action" class="oe_stat_button" icon="fa-address-card"/>
                     <button name="%(action_mz_convoy_beneficiario_socioeconomico)d" string="Registro Socioeconómico" type="action" class="oe_stat_button" icon="fa-list-alt"/> -->
-     
+
     <!-- Vista de formulario -->
     <record id="view_mz_mz_convoy_form" model="ir.ui.view">
         <field name="name">mz.convoy.form</field>
@@ -12,10 +12,21 @@
                 <header>
                     <field name="state" widget="statusbar"/>
                     <button name="aprobar_convoy" string="Aprobar" type="object" class="oe_highlight" invisible="state != 'borrador'"/>
-                    <button name="action_finalizar" string="Finalizar" type="object" class="oe_highlight" invisible="state != 'aprobado'"/>
-                     <button name="%(action_mz_convoy_convoy_beneficiario)d" string="Beneficiario Masivo" type="action" class="oe_stat_button" icon="fa-users"/>
-                         </header>
+                    <!-- <button name="action_finalizar" string="Finalizar" type="object" class="oe_highlight" invisible="state != 'aprobado'"/> -->
+                    <button name="%(action_mz_convoy_beneficiario_wizard)d" type="action" string="Beneficiarios" context="{'default_convoy_id': id}" class="oe_highlight" icon="fa-user"/>
+                </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_view_beneficiarios_masivo" type="object" icon="fa-users">
+                            <field string="Masivo" name="beneficiarios_masivo_count" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" name="action_view_beneficiarios_asistencia" type="object" icon="fa-address-card">
+                            <field string="Asistencia" name="beneficiarios_asistencia_count" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" name="action_view_beneficiarios_socioeconomico" type="object" icon="fa-home">
+                            <field string="Socioeconómico" name="beneficiarios_socioeconomico_count" widget="statinfo"/>
+                        </button>
+                    </div>
                     <div class="row justify-content-between position-relative w-100 m-0 mb-2">
                         <div class="oe_title">
                             <h1>
@@ -32,6 +43,17 @@
                         <field name="director_coordinador"/>
                     </group>
                     <notebook>
+                        <page string="Beneficiarios">
+                            <field name="beneficiario_ids">
+                                <tree create="0" edit="0">
+                                    <field name="numero_documento"/>
+                                    <field name="nombres_completos"/>
+                                    <field name="tipo_registro"/>
+                                    <field name="fecha_registro"/>
+                                    <field name="servicio_id"/>
+                                </tree>
+                            </field>
+                        </page>
                         <page string="Sucursal">
                             <group>
                                 <group>
@@ -132,13 +154,15 @@ Guarde el registro antes de agregar servicios
                             </div>
                             <field name="can_edit_services" invisible="1" />
                             <field name="programa_id" invisible="1" />
-                            <field name="servicio_ids" readonly="not can_edit_services" context="{
-                                    'default_programa_id': programa_id,
-                                    'form_view_ref': 'manzana_convoy.view_mz_convoy_asignacion_servicio_form'
-                                }">
-                                <tree>
+                            <field name="servicio_ids" readonly="not can_edit_services" context="{                            
+                                'default_programa_id': programa_id,                                
+                                'form_view_ref': 'manzana_convoy.view_mz_convoy_asignacion_servicio_form'
+                            }">
+                                <tree delete="0">
                                     <field name="servicio_id"/>
                                     <field name="personal_ids" widget="many2many_tags"/>
+                                    <button name="eliminar_desde_o2m" type="object" icon="fa-trash" help="Eliminar servicio" confirm="¿Está seguro de querer eliminar este servicio y sus planificaciones relacionadas?"/>
+
                                 </tree>
                             </field>
                         </page>

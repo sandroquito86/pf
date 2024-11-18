@@ -3,7 +3,7 @@
     <!-- Vista Form -->
     <record id="view_mz_convoy_beneficiario_asistencia_form" model="ir.ui.view">
         <field name="name">mz.convoy.beneficiario.asistencia.form</field>
-        <field name="model">mz_convoy.convoy_beneficiario</field>
+        <field name="model">mz_convoy.beneficiario_wizard</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -28,10 +28,10 @@
                         <group string="Ubicación">
                             <field name="canton"/>
                             <field name="parroquia"/>
-                            <field name="direccion_domicilio"/>
+                            <field name="direccion"/>
                         </group>
                         <group string="Información Adicional">
-                            <field name="correo_electronico"/>
+                            <field name="email"/>
                             <field name="tiene_discapacidad"/>
                             <field name="recibe_bono"/>
                         </group>
@@ -46,7 +46,7 @@
     <!-- Vista Tree -->
     <record id="view_mz_convoy_beneficiario_asistencia_tree" model="ir.ui.view">
         <field name="name">mz.convoy.beneficiario.asistencia.tree</field>
-        <field name="model">mz_convoy.convoy_beneficiario</field>
+        <field name="model">mz_convoy.beneficiario_wizard</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="num_documento"/>
@@ -65,7 +65,7 @@
     <!-- Vista Search -->
     <record id="view_mz_convoy_beneficiario_asistencia_search" model="ir.ui.view">
         <field name="name">mz.convoy.beneficiario.asistencia.search</field>
-        <field name="model">mz_convoy.convoy_beneficiario</field>
+        <field name="model">mz_convoy.beneficiario_wizard</field>
         <field name="arch" type="xml">
             <search>
                 <field name="num_documento"/>
@@ -87,7 +87,7 @@
 
     <record id="action_mz_convoy_beneficiario_asistencia" model="ir.actions.act_window">
         <field name="name">Registro por Asistencia</field>
-        <field name="res_model">mz_convoy.convoy_beneficiario</field>
+        <field name="res_model">mz_convoy.beneficiario_wizard</field>
         <field name="view_mode">tree,form</field>
         <field name="view_ids" eval="[(5, 0, 0),
         (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz_convoy_beneficiario_asistencia_tree')}),

@@ -51,6 +51,81 @@ class FichaEvento(models.Model):
                                       column1='convoy_id', column2='ficha_id', string='Ficha Evento Legalizada')
     ficha_implantacion_legalizada = fields.Many2many(comodel_name='ir.attachment', relation='pf_mz_convoy_ficha_impantacion_legalizada', 
                                       column1='convoy_id', column2='ficha_id', string='Ficha Implantación Legalizada')
+    beneficiario_ids = fields.One2many('mz_convoy.beneficiario', 'convoy_id', string='Beneficiarios')
+    beneficiario_count = fields.Integer( string='Número de Beneficiarios', compute='_compute_beneficiario_count')
+    beneficiarios_masivo_count = fields.Integer(string='Masivo', compute='_compute_beneficiarios_count')
+    beneficiarios_asistencia_count = fields.Integer(string='Asistencia', compute='_compute_beneficiarios_count')
+    beneficiarios_socioeconomico_count = fields.Integer(string='Socioeconómico', compute='_compute_beneficiarios_count')
+
+    @api.depends('beneficiario_ids', 'beneficiario_ids.tipo_registro')
+    def _compute_beneficiarios_count(self):
+        for record in self:
+            beneficiarios = record.beneficiario_ids
+            record.beneficiarios_masivo_count = len(beneficiarios.filtered(lambda b: b.tipo_registro == 'masivo'))
+            record.beneficiarios_asistencia_count = len(beneficiarios.filtered(lambda b: b.tipo_registro == 'asistencia'))
+            record.beneficiarios_socioeconomico_count = len(beneficiarios.filtered(lambda b: b.tipo_registro == 'socioeconomico'))
+
+    def action_view_beneficiarios_masivo(self):
+        self.ensure_one()
+        return {
+            'name': 'Beneficiarios Masivos',
+            'view_mode': 'tree,form',
+            'res_model': 'mz_convoy.beneficiario',
+            'type': 'ir.actions.act_window',
+            'domain': [('convoy_id', '=', self.id), ('tipo_registro', '=', 'masivo')],
+            'context': {
+                'default_convoy_id': self.id,
+                'default_tipo_registro': 'masivo',
+                'form_view_initial_mode': 'readonly',  # Formulario en modo lectura
+                'create': False,  # Deshabilita creación
+                'edit': False,    # Deshabilita edición
+                'delete': False   # Deshabilita eliminación
+            },
+            'target': 'current',
+        }
+
+    def action_view_beneficiarios_asistencia(self):
+        self.ensure_one()
+        return {
+            'name': 'Beneficiarios por Asistencia',
+            'view_mode': 'tree,form',
+            'res_model': 'mz_convoy.beneficiario',
+            'type': 'ir.actions.act_window',
+            'domain': [('convoy_id', '=', self.id), ('tipo_registro', '=', 'asistencia')],
+            'context': {
+                'default_convoy_id': self.id,
+                'default_tipo_registro': 'asistencia',
+                'form_view_initial_mode': 'readonly',
+                'create': False,
+                'edit': False,
+                'delete': False
+            },
+            'target': 'current',
+        }
+
+    def action_view_beneficiarios_socioeconomico(self):
+        self.ensure_one()
+        return {
+            'name': 'Beneficiarios Socioeconómico',
+            'view_mode': 'tree,form',
+            'res_model': 'mz_convoy.beneficiario',
+            'type': 'ir.actions.act_window',
+            'domain': [('convoy_id', '=', self.id), ('tipo_registro', '=', 'socioeconomico')],
+            'context': {
+                'default_convoy_id': self.id,
+                'default_tipo_registro': 'socioeconomico',
+                'form_view_initial_mode': 'readonly',
+                'create': False,
+                'edit': False,
+                'delete': False
+            },
+            'target': 'current',
+        }
+
+    @api.depends('beneficiario_ids')
+    def _compute_beneficiario_count(self):
+        for record in self:
+            record.beneficiario_count = len(record.beneficiario_ids)
     
     @api.constrains('ficha_evento_legalizada', 'ficha_implantacion_legalizada')
     def _check_fichas_legalizadas(self):

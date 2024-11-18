@@ -1,29 +1,33 @@
 from odoo import models, fields, api
 from datetime import date, datetime, timedelta
 from odoo.exceptions import UserError
+from dateutil.relativedelta import relativedelta
+
 
 
 class Beneficiario(models.Model):
     _inherit = 'mz.beneficiario'
     _description = 'Catálogo de Beneficiarios'
 
+
+    tipo_registro = fields.Selection([('masivo', 'Registro Masivo'), ('asistencia', 'Registro por Asistencia'), ('socioeconomico', 'Registro Socioeconómico')], string='Tipo de Registro', 
+                                     required=True, default='masivo')
     num_documento = fields.Char('Número de Documento', required=True)
     nombres = fields.Char('Nombres', required=True)
     apellidos = fields.Char('Apellidos', required=True)
-    es_extranjero = fields.Boolean('¿Es Migrante Extranjero?')
-    pais = fields.Char('País', default='Ecuador')
+    es_extranjero = fields.Boolean('¿Es Migrante Extranjero?')    
     celular = fields.Char('Celular')
     operadora_id = fields.Many2one('mz.items', string='Operadora', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_operadoras').id)])
     # Campos de asistencia
-    fecha_nacimiento = fields.Date('Fecha de Nacimiento')
-    edad = fields.Integer('Edad', compute='_compute_edad', store=True)
+    fecha_nacimiento = fields.Date('Fecha de Nacimiento')   
     estado_civil_id = fields.Many2one('mz.items', string='Estado Civil', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_estado_civil').id)])
     genero_id = fields.Many2one('mz.items', string='Género', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_genero').id)])
     canton = fields.Char('Cantón')
     parroquia = fields.Char('Parroquia')
-    direccion_domicilio = fields.Char('Dirección de domicilio')
-    correo_electronico = fields.Char('Correo Electrónico')
-    
+    direccion = fields.Char('Dirección de domicilio')
+   
+
+    _sql_constraints = [('num_documento_uniq', 'UNIQUE(num_documento)', 'Ya existe un beneficiario con este número de documento.')]
 
     @api.onchange('tiene_discapacidad_hogar')
     def _onchange_tiene_discapacidad_hogar(self):
@@ -46,19 +50,43 @@ class Beneficiario(models.Model):
             if record.mujeres_embarazadas_menores > record.mujeres_embarazadas:
                 raise UserError('El número de mujeres embarazadas menores de 18 años no puede ser mayor al número total de mujeres embarazadas.')
 
-    @api.depends('fecha_nacimiento')
-    def _compute_edad(self):
-        for record in self:
-            if record.fecha_nacimiento:
-                today = date.today()
-                record.edad = today.year - record.fecha_nacimiento.year - (
-                    (today.month, today.day) < (record.fecha_nacimiento.month, record.fecha_nacimiento.day)
-                )
-            else:
-                record.edad = 0
+    def action_view_masivo(self):
+        self.ensure_one()
+        action = {
+            'name': 'Beneficiarios Registro Masivo',
+            'type': 'ir.actions.act_window',
+            'res_model': 'mz.beneficiario',
+            'view_mode': 'tree,form',
+            'domain': [('tipo_registro', '=', 'masivo')],
+            'context': {'default_tipo_registro': 'masivo'},
+            'target': 'current',
+        }
+        return action
 
-    _sql_constraints = [
-        ('num_documento_uniq', 
-         'UNIQUE(num_documento)',
-         'Ya existe un beneficiario con este número de documento.')
-    ]
+    def action_view_asistencia(self):
+        self.ensure_one()
+        action = {
+            'name': 'Beneficiarios Registro por Asistencia',
+            'type': 'ir.actions.act_window',
+            'res_model': 'mz.beneficiario',
+            'view_mode': 'tree,form',
+            'domain': [('tipo_registro', '=', 'asistencia')],
+            'context': {'default_tipo_registro': 'asistencia'},
+            'target': 'current',
+        }
+        return action
+
+    def action_view_socioeconomico(self):
+        self.ensure_one()
+        action = {
+            'name': 'Beneficiarios Registro Socioeconómico',
+            'type': 'ir.actions.act_window',
+            'res_model': 'mz.beneficiario',
+            'view_mode': 'tree,form',
+            'domain': [('tipo_registro', '=', 'socioeconomico')],
+            'context': {'default_tipo_registro': 'socioeconomico'},
+            'target': 'current',
+        }
+        return action
+
+   

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_mz_convoy_beneficiario_wizard_form" model="ir.ui.view">
+        <field name="name">mz_convoy.beneficiario_wizard.form</field>
+        <field name="model">mz_convoy.beneficiario_wizard</field>
+        <field name="arch" type="xml">
+            <form string="Registro de Beneficiario">
+                <sheet>
+                    <group>
+                        <field name="tipo_documento" required="1"/>
+                        <field name="numero_documento" required="1" placeholder="Ingrese número de documento"/>
+                        <field name="tipo_registro" widget="radio" options="{'horizontal': true}" invisible="not numero_documento"/>
+                    </group>
+
+                    <group>
+                        <group string="Datos Personales">
+                            <field name="apellido_paterno" required="1"/>
+                            <field name="apellido_materno" required="1"/>
+                            <field name="primer_nombre" required="1"/>
+                            <field name="segundo_nombre" required="1"/>
+                        </group>
+                        <group string="Datos de Contacto">
+                            <field name="es_extranjero"/>
+                            <field name="pais_id"/>
+                            <field name="celular"/>
+                            <field name="operadora_id" options="{'no_create': True, 'no_create_edit': True}"/>
+                            <field name="programa_id" required="1"/>
+                            <field name="convoy_id" required="1"/>
+                        </group>
+                    </group>
+                    <!-- Resto de información en notebook -->
+                    <notebook invisible="not numero_documento">
+                        <!-- Información Personal -->
+                        <page string="Información Personal" name="personal_info" invisible="tipo_registro == 'masivo'">
+                            <group>
+                                <group>
+                                    <field name="fecha_nacimiento" required="tipo_registro in ('asistencia', 'socioeconomico')"/>
+                                    <field name="edad" readonly="1"/>
+                                    <field name="estado_civil_id" required="tipo_registro in ('asistencia', 'socioeconomico')" options="{'no_create': True, 'no_create_edit': True}"/>
+                                    <field name="genero_id" required="tipo_registro in ('asistencia', 'socioeconomico')" options="{'no_create': True, 'no_create_edit': True}"/>
+                                    <field name="email" required="tipo_registro in ('asistencia', 'socioeconomico')"/>
+                                </group>
+                                <group string="Ubicación">
+                                    <field name="provincia_id" required="tipo_registro in ('asistencia', 'socioeconomico')"/>
+                                    <field name="ciudad_id" required="tipo_registro in ('asistencia', 'socioeconomico')"/>
+                                    <field name="direccion" required="tipo_registro in ('asistencia', 'socioeconomico')"/>
+                                    <field name="tiene_discapacidad"/>
+                                    <field name="recibe_bono"/>
+                                </group>
+                            </group>
+                        </page>
+                        <!-- Page 2: Información Socioeconómica -->
+                        <page string="Información Socioeconómica" name="socioeconomic_info" invisible="tipo_registro != 'socioeconomico'">
+                            <group>
+                                <group string="Educación y Trabajo">
+                                    <field name="nivel_instruccion_id" required="tipo_registro == 'socioeconomico'" options="{'no_create': True, 'no_create_edit': True}"/>
+                                    <field name="situacion_laboral_id" required="tipo_registro == 'socioeconomico'" options="{'no_create': True, 'no_create_edit': True}"/>
+                                    <field name="tipo_vivienda_id" required="tipo_registro == 'socioeconomico'" options="{'no_create': True, 'no_create_edit': True}"/>
+                                    <field name="sostiene_hogar" required="tipo_registro == 'socioeconomico'"/>
+                                    <field name="es_cuidador" required="tipo_registro == 'socioeconomico'"/>
+                                    <field name="hora_tarea_domestica" required="tipo_registro == 'socioeconomico'"/>
+                                    <field name="enfermedad_catastrofica" required="tipo_registro == 'socioeconomico'"/>
+                                </group>
+                                <group string="Servicios Básicos">
+                                    <field name="tiene_internet" required="tipo_registro == 'socioeconomico'"/>
+                                    <field name="tiene_agua_potable" required="tipo_registro == 'socioeconomico'"/>
+                                    <field name="tiene_luz_electrica" required="tipo_registro == 'socioeconomico'"/>
+                                    <field name="tiene_alcantarillado" required="tipo_registro == 'socioeconomico'"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Page 3: Composición Familiar y Discapacidad -->
+                        <page string="Composición Familiar" name="family_info" invisible="tipo_registro != 'socioeconomico'">
+                            <group>
+                                <group string="Habitantes del Hogar">
+                                    <field name="hombres_hogar" required="tipo_registro == 'socioeconomico'"/>
+                                    <field name="mujer_hogar" required="tipo_registro == 'socioeconomico'"/>
+                                    <field name="ninos_menores" required="tipo_registro == 'socioeconomico'"/>
+                                    <field name="ninos_5_estudiando" required="tipo_registro == 'socioeconomico'"/>
+                                    <field name="mayor_65" required="tipo_registro == 'socioeconomico'"/>
+                                </group>
+                                <group string="Información de Embarazo">
+                                    <field name="mujeres_embarazadas" required="tipo_registro == 'socioeconomico'"/>
+                                    <field name="mujeres_embarazadas_chequeos" invisible="mujeres_embarazadas == 0" required="tipo_registro == 'socioeconomico' and mujeres_embarazadas > 0"/>
+                                    <field name="mujeres_embarazadas_menores" invisible="mujeres_embarazadas == 0" required="tipo_registro == 'socioeconomico' and mujeres_embarazadas > 0"/>
+                                </group>
+                                <group string="Discapacidad">
+                                    <field name="tipo_discapacidad_id" invisible="not tiene_discapacidad" required="tiene_discapacidad and tipo_registro == 'socioeconomico'" options="{'no_create': True, 'no_create_edit': True}"/>
+                                    <field name="tiene_discapacidad_hogar" required="tipo_registro == 'socioeconomico'"/>
+                                    <field name="tipo_discapacidad_hogar_id" invisible="tiene_discapacidad_hogar != 'si'" required="tipo_registro == 'socioeconomico' and tiene_discapacidad_hogar == 'si'" options="{'no_create': True, 'no_create_edit': True}"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Page de dependientes con control de visibilidad -->
+                        <page string="Dependientes" name="dependientes" invisible="not numero_documento">
+                            <field name="dependientes_ids">                               
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button string="Guardar" name="action_register" type="object" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción del Wizard -->
+    <record id="action_mz_convoy_beneficiario_wizard" model="ir.actions.act_window">
+        <field name="name">Registro de Beneficiario</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mz_convoy.beneficiario_wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

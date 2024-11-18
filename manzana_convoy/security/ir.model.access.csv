@@ -3,13 +3,20 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_mz_convoy_mesa_tecnica_user,mz_convoy.mesa_tecnica.user,model_mz_convoy_mesa_tecnica,,1,1,1,1
 access_mz_convoy_autoridades_user,mz_convoy.autoridades.user,model_mz_convoy_autoridades,,1,1,1,1
 access_mz_convoy_alertas_quejas_user,mz_convoy.alertas_quejas.user,model_mz_convoy_alertas_quejas,,1,1,1,1
-access_mz_convoy.convoy_beneficiario_user,mz_convoy.beneficiario.user,model_mz_convoy_convoy_beneficiario,,1,1,1,1
+
 
 
 access_mz_convoy_operador,mz.convoy.asistente_operador,model_mz_convoy,group_mz_convoy_operador,1,0,0,0
 access_mz_convoy_asistente_coordinador,mz.convoy.asistente_coordinador,model_mz_convoy,group_mz_convoy_asistente_coordinador,1,1,1,0
 access_mz_convoy_coordinador,mz.convoy.coordinador,model_mz_convoy,group_mz_convoy_coordinador,1,1,1,0
 access_mz_convoy_administrador,mz.convoy.asministrador,model_mz_convoy,group_mz_convoy_administrador,1,1,1,1
+
+access_mz_beneficiario_operador,mz.beneficiario.asistente_operador,manzana_de_cuidados.model_mz_beneficiario,group_mz_convoy_operador,1,0,0,0
+access_mz_beneficiario_asistente_coordinador,mz.beneficiario.asistente_coordinador,manzana_de_cuidados.model_mz_beneficiario,group_mz_convoy_asistente_coordinador,1,1,1,0
+access_mz_beneficiario_coordinador,mz.beneficiario.coordinador,manzana_de_cuidados.model_mz_beneficiario,group_mz_convoy_coordinador,1,1,1,0
+access_mz_beneficiario_administrador,mz.beneficiario.asministrador,manzana_de_cuidados.model_mz_beneficiario,group_mz_convoy_administrador,1,1,1,1
+
+
 
 access_mz_asignacion_servicio_operador,mz.asignacion.servicio.asistente_operador,manzana_de_cuidados.model_mz_asignacion_servicio,group_mz_convoy_operador,1,0,0,0
 access_mz_asignacion_servicio_asistente_coordinador,mz.asignacion.servicio.asistente_coordinador,manzana_de_cuidados.model_mz_asignacion_servicio,group_mz_convoy_asistente_coordinador,1,1,1,0
@@ -36,5 +43,12 @@ access_mz_items_asistente_coordinador,mz.items.asistente_coordinador,manzana_de_
 access_mz_items_coordinador,mz.items.coordinador,manzana_de_cuidados.model_mz_items,group_mz_convoy_coordinador,1,1,1,0
 access_mz_items_administrador,mz.items.asministrador,manzana_de_cuidados.model_mz_items,group_mz_convoy_administrador,1,1,1,1
 
+access_mz_convoy_beneficiario_operador,mz_convoy.beneficiario.asistente_operador,model_mz_convoy_beneficiario,group_mz_convoy_operador,1,0,0,0
+access_mz_convoy_beneficiario_asistente_coordinador,mz_convoy.beneficiario.asistente_coordinador,model_mz_convoy_beneficiario,group_mz_convoy_asistente_coordinador,1,0,0,0
+access_mz_convoy_beneficiario_coordinador,mz_convoy.beneficiario.coordinador,model_mz_convoy_beneficiario,group_mz_convoy_coordinador,1,1,1,0
+access_mz_convoy_beneficiario_administrador,mz_convoy.beneficiario.asministrador,model_mz_convoy_beneficiario,group_mz_convoy_administrador,1,1,1,1
 
+
+access_mz_convoy.beneficiario_wizard_user,mz_convoy.beneficiario_wizard.user,model_mz_convoy_beneficiario_wizard,,1,1,1,1
+access_mz_convoy.dependiente_wizard_user,mz_convoy.dependiente_wizard.user,model_mz_convoy_dependiente_wizard,,1,1,1,1
 

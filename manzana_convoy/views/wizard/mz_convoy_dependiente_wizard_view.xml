@@ -1,0 +1,60 @@
+<odoo>
+    <!-- Vista Tree para ConvoyBeneficiarioWizardDependiente -->
+    <record id="view_convoy_dependiente_wizard_tree" model="ir.ui.view">
+        <field name="name">mz_convoy.dependiente_wizard.tree</field>
+        <field name="model">mz_convoy.dependiente_wizard</field>
+        <field name="arch" type="xml">
+            <tree string="Dependiente Wizard">
+                <field name="name"/>
+                <field name="primer_apellido" optional="hide"/>
+                <field name="segundo_apellido" optional="hide"/>
+                <field name="primer_nombre" optional="hide"/>
+                <field name="segundo_nombre" optional="hide"/>
+                <field name="tipo_dependiente"/>
+                <field name="fecha_nacimiento"/>
+                <field name="edad" optional="hide"/>
+                <field name="tipo_documento"/>
+                <field name="numero_documento"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Form para ConvoyBeneficiarioWizardDependiente -->
+    <record id="view_convoy_dependiente_wizard_form" model="ir.ui.view">
+        <field name="name">mz_convoy.dependiente_wizard.form</field>
+        <field name="model">mz_convoy.dependiente_wizard</field>
+        <field name="arch" type="xml">
+            <form string="Dependiente Wizard">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="tipo_dependiente"/>
+                            <field name="primer_apellido"/>
+                            <field name="segundo_apellido"/>
+                            <field name="primer_nombre"/>
+                            <field name="segundo_nombre"/>
+                        </group>
+                        <group>
+                            <field name="fecha_nacimiento"/>
+                            <field name="edad" readonly="1"/>
+                            <field name="tipo_documento"/>
+                            <field name="numero_documento"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción Window para ConvoyBeneficiarioWizardDependiente -->
+    <record id="action_convoy_dependiente_wizard" model="ir.actions.act_window">
+        <field name="name">Dependientes del Wizard</field>
+        <field name="res_model">mz_convoy.dependiente_wizard</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Crea un nuevo Dependiente del Wizard
+            </p>
+        </field>
+    </record>
+</odoo>

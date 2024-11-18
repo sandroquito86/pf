@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_mz_convoy_beneficiario_rel_tree" model="ir.ui.view">
+        <field name="name">mz_convoy.beneficiario.tree</field>
+        <field name="model">mz_convoy.beneficiario</field>
+        <field name="arch" type="xml">
+            <tree string="Beneficiarios">
+                <field name="numero_documento"/>
+                <field name="nombres_completos"/>
+                <field name="tipo_registro"/>
+                <field name="fecha_registro"/>
+                <field name="servicio_id"/>
+                <field name="estado"/>
+                <field name="user_id"/>
+                <button name="action_promover_asistencia" type="object" icon="fa-arrow-up" string="Promover a Asistencia" invisible="tipo_registro != 'masivo'" help="Convertir a registro de Asistencia"/>
+                <button name="action_promover_socioeconomico" type="object" icon="fa-arrow-up" string="Promover a Socioeconómico" invisible="tipo_registro not in ('masivo', 'asistencia')" help="Convertir a registro Socioeconómico"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_mz_convoy_beneficiario_rel_form" model="ir.ui.view">
+        <field name="name">mz_convoy.beneficiario.form</field>
+        <field name="model">mz_convoy.beneficiario</field>
+        <field name="arch" type="xml">
+            <form string="Beneficiario">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="convoy_id"/>
+                            <field name="beneficiario_id"/>
+                            <field name="tipo_registro"/>
+                        </group>
+                        <group>
+                            <field name="fecha_registro"/>
+                            <field name="user_id"/>
+                            <field name="estado"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

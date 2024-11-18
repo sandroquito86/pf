@@ -3,7 +3,7 @@
     <!-- Vista Form -->
     <record id="view_mz_convoy_beneficiario_socioeconomico_form" model="ir.ui.view">
         <field name="name">mz.convoy.beneficiario.socioeconomico.form</field>
-        <field name="model">mz_convoy.convoy_beneficiario</field>
+        <field name="model">mz_convoy.beneficiario_wizard</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -57,7 +57,7 @@
                                 </group>
                                 <group>
                                     <field name="tiene_alcantarillado"/>
-                                    <field name="direccion_domicilio"/>
+                                    <field name="direccion"/>
                                     <field name="canton"/>
                                     <field name="parroquia"/>
                                 </group>
@@ -93,7 +93,7 @@
     <!-- Vista Tree -->
     <record id="view_mz_convoy_beneficiario_socioeconomico_tree" model="ir.ui.view">
         <field name="name">mz.convoy.beneficiario.socioeconomico.tree</field>
-        <field name="model">mz_convoy.convoy_beneficiario</field>
+        <field name="model">mz_convoy.beneficiario_wizard</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="num_documento"/>
@@ -112,7 +112,7 @@
     <!-- Vista Search -->
     <record id="view_mz_convoy_beneficiario_socioeconomico_search" model="ir.ui.view">
         <field name="name">mz.convoy.beneficiario.socioeconomico.search</field>
-        <field name="model">mz_convoy.convoy_beneficiario</field>
+        <field name="model">mz_convoy.beneficiario_wizard</field>
         <field name="arch" type="xml">
             <search>
                 <field name="num_documento"/>
@@ -137,7 +137,7 @@
     <!-- Acción -->
     <record id="action_mz_convoy_beneficiario_socioeconomico" model="ir.actions.act_window">
         <field name="name">Registro Socioeconómico</field>
-        <field name="res_model">mz_convoy.convoy_beneficiario</field>
+        <field name="res_model">mz_convoy.beneficiario_wizard</field>
         <field name="view_mode">tree,form</field>
         <field name="view_ids" eval="[(5, 0, 0),
         (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz_convoy_beneficiario_socioeconomico_tree')}),

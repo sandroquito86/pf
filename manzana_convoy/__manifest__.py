@@ -38,14 +38,16 @@ Long description of module's purpose
 
         # PLANIFICACION
         'views/planificacion/mz_asignacion_servicio_view.xml',
+         'views/planificacion/mz_planificacion_servicio_view.xml',
+
+        # WIZARD
+        'views/wizard/mz_convoy_beneficiario_wizard_view.xml', 
+        'views/wizard/mz_convoy_dependiente_wizard_view.xml', 
         
         # REGISTRO
-        'views/registro/mz_convoy_colaborar_view.xml', 
-        'views/registro/mz_convoy_beneficiario_masivo_view.xml', 
-        # 'views/registro/mz_convoy_beneficiario_asistencia_view.xml', 
-        # 'views/registro/mz_convoy_beneficiario_socioeconomico_view.xml',                 
-        'views/registro/mz_convoy_programas_view.xml', 
-        'views/registro/mz_convoy_asignacion_servicio_view.xml', 
+        'views/registro/mz_convoy_colaborador_view.xml',        
+        'views/registro/mz_convoy_beneficiario_view.xml',                 
+        'views/registro/mz_convoy_programas_view.xml',        
         'views/registro/mz_convoy_agendar_servicio_view.xml', 
         
         
