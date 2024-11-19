@@ -58,7 +58,8 @@ class AsignarServicio(models.Model):
     @api.constrains('personal_ids')
     def _check_personal_ids(self):
         for record in self:
-            if not record.personal_ids:
+            # Verificamos si el registro está siendo eliminado
+            if not record._context.get('eliminar_registro') and not record.personal_ids:
                 raise UserError("Por favor ingresar al menos un responsable")
 
 
