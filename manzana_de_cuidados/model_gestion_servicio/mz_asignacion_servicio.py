@@ -15,6 +15,7 @@ class AsignarServicio(models.Model):
     
     name = fields.Char(string='Nombre', required=True, compute='_compute_name', store=True)
     servicio_id = fields.Many2one(string='Servicio', comodel_name='mz.servicio', ondelete='restrict', required=True)  
+    servicio_domain_id = fields.Char(string='Domain Servicios',compute='_compute_author_domain_field')
     image = fields.Binary(string='Imagen', attachment=True) 
     active = fields.Boolean(default=True, string='Activo', tracking=True)
     count_responsables = fields.Integer(compute="_compute_count_responsables", string="")
@@ -60,6 +61,15 @@ class AsignarServicio(models.Model):
             if not record.personal_ids:
                 raise UserError("Por favor ingresar al menos un responsable")
 
+
+    @api.depends('programa_id')
+    def _compute_author_domain_field(self):
+        for record in self:
+            servicios_registrados = self.search([('programa_id', '=', record.programa_id.id), ('active', '=', True)]).mapped('servicio_id')
+            if servicios_registrados:
+                record.servicio_domain_id = [('id', 'not in', servicios_registrados.ids)]
+            else:
+                record.servicio_domain_id = [('id', '>', 0)]
 
     @api.depends('programa_id')
     def _compute_domain_personal_ids(self):

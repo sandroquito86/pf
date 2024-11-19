@@ -22,13 +22,13 @@ class Dependiente(models.Model):
     
 
     name = fields.Char(string='Nombre Completo', required=True, compute='_compute_name', tracking=True)
-    tipo_dependiente = fields.Many2one('mz.items', string="Tipo de Dependiente", required=True, ondelete="cascade", domain=_get_tipo_dependiente_domain , tracking=True)
+    tipo_dependiente = fields.Many2one('pf.items', string="Tipo de Dependiente", required=True, ondelete="cascade", domain=_get_tipo_dependiente_domain , tracking=True)
     primer_apellido = fields.Char(string='Primer Apellido', required=True, tracking=True)
     segundo_apellido = fields.Char(string='Segundo Apellido', tracking=True)
     primer_nombre = fields.Char(string='Primer Nombre', required=True, tracking=True)
     segundo_nombre = fields.Char(string='Segundo Nombre', tracking=True)
     fecha_nacimiento = fields.Date(string='Fecha de Nacimiento', tracking=True)
-    historia_clinica_ids = fields.One2many('mz.historia.clinica', 'beneficiario_id', string='Historias Clínicas')
+    historia_clinica_ids = fields.One2many('mz.historia.clinica', 'dependiente_id', string='Historias Clínicas')
     consulta_count = fields.Integer(string='Número de Consultas', compute='_compute_consulta_count')
     tipo_documento = fields.Selection([
         ('dni', 'DNI'),
@@ -38,6 +38,10 @@ class Dependiente(models.Model):
     numero_documento = fields.Char(string='Número de Documento', required=True, tracking=True)
     beneficiario_id = fields.Many2one('mz.beneficiario', string='Beneficiario', ondelete='cascade', required=True)
     edad = fields.Char(string="Edad", compute="_compute_edad", store=True)
+    genero = fields.Selection([('masculino', 'Masculino'), ('femenino', 'Femenino'), ('otro','Otro')], string='Género', tracking=True)
+    # creame un constrains para que el numero_documento y tipo_documento sean unico 
+
+    _sql_constraints = [('unique_documento', 'UNIQUE(tipo_documento, numero_documento)', 'Ya existe un dependiente con este documento.')]
 
     @api.depends('historia_clinica_ids')
     def _compute_consulta_count(self):

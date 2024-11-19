@@ -11,6 +11,7 @@ from datetime import date
 import time
 import json
 global NoTieneHorario
+from pytz import timezone
 
 from datetime import timedelta
 
@@ -371,8 +372,7 @@ class WizardReplanificarTurnos(models.TransientModel):
         res = super().default_get(fields_list)
         if 'fecha_inicio' in fields_list and not res.get('fecha_inicio'):
             res['fecha_inicio'] = fields.Date.today() + timedelta(days=1)
-        if 'fecha_fin' in fields_list and not res.get('fecha_fin'):
-            res['fecha_fin'] = fields.Date.today() + timedelta(days=6)
+        
         return res
 
     planificacion_id = fields.Many2one(
@@ -384,6 +384,16 @@ class WizardReplanificarTurnos(models.TransientModel):
         'mz.genera.planificacion.servicio', 
         'Planificación Original',
         required=True
+    )
+    planificacion_fecha_inicio = fields.Date(
+        'Fecha Inicio Planificación Original', 
+        related='planificacion_original_id.fecha_inicio',
+        readonly=True
+    )
+    planificacion_fecha_fin = fields.Date(
+        'Fecha Fin Planificación Original', 
+        related='planificacion_original_id.fecha_fin',
+        readonly=True
     )
     fecha_inicio = fields.Date(
         'Nueva Fecha Inicio', 
@@ -409,12 +419,23 @@ class WizardReplanificarTurnos(models.TransientModel):
     def _onchange_fecha_inicio(self):
         for record in self:
             if record.fecha_inicio:
-                fecha_actual = fields.Date.today()
+                fecha_actual = datetime.now()
                 fecha_inicio = record.fecha_inicio
+                tz = timezone(self.env.user.tz or 'UTC')
+                fecha_actual = fecha_actual.astimezone(tz).date()
                 if fecha_actual > fecha_inicio:
                     self.fecha_inicio = fecha_actual + timedelta(days=1)
                     raise UserError("La fecha de inicio no puede ser menor o igual al la fecha actual!!")
-                
+
+    @api.onchange('fecha_fin', 'fecha_inicio')
+    def _onchange_fecha_fin(self):
+        for record in self:
+            if record.fecha_fin and record.fecha_inicio:
+                if record.fecha_inicio > record.fecha_fin:
+                    raise UserError("La fecha de fin no puede ser menor a la fecha de inicio!!")
+                if not ( record.fecha_inicio >= record.planificacion_fecha_inicio and  record.fecha_inicio <= record.planificacion_fecha_fin):
+                    raise UserError("La fecha de inicio debe estar dentro del rango de la planificación original!!")
+                           
     
 
     def action_replanificar(self):

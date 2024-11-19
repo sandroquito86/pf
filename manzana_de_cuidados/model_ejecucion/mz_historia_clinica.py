@@ -6,7 +6,7 @@ class HistoriaClinica(models.Model):
     _order = 'fecha desc'
     _rec_name = 'beneficiario_id'
 
-    beneficiario_id = fields.Many2one('mz.beneficiario', string='Paciente', ondelete='cascade')
+    beneficiario_id = fields.Many2one('mz.beneficiario', string='Paciente Beneficiario', ondelete='cascade')
 
     personal_id = fields.Many2one('hr.employee', string='Personal Medico', ondelete='restrict')
     sintomas = fields.Text(string='Síntomas')
@@ -26,9 +26,19 @@ class HistoriaClinica(models.Model):
         'historia_clinica_id',
         string='Diagnósticos'
     )
-    dependiente_id = fields.Many2one('mz.dependiente', string='Dependiente', ondelete='cascade')
+    dependiente_id = fields.Many2one('mz.dependiente', string='Paciente Dependiente', ondelete='cascade')
+
+    tipo_paciente = fields.Selection([
+        ('titular', 'Titular'),
+        ('dependiente', 'Dependiente')
+    ], string='Tipo de Paciente')
 
     def name_get(self):
-        return [(record.id, f"Historia Clínica - {record.beneficiario_id.name} - {record.fecha}") for record in self]
-    
-    
+        result = []
+        for record in self:
+            if record.beneficiario_id:
+                name = f"Historia Clínica - {record.beneficiario_id.name} - {record.fecha}"
+            else:
+                name = f"Historia Clínica - {record.dependiente_id.name} - {record.fecha}"
+            result.append((record.id, name))
+        return result

@@ -17,6 +17,10 @@
               name="Ejecución"
               parent="menu_principal"
               sequence="7"/>
+    <menuitem id="menu_employee"
+              name="Empleados"
+              parent="menu_principal"
+              sequence="8"/>
     <menuitem id="menu_beneficiario"
               name="Beneficiario"
               parent="menu_principal"

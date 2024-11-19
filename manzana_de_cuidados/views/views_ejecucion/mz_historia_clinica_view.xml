@@ -6,7 +6,8 @@
         <field name="model">mz.historia.clinica</field>
         <field name="arch" type="xml">
             <tree string="Historial Clínico">
-                <field name="beneficiario_id"/>
+                <field name="beneficiario_id" />
+                <field name="dependiente_id" />
                 <field name="personal_id"/>
                 <field name="fecha"/>
                 <field name="motivo_consulta"/>
@@ -19,16 +20,18 @@
         <field name="name">mz.historia.clinica.form</field>
         <field name="model">mz.historia.clinica</field>
         <field name="arch" type="xml">
-            <form string="Historia Clínica">
+            <form string="Historia Clínica" create="False" delete="False" edit="False">
                 <sheet>
                     <group>
                         <group>
-                            <field name="beneficiario_id" options="{'no_create': True, 'no_open': True}" readonly="1"/>
+                            <field name="beneficiario_id" invisible="tipo_paciente != 'titular'"  options="{'no_create': True, 'no_open': True}" readonly="1"/>
+                            <field name="tipo_paciente" readonly="1"/>
+                            <field name="dependiente_id" invisible="tipo_paciente != 'dependiente'"  options="{'no_create': True, 'no_open': True}" readonly="1"/>
                             <field name="personal_id" options="{'no_create': True, 'no_open': True}" readonly="1"/>
-                            <field name="fecha" readonly="1"/>
                             <field name="consulta_id" options="{'no_create': True, 'no_open': True}" readonly="1"/>
                         </group>
                         <group>
+                            <field name="fecha" readonly="1"/>
                             <field name="signos_vitales" readonly="1"/>
                         </group>
                     </group>

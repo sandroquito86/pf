@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record model="ir.ui.view" id="view_mz_catalogo_tree">
-            <field name="name">mz.catalogo.tree</field>
-            <field name="model">mz.catalogo</field>
+        <record model="ir.ui.view" id="view_mz_pf_catalogo_tree">
+            <field name="name">mz.pf.catalogo.tree</field>
+            <field name="model">pf.catalogo</field>
             <field name="arch" type="xml">
                 <tree>
                     <field name="name" />
@@ -13,9 +13,9 @@
             </field>
         </record>
 
-        <record id="view_mz_catalogo_form" model="ir.ui.view">
-            <field name="name">mz.catalogo.form</field>
-            <field name="model">mz.catalogo</field>
+        <record id="view_mz_pf_catalogo_form" model="ir.ui.view">
+            <field name="name">mz.pf.catalogo.form</field>
+            <field name="model">pf.catalogo</field>
             <field name="arch" type="xml">
                 <form string="Nuevo" duplicate="0">
                     <sheet>
@@ -26,7 +26,7 @@
                             </group>
                         </group>
                         <group string="Items">
-                            <field name="items_ids" nolabel="1" colspan="2" context="{'form_view_ref': 'manzana_de_cuidados.view_mz_items_form2'}"/>
+                            <field name="items_ids" nolabel="1" colspan="2" context="{'form_view_ref': 'manzana_de_cuidados.view_pf_items_form2'}"/>
                         </group>
                         <div class="oe_chatter">
                             <field name="message_follower_ids" widget="mail_followers" />
@@ -37,9 +37,9 @@
             </field>
         </record>
 
-        <record id="view_mz_catalogo_search" model="ir.ui.view">
-            <field name="name">mz.catalogo</field>
-            <field name="model">mz.catalogo</field>
+        <record id="view_mz_pf_catalogo_search" model="ir.ui.view">
+            <field name="name">mz.pf.catalogo</field>
+            <field name="model">pf.catalogo</field>
             <field name="arch" type="xml">
                 <search string="">
                     <field name="name" />
@@ -52,14 +52,18 @@
         </record>
 
 
-
-        <record model="ir.actions.act_window" id="action_mz_catalogo">
+        <!-- quiero que se establesca la vista tree y form creada en este archivo 
+         -->
+        <record model="ir.actions.act_window" id="action_mz_pf_catalogo">
             <field name="name">CATÁLOGOS</field>
-            <field name="res_model">mz.catalogo</field>
+            <field name="res_model">pf.catalogo</field>
             <field name="view_mode">tree,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz_pf_catalogo_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz_pf_catalogo_form')})]"/>
         </record>
 
-        <menuitem id="menu_action_mz_catalogo" name="Catálogo" action="action_mz_catalogo" parent="menu_configuracion" sequence="1" />
+        <menuitem id="menu_action_pf_catalogo" name="Catálogo" action="action_mz_pf_catalogo" parent="menu_configuracion" sequence="1" />
 
     </data>
 </odoo>

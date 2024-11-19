@@ -2,8 +2,8 @@
 <odoo>
     <data>
 
-        <record id="hr_employee_kanban_view" model="ir.ui.view">
-            <field name="name">hr.employee.kanban</field>
+        <record id="mz_hr_employee_kanban_view" model="ir.ui.view">
+            <field name="name">mz.hr.employee.kanban</field>
             <field name="model">hr.employee</field>
             <field name="priority">10</field>
             <field name="arch" type="xml">
@@ -87,8 +87,8 @@
         </record>
 
 
-        <record id="view_hr_employee_form" model="ir.ui.view">
-            <field name="name">hr.employee.form</field>
+        <record id="view_mz_hr_employee_form" model="ir.ui.view">
+            <field name="name">mz.hr.employee.form</field>
             <field name="model">hr.employee</field>
             <field name="arch" type="xml">
                 <form string="Employee">
@@ -117,9 +117,9 @@
                                     <field name="name" invisible="1" force_save='1' style="font-size: min(4vw, 2.6rem);" required="0"/>
                                     <field name="nombre" placeholder="Employee's Name" required="1" style="font-size: min(4vw, 2.6rem);"/>
                                 </h1>
-                                <div>
+                                <!-- <div>
                                     <field name="modulo_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" placeholder="Dependencia" />
-                                </div>
+                                </div> -->
                                 <div>
                                     <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" placeholder="Etiquetas" groups="hr.group_hr_user"/>
                                 </div>
@@ -164,8 +164,8 @@
                                 <field name="work_phone" widget="phone"/>
                                 <field name="work_email" widget="email"/>
                                 <field name="company_id" invisible="1"/>
-                                <field name="sucursal_id"/>
-                                <field name="programa_id"/>
+                                <field name="sucursal_id" readonly="1" options="{'no_edit': True, 'no_create': True, 'no_open': True}"/>
+                                <field name="programa_id" options="{'no_edit': True, 'no_create': True, 'no_open': True}"/>
                                 <field name="company_country_id" invisible="1"/>
                                 <field name="company_country_code" invisible="1"/>
                             </group>
@@ -271,7 +271,7 @@
 
 
 
-        <record id="view_hr_employee_tree" model="ir.ui.view">
+        <record id="view_mz_hr_employee_tree" model="ir.ui.view">
             <field name="name">hr.employee.tree</field>
             <field name="model">hr.employee</field>
             <field name="arch" type="xml">
@@ -283,15 +283,26 @@
         </record>
 
         <!-- Actualización de la acción -->
-        <record id="action_pf_hr_employee" model="ir.actions.act_window">
+        <record id="action_mz_hr_employee" model="ir.actions.act_window">
             <field name="name">Empleados</field>
             <field name="res_model">hr.employee</field>
             <field name="view_mode">kanban,tree,form</field>
-            <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'kanban', 'view_id': ref('hr_employee_kanban_view')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_hr_employee_form')})]"/>
+            <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'kanban', 'view_id': ref('mz_hr_employee_kanban_view')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz_hr_employee_form')})]"/>
+            <field name="context">{
+                                                'default_tipo_personal': 'externo'
+                                }</field>
+             <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Registrar nuevo Empleado
+                </p>
+                <p>
+                    Registre los datos del Empleado para Manzana de Cuidados.
+                </p>
+            </field>
             <field name="domain">[('tipo_personal', '=', 'interno')]</field>
         </record>
 
-        <menuitem id="menu_hr_employee" name="Empleados" action="action_pf_hr_employee" parent="menu_pf_empleado" sequence="10"/>
+        <menuitem id="menu_mz_hr_employee" name="Empleados" action="action_mz_hr_employee" parent="menu_employee" sequence="10"/>
 
 
     </data>

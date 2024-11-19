@@ -2,6 +2,8 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
+
 from string import ascii_letters, digits
 import string
 import datetime
@@ -104,16 +106,17 @@ class DetalleHorarios(models.Model):
     _order = 'fecha, horainicio ASC'    
                 
 
-    asignacion_horario_id = fields.Many2one(string='Cabecera', comodel_name='mz.horarios.servicio', ondelete='restrict',)
+    asignacion_horario_id = fields.Many2one(string='Cabecera', comodel_name='mz.horarios.servicio', ondelete='restrict', required=True)
     fecha = fields.Date(string='Fecha', required=True, default=fields.Datetime.now, )
-    horainicio = fields.Float(string='Hora Inicio')
-    horafin = fields.Float(string='Hora Fin',)       
+    horainicio = fields.Float(string='Hora Inicio', required=True, )
+    horafin = fields.Float(string='Hora Fin', required=True, )       
     hora = fields.Char(string='Hora')
     estado = fields.Boolean(default='True')    
     observacion = fields.Char(string='Observación')
     fecha_actualizacion = fields.Date(string='Fecha Actualiza', readonly=True, default=fields.Datetime.now, )
     dias = fields.Selection([('0', 'LUNES'), ('1', 'MARTES'), ('2', 'MIERCOLES'), ('3', 'JUEVES'), ('4', 'VIERNES'), 
-                                                            ('5', 'SABADO'), ('6', 'DOMINGO')],string='Dia')
+                                                            ('5', 'SABADO'), ('6', 'DOMINGO')],string='Dia', 
+                                                            required=True, )
     property_valuation = fields.Selection([
         ('manual_periodic', 'Manual'),
         ('real_time', 'Automated')], string='Inventory Valuation',
@@ -121,8 +124,15 @@ class DetalleHorarios(models.Model):
         help="""Manual: The accounting entries to value the inventory are not posted automatically.
         Automated: An accounting entry is automatically created to value the inventory when a product enters or leaves the company.
         """)
-    duracionconsulta = fields.Float(string='Duración del Servicio')
+    duracionconsulta = fields.Float(string='Duración del Servicio', required=True, )
 
-    _sql_constraints = [('name_unique', 'UNIQUE(asignacion_horario_id,dias)', "No se permiten días repetidos.")]    
-    
-   
+    _sql_constraints = [('name_unique', 'UNIQUE(asignacion_horario_id,dias)', "No se permiten días repetidos.")]  
+
+
+
+    @api.onchange('dias')
+    def _onchange_dias(self):
+        if self.dias:
+            registros = self.env['mz.detalle.horarios'].search([('asignacion_horario_id', '=', self.asignacion_horario_id._origin.id)]).mapped('dias')
+            if self.dias in registros:
+                raise ValidationError('No se permiten días repetidos.')

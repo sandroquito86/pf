@@ -44,6 +44,11 @@ class Consulta(models.Model):
         compute="_compute_presion_arterial",
         store=True
     )
+    state = fields.Selection([
+        ('draft', 'Borrador'),
+        ('final', 'Finalizado')
+    ], string='Estado', default='draft', tracking=True)
+
     presion_sistolica = fields.Integer(string="Presión Sistólica", tracking=True)
     presion_diastolica = fields.Integer(string="Presión Diastólica", tracking=True)
     frecuencia_cardiaca = fields.Integer(string='Frecuencia Cardíaca', tracking=True)
@@ -78,8 +83,6 @@ class Consulta(models.Model):
     horario_id = fields.Many2one(string='Turno', comodel_name='mz.planificacion.servicio', ondelete='restrict') 
     dias_disponibles_html = fields.Html(    string='Días Disponibles',    compute='_compute_dias_disponibles_html',    sanitize=False)
 
-    historia_clinica_id = fields.Many2one('mz.historia.clinica', string='Historia Clínica', readonly=True)
-
 
     receta_ids = fields.One2many('mz.receta.linea', 'consulta_id', string='Receta Médica')
     picking_id = fields.Many2one('stock.picking', string='Orden de Entrega', readonly=True)
@@ -91,13 +94,78 @@ class Consulta(models.Model):
     )
     
     # Campo relacionado para acceder a las historias clínicas del beneficiario
+     # Modificar el campo historial_ids para que muestre el historial correspondiente
+    @api.depends('tipo_paciente', 'beneficiario_id', 'dependiente_id')
+    def _compute_historial_ids(self):
+        for record in self:
+            if record.tipo_paciente == 'titular':
+                record.historial_ids = record.beneficiario_id.historia_clinica_ids
+            elif record.tipo_paciente == 'dependiente' and record.dependiente_id:
+                record.historial_ids = record.dependiente_id.historia_clinica_ids
+            else:
+                record.historial_ids = False
+
     historial_ids = fields.One2many(
-        related='beneficiario_id.historia_clinica_ids',
+        'mz.historia.clinica',
+        compute='_compute_historial_ids',
         string='Historias Clínicas'
     )
+
+    # historial_ids = fields.One2many(
+    #     related='beneficiario_id.historia_clinica_ids',
+    #     string='Historias Clínicas'
+    # )
     estado_new_solicitud = fields.Selection([
     ('borrador', 'Borrador'),
     ('solicitado', 'Solicitado')], string='Estado Solicitud', default='borrador', tracking=True)
+
+    tipo_paciente = fields.Selection([
+        ('titular', 'Titular'),
+        ('dependiente', 'Dependiente')
+    ], string='Tipo de Paciente', default='titular', required=True, tracking=True)
+    
+    dependiente_id = fields.Many2one(
+        'mz.dependiente',
+        string='Dependiente',
+        tracking=True,
+        domain="[('beneficiario_id', '=', beneficiario_id)]"
+    )
+
+    # Modificar el campo historia_clinica_id para que pueda relacionarse con historias de dependientes
+    historia_clinica_id = fields.Many2one(
+        'mz.historia.clinica', 
+        string='Historia Clínica', 
+        readonly=True,
+        # compute='_compute_historia_clinica',
+        store=True
+    )
+
+    
+
+    # @api.depends('beneficiario_id', 'dependiente_id', 'tipo_paciente')
+    # def _compute_historia_clinica(self):
+    #     for record in self:
+    #         if record.tipo_paciente == 'titular':
+    #             record.historia_clinica_id = record.beneficiario_id.historia_clinica_id
+    #         elif record.tipo_paciente == 'dependiente' and record.dependiente_id:
+    #             record.historia_clinica_id = record.dependiente_id.historia_clinica_id
+    #         else:
+    #             record.historia_clinica_id = False
+
+    @api.depends('beneficiario_id', 'dependiente_id', 'tipo_paciente')
+    def _compute_historial_count(self):
+        for record in self:
+            if record.tipo_paciente == 'titular':
+                record.historial_count = len(record.beneficiario_id.historia_clinica_ids)
+            elif record.tipo_paciente == 'dependiente' and record.dependiente_id:
+                record.historial_count = len(record.dependiente_id.historia_clinica_ids)
+            else:
+                record.historial_count = 0
+
+    # @api.depends('beneficiario_id')
+    # def _compute_historial_count(self):
+    #     for record in self:
+    #         record.historial_count = len(record.beneficiario_id.historia_clinica_ids)
     
     _sql_constraints = [
         ('codigo_unique', 'unique(codigo)', 'El código de la consulta debe ser único.')
@@ -151,23 +219,31 @@ class Consulta(models.Model):
                 if codigo_existente:
                     raise UserError('Este servicio ya genero una consulta con el mismo código.')
                 
-    @api.depends('beneficiario_id')
-    def _compute_historial_count(self):
-        for record in self:
-            record.historial_count = len(record.beneficiario_id.historia_clinica_ids)
+    
     
     def action_view_historial(self):
         self.ensure_one()
+        if self.tipo_paciente == 'titular':
+            domain = [('beneficiario_id', '=', self.beneficiario_id.id)]
+            name = f'Historial Clínico - {self.beneficiario_id.name}'
+            context = {
+                'default_beneficiario_id': self.beneficiario_id.id,
+                'search_default_beneficiario_id': self.beneficiario_id.id,
+            }
+        else:
+            domain = [('dependiente_id', '=', self.dependiente_id.id)]
+            name = f'Historial Clínico - {self.dependiente_id.name}'
+            context = {
+                'default_dependiente_id': self.dependiente_id.id,
+                'search_default_dependiente_id': self.dependiente_id.id,
+            }
         return {
-            'name': f'Historial Clínico - {self.beneficiario_id.name}',
+            'name': name,
             'type': 'ir.actions.act_window',
             'res_model': 'mz.historia.clinica',
             'view_mode': 'tree,form',
-            'domain': [('beneficiario_id', '=', self.beneficiario_id.id)],
-            'context': {
-                'default_beneficiario_id': self.beneficiario_id.id,
-                'search_default_beneficiario_id': self.beneficiario_id.id,
-            },
+            'domain':  domain,
+            'context': context,
             'target': 'current',
         }
 
@@ -179,17 +255,27 @@ class Consulta(models.Model):
         context = self.env.context
         defaults['personal_id'] = context.get('default_personal_id')
         defaults['beneficiario_id'] = context.get('default_beneficiario_id')
+        defaults['tipo_paciente'] = context.get('default_tipo_paciente')
+        defaults['dependiente_id'] = context.get('default_dependiente_id')
         defaults['servicio_id'] = context.get('default_servicio_id')
         defaults['programa_id'] = context.get('default_programa_id')
         defaults['fecha'] = context.get('default_fecha')
-        
-        if defaults.get('beneficiario_id'):
-            beneficiario = self.env['mz.beneficiario'].browse(defaults['beneficiario_id'])
-            defaults['genero'] = beneficiario.genero
-            defaults['fecha_nacimiento'] = beneficiario.fecha_nacimiento
-        
-             # Obtener el registro más reciente de mz.consulta para el beneficiario
-            consulta_reciente = self.search([('beneficiario_id', '=', beneficiario.id)], order='fecha desc, hora desc', limit=1)
+        consulta_reciente = False
+        if defaults.get('tipo_paciente'):
+            if defaults['tipo_paciente'] == 'titular':
+                if defaults.get('beneficiario_id'):
+                    beneficiario = self.env['mz.beneficiario'].browse(defaults['beneficiario_id'])
+                    defaults['genero'] = beneficiario.genero
+                    defaults['fecha_nacimiento'] = beneficiario.fecha_nacimiento
+                    # Obtener el registro más reciente de mz.consulta para el beneficiario
+                    consulta_reciente = self.search([('beneficiario_id', '=', beneficiario.id)], order='fecha desc, hora desc', limit=1)
+            else:
+                if defaults.get('dependiente_id'):
+                    dependiente = self.env['mz.dependiente'].browse(defaults['dependiente_id'])
+                    defaults['genero'] = dependiente.genero
+                    defaults['fecha_nacimiento'] = dependiente.fecha_nacimiento    
+                    # Obtener el registro más reciente de mz.consulta para el beneficiario
+                    consulta_reciente = self.search([('dependiente_id', '=', dependiente.id)], order='fecha desc, hora desc', limit=1)  
             if consulta_reciente:
                 defaults['antecedentes_personales'] = consulta_reciente.antecedentes_personales
                 defaults['antecedentes_familiares'] = consulta_reciente.antecedentes_familiares
@@ -399,8 +485,12 @@ class Consulta(models.Model):
 
     def crear_historia_clinica(self):
         for consulta in self:
-            historia_clinica = self.env['mz.historia.clinica'].create({
-                'beneficiario_id': consulta.beneficiario_id.id,
+            # Construimos los signos vitales como una cadena
+            signos_vitales = f"PA: {consulta.presion_arterial}, FC: {consulta.frecuencia_cardiaca}, FR: {consulta.frecuencia_respiratoria}, Temp: {consulta.temperatura}"
+
+            # Preparamos los datos iniciales para crear el registro
+            valores_historia = {
+                'tipo_paciente': consulta.tipo_paciente,
                 'consulta_id': consulta.id,
                 'personal_id': consulta.personal_id.id,
                 'sintomas': consulta.sintomas,
@@ -412,8 +502,15 @@ class Consulta(models.Model):
                 'antecedentes_familiares': consulta.antecedentes_familiares,
                 'alergias': consulta.alergias,
                 'medicamentos_actuales': consulta.medicamentos_actuales,
-                'signos_vitales': f"PA: {consulta.presion_arterial}, FC: {consulta.frecuencia_cardiaca}, FR: {consulta.frecuencia_respiratoria}, Temp: {consulta.temperatura}"
-            })
+                'signos_vitales': signos_vitales,
+                # Agregamos condicionalmente el beneficiario o dependiente
+                'beneficiario_id': consulta.beneficiario_id.id if consulta.tipo_paciente == 'titular' else False,
+                'dependiente_id': consulta.dependiente_id.id if consulta.tipo_paciente != 'titular' else False,
+            }
+
+            # Creamos la historia clínica
+            historia_clinica = self.env['mz.historia.clinica'].create(valores_historia)
+
             consulta.historia_clinica_id = historia_clinica.id
             for diagnostico in consulta.diagnostico_ids:
                 diagnostico.write({'historia_clinica_id': historia_clinica.id})
@@ -510,6 +607,9 @@ class Consulta(models.Model):
     def _onchange_proxima_cita(self):
         if self.proxima_cita:
             self.horario_id = False
+
+    def action_finalizar(self):
+        self.write({'state': 'final'})
     
 class MzDiagnosticoLinea(models.Model):
     _name = 'mz.diagnostico.linea'

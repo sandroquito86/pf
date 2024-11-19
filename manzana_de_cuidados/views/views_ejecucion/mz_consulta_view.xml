@@ -8,10 +8,25 @@
             <field name="arch" type="xml">
                 <form string="Consulta Médica">
                     <header>
-                        <button name="generar_orden_entrega" string="Generar Orden de Entrega" type="object" class="oe_highlight" invisible="picking_id"/>
+                        <button name="generar_orden_entrega" string="Generar Orden de Entrega" type="object" class="oe_highlight" invisible="picking_id or state == 'final'"/>
+                        <button name="action_finalizar" type="object" string="Finalizar" class="btn-primary" invisible="state == 'final'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,final"/>
                         <!-- Aquí puedes agregar botones de acción si los necesitas -->
                     </header>
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button 
+                                name="action_view_historial" 
+                                type="object" 
+                                class="oe_stat_button" 
+                                icon="fa-heartbeat"
+                                invisible="not beneficiario_id">
+                                <div class="o_stat_info">
+                                    <field name="historial_count" class="o_stat_value"/>
+                                    <span class="o_stat_text">Historial Clínico</span>
+                                </div>
+                            </button>
+                        </div>
                         <div class="oe_title">
                             <h1>
                                 <field name="codigo" readonly="1" force_save="1"/>
@@ -19,14 +34,18 @@
                         </div>
                         <group>
                             <group>
-                                <field name="fecha" required="1" readonly="1" force_save="1"/>
-                                <field name="hora" widget="float_time" readonly="1" force_save="1"/>
                                 <field name="beneficiario_id" required="1" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="tipo_paciente" readonly="1" widget="badge"
+                                        decoration-success="tipo_paciente == 'titular'"
+                                        decoration-warning="tipo_paciente == 'dependiente'"/>
+                                <field name="dependiente_id" readonly="1" invisible="tipo_paciente != 'dependiente'" required="tipo_paciente == 'dependiente'"  options="{'no_create_edit': True, 'no_open': True,'no_create': True}"/>
                                 <field name="programa_id" required="1" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
                                 <field name="servicio_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
                                 <field name="personal_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
                             </group>
                             <group>
+                                <field name="fecha" required="1" readonly="1" force_save="1"/>
+                                <field name="hora" widget="float_time" readonly="1" force_save="1"/>
                                 <field name="genero" readonly="1" force_save="1"/>
                                 <field name="fecha_nacimiento" readonly="1" force_save="1"/>
                                 <field name="edad" readonly="1" force_save="1"/>
@@ -36,31 +55,31 @@
                             <page string="Signos Vitales">
                                 <group>
                                     <group>
-                                        <field name="presion_arterial"/>
-                                        <field name="presion_sistolica"/>
-                                        <field name="presion_diastolica"/>
-                                        <field name="frecuencia_cardiaca"/>
-                                        <field name="frecuencia_respiratoria"/>
+                                        <field name="presion_arterial" readonly="state == 'final'"/>
+                                        <field name="presion_sistolica" readonly="state == 'final'"/>
+                                        <field name="presion_diastolica" readonly="state == 'final'"/>
+                                        <field name="frecuencia_cardiaca" readonly="state == 'final'"/>
+                                        <field name="frecuencia_respiratoria" readonly="state == 'final'"/>
                                     </group>
                                     <group>
-                                        <field name="temperatura"/>
-                                        <field name="peso"/>
-                                        <field name="altura"/>
-                                        <field name="imc"/>
+                                        <field name="temperatura" readonly="state == 'final'"/>
+                                        <field name="peso" readonly="state == 'final'"/>
+                                        <field name="altura" readonly="state == 'final'"/>
+                                        <field name="imc" readonly="state == 'final'"/>
                                     </group>
                                 </group>
                             </page>
                             <page string="Motivo de Consulta y Síntomas">
                                 <group>
-                                    <field name="motivo_consulta" placeholder="Describa el motivo principal de la consulta"/>
-                                    <field name="sintomas" placeholder="Detalle los síntomas que presenta el paciente"/>
+                                    <field name="motivo_consulta" placeholder="Describa el motivo principal de la consulta" readonly="state == 'final'"/>
+                                    <field name="sintomas" placeholder="Detalle los síntomas que presenta el paciente" readonly="state == 'final'"/>
                                 </group>
                             </page>
                             <page string="Examen Físico y Diagnóstico">
                                 <group>
-                                    <field name="examen_fisico" placeholder="Registre los hallazgos del examen físico"/>
-                                    <field name="tratamiento" placeholder="Detalle el plan de tratamiento"/>
-                                    <field name="diagnostico_ids" context="{'default_consulta_id': active_id}">
+                                    <field name="examen_fisico" placeholder="Registre los hallazgos del examen físico" readonly="state == 'final'"/>
+                                    <field name="tratamiento" placeholder="Detalle el plan de tratamiento" readonly="state == 'final'"/>
+                                    <field name="diagnostico_ids" context="{'default_consulta_id': active_id}" readonly="state == 'final'">
                                         <tree editable="bottom">
                                             <field name="cie10_id" options="{'no_create': True, 'no_open': True}"/>
                                             <field name="detalle"/>
@@ -71,17 +90,17 @@
                             </page>
                             <page string="Historial Médico">
                                 <group>
-                                    <field name="antecedentes_personales" placeholder="Antecedentes médicos personales del paciente"/>
-                                    <field name="antecedentes_familiares" placeholder="Antecedentes médicos familiares relevantes"/>
-                                    <field name="alergias" placeholder="Alergias conocidas del paciente"/>
-                                    <field name="medicamentos_actuales" placeholder="Medicamentos que el paciente toma actualmente"/>
+                                    <field name="antecedentes_personales" readonly="state == 'final'" placeholder="Antecedentes médicos personales del paciente"/>
+                                    <field name="antecedentes_familiares" readonly="state == 'final'" placeholder="Antecedentes médicos familiares relevantes"/>
+                                    <field name="alergias" placeholder="Alergias conocidas del paciente" readonly="state == 'final'"/>
+                                    <field name="medicamentos_actuales" placeholder="Medicamentos que el paciente toma actualmente" readonly="state == 'final'"/>
                                 </group>
                             </page>
                             <page string="Receta Médica">
                                 <group>
-                                    <field name="picking_id" readonly="1"/>
+                                    <field name="picking_id" readonly="1" />
                                 </group>
-                                <field name="receta_ids">
+                                <field name="receta_ids" readonly="state == 'final'">
                                     <tree editable="bottom">
                                         <field name="producto_id"/>
                                         <field name="cantidad"/>
@@ -93,12 +112,12 @@
                             <page string="Seguimiento">
                             <group>
                                 <group>
-                                    <field name="observaciones" placeholder="Observaciones adicionales"/>
-                                    <field name="proxima_cita" readonly="estado_new_solicitud == 'solicitado'"/>
-                                    <field name="horario_id" readonly="estado_new_solicitud == 'solicitado'" options="{'domain_field': 'horario_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+                                    <field name="observaciones" placeholder="Observaciones adicionales" readonly="state == 'final'"/>
+                                    <field name="proxima_cita" readonly="estado_new_solicitud == 'solicitado' or state == 'final'" />
+                                    <field name="horario_id" readonly="estado_new_solicitud == 'solicitado' or state == 'final'" options="{'domain_field': 'horario_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>
                                     <field name="horario_id_domain" invisible="1" />
                                     <field name="estado_new_solicitud" invisible="1"/>
-                                    <button name="solicitar_horario" invisible="not horario_id_domain or estado_new_solicitud != 'borrador'" type="object" string="Solicitar" class="oe_highlight"/>
+                                    <button name="solicitar_horario" invisible="not horario_id_domain or estado_new_solicitud != 'borrador' or state == 'final'" type="object" string="Solicitar" class="oe_highlight"/>
                                 </group>
                                 <group>
                                     <field name="dias_disponibles_html" widget="html"/>
@@ -131,6 +150,9 @@
             <field name="arch" type="xml">
                 <tree string="Consultas Médicas" create="false" delete="false" duplicate="false">
                     <field name="codigo"/>
+                    <field name="tipo_paciente"  widget="badge"
+                                        decoration-success="tipo_paciente == 'titular'"
+                                        decoration-warning="tipo_paciente == 'dependiente'"/>
                     <field name="beneficiario_id"/>
                     <field name="fecha"/>
                     <field name="hora" widget="float_time"/>
@@ -149,7 +171,9 @@
                 <form string="Consulta Médica" create="false" delete="false" duplicate="false" edit="false">
                     <header>
                         <!-- Aquí puedes agregar botones de acción si los necesitas -->
-                         <button name="generar_orden_entrega" string="Generar Orden de Entrega" type="object" class="oe_highlight" invisible="picking_id"/>
+                         <button name="generar_orden_entrega" string="Generar Orden de Entrega" type="object" class="oe_highlight" invisible="picking_id or state == 'final'"/>
+                        <button name="action_finalizar" type="object" string="Finalizar" class="btn-primary" invisible="state == 'final'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,final"/>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
@@ -172,14 +196,18 @@
                         </div>
                         <group>
                             <group>
-                                <field name="fecha" required="1" readonly="1" force_save="1"/>
-                                <field name="hora" widget="float_time" readonly="1" force_save="1"/>
                                 <field name="beneficiario_id" required="1" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="tipo_paciente" readonly="1" widget="badge"
+                                        decoration-success="tipo_paciente == 'titular'"
+                                        decoration-warning="tipo_paciente == 'dependiente'"/>
+                                <field name="dependiente_id" readonly="1" invisible="tipo_paciente != 'dependiente'" required="tipo_paciente == 'dependiente'"  options="{'no_create_edit': True, 'no_open': True,'no_create': True}"/>
                                 <field name="programa_id" required="1" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
                                 <field name="servicio_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
                                 <field name="personal_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
                             </group>
                             <group>
+                                <field name="fecha" required="1" readonly="1" force_save="1"/>
+                                <field name="hora" widget="float_time" readonly="1" force_save="1"/>
                                 <field name="genero" readonly="1" force_save="1"/>
                                 <field name="fecha_nacimiento" readonly="1" force_save="1"/>
                                 <field name="edad" readonly="1" force_save="1"/>

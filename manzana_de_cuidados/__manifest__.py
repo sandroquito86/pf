@@ -18,7 +18,7 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['hr','base','mail','sh_message','stock','prefectura_base','website_slides'],
+    'depends': ['hr','base', 'resource', 'mail','sh_message','stock','prefectura_base','website_slides'],
 
     # always loaded
     'data': [
@@ -29,6 +29,7 @@ Long description of module's purpose
         'data/data_beneficiario.xml',
         'data/data_servicios.xml',
         'data/data_asig_servicios.xml',
+        
         
         'menu/mz_menu.xml',
         'views/mz_catalogo_views.xml',
@@ -53,6 +54,8 @@ Long description of module's purpose
         'views/views_ejecucion/mz_asistencia_servicio_view.xml',
         'views/views_ejecucion/mz_historia_clinica_view.xml',
         
+        'views/views_employee/mz_empleado_view.xml',
+        'views/views_employee/mz_colaborador_view.xml',
 
         'views/views_for_beneficiario/mz_asistencia_servicio_benef_view.xml',
         

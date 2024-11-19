@@ -15,7 +15,7 @@ class Catalogo(models.Model):
     _description = 'Catálogo'
 
     name = fields.Char(string="Nombre del Catalogo", required=True, tracking=True)
-    items_ids = fields.One2many(string='Catalogo', comodel_name='mz.items', inverse_name='catalogo_id',)
+    items_ids = fields.One2many(string='Catalogo', comodel_name='pf.items', inverse_name='catalogo_id',)
     descripcion = fields.Char(string="descripcion", required=True)
     sequence = fields.Integer(
         'Secuencia', help="Usado para ordenar los catálogos.", default=1)

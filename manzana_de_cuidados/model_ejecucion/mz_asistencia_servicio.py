@@ -56,6 +56,14 @@ class AsistenciaServicio(models.Model):
             else:
                 record.imc = 0
                 
+    @api.depends('presion_sistolica', 'presion_diastolica')
+    def _compute_presion_arterial(self):
+        for record in self:
+            if record.presion_sistolica and record.presion_diastolica:
+                record.presion_arterial = f"{record.presion_sistolica}/{record.presion_diastolica}"
+            else:
+                record.presion_arterial = "N/A"
+                
     @api.depends('servicio_id')
     def _compute_tipo_servicio(self):
         for record in self:
@@ -66,7 +74,8 @@ class AsistenciaServicio(models.Model):
         self.env['mz.agendar_servicio'].search([('codigo', '=', self.codigo)]).write({'state': 'atendido'})
         self.planificacion_id.write({'estado': 'concluido'})
         if not self.fecha == fields.Date.today():
-            raise UserError('No puede dar asistencia a un servicio que no es del día de hoy.')
+            pass
+            # raise UserError('No puede dar asistencia a un servicio que no es del día de hoy.')
         
 
     def action_no_asistio(self):
@@ -81,6 +90,7 @@ class AsistenciaServicio(models.Model):
             'view_mode': 'form',
             'res_id': self.consulta_id.id,
             'target': 'new',
+            'views': [(self.env.ref('manzana_de_cuidados.view_mz_consulta_form_custom').id, 'form')],
             'context': {'form_view_initial_mode': 'readonly'},
         }
     

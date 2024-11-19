@@ -2,6 +2,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from .. import utils
 
 class PfEmployee(models.Model):
     _inherit = 'hr.employee'
@@ -14,6 +15,11 @@ class PfEmployee(models.Model):
     apellido_materno = fields.Char(string='Apellido Materno')
     primer_nombre = fields.Char(string='Primer Nombre')
     segundo_nombre = fields.Char(string='Segundo Nombre')
+    tipo_documento = fields.Selection([
+        ('dni', 'DNI'),
+        ('pasaporte', 'Pasaporte'),
+        ('carnet_extranjeria', 'Carnet de Extranjería')
+    ], string='Tipo de Documento', required=True)
     
     # Other fields
     service_ids = fields.Many2many('gi.servicio', string="Servicios Asignados")
@@ -21,12 +27,59 @@ class PfEmployee(models.Model):
     provincia_id = fields.Many2one("res.country.state", string="Provincia", domain="[('country_id', '=?', country_id)]")
     sucursal_id = fields.Many2one('pf.sucursal', string='Sucursal', required=True)
     programa_id = fields.Many2one('pf.programas', string='Programa', required=True)
+    modulo_id = fields.Many2one('pf.modulo', string='Modulo', required=True)
+    # revisar para que se creo este campo de modulo_ids un employee solo debe de pertenecer a un solo modulo 
     modulo_ids = fields.Many2many('pf.modulo', string="Módulos", help="Selecciona los módulos a los que pertenece este beneficiario")
     ciudad_id = fields.Many2one('res.country.ciudad', string='Ciudad' , ondelete='restrict', 
                                    domain="[('state_id', '=?', private_state_id)]")
     fecha_inactivacion = fields.Date(string='Fecha de Inactivación')
     tipo_personal = fields.Selection([('interno', 'Empleado Interno'), ('externo', 'Colaborador Externo')], string='Tipo de Personal', 
                                      default='interno', tracking=True, required=True, help="Indica si es un empleado de la institución o un colaborador externo")
+
+
+    @api.onchange('tipo_documento', 'identification_id')
+    def _onchange_documento(self):
+        if self.tipo_documento == 'dni' and self.identification_id:
+            if not utils.validar_cedula(self.identification_id):
+                return {'warning': {
+                    'title': "Cédula Inválida",
+                    'message': "El número de cédula ingresado no es válido."
+                }}
+            
+    @api.onchange('work_email')
+    def _onchange_work_email(self):
+        """
+        Validate the email format.
+        """
+        if self.work_email and not utils.validar_email(self.work_email):
+            return {
+                'warning': {
+                    'title': "Correo Electrónico Inválido",
+                    'message': "El correo electrónico ingresado no es válido."
+                }
+            }
+        
+    def crear_user(self):
+        user_vals = {
+            'name': self.name,
+            'login': self.work_email,
+            'email': self.work_email,
+            'company_id': self.company_id.id,
+            'company_ids': [(4, self.company_id.id)],
+            'password': self.identification_id,
+            'programa_id': self.programa_id.id,
+            # 'groups_id': [(6, 0, [self.env.ref('prefectura_base.group_portal').id])]
+        }
+        user = self.env['res.users'].create(user_vals)
+        self.user_id = user.id
+        return True
+
+        
+    @api.onchange('programa_id')
+    def _onchange_programa_id(self):
+        if self.programa_id:
+            self.sucursal_id = self.programa_id.sucursal_id
+            self.modulo_id = self.programa_id.modulo_id
 
 
     @api.constrains('user_id')
@@ -58,6 +111,7 @@ class PfEmployee(models.Model):
             vals['name'] = full_name        
         employees = super(PfEmployee, self).create(vals)
         for employee in employees:
+            employee.crear_user()
             if employee.user_id and employee.programa_id:
                 employee.user_id.sudo().write({'programa_id': employee.programa_id.id})
         return employees

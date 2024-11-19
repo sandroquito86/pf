@@ -90,8 +90,21 @@
                             <field name="name"/>
                             <field name="numero_documento"/>
                             <field name="tipo_documento"/>
+                            <button name="action_view_historia_clinica" 
+                                type="object" 
+                                string="Historial Clínico"
+                                icon="fa-heartbeat"/>
                         </tree>
                         <form string="Dependiente">
+                            <div class="oe_button_box" name="button_box">
+                                <button name="action_view_historia_clinica" type="object" class="oe_stat_button" icon="fa-heartbeat">
+                                    <div class="o_stat_info">
+                                        <field name="consulta_count" class="o_stat_value"/>
+                                        <span class="o_stat_text">Historial Clínico</span>
+                                    </div>
+                                </button>
+                                
+                            </div>
                             <div class="oe_title">
                                 <label for="name" string="Nombre"/>
                                 <h1><field class="o_text_overflow" name="name" placeholder="Nombre Completo" readonly='1' force_save='1'/></h1>

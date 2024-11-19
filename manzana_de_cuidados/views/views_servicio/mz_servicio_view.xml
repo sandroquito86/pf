@@ -42,10 +42,16 @@
                         </group>
                         <group string="Subservicios">
                             <field name="sub_servicio_ids" nolabel="1" colspan="2" context="{'form_view_ref': 'manzana_de_cuidados.view_mz_sub_servicio_form2'}">
-                                <tree>
+                                <tree delete="False">
                                     <field name="name"/>
                                     <field name="descripcion"/>
-                                    <field name="active" invisible="1"/>
+                                    <field name="has_been_used" optional="hide" readonly='1'/>
+                                    <button name="toggle_active" string="Activar/Desactivar" type="object" icon="fa-archive" attrs="{'invisible': [('has_been_used', '=', False)]}" groups="manzana_de_cuidados.group_beneficiario_manager"/> 
+                                    <button name="unlink" string="Eliminar"
+                                            type="object" 
+                                            icon="fa-trash" 
+                                            attrs="{'invisible': [('has_been_used', '=', True)]}"
+                                            groups="base.group_user"/>
                                 </tree>
                             </field>
                         </group>

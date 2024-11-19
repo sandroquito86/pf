@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Form -->
+    <record id="view_mz_employee_form" model="ir.ui.view">
+        <field name="name">mz.hr.employee.form</field>
+        <field name="model">hr.employee</field>
+        <field name="priority">999</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="active" invisible="1"/>
+                <header>
+                    <button name="action_inactivar_empleado" type="object" string="Inactivar Colaborador" class="btn-danger" invisible="not active"/>
+                </header>
+                <sheet>
+                    <field name="image_1920" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Datos Personales">
+                            <field name="tipo_personal" invisible="1" />
+                            <field name="apellido_paterno" placeholder="Apellido paterno" required="1"/>
+                            <field name="apellido_materno" placeholder="Apellido materno"/>  
+                            <field name="primer_nombre" placeholder="Primer nombre" required="1"/>
+                            <field name="segundo_nombre" placeholder="Segundo nombre"/>    
+                            <field name="birthday" required="1"/>
+                            <field name="edad"/>               
+                        </group>
+                        <group string="Información de Contacto">
+                            <field name="mobile_phone" required="1" placeholder="0987654321"/>
+                            <field name="work_email" required="1" placeholder="ejemplo@email.com"/>
+                        </group>
+                    </group>
+                    <group>
+                            <group string="CIUDADANIA">
+                                <field name="country_id" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                                <field name="tipo_documento"/>
+                                <field name="identification_id" readonly="not tipo_documento" placeholder="0123456789"/>
+                                <field name="gender"/>
+                            </group>
+                            <group string="INFORMACIÓN">
+                                <field name="company_id" invisible="1"/>
+                                <field name="modulo_id" invisible="1"/>
+                                <field name="sucursal_id" readonly="1" force_save="1" options="{'no_edit': True, 'no_create': True, 'no_open': True}"/>
+                                <field name="programa_id" options="{'no_edit': True, 'no_create': True, 'no_open': True}"/>
+                                <field name="user_id" readonly="not id" string="Usuario" options="{'no_edit': True, 'no_create': True, 'no_open': True}" domain="[('company_ids', 'in', company_id), ('share', '=', False)]" context="{'default_create_employee_id': id}" widget="many2one_avatar_user"/>
+                            </group>
+
+                        </group>
+                    <!-- <group>
+                        <group string="Ubicación">
+                            <field name="private_street" placeholder="Ingrese la dirección completa"/>
+                            <label for="latitud" string="Coordenadas"/>
+                            <div class="o_row">
+                                <field name="latitud" placeholder="Latitud"/>
+                                <field name="longitud" placeholder="Longitud"/>
+                            </div>
+                        </group>
+                        <group string="Información Profesional">
+                            <field name="job_title" required="1" placeholder="Ej: Técnico de Campo"/>
+                            <field name="experiencia" placeholder="Describa la experiencia relevante"/>
+                        </group>
+                    </group> -->
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista Tree -->
+    <record id="view_mz_employee_tree" model="ir.ui.view">
+        <field name="name">mz.hr.employee.tree</field>
+        <field name="model">hr.employee</field>
+        <field name="priority">999</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="image_1920" widget="image" options="{'size': [30, 30]}"/>
+                <field name="name"/>
+                <field name="identification_id"/>
+                <field name="job_title"/>
+                <field name="mobile_phone" widget="phone"/>
+                <field name="work_email" widget="email"/>
+                <field name="tipo_personal"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Kanban -->
+    <record id="view_mz_employee_kanban" model="ir.ui.view">
+        <field name="name">mz.hr.employee.kanban</field>
+        <field name="model">hr.employee</field>
+        <field name="priority">999</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column" sample="1">
+                <field name="name"/>
+                <field name="identification_id"/>
+                <field name="job_title"/>
+                <field name="mobile_phone"/>
+                <field name="work_email"/>
+                <field name="image_1920"/>
+                <field name="tipo_personal"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
+                            <div class="o_kanban_image_fill_left d-none d-md-block" t-attf-style="background-image: url(#{kanban_image('hr.employee', 'image_1920', record.id.raw_value)}">
+                                <img class="o_kanban_image_inner_pic" t-if="!record.image_1920.raw_value" t-att-src="_s + '/base/static/img/avatar_grey.png'"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="job_title"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <span class="badge rounded-pill" t-if="record.tipo_personal.raw_value == 'interno'" t-attf-class="bg-success">Empleado Interno</span>
+                                        <span class="badge rounded-pill" t-if="record.tipo_personal.raw_value == 'externo'" t-attf-class="bg-primary">Colaborador Externo</span>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div>
+                                        <field name="mobile_phone" widget="phone"/>
+                                    </div>
+                                    <div>
+                                        <field name="work_email" widget="email"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Vista Search -->
+    <record id="view_mz_employee_search" model="ir.ui.view">
+        <field name="name">mz.hr.employee.search</field>
+        <field name="model">hr.employee</field>
+        <field name="priority">999</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Personal" filter_domain="['|', '|',
+                    ('name', 'ilike', self),
+                    ('identification_id', 'ilike', self),
+                    ('work_email', 'ilike', self)]"/>
+                <field name="identification_id"/>
+                <field name="job_title"/>
+                <field name="work_email"/>
+                <group>
+                    <filter string="Archivado" name="inactive" domain="[('active', '=', False)]"/>
+                </group>
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Tipo de Personal" name="group_tipo" context="{'group_by': 'tipo_personal'}"/>
+                    <filter string="Cargo" name="group_cargo" context="{'group_by': 'job_title'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action Window -->
+    <record id="mz_action_employee" model="ir.actions.act_window">
+        <field name="name">Colaboradores</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="view_mz_employee_search"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_mz_employee_kanban')}),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz_employee_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz_employee_form')})]"/>
+        <field name="context">{
+                        'default_tipo_personal': 'externo'
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Registrar nuevo Colaborador
+            </p>
+            <p>
+                Registre los datos del colaborar que participará en los servicios.
+            </p>
+        </field>
+        <field name="domain">[('tipo_personal', '=', 'externo')]</field>
+    </record>
+
+    <!-- Menú Item -->
+    <menuitem id="menu_mz_employee" name="Colaboradores" action="mz_action_employee" parent="menu_employee" sequence="20"/>
+
+</odoo>

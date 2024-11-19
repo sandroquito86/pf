@@ -55,6 +55,94 @@
         <field name="domain_force">[('programa_id', '=', user.programa_id.id)]</field>
     </record>
     
+    <!-- reglas para Sistema -->
+    <!-- regla para que solo vea los programas que pertenezcan al module_id = 2  -->
+    <record id="access_beneficiario_manager_to_programa" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Sistema ver programas</field>
+        <field name="model_id" ref="prefectura_base.model_pf_programas"/>
+        <field name="groups" eval="[(4, ref('group_beneficiario_manager'))]"/>
+        <field name="domain_force">[('modulo_id', '=', 2)]</field>
+    </record>
+    <record id="access_beneficiario_manager_to_employee" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Sistema ver Empleados</field>
+        <field name="model_id" ref="hr.model_hr_employee"/>
+        <field name="groups" eval="[(4, ref('group_beneficiario_manager'))]"/>
+        <field name="domain_force">[('modulo_id', '=', 2)]</field>
+    </record>
+    <record id="access_beneficiario_manager_to_users" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Sistema ver Usuarios</field>
+        <field name="model_id" ref="base.model_res_users"/>
+        <field name="groups" eval="[(4, ref('group_beneficiario_manager'))]"/>
+        <field name="domain_force">[('programa_id.modulo_id', '=', 2)]</field>
+    </record>
+    <record id="access_beneficiario_manager_to_programa" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Sistema ver programas</field>
+        <field name="model_id" ref="prefectura_base.model_pf_programas"/>
+        <field name="groups" eval="[(4, ref('group_beneficiario_manager'))]"/>
+        <field name="domain_force">[('modulo_id', '=', 2)]</field>
+    </record>
+    <record id="access_beneficiario_manager_to_asignacion_servicio" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Sistema ver Servicio de Programa y Responsables Asignados</field>
+        <field name="model_id" ref="model_mz_asignacion_servicio"/>
+        <field name="groups" eval="[(4, ref('group_beneficiario_manager'))]"/>
+        <field name="domain_force">[('programa_id.modulo_id', '=', 2)]</field>
+    </record>
+    <record id="access_beneficiario_manager_to_generar_planificacion_servicio" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Sistema ver Planificación Turnos</field>
+        <field name="model_id" ref="model_mz_genera_planificacion_servicio"/>
+        <field name="groups" eval="[(4, ref('group_beneficiario_manager'))]"/>
+        <field name="domain_force">[('programa_id.modulo_id', '=', 2)]</field>
+    </record>
+    <record id="access_beneficiario_manager_to_beneficiario" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Sistema ver Beneficiario</field>
+        <field name="model_id" ref="model_mz_beneficiario"/>
+        <field name="groups" eval="[(4, ref('group_beneficiario_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="access_beneficiario_manager_to_solicitud_beneficiario" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Sistema ver Solicitud de Beneficiario</field>
+        <field name="model_id" ref="model_mz_solicitud_beneficiario"/>
+        <field name="groups" eval="[(4, ref('group_beneficiario_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="access_beneficiario_manager_to_servicio" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Sistema ver Servicio</field>
+        <field name="model_id" ref="model_mz_servicio"/>
+        <field name="groups" eval="[(4, ref('group_beneficiario_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="access_beneficiario_manager_to_sub_servicio" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Sistema ver Sub Servicio</field>
+        <field name="model_id" ref="model_mz_sub_servicio"/>
+        <field name="groups" eval="[(4, ref('group_beneficiario_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="access_beneficiario_manager_to_horario_servicio" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Sistema ver Horario de Servicio</field>
+        <field name="model_id" ref="model_mz_horarios_servicio"/>
+        <field name="groups" eval="[(4, ref('group_beneficiario_manager'))]"/>
+        <field name="domain_force">[('programa_id.modulo_id', '=', 2)]</field>
+    </record>
+    <record id="access_beneficiario_manager_to_agendar_servicio" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Sistema ver Agendar Turno</field>
+        <field name="model_id" ref="model_mz_agendar_servicio"/>
+        <field name="groups" eval="[(4, ref('group_beneficiario_manager'))]"/>
+        <field name="domain_force">[('modulo_id', '=', 2)]</field>
+    </record>
+    <record id="access_beneficiario_manager_to_asistencia_servicio" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Sistema ver Asistencia de Servicio</field>
+        <field name="model_id" ref="model_mz_asistencia_servicio"/>
+        <field name="groups" eval="[(4, ref('group_beneficiario_manager'))]"/>
+        <field name="domain_force">[('programa_id.modulo_id', '=', 2)]</field>
+    </record>
+    <record id="access_beneficiario_manager_to_consulta" model="ir.rule">
+        <field name="name">Manzana de Cuidados: Sistema ver Consulta</field>
+        <field name="model_id" ref="model_mz_consulta"/>
+        <field name="groups" eval="[(4, ref('group_beneficiario_manager'))]"/>
+        <field name="domain_force">[('programa_id.modulo_id', '=', 2)]</field>
+    </record>
+
+
     <!-- <record id="access_manzana_lider_estrategia_personal" model="ir.rule">
         <field name="name">Manzana de Cuidados: Líder de la Estrategia Personal</field>
         <field name="model_id" ref="model_mz_personal"/>
