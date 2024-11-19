@@ -17,7 +17,7 @@ class Dependiente(models.Model):
     
     @api.model
     def _get_tipo_dependiente_domain(self):
-        catalogo_id = self.env.ref('manzana_de_cuidados.tipo_dependiente').id
+        catalogo_id = self.env.ref('prefectura_base.tipo_dependiente').id
         return [('catalogo_id', '=', catalogo_id)]
     
 

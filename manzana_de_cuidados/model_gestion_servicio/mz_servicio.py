@@ -10,7 +10,7 @@ class Servicio(models.Model):
 
     @api.model
     def _get_tipo_servicio_domain(self):
-        catalogo_id = self.env.ref('manzana_de_cuidados.tipo_servicio').id
+        catalogo_id = self.env.ref('prefectura_base.tipo_servicio').id
         return [('catalogo_id', '=', catalogo_id)]
 
     name = fields.Char(string='Nombre', required=True)
