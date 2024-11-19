@@ -5,7 +5,7 @@
         <menuitem id="menu_action_win_mz_convoy_catalogo"
               name="Catálogo"             
               parent="mz_convoy_conf_catalogo"
-              action="manzana_de_cuidados.action_mz_catalogo"
+              action="prefectura_base.action_pf_catalogo"
               sequence="3" />
 
     </data>

@@ -94,9 +94,8 @@
                         </page>
 
                         <!-- Page de dependientes con control de visibilidad -->
-                        <page string="Dependientes" name="dependientes" invisible="not numero_documento">
-                            <field name="dependientes_ids">                               
-                            </field>
+                        <page string="Dependientes" name="dependientes" invisible="context.get('hide_dependientes') or not numero_documento">
+                            <field name="dependientes_ids"/>
                         </page>
                     </notebook>
                 </sheet>

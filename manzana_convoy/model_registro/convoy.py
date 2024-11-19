@@ -20,11 +20,11 @@ class FichaEvento(models.Model):
     hora_inicio = fields.Float(string='Hora Inicio')
     hora_fin = fields.Float(string='Hora Fin')
     duracion = fields.Char(string='Duración', compute='_compute_duracion', store=True)    
-    tipo_evento = fields.Many2one('mz.items', string='Tipo Evento', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_tipo_evento').id)])
+    tipo_evento = fields.Many2one('pf.items', string='Tipo Evento', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_tipo_evento').id)])
     formato_evento = fields.Char(string='Formato de Evento')
     numero_asistentes = fields.Integer(string='Número de Asistentes')
     codigo_vestimenta = fields.Char(string='Código de Vestimenta')   
-    participacion_prefecta = fields.Many2one('mz.items', string='Participación  Prefecta', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_participacion_especifica').id)])
+    participacion_prefecta = fields.Many2one('pf.items', string='Participación  Prefecta', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_participacion_especifica').id)])
     tiempo_intervencion = fields.Float(string='Tiempo de Intervención')    
     prensa = fields.Selection([('si', 'Sí'), ('no', 'No')], string='Prensa')
     data_politica = fields.Char(string='Data Política')    
@@ -243,7 +243,7 @@ class ConvoyMiembroMesaTecnica(models.Model):
 
     evento_id = fields.Many2one('mz.convoy', string='Evento')
     nombre = fields.Char(string='Nombre', required=True)
-    cargo_institucion_id = fields.Many2one('mz.items', string='Cargo/Institución',
+    cargo_institucion_id = fields.Many2one('pf.items', string='Cargo/Institución',
                                              domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_instituciones_publicas').id)])
     contacto = fields.Char(string='Número de Contacto')
 

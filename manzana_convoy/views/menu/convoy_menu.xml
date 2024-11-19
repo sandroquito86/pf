@@ -8,6 +8,8 @@
 
         <menuitem id="mz_convoy_menu_planificacion" name="Planificación" parent="mz_convoy_menu_prinicipal" groups="group_mz_convoy_coordinador,group_mz_convoy_administrador" sequence="20"/>
 
+        <menuitem id="menu_mz_convoy_ejecucion" name="Ejecución" parent="mz_convoy_menu_prinicipal" sequence="30"/>
+
         <menuitem id="mz_convoy_menu_configuracion" name="Configuración" parent="mz_convoy_menu_prinicipal" sequence="50" groups="group_mz_convoy_coordinador,group_mz_convoy_administrador"/>
         <menuitem id="mz_convoy_conf_catalogo" name="Catálogo General" parent="mz_convoy_menu_configuracion" sequence="10"/>
         <menuitem id="mz_convoy_conf_catalogo_especifico" name="Catálogo Específico" parent="mz_convoy_menu_configuracion" sequence="20"/>

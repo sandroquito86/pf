@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_action_w_mz_convoy_items" name="Items de Catálogos" action="prefectura_base.action_pf_items" parent="mz_convoy_conf_catalogo" sequence="4" />
+    </data>
+</odoo>

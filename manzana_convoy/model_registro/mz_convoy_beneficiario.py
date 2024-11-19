@@ -13,7 +13,7 @@ class ConvoyBeneficiarioRel(models.Model):
     beneficiario_id = fields.Many2one('mz.beneficiario', string='Beneficiario', required=True, ondelete='restrict')
     # Campos de Control
     tipo_registro = fields.Selection([('masivo', 'Registro Masivo'), ('asistencia', 'Registro por Asistencia'), ('socioeconomico', 'Registro Socioeconómico')],
-                                     string='Tipo de Registro', required=True)
+                                     string='Tipo de Registro', required=False)
     fecha_registro = fields.Datetime(string='Fecha de Registro', default=fields.Datetime.now, required=True)
     user_id = fields.Many2one('res.users', string='Registrado por', default=lambda self: self.env.user,  required=True, readonly=True)
     # Campos de Servicio
@@ -22,14 +22,44 @@ class ConvoyBeneficiarioRel(models.Model):
     # Campos relacionados para información rápida
     numero_documento = fields.Char(related='beneficiario_id.numero_documento', string='Número de Documento', store=True)
     nombres_completos = fields.Char(compute='_compute_nombres_completos', store=True, string='Nombres Completos')
+    tipo_beneficiario = fields.Selection([('titular', 'Titular'),('dependiente', 'Dependiente')], string='Tipo de Beneficiario', default='titular', required=True, tracking=True)    
+    dependiente_id = fields.Many2one('mz.dependiente',string='Dependiente',tracking=True,domain="[('beneficiario_id', '=', beneficiario_id)]" )
+  
 
-    _sql_constraints = [('unique_beneficiario_convoy', 'UNIQUE(beneficiario_id, convoy_id)', 'El beneficiario ya está registrado en este convoy!')]
+    _sql_constraints = [
+        ('unique_beneficiario_convoy', 
+         'UNIQUE(convoy_id, beneficiario_id, tipo_beneficiario, dependiente_id)', 
+         'Ya existe un registro con esta combinación de convoy, beneficiario y tipo!')
+    ]
 
+    @api.depends('beneficiario_id', 'beneficiario_id.apellido_paterno', 
+             'beneficiario_id.apellido_materno', 'beneficiario_id.primer_nombre', 
+             'beneficiario_id.segundo_nombre')
+    def _compute_nombres_completos(self):
+        for record in self:
+            if record.beneficiario_id:
+                nombres = [
+                    record.beneficiario_id.apellido_paterno,
+                    record.beneficiario_id.apellido_materno,
+                    record.beneficiario_id.primer_nombre,
+                    record.beneficiario_id.segundo_nombre
+                ]
+                record.nombres_completos = ' '.join(filter(None, nombres))
+            else:
+                record.nombres_completos = False
+
+    @api.constrains('tipo_beneficiario', 'beneficiario_id', 'dependiente_id')
+    def _check_beneficiario_dependiente(self):
+        for record in self:
+            if record.tipo_beneficiario == 'titular' and not record.beneficiario_id:
+                raise UserError('Debe seleccionar un beneficiario titular')
+            if record.tipo_beneficiario == 'dependiente' and not record.dependiente_id:
+                raise UserError('Debe seleccionar un dependiente')
+    
     def action_promover_asistencia(self):
         self.ensure_one()
         if self.tipo_registro != 'masivo':
             raise UserError(_('Solo los registros masivos pueden ser promovidos a asistencia.'))
-        
         return {
             'name': _('Promover a Asistencia'),
             'type': 'ir.actions.act_window',
@@ -40,7 +70,8 @@ class ConvoyBeneficiarioRel(models.Model):
                 'default_tipo_registro': 'asistencia',
                 'default_convoy_id': self.convoy_id.id,
                 'default_numero_documento': self.numero_documento,
-                'promover_registro': True
+                'promover_registro': True,
+                'hide_dependientes': True  # Agregamos esta clave
             }
         }
 
@@ -59,29 +90,12 @@ class ConvoyBeneficiarioRel(models.Model):
                 'default_tipo_registro': 'socioeconomico',
                 'default_convoy_id': self.convoy_id.id,
                 'default_numero_documento': self.numero_documento,
-                'promover_registro': True
+                'promover_registro': True,
+                'hide_dependientes': True  # Agregamos esta clave
             }
         }
 
-    @api.depends('beneficiario_id')
-    def _compute_nombres_completos(self):
-        for record in self:
-            if record.beneficiario_id:
-                nombres = [
-                    record.beneficiario_id.apellido_paterno,
-                    record.beneficiario_id.apellido_materno,
-                    record.beneficiario_id.primer_nombre,
-                    record.beneficiario_id.segundo_nombre
-                ]
-                record.nombres_completos = ' '.join(filter(None, nombres))
-            else:
-                record.nombres_completos = False
-
-    # @api.constrains('servicio_id', 'tipo_registro')
-    # def _check_servicio_required(self):
-    #     for record in self:
-    #         if record.tipo_registro in ['asistencia', 'socioeconomico'] and not record.servicio_id:
-    #             raise UserError(_('El servicio es requerido para registros de tipo Asistencia y Socioeconómico.'))
+   
 
     def name_get(self):
         result = []

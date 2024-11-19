@@ -101,7 +101,7 @@
 
     <!-- Action Window -->
     <record model="ir.actions.act_window" id="action_convoy_genera_planificacion_servicio">
-      <field name="name">Generar Horarios (CONVOY)</field>
+      <field name="name">Planifiación Turnos(CONVOY)</field>
       <field name="res_model">mz.genera.planificacion.servicio</field>
       <field name="view_mode">kanban,tree,form</field>
       <field name="view_ids" eval="[(5, 0, 0),
@@ -119,7 +119,7 @@
     </record>
 
     <!-- Menú -->
-    <menuitem id="menu_action_convoy_genera_planificacion_servicio" name="Generar Horarios" action="action_convoy_genera_planificacion_servicio" parent="mz_convoy_menu_planificacion" sequence="20"/>
+    <menuitem id="menu_action_convoy_genera_planificacion_servicio" name="Planificación Turnos" action="action_convoy_genera_planificacion_servicio" parent="mz_convoy_menu_planificacion" sequence="20"/>
 
   </data>
 </odoo>

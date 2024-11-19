@@ -44,13 +44,15 @@
                     </group>
                     <notebook>
                         <page string="Beneficiarios">
-                            <field name="beneficiario_ids">
+                            <field name="beneficiario_ids" widget="one2many_search">
                                 <tree create="0" edit="0">
                                     <field name="numero_documento"/>
                                     <field name="nombres_completos"/>
+                                    <field name="tipo_beneficiario"/>
+                                     <field name="dependiente_id"/>
                                     <field name="tipo_registro"/>
                                     <field name="fecha_registro"/>
-                                    <field name="servicio_id"/>
+                                    <!-- <field name="servicio_id"/> -->
                                 </tree>
                             </field>
                         </page>

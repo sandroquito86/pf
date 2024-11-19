@@ -33,15 +33,15 @@ class ConvoyBeneficiarioWizard(models.TransientModel):
     es_extranjero = fields.Boolean('¿Es Migrante Extranjero?')
     pais_id = fields.Many2one('res.country', string='País', ondelete='restrict')
     celular = fields.Char('Celular')
-    operadora_id = fields.Many2one('mz.items', string='Operadora', 
+    operadora_id = fields.Many2one('pf.items', string='Operadora', 
                                   domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_operadoras').id)])
 
     # Campos de asistencia y socioeconómicos
     fecha_nacimiento = fields.Date('Fecha de Nacimiento')
     edad = fields.Char(string="Edad", compute="_compute_edad") 
-    estado_civil_id = fields.Many2one('mz.items', string='Estado Civil',
+    estado_civil_id = fields.Many2one('pf.items', string='Estado Civil',
                                      domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_estado_civil').id)])
-    genero_id = fields.Many2one('mz.items', string='Género',
+    genero_id = fields.Many2one('pf.items', string='Género',
                                domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_genero').id)])
    
 
@@ -229,7 +229,8 @@ class ConvoyBeneficiarioWizard(models.TransientModel):
                 self.mayor_65 = False
                 self.tiene_discapacidad_hogar = False
                 self.tipo_discapacidad_hogar_id = False
-        
+                
+
     def _cargar_beneficiario(self, beneficiario):
         """Carga los datos del beneficiario encontrado incluyendo dependientes"""
         # Cargar los datos del beneficiario
@@ -246,23 +247,30 @@ class ConvoyBeneficiarioWizard(models.TransientModel):
         # Cargar campos adicionales según el tipo de registro
         if self.tipo_registro in ['asistencia', 'socioeconomico']:
             self._cargar_campos_adicionales(beneficiario)
-        
+            
         # Limpiar dependientes existentes
-        self.dependientes_ids = [(5, 0, 0)]  # Limpiamos los registros existentes
+        self.dependientes_ids = [(5, 0, 0)]
         
-        # Cargar dependientes existentes
-        for dependiente in beneficiario.dependientes_ids:
-            self.dependientes_ids = [(0, 0, {
-                'tipo_dependiente': dependiente.tipo_dependiente.id,
-                'primer_apellido': dependiente.primer_apellido,
-                'segundo_apellido': dependiente.segundo_apellido,
-                'primer_nombre': dependiente.primer_nombre,
-                'segundo_nombre': dependiente.segundo_nombre,
-                'fecha_nacimiento': dependiente.fecha_nacimiento,
-                'tipo_documento': dependiente.tipo_documento,
-                'numero_documento': dependiente.numero_documento,
-            })]
+        # Buscar dependientes en mz_convoy.beneficiario
+        dependientes_convoy = self.env['mz_convoy.beneficiario'].search([
+            ('convoy_id', '=', self.convoy_id.id),
+            ('beneficiario_id', '=', beneficiario.id),
+            ('tipo_beneficiario', '=', 'dependiente')
+        ])
         
+        # Cargar los dependientes encontrados
+        for dep_convoy in dependientes_convoy:
+            if dep_convoy.dependiente_id:
+                self.dependientes_ids = [(0, 0, {
+                    'tipo_dependiente': dep_convoy.dependiente_id.tipo_dependiente.id,
+                    'primer_apellido': dep_convoy.dependiente_id.primer_apellido,
+                    'segundo_apellido': dep_convoy.dependiente_id.segundo_apellido,
+                    'primer_nombre': dep_convoy.dependiente_id.primer_nombre,
+                    'segundo_nombre': dep_convoy.dependiente_id.segundo_nombre,
+                    'fecha_nacimiento': dep_convoy.dependiente_id.fecha_nacimiento,
+                    'tipo_documento': dep_convoy.dependiente_id.tipo_documento,
+                    'numero_documento': dep_convoy.dependiente_id.numero_documento,
+                })]
 
     
 
@@ -359,10 +367,11 @@ class ConvoyBeneficiarioWizard(models.TransientModel):
                 })
         
         return vals
-
+    
+   
+    
     def action_register(self):
-        """Registra o actualiza el beneficiario en mz.beneficiario y lo añade al convoy.
-        También crea o actualiza los dependientes del beneficiario."""
+        """Registra o actualiza el beneficiario en mz.beneficiario y lo añade al convoy."""
         
         # Preparar los valores para el beneficiario
         vals = self._prepare_beneficiary_values()
@@ -380,30 +389,46 @@ class ConvoyBeneficiarioWizard(models.TransientModel):
             # Si no existe, creamos uno nuevo
             beneficiario = self.env['mz.beneficiario'].create(vals)
 
-        # Crear o actualizar la relación convoy-beneficiario
+        # Actualizar o crear relación convoy-beneficiario
         rel_vals = {
-            'convoy_id': self.convoy_id.id,
-            'beneficiario_id': beneficiario.id,
             'tipo_registro': self.tipo_registro,
             'fecha_registro': fields.Datetime.now(),
         }
-        
-        # Agregar servicio si aplica
         if self.tipo_registro in ['asistencia', 'socioeconomico']:
             rel_vals['servicio_id'] = self.servicio_id.id if self.servicio_id else False
 
-        # Verificar si ya existe la relación
+        # Buscar si ya existe la relación
         existing_rel = self.env['mz_convoy.beneficiario'].search([
             ('convoy_id', '=', self.convoy_id.id),
             ('beneficiario_id', '=', beneficiario.id)
         ], limit=1)
-        
+
         if existing_rel:
-            # Si existe, actualizamos los datos
+            # Si existe, solo actualizamos
             existing_rel.write(rel_vals)
         else:
-            # Si no existe, creamos la relación
+            # Si no existe, creamos nueva relación
+            rel_vals.update({
+                'convoy_id': self.convoy_id.id,
+                'beneficiario_id': beneficiario.id,
+                'tipo_beneficiario': 'titular'
+            })
             self.env['mz_convoy.beneficiario'].create(rel_vals)
+
+        # Obtener los dependientes actuales en el convoy
+        dependientes_actuales = self.env['mz_convoy.beneficiario'].search([
+            ('convoy_id', '=', self.convoy_id.id),
+            ('beneficiario_id', '=', beneficiario.id),
+            ('tipo_beneficiario', '=', 'dependiente')
+        ])
+
+        # Crear lista de IDs de dependientes en el wizard
+        dependientes_wizard_ids = self.dependientes_ids.mapped('dependiente_id.id')
+
+        # Eliminar registros de dependientes que ya no están en el wizard
+        for dep_actual in dependientes_actuales:
+            if dep_actual.dependiente_id.id not in dependientes_wizard_ids:
+                dep_actual.unlink()
 
         # Procesar los dependientes del beneficiario
         for dependiente_wizard in self.dependientes_ids:
@@ -416,7 +441,7 @@ class ConvoyBeneficiarioWizard(models.TransientModel):
                 'tipo_dependiente': dependiente_wizard.tipo_dependiente.id,
                 'tipo_documento': dependiente_wizard.tipo_documento,
                 'numero_documento': dependiente_wizard.numero_documento,
-                'beneficiario_id': beneficiario.id,  # Relacionar el dependiente con el beneficiario
+                'beneficiario_id': beneficiario.id,
             }
             
             # Buscar si el dependiente ya existe
@@ -430,7 +455,31 @@ class ConvoyBeneficiarioWizard(models.TransientModel):
                 existing_dependiente.write(dependiente_vals)
             else:
                 # Si no existe, lo creamos
-                self.env['mz.dependiente'].create(dependiente_vals)
+                existing_dependiente = self.env['mz.dependiente'].create(dependiente_vals)
+
+            # Buscar si ya existe la relación convoy-dependiente
+            existing_dep_rel = self.env['mz_convoy.beneficiario'].search([
+                ('convoy_id', '=', self.convoy_id.id),
+                ('dependiente_id', '=', existing_dependiente.id),
+                ('tipo_beneficiario', '=', 'dependiente')
+            ], limit=1)
+
+            if existing_dep_rel:
+                # Si existe, solo actualizamos
+                dep_rel_vals = {
+                    'fecha_registro': fields.Datetime.now(),
+                }
+                existing_dep_rel.write(dep_rel_vals)
+            else:
+                # Si no existe, creamos nueva relación para el dependiente
+                dep_rel_vals = {
+                    'convoy_id': self.convoy_id.id,
+                    'beneficiario_id': beneficiario.id,
+                    'dependiente_id': existing_dependiente.id,
+                    'tipo_beneficiario': 'dependiente',
+                    'fecha_registro': fields.Datetime.now(),
+                }
+                self.env['mz_convoy.beneficiario'].create(dep_rel_vals)
 
         # Recargar la vista para reflejar cambios
         return {

@@ -12,8 +12,8 @@ class AsignarServicio(models.Model):
     convoy_id = fields.Many2one('mz.convoy', string='Convoy', required=True, tracking=True)
     domain_convoy_id = fields.Char(string='Domain Convoy',compute='_compute_domain_convoy')    
     numero_turnos = fields.Integer(string='Cantidad de turnos',)
-    planificacion_ids = fields.One2many('mz.planificacion.servicio', 'asignacion_id', string='Turnos')   
 
+    
     def eliminar_desde_o2m(self):
         self.ensure_one()
         if self.convoy_id:
@@ -21,18 +21,29 @@ class AsignarServicio(models.Model):
                 ('servicio_id', '=', self.id)
             ])
             
+            # Verificar turnos asignados
             for plan in planificaciones:
                 if plan.turno_disponibles_ids:
-                    raise UserError(f"No se puede eliminar porque la planificación '{plan.name}' ya tiene turnos asignados.")
+                    raise UserError(
+                        f"No se puede eliminar porque la planificación '{plan.name}' "
+                        "ya tiene turnos asignados."
+                    )
             
+            # Eliminar planificaciones relacionadas
             planificaciones.unlink()
-            self.personal_ids = [(5, 0, 0)]
             
-            # Usar SQL directo solo para eliminación desde o2m
-            self.env.cr.execute("""
-                DELETE FROM mz_asignacion_servicio WHERE id = %s
-            """, (self.id,))
-            return True
+            # Eliminar registros de personal con contexto especial
+            with self.env.cr.savepoint():
+                # Usando context para evitar el constraint
+                self.with_context(eliminar_registro=True).write({
+                    'personal_ids': [(5, 0, 0)]
+                })
+                
+                # Eliminar el registro principal
+                self.env.cr.execute("""
+                    DELETE FROM mz_asignacion_servicio WHERE id = %s
+                """, (self.id,))
+                
         return True
 
     # Para eliminación desde la vista principal (se mantiene igual)

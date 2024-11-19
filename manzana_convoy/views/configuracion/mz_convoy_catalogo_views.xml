@@ -2,8 +2,8 @@
 <odoo>
     <data>
         <record model="ir.ui.view" id="view_mz_convoy_catalogo_tree">
-            <field name="name">mz.catalogo.tree</field>
-            <field name="model">mz.catalogo</field>
+            <field name="name">pf.catalogo.tree</field>
+            <field name="model">pf.catalogo</field>
             <field name="arch" type="xml">
                 <tree>
                     <field name="name" />
@@ -14,8 +14,8 @@
         </record>
 
         <record id="view_mz_convoy_catalogo_form" model="ir.ui.view">
-            <field name="name">mz.catalogo.form</field>
-            <field name="model">mz.catalogo</field>
+            <field name="name">pf.catalogo.form</field>
+            <field name="model">pf.catalogo</field>
             <field name="arch" type="xml">
                 <form string="Nuevo" duplicate="0">
                     <sheet>
@@ -43,7 +43,7 @@
 
         <record model="ir.actions.act_window" id="action_mz_convoy_catalogo">
             <field name="name">CATÁLOGOS</field>
-            <field name="res_model">mz.catalogo</field>
+            <field name="res_model">pf.catalogo</field>
             <field name="view_mode">tree,form</field>
         </record>
 

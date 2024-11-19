@@ -17,11 +17,11 @@ class Beneficiario(models.Model):
     apellidos = fields.Char('Apellidos', required=True)
     es_extranjero = fields.Boolean('¿Es Migrante Extranjero?')    
     celular = fields.Char('Celular')
-    operadora_id = fields.Many2one('mz.items', string='Operadora', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_operadoras').id)])
+    operadora_id = fields.Many2one('pf.items', string='Operadora', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_operadoras').id)])
     # Campos de asistencia
     fecha_nacimiento = fields.Date('Fecha de Nacimiento')   
-    estado_civil_id = fields.Many2one('mz.items', string='Estado Civil', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_estado_civil').id)])
-    genero_id = fields.Many2one('mz.items', string='Género', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_genero').id)])
+    estado_civil_id = fields.Many2one('pf.items', string='Estado Civil', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_estado_civil').id)])
+    genero_id = fields.Many2one('pf.items', string='Género', domain=lambda self: [('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_genero').id)])
     canton = fields.Char('Cantón')
     parroquia = fields.Char('Parroquia')
     direccion = fields.Char('Dirección de domicilio')
@@ -35,7 +35,7 @@ class Beneficiario(models.Model):
             self.tipo_discapacidad_hogar_id = False
         elif self.tiene_discapacidad_hogar == 'si' and not self.tipo_discapacidad_hogar_id:
             # Buscar el registro "NINGUNA" por defecto
-            ninguna = self.env['mz.items'].search([
+            ninguna = self.env['pf.items'].search([
                 ('catalogo_id', '=', self.env.ref('manzana_convoy.catalogo_convoy_tipo_discapacidad').id),
                 ('name', '=', 'NINGUNA')
             ], limit=1)

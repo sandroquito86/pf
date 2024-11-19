@@ -31,10 +31,10 @@ Long description of module's purpose
         # MENU
         'views/menu/convoy_menu.xml', 
         # CONFIGURACION       
-        'views/configuracion/mz_catalogo_views.xml',
-        'views/configuracion/mz_catalogo_items_views.xml',
-        'views/configuracion/mz_servicio_view.xml',
-        'views/configuracion/mz_sub_servicios_view.xml',
+        'views/configuracion/pf_catalogo_views.xml',
+        'views/configuracion/pf_catalogo_items_views.xml',
+        # 'views/configuracion/mz_servicio_view.xml',
+        # 'views/configuracion/mz_sub_servicios_view.xml',
 
         # PLANIFICACION
         'views/planificacion/mz_asignacion_servicio_view.xml',
@@ -49,6 +49,9 @@ Long description of module's purpose
         'views/registro/mz_convoy_beneficiario_view.xml',                 
         'views/registro/mz_convoy_programas_view.xml',        
         'views/registro/mz_convoy_agendar_servicio_view.xml', 
+
+        #EJECUCION
+        'views/ejecucion/mz_agendar_servicio_view.xml', 
         
         
         # 'views/registro/convoy_view.xml',   

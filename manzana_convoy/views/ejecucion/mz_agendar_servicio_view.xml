@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <menuitem id="menu_action_mz_convoy_agendar_servicio" name="Agendar Turno" parent="menu_mz_convoy_ejecucion" action="manzana_de_cuidados.action_mz_agendar_servicio" sequence="10"/>
+
+
+</odoo>
