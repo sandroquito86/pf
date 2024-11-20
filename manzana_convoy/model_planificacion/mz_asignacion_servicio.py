@@ -9,7 +9,7 @@ import string
 class AsignarServicio(models.Model):
     _inherit = 'mz.asignacion.servicio'   
 
-    convoy_id = fields.Many2one('mz.convoy', string='Convoy', required=True, tracking=True)
+    convoy_id = fields.Many2one('mz.convoy', string='Convoy', required=False, tracking=True)
     domain_convoy_id = fields.Char(string='Domain Convoy',compute='_compute_domain_convoy')    
     numero_turnos = fields.Integer(string='Cantidad de turnos',)
 
