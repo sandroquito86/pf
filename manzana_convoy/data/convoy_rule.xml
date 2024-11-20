@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rule_convoy_coordinador" model="ir.rule">
+        <field name="name">Coordinador: ver solo los convoy asignados</field>
+        <field name="model_id" ref="model_mz_convoy"/>
+        <field name="domain_force">[('director_coordinador.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('manzana_convoy.group_mz_convoy_coordinador'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_convoy_all" model="ir.rule">
+        <field name="name">Administrador: acceso total a convoy</field>
+        <field name="model_id" ref="model_mz_convoy"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[
+            (4, ref('manzana_convoy.group_mz_convoy_administrador')),
+            (4, ref('manzana_convoy.group_mz_convoy_asistente_coordinador'))
+        ]"/>
+    </record>
+
+</odoo>

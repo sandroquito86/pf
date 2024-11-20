@@ -9,11 +9,13 @@
         <field name="model">mz.convoy</field>
         <field name="arch" type="xml">
             <form string="Programas">
+                <field name="state" invisible="1"/>
                 <header>
                     <field name="state" widget="statusbar"/>
-                    <button name="aprobar_convoy" string="Aprobar" type="object" class="oe_highlight" invisible="state != 'borrador'"/>
-                    <!-- <button name="action_finalizar" string="Finalizar" type="object" class="oe_highlight" invisible="state != 'aprobado'"/> -->
-                    <button name="%(action_mz_convoy_beneficiario_wizard)d" type="action" string="Beneficiarios" context="{'default_convoy_id': id}" class="oe_highlight" icon="fa-user"/>
+                    <button name="action_aprobar_convoy" string="Aprobar" type="object" class="oe_highlight" invisible="state != 'borrador'"/>
+                    <button name="action_ejecutar_convoy" string="Iniciar Ejecución" type="object" class="oe_highlight" invisible="state != 'aprobado'" confirm="¿Está seguro de iniciar la ejecución de este convoy?"/>
+                    <button name="action_finalizar_manual" string="Finalizar Convoy" type="object" class="oe_highlight" invisible="state not in ('aprobado', 'ejecutando')" confirm="¿Está seguro de querer finalizar este convoy?"/>
+                    <button name="%(action_mz_convoy_beneficiario_wizard)d" type="action" string="Beneficiarios" context="{'default_convoy_id': id}" class="oe_highlight" icon="fa-user" invisible="state != 'ejecutando'"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -30,88 +32,83 @@
                     <div class="row justify-content-between position-relative w-100 m-0 mb-2">
                         <div class="oe_title">
                             <h1>
-                                <field name="name" placeholder="Nombre del Evento (CONVOY)"/>
+                                <field name="name" placeholder="Nombre del Evento (CONVOY)" readonly="state in ('ejecutando', 'fin')"/>
                             </h1>
                         </div>
                         <div class="o_employee_avatar m-0 p-0">
-                            <field name="image" widget="image" class="oe_avatar" options="{'preview_image': 'image'}"/>
+                            <field name="image" widget="image" class="oe_avatar" options="{'preview_image': 'image'}" readonly="state in ('ejecutando', 'fin')"/>
                         </div>
                     </div>
                     <group string="Informacion del CONVOY">
-                        <field name="institucion_anfitriona"/>
-                        <field name="formato_evento"/>
-                        <field name="director_coordinador"/>
+                        <field name="institucion_anfitriona" readonly="state in ('ejecutando', 'fin')"/>
+                        <field name="formato_evento" readonly="state in ('ejecutando', 'fin')"/>
+                        <field name="director_coordinador" readonly="state in ('ejecutando', 'fin')"/>
                     </group>
                     <notebook>
                         <page string="Beneficiarios">
-                            <field name="beneficiario_ids" widget="one2many_search">
+                            <field name="beneficiario_ids" widget="one2many_search" readonly="state in ('ejecutando', 'fin')">
                                 <tree create="0" edit="0">
                                     <field name="numero_documento"/>
                                     <field name="nombres_completos"/>
                                     <field name="tipo_beneficiario"/>
-                                     <field name="dependiente_id"/>
+                                    <field name="dependiente_id"/>
                                     <field name="tipo_registro"/>
                                     <field name="fecha_registro"/>
-                                    <!-- <field name="servicio_id"/> -->
                                 </tree>
                             </field>
                         </page>
                         <page string="Sucursal">
                             <group>
                                 <group>
-                                    <field name="sigla"/>
-                                    <field name="sucursal_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
-                                    <field name="provincia_id"/>
-                                    <field name="ciudad_id"/>
-                                    <field name="street"/>
-                                    <field name="street2"/>
-                                    <field name="zip"/>
+                                    <field name="sigla" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="sucursal_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="provincia_id" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="ciudad_id" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="street" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="street2" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="zip" readonly="state in ('ejecutando', 'fin')"/>
                                     <field name="mostrar_boton_publicar" invisible="1"/>
                                     <field name="mostrar_bot_retirar_public" invisible="1"/>
                                 </group>
                                 <group>
-
-                                    <field name="modulo_id"/>
-                                    <field name="active" readonly="1" widget = "boolean_toggle" />
+                                    <field name="modulo_id" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="active" readonly="1" widget="boolean_toggle"/>
                                     <field name="if_publicado" readonly="1" widget="boolean_toggle"/>
                                 </group>
                             </group>
                         </page>
-
                         <page string="Agenda Sugerida">
                             <group>
                                 <group>
-                                    <field name="fecha_evento"/>
-                                    <field name="dia_semana"/>
-                                    <field name="lugar"/>
+                                    <field name="fecha_inicio_evento" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="fecha_hasta_evento" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="dia_semana" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="lugar" readonly="state in ('ejecutando', 'fin')"/>
                                 </group>
                                 <group>
-                                    <field name="hora_inicio" widget="float_time"/>
-                                    <field name="hora_fin" widget="float_time"/>
-                                    <field name="duracion" />
+                                    <field name="hora_inicio" widget="float_time" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="hora_fin" widget="float_time" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="duracion" readonly="state in ('ejecutando', 'fin')"/>
                                 </group>
                             </group>
                         </page>
-
                         <page string="Participación y Formato">
                             <group>
                                 <group>
-                                    <field name="tipo_evento" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
-
-                                    <field name="numero_asistentes"/>
-                                    <field name="codigo_vestimenta"/>
+                                    <field name="tipo_evento" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="numero_asistentes" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="codigo_vestimenta" readonly="state in ('ejecutando', 'fin')"/>
                                 </group>
                                 <group>
-                                    <field name="participacion_prefecta" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
-                                    <field name="tiempo_intervencion" widget="float_time"/>
-                                    <field name="prensa"/>
-                                    <field name="data_politica"/>
+                                    <field name="participacion_prefecta" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="tiempo_intervencion" widget="float_time" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="prensa" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="data_politica" readonly="state in ('ejecutando', 'fin')"/>
                                 </group>
                             </group>
                         </page>
-
                         <page string="Mesa Técnica">
-                            <field name="mesa_tecnica_ids">
+                            <field name="mesa_tecnica_ids" readonly="state in ('ejecutando', 'fin')">
                                 <tree editable="bottom">
                                     <field name="nombre"/>
                                     <field name="cargo_institucion_id"/>
@@ -119,31 +116,30 @@
                                 </tree>
                             </field>
                         </page>
-
                         <page string="Logística y Responsables">
                             <group>
                                 <group string="Logística Requerida">
-                                    <field name="sillas_requeridas"/>
-                                    <field name="carpas_requeridas"/>
-                                    <field name="responsable_convoy"/>
+                                    <field name="sillas_requeridas" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="carpas_requeridas" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="responsable_convoy" readonly="state in ('ejecutando', 'fin')"/>
                                 </group>
                                 <group string="Responsables por Áreas">
-                                    <field name="responsables_avanzada" widget="many2many_tags"/>
-                                    <field name="responsable_socializacion"/>
-                                    <field name="responsable_mesa_tecnica"/>
-                                    <field name="responsable_convocatoria"/>
+                                    <field name="responsables_avanzada" widget="many2many_tags" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="responsable_socializacion" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="responsable_mesa_tecnica" readonly="state in ('ejecutando', 'fin')"/>
+                                    <field name="responsable_convocatoria" readonly="state in ('ejecutando', 'fin')"/>
                                 </group>
                             </group>
                         </page>
                         <page string="Autoridades">
-                            <field name="autoridades_externa_ids">
+                            <field name="autoridades_externa_ids" readonly="state in ('ejecutando', 'fin')">
                                 <tree editable="bottom">
                                     <field name="nombre"/>
                                 </tree>
                             </field>
                         </page>
                         <page string="Alertas/Quejas">
-                            <field name="alertas_quejas_ids">
+                            <field name="alertas_quejas_ids" readonly="state in ('ejecutando', 'fin')">
                                 <tree editable="bottom">
                                     <field name="nombre"/>
                                 </tree>
@@ -152,40 +148,39 @@
                         <page string="Servicios">
                             <div class="alert alert-info mb-0" role="alert">
                                 <i class="fa fa-info-circle me-2"/>
-Guarde el registro antes de agregar servicios
+                            Guarde el registro antes de agregar servicios
                             </div>
-                            <field name="can_edit_services" invisible="1" />
-                            <field name="programa_id" invisible="1" />
-                            <field name="servicio_ids" readonly="not can_edit_services" context="{                            
-                                'default_programa_id': programa_id,                                
-                                'form_view_ref': 'manzana_convoy.view_mz_convoy_asignacion_servicio_form'
-                            }">
+                            <field name="can_edit_services" invisible="1"/>
+                            <field name="programa_id" invisible="1"/>
+                            <field name="servicio_ids" readonly="state in ('ejecutando', 'fin')" context="{                            
+                            'default_programa_id': programa_id,                                
+                            'form_view_ref': 'manzana_convoy.view_mz_convoy_asignacion_servicio_form'
+                        }">
                                 <tree delete="0">
                                     <field name="servicio_id"/>
                                     <field name="personal_ids" widget="many2many_tags"/>
                                     <button name="eliminar_desde_o2m" type="object" icon="fa-trash" help="Eliminar servicio" confirm="¿Está seguro de querer eliminar este servicio y sus planificaciones relacionadas?"/>
-
                                 </tree>
                             </field>
                         </page>
                         <page string="Operadores">
-                            <field name="operadores_ids">
+                            <field name="operadores_ids" readonly="state in ('ejecutando', 'fin')">
                                 <tree>
                                     <field name="name"/>
-                                    <field name="user_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+                                    <field name="user_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
                                 </tree>
                             </field>
                         </page>
                         <page string="Fichas Legalizadas">
                             <group>
-                                <field name="ficha_evento_legalizada" widget="many2many_binary_preview"/>
-                                <field name="ficha_implantacion_legalizada" widget="many2many_binary_preview"/>
+                                <field name="ficha_evento_legalizada" widget="many2many_binary_preview" readonly="state in ('ejecutando', 'fin')"/>
+                                <field name="ficha_implantacion_legalizada" widget="many2many_binary_preview" readonly="state in ('ejecutando', 'fin')"/>
                             </group>
                         </page>
                     </notebook>
                     <div class="oe_chatter">
-                        <field name="message_follower_ids" widget="mail_followers" />
-                        <field name="message_ids" widget="mail_thread" />
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
                     </div>
                 </sheet>
             </form>
@@ -197,14 +192,13 @@ Guarde el registro antes de agregar servicios
         <field name="name">mz.convoy.tree</field>
         <field name="model">mz.convoy</field>
         <field name="arch" type="xml">
-            <tree string="Programas">
-                <field name="state" widget="badge" decoration-info="state == 'borrador'" decoration-success="state == 'aprobado'"/>
+            <tree decoration-info="state == 'borrador'" decoration-success="state == 'aprobado'" decoration-warning="state == 'ejecutado'">
                 <field name="name"/>
-                <field name="sucursal_id"/>
-                <field name="phone"/>
-                <field name="servicio_ids"/>
-                <field name="autoridades_ids"/>
-                <field name="if_publicado"/>
+                <field name="fecha_inicio_evento"/>
+                <field name="fecha_hasta_evento"/>
+                <field name="director_coordinador"/>
+                <field name="state"/>
+                <field name="dia_semana"/>
             </tree>
         </field>
     </record>
@@ -215,68 +209,20 @@ Guarde el registro antes de agregar servicios
         <field name="model">mz.convoy</field>
         <field name="type">search</field>
         <field name="arch" type="xml">
-            <search string="model_search">
-                <field name="name" />
-                <!-- Panel de búsqueda del lado izquierdo -->
-                <searchpanel>
-                    <field name="sucursal_id" icon="fa-building" string="Sucursal"/>
-                </searchpanel>
+            <search>
+                <field name="name"/>
+                <field name="director_coordinador"/>
+                <field name="state"/>
+                <!-- Filtro para mis convoyes -->
+                <filter string="Mis Convoy" name="my_convoys" domain="[('director_coordinador.user_id', '=', uid)]"/>
+                <!-- Agrupamientos -->
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Estado" name="state" context="{'group_by':'state'}"/>
+                    <filter string="Coordinador" name="coordinator" context="{'group_by':'director_coordinador'}"/>
+                </group>
             </search>
         </field>
     </record>
-
-    <record id="ma_mz_convoy_view_kanban" model="ir.ui.view">
-        <field name="name">mz.convoy</field>
-        <field name="model">mz.convoy</field>
-        <field name="arch" type="xml">
-            <kanban default_order="name" type="object">
-                <field name="id"/>
-                <field name="name"/>
-                <field name="active"/>
-                <templates>
-                    <t t-name="kanban-menu">
-                        <a role="menuitem" type="open" class="dropdown-item">Configuration</a>
-                        <a role="menuitem" type="object" name="toggle_active" class="dropdown-item">
-                            <t t-if="record.active.raw_value">Archive</t>
-                            <t t-else="">Restore</t>
-                        </a>
-                        <a role="menuitem" t-if="widget.deletable" type="delete" class="dropdown-item">Delete</a>
-                    </t>
-                    <t t-name="kanban-box">
-                        <div class="oe_kanban_vignette oe_semantic_html_override oe_kanban_global_click">
-                            <div class="o_kanban_image">
-                                <img alt="img" t-att-src="kanban_image('mz.convoy', 'image_128', record.id.raw_value)" class="o_image_64_max" height="52"/>
-                            </div>
-                            <div class="oe_kanban_details">
-                                <h4 class="oe_partner_heading">
-                                    <a type="open" class="o_kanban_record_title">
-                                        <field name="name"/>
-                                    </a>
-                                </h4>
-                                <div>
-                                    <span class="fa fa-envelope"/>
-                                    <field name="email"/>
-                                </div>
-                                <div>
-                                    <span class="fa fa-phone"/>
-                                    <field name="phone"/>
-                                </div>
-                                <!-- <div>
-                                    <field name="model_count_mz"/> SERVICIOS
-                                </div> -->
-                                <div>
-                                    <span class="fa fa-headset"/>
-                                    <field name="model_count_mz" invisible="1"/>
-                                    <field name="servicios_text"/>
-                                </div>
-                            </div>
-                        </div>
-                    </t>
-                </templates>
-            </kanban>
-        </field>
-    </record>
-
 
 
     <!-- vista de autoridades  tree - pertenecientre a hr.employee  -->
@@ -298,8 +244,16 @@ Guarde el registro antes de agregar servicios
     <record id="action_mz_mz_convoy" model="ir.actions.act_window">
         <field name="name">Convoy</field>
         <field name="res_model">mz.convoy</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">tree,form</field>
         <field name="context">{'default_modulo_id':4}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            No hay CONVOYES asignados
+            </p>
+            <p>
+            Aquí verá los convoys donde está asignado como coordinador.
+            </p>
+        </field>
     </record>
 
     <menuitem id="menu_action_mz_mz_convoy" name="Convoy" parent="mz_convoy_menu_registro" action="action_mz_mz_convoy" sequence="10" groups="group_mz_convoy_operador,group_mz_convoy_asistente_coordinador,group_mz_convoy_coordinador,group_mz_convoy_administrador"/>

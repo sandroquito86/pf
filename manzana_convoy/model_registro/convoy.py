@@ -12,9 +12,10 @@ class FichaEvento(models.Model):
     # Corrección del campo programa_id para apuntar al modelo correcto
     programa_id = fields.Many2one('pf.programas', string='Programa', ondelete='restrict',  required=True, auto_join=True)
     institucion_anfitriona = fields.Char(string='Institución Anfitriona') 
-    director_coordinador = fields.Many2one(string='Coordinador Responsable', comodel_name='hr.employee', ondelete='restrict')       
+    director_coordinador = fields.Many2one(string='Coordinador Responsable', comodel_name='hr.employee', ondelete='restrict', required=True)       
     # El resto de los campos permanecen igual
-    fecha_evento = fields.Date(string='Fecha del Evento')
+    fecha_inicio_evento = fields.Date(string='Fecha Inicio',required=True)
+    fecha_hasta_evento = fields.Date(string='Fecha Fin',required=True)
     dia_semana = fields.Char(string='Día', compute='_compute_dia_semana', store=True)
     lugar = fields.Char(string='Lugar')
     hora_inicio = fields.Float(string='Hora Inicio')
@@ -41,7 +42,7 @@ class FichaEvento(models.Model):
     mostrar_boton_publicar = fields.Boolean(compute='_compute_mostrar_boton_publicar', compute_sudo=True)
     mostrar_bot_retirar_public = fields.Boolean(compute='_compute_mostrar_bot_retirar_public', compute_sudo=True)
     can_edit_services = fields.Boolean(compute='_compute_can_edit_services')    
-    state = fields.Selection([('borrador', 'Borrador'),('aprobado', 'Aprobado'),('fin', 'Finalizado')], string='Estado', default='borrador', tracking=True)  
+    state = fields.Selection([('borrador', 'Borrador'),('aprobado', 'Aprobado'),('ejecutando', 'Ejecutando'),('fin', 'Finalizado')], string='Estado', default='borrador', tracking=True)  
     operadores_ids = fields.Many2many(string='Operadores', comodel_name='hr.employee', relation='convoy_operador_rel', 
                                       column1='convoy_id', column2='employee_id',domain="[('user_id','!=',False)]")
     colaboradores_ids = fields.Many2many(string='Colaboradores', comodel_name='hr.employee', relation='mz_convoy_colaborador_rel', 
@@ -134,40 +135,7 @@ class FichaEvento(models.Model):
                 raise UserError("Es obligatorio adjuntar documentos en  fichas legalizadas")
     
         
-    @api.model
-    def asignacion_permiso_operador(self):
-        current_datetime = datetime.now() - timedelta(hours=5)
-        today = current_datetime.date()  # Convertir a date
-        convoys = self.search([('state', '=', 'aprobado'), ('fecha_evento', '=', today)])        
-        grupo_operador = self.env.ref('manzana_convoy.group_mz_convoy_operador')      
-        grupo_coordinador = self.env.ref('manzana_convoy.group_mz_convoy_operador')   
-        for convoy in convoys:           
-            for empleado in convoy.operadores_ids:                
-                if empleado.user_id:  # Verificamos que el empleado tenga usuario
-                    empleado.user_id.write({'groups_id': [(4, grupo_operador.id)]})
-            convoy.director_coordinador.user_id.write({'groups_id': [(4, grupo_coordinador.id)]})
-
-    def aprobar_convoy(self):
-        self.write({'state': 'aprobado'})
-
-    def action_finalizar(self):
-        grupo_operador = self.env.ref('manzana_convoy.group_mz_convoy_operador')       
-        grupo_coordinador = self.env.ref('manzana_convoy.group_mz_convoy_operador')  
-        for record in self:
-            record.director_coordinador.user_id.write({'groups_id': [(3, grupo_coordinador.id)]})
-            # Quitar permisos a operadores
-            for empleado in record.operadores_ids:
-                if empleado.user_id:
-                    empleado.user_id.write({
-                        'groups_id': [(3, grupo_operador.id)]  # Remueve el grupo
-                    })
-
-            
-            # Cambiar estado a finalizado
-            record.write({
-                'state': 'fin'
-            })
-
+   
     
 
     @api.depends('programa_id')
@@ -219,10 +187,10 @@ class FichaEvento(models.Model):
             else:
                 record.duracion = f'{horas_enteras} horas y {minutos} minutos'
 
-    @api.depends('fecha_evento')
+    @api.depends('fecha_inicio_evento', 'fecha_hasta_evento')
     def _compute_dia_semana(self):
         for record in self:
-            if record.fecha_evento:
+            if record.fecha_inicio_evento and record.fecha_hasta_evento:
                 dias_semana = {
                     0: 'Lunes',
                     1: 'Martes',
@@ -231,12 +199,183 @@ class FichaEvento(models.Model):
                     4: 'Viernes',
                     5: 'Sábado',
                     6: 'Domingo'
-                }
-                dia_numero = record.fecha_evento.weekday()
-                record.dia_semana = dias_semana[dia_numero]
+                }                
+                # Si las fechas son iguales, solo mostrar el día
+                if record.fecha_inicio_evento == record.fecha_hasta_evento:
+                    record.dia_semana = dias_semana[record.fecha_inicio_evento.weekday()]
+                else:
+                    # Si son diferentes, mostrar el rango
+                    dia_inicio = dias_semana[record.fecha_inicio_evento.weekday()]
+                    dia_fin = dias_semana[record.fecha_hasta_evento.weekday()]
+                    record.dia_semana = f'De {dia_inicio} a {dia_fin}'
             else:
                 record.dia_semana = False
 
+
+
+    def action_aprobar_convoy(self):
+        """Método para aprobar convoy"""
+        self.ensure_one()
+        
+        # Validar fecha de inicio
+        fecha_actual = (fields.Datetime.now() - timedelta(hours=5)).date()
+        if self.fecha_inicio_evento < fecha_actual:
+            raise UserError("No se puede aprobar el convoy. La fecha de inicio debe ser mayor a la fecha actual.")
+        
+        # Validaciones adicionales que ya tenías
+        if not self.director_coordinador:
+            raise UserError("No se puede aprobar el convoy sin un coordinador asignado")
+            
+        if not self.director_coordinador.user_id:
+            raise UserError(f"El coordinador {self.director_coordinador.name} no tiene un usuario del sistema asignado")
+        
+        try:
+            # Asignar permiso de coordinador
+            grupo_coordinador = self.env.ref('manzana_convoy.group_mz_convoy_coordinador')
+            self.director_coordinador.user_id.write({
+                'groups_id': [(4, grupo_coordinador.id)]
+            })
+            
+            # Cambiar estado
+            self.write({'state': 'aprobado'})
+            
+            # Mensaje en el chatter
+            mensaje = f"""
+                ✅ Convoy Aprobado
+
+                - Fecha de aprobación: {fields.Datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
+                - Fecha inicio evento: {self.fecha_inicio_evento.strftime('%d/%m/%Y')}
+                - Fecha fin evento: {self.fecha_hasta_evento.strftime('%d/%m/%Y')}
+                - Coordinador asignado: {self.director_coordinador.name}
+                """
+            self.message_post(
+                body=mensaje,
+                message_type='notification',
+                subtype_xmlid='mail.mt_note'
+            )
+            
+        except Exception as e:
+            raise UserError(f"Error al aprobar convoy: {str(e)}")
+
+    def action_ejecutar_convoy(self):
+        """Método para ejecutar convoy"""
+        self.ensure_one()
+        
+        # Validar estado
+        if self.state != 'aprobado':
+            raise UserError("Solo se pueden ejecutar convoyes en estado aprobado")
+        
+        # Validar que sea el día de inicio
+        fecha_actual = (fields.Datetime.now() - timedelta(hours=5)).date()
+        if self.fecha_inicio_evento != fecha_actual:
+            raise UserError("Solo se pueden ejecutar convoyes en su fecha de inicio programada")
+            
+        try:
+            self.write({
+                'state': 'ejecutando',               
+            })
+            
+            mensaje = f"""
+                ▶️ Convoy Iniciado
+
+                - Fecha de inicio: {fields.Datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
+                - Fecha programada inicio: {self.fecha_inicio_evento.strftime('%d/%m/%Y')}
+                - Fecha programada fin: {self.fecha_hasta_evento.strftime('%d/%m/%Y')}
+                """
+            
+            self.message_post(
+                body=mensaje,
+                message_type='notification',
+                subtype_xmlid='mail.mt_note'
+            )
+            
+        except Exception as e:
+            raise UserError(f"Error al ejecutar convoy: {str(e)}")
+
+    def action_finalizar_manual(self, es_automatico=False):
+        """Método para finalizar convoy
+        @param es_automatico: Boolean que indica si fue llamado por el cron
+        """
+        self.ensure_one()
+        
+        # Validar estado
+        if self.state != 'ejecutando':
+            if es_automatico:
+                return
+            raise UserError("Solo se pueden finalizar convoyes en estado ejecutando")
+        
+        # Validar que sea la fecha hasta (solo para finalización manual)
+        if not es_automatico:
+            fecha_actual = (fields.Datetime.now() - timedelta(hours=5)).date()
+            if self.fecha_hasta_evento != fecha_actual:
+                raise UserError("Solo se pueden finalizar convoyes en su fecha de fin programada")
+        
+        try:
+            # Verificar si el coordinador tiene otros convoyes activos
+            otros_convoyes_coordinador = self.search_count([
+                ('id', '!=', self.id),
+                ('state', 'in', ['aprobado', 'ejecutando']),
+                ('director_coordinador', '=', self.director_coordinador.id)
+            ])
+
+            # Si no tiene otros convoyes activos, quitar permiso
+            if otros_convoyes_coordinador == 0 and self.director_coordinador and self.director_coordinador.user_id:
+                grupo_coordinador = self.env.ref('manzana_convoy.group_mz_convoy_coordinador')
+                self.director_coordinador.user_id.write({
+                    'groups_id': [(3, grupo_coordinador.id)]
+                })
+
+            # Cambiar estado
+            self.write({
+                'state': 'fin',               
+            })
+            fecha_hora_actual = fields.Datetime.now() - timedelta(hours=5)
+            # Preparar mensaje según tipo de finalización
+            titulo = "🔄 Convoy Finalizado Automáticamente" if es_automatico else "✅ Convoy Finalizado Manualmente"
+            
+            mensaje = f"""
+                {titulo}
+
+                - Fecha de finalización: {fecha_hora_actual.strftime('%d/%m/%Y %H:%M:%S')}
+                - Fecha programada fin: {self.fecha_hasta_evento.strftime('%d/%m/%Y')}
+                """
+            
+            if self.director_coordinador:
+                if otros_convoyes_coordinador == 0:
+                    mensaje += "❌ Se removieron permisos de coordinador por no tener más convoyes activos."
+                else:
+                    mensaje += "✅ El coordinador mantiene sus permisos por tener otros convoyes activos."
+
+            self.message_post(
+                body=mensaje,
+                message_type='notification',
+                subtype_xmlid='mail.mt_note'
+            )
+            
+        except Exception as e:
+            error_msg = f"Error al finalizar convoy: {str(e)}"
+            if es_automatico:
+                _logger.error(error_msg)
+                return
+            raise UserError(error_msg)
+
+    def _cron_verificar_fecha_finalizacion(self):
+        """Método para verificar y finalizar convoyes por fecha"""      
+        fecha_actual = (fields.Datetime.now() - timedelta(hours=5)).date()
+        
+        # Buscar convoyes que deben finalizarse
+        convoyes_para_finalizar = self.search([
+            ('state', '=', 'ejecutando'),
+            ('fecha_hasta_evento', '=', fecha_actual)
+        ])
+        # raise UserError("encontrado {}".format(convoyes_para_finalizar))
+
+        for convoy in convoyes_para_finalizar:
+            convoy.action_finalizar_manual(es_automatico=True)
+
+
+
+  
 class ConvoyMiembroMesaTecnica(models.Model):
     _name = 'mz_convoy.mesa_tecnica'
     _description = 'Miembro de Mesa Técnica'

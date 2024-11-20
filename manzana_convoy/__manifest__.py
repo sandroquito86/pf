@@ -23,11 +23,12 @@ Long description of module's purpose
     # always loaded
     'data': [
         'security/mz_convoy_security.xml',
-        'security/ir.model.access.csv',
+        'security/ir.model.access.csv',        
         # DATA
-        'data/asignacion_permiso_operador_ir_cron.xml',  
+        'data/convoy_rule.xml',
         'data/data_mz_convoy_catalogo.xml',  
         'data/data_mz_convoy_instituciones_data.xml', 
+        'data/convoy_finalizar_ir_cron.xml', 
         # MENU
         'views/menu/convoy_menu.xml', 
         # CONFIGURACION       
