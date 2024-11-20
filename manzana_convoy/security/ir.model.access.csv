@@ -8,7 +8,7 @@ access_mz_convoy_alertas_quejas_user,mz_convoy.alertas_quejas.user,model_mz_conv
 
 access_mz_convoy_operador,mz.convoy.asistente_operador,model_mz_convoy,group_mz_convoy_operador,1,0,0,0
 access_mz_convoy_asistente_coordinador,mz.convoy.asistente_coordinador,model_mz_convoy,group_mz_convoy_asistente_coordinador,1,1,1,0
-access_mz_convoy_coordinador,mz.convoy.coordinador,model_mz_convoy,group_mz_convoy_coordinador,1,1,1,0
+access_mz_convoy_coordinador,mz.convoy.coordinador,model_mz_convoy,group_mz_convoy_coordinador,1,1,0,0
 access_mz_convoy_administrador,mz.convoy.asministrador,model_mz_convoy,group_mz_convoy_administrador,1,1,1,1
 
 access_mz_beneficiario_operador,mz.beneficiario.asistente_operador,manzana_de_cuidados.model_mz_beneficiario,group_mz_convoy_operador,1,0,0,0
