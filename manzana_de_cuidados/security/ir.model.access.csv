@@ -72,6 +72,8 @@ access_mz_empleado_manager,access_hr_employee_manager,hr.model_hr_employee,group
 access_resource_resource_manager,access_resource_resource_manager,resource.model_resource_resource,group_beneficiario_manager,1,1,1,1
 access_mz_sub_servicio_sistema,mz.sub.servicio.sistema,model_mz_sub_servicio,group_beneficiario_manager,1,1,1,1
 access_pf_beneficiario_sistema,access_pf_beneficiario_sistema,prefectura_base.model_pf_beneficiario,group_beneficiario_manager,1,1,1,1
+access_pf_categoria_beneficario_sistema,pf.categoria_beneficario.sistema,prefectura_base.model_pf_categoria_beneficario,group_beneficiario_manager,1,1,1,0
+
 
 
 access_mz_servicio_manager,access_mz_servicio_manager,model_mz_servicio,group_beneficiario_manager,1,1,1,1

@@ -46,7 +46,7 @@
         <field name="name">mz.asistencia_servicio.tree.limit</field>
         <field name="model">mz.asistencia_servicio</field>
         <field name="arch" type="xml">
-            <tree string="Asistencia" create="False" delete="False" duplicate="false">
+        <tree string="Asistencia" create="False" delete="False" duplicate="false">
                 <field name="planificacion_id"/>
                 <field name="beneficiario_id"/>
                 <field name="tipo_beneficiario" widget="badge"
@@ -62,7 +62,40 @@
                 <field name="tipo_servicio" optional="hide"/>
                 <field name="asistio" />
                 <field name="atendido" widget="boolean_toggle" readonly="1"/>
+                <button name="action_asistio" type="object" string="Asistió" icon="fa-check" class="btn-primary" invisible="asistio != 'pendiente'"/>
+                <button name="action_no_asistio" type="object" string="No Asistió" icon="fa-times" class="btn-danger" invisible="asistio != 'pendiente'"/>
+                <button name="ingresar_signos" type="object" string="Signos Vitales" icon="fa-heartbeat" class="btn-primary" invisible="atendido or tipo_servicio != 'medico' or asistio != 'si'"/>
+                <button name="%(action_consulta_form)d" type="action" string="Consulta Médica" icon="fa-stethoscope" class="btn-info" invisible="atendido or tipo_servicio != 'medico' or asistio != 'si'"
+                    context="{'default_personal_id': personal_id, 'default_beneficiario_id': beneficiario_id, 'default_servicio_id': servicio_id, 'default_programa_id': programa_id, 'default_fecha': fecha, 'default_codigo': codigo, 'default_asistencia_servicio_id': id, 'default_presion_arterial': presion_arterial, 'default_presion_sistolica': presion_sistolica, 'default_presion_diastolica': presion_diastolica, 'default_frecuencia_cardiaca': frecuencia_cardiaca, 'default_frecuencia_respiratoria': frecuencia_respiratoria, 'default_temperatura': temperatura, 'default_peso': peso, 'default_altura': altura, 'default_imc': imc, 'default_dependiente_id': dependiente_id, 'default_tipo_paciente': tipo_beneficiario}"/>
+                <button name="action_ver_consulta" type="object" string="Ver Consulta Médica" icon="fa-eye" class="btn-secondary" invisible="not consulta_id"/>
+                <field name="consulta_id" optional="hide"/>
+                <field name="presion_arterial" optional="hide"/>
+                <field name="presion_sistolica" optional="hide"/>
+                <field name="presion_diastolica" optional="hide"/>
+                <field name="frecuencia_cardiaca" optional="hide"/>
+                <field name="frecuencia_respiratoria" optional="hide"/>
+                <field name="temperatura" optional="hide"/>
+                <field name="peso" optional="hide"/>
+                <field name="altura" optional="hide"/>
+                <field name="imc" optional="hide"/>
             </tree>
+            <!-- <tree string="Asistencia" create="False" delete="False" duplicate="false">
+                <field name="planificacion_id"/>
+                <field name="beneficiario_id"/>
+                <field name="tipo_beneficiario" widget="badge"
+                                        decoration-success="tipo_beneficiario == 'titular'"
+                                        decoration-warning="tipo_beneficiario == 'dependiente'"/>
+                <field name="dependiente_id" optional="hide"/>
+                <field name="tipo_beneficiario" optional="hide"/>
+                <field name="programa_id" optional="hide"/>
+                <field name="servicio_id" />
+                <field name="personal_id" />
+                <field name="codigo" optional="hide"/> 
+                <field name="fecha"/>
+                <field name="tipo_servicio" optional="hide"/>
+                <field name="asistio" />
+                <field name="atendido" widget="boolean_toggle" readonly="1"/>
+            </tree> -->
         </field>
     </record>
 
@@ -159,7 +192,16 @@
 
 
     <!-- Action -->
-    <record id="action_mz_asistencia_servicio_new" model="ir.actions.act_window">
+     <!-- <record id="action_mz_asistencia_servicio_new" model="ir.actions.act_window">
+        <field name="name">Asistencia</field>
+        <field name="res_model">mz.asistencia_servicio</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_asistencia_servicio_tree"/>
+        <field name="groups_id" eval="[(4, ref('group_beneficiario_manager'))]"/>
+        <field name="domain">[('programa_id.modulo_id', '=', 2)]</field>
+        <field name="context">{'group_by': ['fecha:year', 'fecha:month', 'fecha:day']}</field>
+    </record> -->
+    <record id="action_mz_asistencia_servicio_new_del" model="ir.actions.act_window">
         <field name="name">Asistencia</field>
         <field name="res_model">mz.asistencia_servicio</field>
         <field name="view_mode">tree</field>
@@ -170,11 +212,16 @@
     </record>
 
     <!-- Menu item -->
-    <menuitem id="menu_action_mz_asistencia_servicio" 
+    <!-- <menuitem id="menu_action_mz_asistencia_servicio" 
               name="Asistencia" 
               parent="menu_mz_ejecucion" 
               groups="manzana_de_cuidados.group_beneficiario_manager"
-              action="action_mz_asistencia_servicio_new" sequence="20"/>
+              action="action_mz_asistencia_servicio_new" sequence="20"/> -->
+    <menuitem id="menu_action_mz_asistencia_servicio_del" 
+              name="Asistencia" 
+              parent="menu_mz_ejecucion" 
+              groups="manzana_de_cuidados.group_beneficiario_manager"
+              action="action_mz_asistencia_servicio_new_del" sequence="20"/>
 
     <!-- Action de  asistencia para lider y coordinador-->
     <record id="action_mz_asistencia_servicio_lider_estrategico" model="ir.actions.act_window">
