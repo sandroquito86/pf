@@ -142,6 +142,7 @@
             <field name="res_model">mz.servicio</field>
             <field name="view_mode">kanban,tree,form</field>
             <field name="view_id" ref="view_servicio_kanban"/>
+            <field name="groups_id" eval="[(4, ref('group_manzana_lider_estrategia')), (4, ref('group_beneficiario_manager')), (4, ref('group_coordinador_manzana'))]"/>
         </record>
 
         <!-- Menú -->

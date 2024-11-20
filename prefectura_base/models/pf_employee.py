@@ -7,7 +7,14 @@ from .. import utils
 class PfEmployee(models.Model):
     _inherit = 'hr.employee'
 
+    # Sobrescribir el campo para hacerlo accesible
+    message_main_attachment_id = fields.Many2one(
+        'ir.attachment',
+        string='Main Attachment',
+        groups=False  # Quitar la restricción de grupos
+    )
     if_autoridad = fields.Boolean(string='Es Autoridad', default=False)
+    user_id = fields.Many2one('res.users', string='Usuario', ondelete='restrict')
     
     # Name fields
     nombre = fields.Char(string="Nombre", compute="_compute_name", store=True, readonly=True)

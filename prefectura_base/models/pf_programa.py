@@ -7,29 +7,29 @@ class PfProgramas(models.Model):
     _description = 'Programas'
 
     
-    name = fields.Char(string='Nombre', required=True)    
-    sigla = fields.Char(string='Abreviatura', required=True, size=10)    
-    sucursal_id = fields.Many2one('pf.sucursal', string='Sucursal', required=True)
-    email = fields.Char(string='Email')
-    phone = fields.Char(string='Teléfono')
-    mobile = fields.Char(string='Móvil')
-    tipo_documento = fields.Many2one('pf.items', string='Tipo de Documento')
+    name = fields.Char(string='Nombre', required=True, tracking=True)    
+    sigla = fields.Char(string='Abreviatura', required=True, size=10, tracking=True)    
+    sucursal_id = fields.Many2one('pf.sucursal', string='Sucursal', required=True, tracking=True)
+    email = fields.Char(string='Email', required=True, tracking=True)
+    phone = fields.Char(string='Teléfono', tracking=True)
+    mobile = fields.Char(string='Móvil', tracking=True)
+    tipo_documento = fields.Many2one('pf.items', string='Tipo de Documento' , tracking=True)
     domain_tipo_documento = fields.Char(string='Domain Tipo de Documento',compute='_compute_domain_tipo_documento')
-    numero_documento = fields.Char(string='Número de Documento')
+    numero_documento = fields.Char(string='Número de Documento', tracking=True)
     fecha_documento = fields.Date(string='Fecha de Documento')
-    file = fields.Binary(string='Archivo', attachment=True)
-    name_file = fields.Char(string='Nombre de Archivo')
-    provincia_id = fields.Many2one("res.country.state", string='Provincia', ondelete='restrict', related= "sucursal_id.provincia_id")
-    ciudad_id = fields.Many2one('res.country.ciudad', string='Ciudad' , ondelete='restrict', related="sucursal_id.ciudad_id")
-    street = fields.Char(string='Calle',  related='sucursal_id.street')
-    street2 = fields.Char(string='Calle 2', related='sucursal_id.street2')
-    zip = fields.Char(string='Código Postal', related='sucursal_id.zip')
+    file = fields.Binary(string='Archivo', attachment=True, tracking=True)
+    name_file = fields.Char(string='Nombre de Archivo', tracking=True)
+    provincia_id = fields.Many2one("res.country.state", string='Provincia', ondelete='restrict', related= "sucursal_id.provincia_id", tracking=True)
+    ciudad_id = fields.Many2one('res.country.ciudad', string='Ciudad' , ondelete='restrict', related="sucursal_id.ciudad_id", tracking=True)
+    street = fields.Char(string='Calle',  related='sucursal_id.street', tracking=True)
+    street2 = fields.Char(string='Calle 2', related='sucursal_id.street2', tracking=True)
+    zip = fields.Char(string='Código Postal', related='sucursal_id.zip', tracking=True)
     if_publicado = fields.Boolean(string='Publicado', default=False)
-    normativa_texto = fields.Html(string='Normativa', help="Descripción detallada de la normativa aplicable a este programa o sucursal.")
+    normativa_texto = fields.Html(string='Normativa', help="Descripción detallada de la normativa aplicable a este programa o sucursal.", tracking=True)
     
     image = fields.Binary(string='Imagen', attachment=True)
     
-    active = fields.Boolean(default=True, string='Activo')
+    active = fields.Boolean(default=True, string='Activo', tracking=True)
     modulo_id = fields.Many2one(
         'pf.modulo', 
         string="Proceso",

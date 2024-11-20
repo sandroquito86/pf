@@ -41,6 +41,12 @@ class AgendarServicio(models.Model):
     if_admin = fields.Boolean(string='Es administrador', compute='_compute_if_administrador', default=False)
     dias_disponibles_html = fields.Html(    string='Días Disponibles',    compute='_compute_dias_disponibles_html',    sanitize=False)
     codigo_int = fields.Integer(string='Código', store=True)
+
+    @api.onchange('programa_id', 'servicio_id')
+    def _onchange_modulo_id(self):
+        for record in self:
+            if record.programa_id:
+                record.modulo_id = record.programa_id.modulo_id.id
     
     @api.constrains('tipo_beneficiario', 'dependiente_id')
     def _check_dependiente(self):
@@ -299,7 +305,7 @@ class AgendarServicio(models.Model):
     def _generate_codigo(self):
         current_year = datetime.now().year
         current_month = datetime.now().month
-        prefix = self.env.ref('manzana_de_cuidados.codigo_prefectura_items').name
+        prefix = self.env.ref('prefectura_base.codigo_prefectura_items').name
         
         # Buscar el último código generado este año, excluyendo los registros en estado borrador
         last_record = self.search([

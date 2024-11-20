@@ -29,7 +29,7 @@ Long description of module's purpose
         'data/data_beneficiario.xml',
         'data/data_servicios.xml',
         'data/data_asig_servicios.xml',
-        
+
         
         'menu/mz_menu.xml',
         'views/mz_catalogo_views.xml',

@@ -40,11 +40,10 @@
                             </group>
                             <field name="detalle_horario_ids">
                                 <tree editable="bottom">
-                                    <field name="dias"/>
-                                    <field name="asignacion_horario_id"/>
-                                    <field name="horainicio" widget="float_time"/>
-                                    <field name="horafin" widget="float_time" />
-                                    <field name="duracionconsulta" widget="float_time"/>
+                                    <field name="dias" required="1"/>
+                                    <field name="horainicio" widget="float_time"  required="1"/>
+                                    <field name="horafin" widget="float_time"  required="1" />
+                                    <field name="duracionconsulta" widget="float_time"  required="1"/>
                                 </tree>
                             </field>
                         </group>
@@ -74,16 +73,26 @@
         </record>
 
 
-        <record model="ir.actions.act_window" id="action_mz_horarios_servicio">
+        <record model="ir.actions.act_window" id="action_mz_horarios_servicio_1">
             <field name="name">Configuración de Horarios del Personal </field>
             <field name="res_model">mz.horarios.servicio</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('programa_id.modulo_id', '=', 2)]</field>
+            <field name="groups_id" eval="[(4, ref('group_manzana_lider_estrategia')), (4, ref('group_beneficiario_manager')), (4, ref('group_coordinador_manzana'))]"/>
         </record>
 
-        <menuitem id="menu_action_mz_horarios_servicio" name="Configuración de Horarios del Personal " action="action_mz_horarios_servicio" parent="menu_planificacion_curso" sequence="20" />
+        <menuitem id="menu_action_mz_horarios_servicio" name="Configuración de Horarios del Personal " action="action_mz_horarios_servicio_1" groups="manzana_de_cuidados.group_manzana_lider_estrategia,manzana_de_cuidados.group_beneficiario_manager,manzana_de_cuidados.group_coordinador_manzana"  parent="menu_planificacion_curso" sequence="20" />
 
+        <!-- action para ver los horarios del personal limitado a su usuario  -->
+        <record model="ir.actions.act_window" id="action_mz_horarios_servicio_limit">
+            <field name="name">Configuración de Horarios del Personal </field>
+            <field name="res_model">mz.horarios.servicio</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('programa_id.modulo_id', '=', 2), ('personal_id', '=', uid2employee(uid))]</field>
+            <field name="groups_id" eval="[(4, ref('group_mz_prestador_servicio'))]"/>
+        </record>
 
+        <menuitem id="menu_action_mz_horarios_servicio_limit" name="Configuración de Horarios del Personal " action="action_mz_horarios_servicio_limit" groups="manzana_de_cuidados.group_mz_prestador_servicio" parent="menu_planificacion_curso" sequence="20" />
 
     </data>
 </odoo>

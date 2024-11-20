@@ -33,14 +33,14 @@ class AsistenciaServicio(models.Model):
         compute="_compute_presion_arterial",
         store=True
     )
-    presion_sistolica = fields.Integer(string="Presión Sistólica", tracking=True)
-    presion_diastolica = fields.Integer(string="Presión Diastólica", tracking=True)
-    frecuencia_cardiaca = fields.Integer(string='Frecuencia Cardíaca', tracking=True)
-    frecuencia_respiratoria = fields.Integer(string='Frecuencia Respiratoria', tracking=True)
-    temperatura = fields.Float(string='Temperatura (°C)', tracking=True)
-    peso = fields.Float(string='Peso (kg)', tracking=True)
-    altura = fields.Float(string='Altura (cm)', tracking=True)
-    imc = fields.Float(string='IMC', compute='_compute_imc', store=True)
+    presion_sistolica = fields.Integer(string="Presión Sistólica")
+    presion_diastolica = fields.Integer(string="Presión Diastólica")
+    frecuencia_cardiaca = fields.Integer(string='Frecuencia Cardíaca')
+    frecuencia_respiratoria = fields.Integer(string='Frecuencia Respiratoria')
+    temperatura = fields.Float(string='Temperatura (°C)')
+    peso = fields.Float(string='Peso (kg)')
+    altura = fields.Float(string='Altura (cm)')
+    imc = fields.Float(string='IMC', compute='_compute_imc')
 
     _sql_constraints = [
         ('unique_planificacion_beneficiario', 'unique(planificacion_id, beneficiario_id)', 
@@ -55,7 +55,7 @@ class AsistenciaServicio(models.Model):
                 record.imc = record.peso / (altura_m * altura_m)
             else:
                 record.imc = 0
-                
+
     @api.depends('presion_sistolica', 'presion_diastolica')
     def _compute_presion_arterial(self):
         for record in self:

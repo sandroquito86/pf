@@ -74,6 +74,7 @@
             <field name="res_model">pf.items</field>
             <field name="view_mode">tree,form</field>
              <field name="context" eval="{'search_default_catalogo_id':1}"></field>
+             <field name="groups_id" eval="[(4, ref('group_manzana_lider_estrategia')), (4, ref('group_beneficiario_manager')), (4, ref('group_coordinador_manzana'))]"/>
             <field name="view_ids" eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz_pf_items_tree')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz_pf_items_form')})]"/>

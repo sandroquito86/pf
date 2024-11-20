@@ -74,6 +74,7 @@
             <field name="res_model">mz.sub.servicio</field>
             <field name="context" eval="{'search_default_servicio_id':1}"></field>
             <field name="view_mode">tree,form</field>
+            <field name="groups_id" eval="[(4, ref('group_manzana_lider_estrategia')), (4, ref('group_beneficiario_manager')), (4, ref('group_coordinador_manzana'))]"/>
         </record>
 
         <menuitem name="Sub servicios" id="menu_action_mz_sub_servicio" parent="menu_configuracion" action="action_mz_sub_servicio" sequence="100" />

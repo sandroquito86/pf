@@ -58,6 +58,7 @@
             <field name="name">CATÁLOGOS</field>
             <field name="res_model">pf.catalogo</field>
             <field name="view_mode">tree,form</field>
+            <field name="groups_id" eval="[(4, ref('group_manzana_lider_estrategia')), (4, ref('group_beneficiario_manager')), (4, ref('group_coordinador_manzana'))]"/>
             <field name="view_ids" eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz_pf_catalogo_tree')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz_pf_catalogo_form')})]"/>
