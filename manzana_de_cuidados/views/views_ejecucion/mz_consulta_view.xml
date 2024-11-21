@@ -117,10 +117,10 @@
                                     <field name="horario_id" readonly="estado_new_solicitud == 'solicitado' or state == 'final'" options="{'domain_field': 'horario_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>
                                     <field name="horario_id_domain" invisible="1" />
                                     <field name="estado_new_solicitud" invisible="1"/>
-                                    <button name="solicitar_horario" invisible="not horario_id_domain or estado_new_solicitud != 'borrador' or state == 'final'" type="object" string="Solicitar" class="oe_highlight"/>
+                                    <button name="solicitar_horario" invisible="state == 'final'" type="object" string="Solicitar" class="oe_highlight"/>
                                 </group>
                                 <group>
-                                    <field name="dias_disponibles_html" widget="html"/>
+                                    <field name="dias_disponibles_html" invisible="estado_new_solicitud == 'solicitado' or state == 'final'" widget="html"/>
                                 </group>
                             </group>
                             </page>
@@ -279,10 +279,10 @@
                                     <field name="horario_id" readonly="estado_new_solicitud == 'solicitado'" options="{'domain_field': 'horario_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>
                                     <field name="horario_id_domain" invisible="1" />
                                     <field name="estado_new_solicitud" invisible="1"/>
-                                    <button name="solicitar_horario" invisible="not horario_id_domain or estado_new_solicitud != 'borrador'" type="object" string="Solicitar" class="oe_highlight"/>
+                                    <button name="solicitar_horario" invisible="state == 'final'" type="object" string="Solicitar" class="oe_highlight"/>
                                 </group>
                                 <group>
-                                    <field name="dias_disponibles_html" widget="html"/>
+                                    <field name="dias_disponibles_html" invisible="estado_new_solicitud == 'solicitado' or state == 'final'" widget="html" />
                                 </group>
                             </group>
                             </page>
