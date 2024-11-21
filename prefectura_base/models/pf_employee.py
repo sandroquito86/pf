@@ -67,18 +67,19 @@ class PfEmployee(models.Model):
             }
         
     def crear_user(self):
-        user_vals = {
-            'name': self.name,
-            'login': self.work_email,
-            'email': self.work_email,
-            'company_id': self.company_id.id,
-            'company_ids': [(4, self.company_id.id)],
-            'password': self.identification_id,
-            'programa_id': self.programa_id.id,
-            # 'groups_id': [(6, 0, [self.env.ref('prefectura_base.group_portal').id])]
-        }
-        user = self.env['res.users'].create(user_vals)
-        self.user_id = user.id
+        if self.name and self.work_email and self.identification_id and self.programa_id:
+            user_vals = {
+                'name': self.name,
+                'login': self.work_email,
+                'email': self.work_email,
+                'company_id': self.company_id.id,
+                'company_ids': [(4, self.company_id.id)],
+                'password': self.identification_id,
+                'programa_id': self.programa_id.id,
+                # 'groups_id': [(6, 0, [self.env.ref('prefectura_base.group_portal').id])]
+            }
+            user = self.env['res.users'].create(user_vals)
+            self.user_id = user.id
         return True
 
         

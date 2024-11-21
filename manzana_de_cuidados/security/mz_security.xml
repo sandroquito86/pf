@@ -185,7 +185,7 @@
         <field name="name">Manzana de Cuidados: Sistema ver programas</field>
         <field name="model_id" ref="prefectura_base.model_pf_programas"/>
         <field name="groups" eval="[(4, ref('group_beneficiario_manager'))]"/>
-        <field name="domain_force">[('modulo_id', '=', 2)]</field>
+        <field name="domain_force">[('modulo_id', 'in', [2,4])]</field>
     </record>
     <record id="access_beneficiario_manager_to_employee" model="ir.rule">
         <field name="name">Manzana de Cuidados: Sistema ver Empleados</field>
@@ -198,12 +198,6 @@
         <field name="model_id" ref="base.model_res_users"/>
         <field name="groups" eval="[(4, ref('group_beneficiario_manager'))]"/>
         <field name="domain_force">[('programa_id.modulo_id', '=', 2)]</field>
-    </record>
-    <record id="access_beneficiario_manager_to_programa" model="ir.rule">
-        <field name="name">Manzana de Cuidados: Sistema ver programas</field>
-        <field name="model_id" ref="prefectura_base.model_pf_programas"/>
-        <field name="groups" eval="[(4, ref('group_beneficiario_manager'))]"/>
-        <field name="domain_force">[('modulo_id', '=', 2)]</field>
     </record>
     <record id="access_beneficiario_manager_to_asignacion_servicio" model="ir.rule">
         <field name="name">Manzana de Cuidados: Sistema ver Servicio de Programa y Responsables Asignados</field>

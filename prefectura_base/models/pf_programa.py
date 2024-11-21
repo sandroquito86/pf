@@ -10,7 +10,7 @@ class PfProgramas(models.Model):
     name = fields.Char(string='Nombre', required=True, tracking=True)    
     sigla = fields.Char(string='Abreviatura', required=True, size=10, tracking=True)    
     sucursal_id = fields.Many2one('pf.sucursal', string='Sucursal', required=True, tracking=True)
-    email = fields.Char(string='Email', required=True, tracking=True)
+    email = fields.Char(string='Email', tracking=True)
     phone = fields.Char(string='Teléfono', tracking=True)
     mobile = fields.Char(string='Móvil', tracking=True)
     tipo_documento = fields.Many2one('pf.items', string='Tipo de Documento' , tracking=True)

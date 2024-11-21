@@ -135,7 +135,7 @@
                                 <field name="apellido_paterno" required="1"/>
                                 <field name="apellido_materno" required="1"/>
                                 <field name="primer_nombre" required="1"/>
-                                <field name="segundo_nombre" required="1"/>
+                                <field name="segundo_nombre" />
                             </group>
                             <group string="ORGANIZACIÓN">
                                 <field name="department_id"/>
@@ -151,7 +151,7 @@
                             <group string="CIUDADANIA">
                                 <field name="country_id" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
                                 <field name="ssnid"/>
-                                <field name="identification_id" string="Cédula" />
+                                <field name="identification_id" string="Cédula" required="1"/>
                                 <field name="passport_id"/>
                                 <field name="gender"/>
                                 <field name="birthday" required="1"/>
@@ -162,7 +162,7 @@
                             <group string="INFORMACIÓN">
                                 <field name="mobile_phone" widget="phone"/>
                                 <field name="work_phone" widget="phone"/>
-                                <field name="work_email" widget="email"/>
+                                <field name="work_email" widget="email" required="1"/>
                                 <field name="company_id" invisible="1"/>
                                 <field name="modulo_id" invisible="1"/>
                                 <field name="sucursal_id" readonly="1" force_save="1" options="{'no_edit': True, 'no_create': True, 'no_open': True}"/>
@@ -290,7 +290,7 @@
             <field name="view_mode">kanban,tree,form</field>
             <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'kanban', 'view_id': ref('mz_hr_employee_kanban_view')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz_hr_employee_form')})]"/>
             <field name="context">{
-                                                'default_tipo_personal': 'externo'
+                                                'default_tipo_personal': 'interno'
                                 }</field>
              <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">

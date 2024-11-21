@@ -24,6 +24,7 @@
             <field name="mobile_phone">+593 98 765 4321</field>
             <field name="work_phone">+593 4 234 5678</field>
             <field name="work_email">maria.mendoza@prefectura.gob.ec</field>
+            <field name="modulo_id" ref="modulo_2"/>
             <field name="sucursal_id" ref="sucursal_guayaquil_norte"/>
             <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
             <field name="programa_id" ref="programa_manzana_cuidados_guayaquil_b10_004"/>
@@ -48,6 +49,7 @@
             <field name="mobile_phone">+593 99 876 5432</field>
             <field name="work_phone">+593 4 345 6789</field>
             <field name="work_email">juan.rivera@prefectura.gob.ec</field>
+            <field name="modulo_id" ref="modulo_2"/>
             <field name="sucursal_id" ref="sucursal_guayaquil_norte"/>
             <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
             <field name="programa_id" ref="programa_manzana_cuidados_guayaquil_b10_004"/>
@@ -72,6 +74,7 @@
             <field name="mobile_phone">+593 97 654 3210</field>
             <field name="work_phone">+593 4 456 7890</field>
             <field name="work_email">ana.velasco@prefectura.gob.ec</field>
+            <field name="modulo_id" ref="modulo_2"/>
             <field name="sucursal_id" ref="sucursal_guayaquil_sur"/>
             <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
             <field name="programa_id" ref="programa_manzana_cuidados_guayaquil_b10_005"/>
@@ -96,6 +99,7 @@
             <field name="mobile_phone">+593 96 543 2109</field>
             <field name="work_phone">+593 4 567 8901</field>
             <field name="work_email">pedro.castro@prefectura.gob.ec</field>
+            <field name="modulo_id" ref="modulo_2"/>
             <field name="sucursal_id" ref="sucursal_guayaquil_sur"/>
             <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
             <field name="programa_id" ref="programa_manzana_cuidados_guayaquil_b10_005"/>
@@ -120,6 +124,7 @@
             <field name="mobile_phone">+593 95 432 1098</field>
             <field name="work_phone">+593 4 678 9012</field>
             <field name="work_email">carmen.morales@prefectura.gob.ec</field>
+            <field name="modulo_id" ref="modulo_2"/>
             <field name="sucursal_id" ref="sucursal_duran"/>
             <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
             <field name="programa_id" ref="programa_manzana_cuidados_duran_b10_006"/>
@@ -144,6 +149,7 @@
             <field name="mobile_phone">+593 94 321 0987</field>
             <field name="work_phone">+593 4 789 0123</field>
             <field name="work_email">luis.torres@prefectura.gob.ec</field>
+            <field name="modulo_id" ref="modulo_2"/>
             <field name="sucursal_id" ref="sucursal_duran"/>
             <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
             <field name="programa_id" ref="programa_manzana_cuidados_duran_b10_006"/>
@@ -168,6 +174,7 @@
             <field name="mobile_phone">+593 93 210 9876</field>
             <field name="work_phone">+593 4 890 1234</field>
             <field name="work_email">patricia.ruiz@prefectura.gob.ec</field>
+            <field name="modulo_id" ref="modulo_2"/>
             <field name="sucursal_id" ref="sucursal_guayaquil_norte"/>
             <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
             <field name="programa_id" ref="programa_manzana_cuidados_guayaquil_b10_004"/>
@@ -192,6 +199,7 @@
             <field name="mobile_phone">+593 92 109 8765</field>
             <field name="work_phone">+593 4 901 2345</field>
             <field name="work_email">roberto.lopez@prefectura.gob.ec</field>
+            <field name="modulo_id" ref="modulo_2"/>
             <field name="sucursal_id" ref="sucursal_guayaquil_sur"/>
             <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
             <field name="programa_id" ref="programa_manzana_cuidados_guayaquil_b10_005"/>
@@ -216,6 +224,7 @@
             <field name="mobile_phone">+593 91 098 7654</field>
             <field name="work_phone">+593 4 012 3456</field>
             <field name="work_email">martha.sanchez@prefectura.gob.ec</field>
+            <field name="modulo_id" ref="modulo_2"/>
             <field name="sucursal_id" ref="sucursal_duran"/>
             <field name="modulo_ids" eval="[(6, 0, [ref('modulo_2')])]"/>
             <field name="programa_id" ref="programa_manzana_cuidados_duran_b10_006"/>

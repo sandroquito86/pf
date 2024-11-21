@@ -38,7 +38,7 @@
                                     <field name="name"/>
                                     <field name="modulo_id"/>
                                     <field name="email"/>
-                                    <field name="active" widget="boolean_toggle"/>
+                                    <field name="active" widget="boolean_toggle" readonly="1" force_save="1"/>
                                 </tree>
                             </field>
                         </page>

@@ -185,7 +185,7 @@
               groups="manzana_de_cuidados.group_beneficiario_manager"
               action="action_mz_asistencia_servicio_new" sequence="20"/> -->
     <menuitem id="menu_action_mz_asistencia_servicio_del" 
-              name="Asistencia7777" 
+              name="Asistencia" 
               parent="menu_mz_ejecucion" 
               groups="manzana_de_cuidados.group_beneficiario_manager"
               action="action_mz_asistencia_servicio_new_del" sequence="20"/>
@@ -203,7 +203,7 @@
 
     <!-- Menu item -->
     <menuitem id="menu_action_mz_asistencia_servicio" 
-              name="Asistenciahhhh" 
+              name="Asistencia" 
               parent="menu_mz_ejecucion" 
               groups="manzana_de_cuidados.group_manzana_lider_estrategia,manzana_de_cuidados.group_coordinador_manzana"
               action="action_mz_asistencia_servicio_lider_estrategico" sequence="20"/>
