@@ -34,8 +34,8 @@ Long description of module's purpose
         # CONFIGURACION       
         'views/configuracion/pf_catalogo_views.xml',
         'views/configuracion/pf_catalogo_items_views.xml',
-        # 'views/configuracion/mz_servicio_view.xml',
-        # 'views/configuracion/mz_sub_servicios_view.xml',
+        'views/configuracion/mz_servicio_view.xml',
+        'views/configuracion/mz_sub_servicios_view.xml',
 
         # PLANIFICACION
         'views/planificacion/mz_asignacion_servicio_view.xml',
