@@ -84,6 +84,30 @@ class AsignarServicio(models.Model):
             
             # Archivamos el registro de servicio
             record.active = False
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            # Obtenemos el convoy relacionado con el programa
+            convoy = self.env['mz.convoy'].search([('programa_id', '=', vals.get('programa_id'))], limit=1)
+            if convoy:
+                vals['convoy_id'] = convoy.id
+        
+        asignaciones = super(AsignarServicio, self).create(vals_list)
+        
+        # Solo crear planificaciones para registros con convoy_id
+        for asignacion in asignaciones:
+            if asignacion.convoy_id and asignacion.personal_ids:  # Verificamos que tenga convoy_id
+                for empleado in asignacion.personal_ids:
+                    self.env['mz.genera.planificacion.servicio'].create({
+                        'servicio_id': asignacion.id,
+                        'programa_id': asignacion.programa_id.id,
+                        'name': f'Horario - {asignacion.name}',
+                        'estado': 'borrador',  # Cambié a 'borrador' para mantener consistencia con el write
+                        'personal_id': empleado.id,
+                    })
+        
+        return asignaciones
 
     def write(self, vals):
         if 'personal_ids' in vals and self.convoy_id:  # Solo para registros de convoy
@@ -135,6 +159,9 @@ class AsignarServicio(models.Model):
                 })
         return super(AsignarServicio, self).write(vals)
     
+   
+
+
     @api.depends('servicio_id')
     def _compute_domain_convoy(self):
         for record in self:
@@ -153,26 +180,5 @@ class AsignarServicio(models.Model):
             self.programa_id = self.convoy_id.programa_id   
 
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        for vals in vals_list:
-            # Obtenemos el convoy relacionado con el programa
-            convoy = self.env['mz.convoy'].search([('programa_id', '=', vals.get('programa_id'))], limit=1)
-            if convoy:
-                vals['convoy_id'] = convoy.id
-        
-        asignaciones = super(AsignarServicio, self).create(vals_list)
-        
-        for asignacion in asignaciones:
-            if asignacion.convoy_id and asignacion.personal_ids:
-                for empleado in asignacion.personal_ids:
-                    self.env['mz.genera.planificacion.servicio'].create({
-                        'servicio_id': asignacion.id,
-                        'programa_id': asignacion.programa_id.id,
-                        'name': f'Horario - {asignacion.name}',
-                        'estado': 'confirmado',
-                        'personal_id': empleado.id,
-                    })
-        
-        return asignaciones
+    
    
