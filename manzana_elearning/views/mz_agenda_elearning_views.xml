@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_mz_agenda_elearning_tree">
+            <field name="name">mz.agenda.elearning.tree</field>
+            <field name="model">mz.agenda.elearning</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="programa_id"/>
+                    <field name="course_id" />
+                    <field name="total_time" widget="float_time"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_mz_agenda_elearning_form" model="ir.ui.view">
+            <field name="name">mz.agenda.elearning.form</field>
+            <field name="model">mz.agenda.elearning</field>
+            <field name="arch" type="xml">
+                <form string="Nuevo">
+                    <header>
+                        <button name="action_crear_planificacion" 
+                                string="Crear Planificación" 
+                                type="object" 
+                                class="oe_highlight"
+                                invisible= "state not in ('draft')"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_redirect_to_applicants"
+                                type="object"
+                                icon="fa-users"
+                                class="oe_stat_button">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="members_applicants_count" nolabel="1"/>
+                                    </span>
+                                    <span class="o_stat_text">Postulantes</span>
+                                </div>
+                            </button>
+                            <button name="action_redirect_to_enrolled"
+                                type="object"
+                                icon="fa-graduation-cap"
+                                class="oe_stat_button">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="members_enrolled_count" nolabel="1"/>
+                                    </span>
+                                    <span class="o_stat_text">Inscritos</span>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="row justify-content-between position-relative w-100 m-0 mb-2">
+                            <div class="oe_title">
+                                <h1>
+                                    <field name="name" placeholder="Nombre del Horario"/>
+                                </h1>
+                            </div>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="course_id"  options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"  />
+                                <!-- <field name="programs_domain" invisible="1"/> -->
+                                <field name="programa_id" options="{'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+                                <field name="total_time" widget="float_time" />
+                                <field name="start_date" />
+                                <field name="end_date" />
+                                <label for="quota_limited" string="Limitar Registros"/>
+                                <div>
+                                    <field name="quota_limited"/>
+                                    <span invisible="not quota_limited" required="not quota_limited">para <field name="quota_max" class="oe_inline o_input_9ch"/> Beneficiarios</span>
+                                </div>
+                            </group>
+                            <group>
+                               
+                                <!-- <field name="domain_personal_id" invisible="1"/>
+                                <field name="domain_programa_id" invisible="1" /> -->
+                            </group>
+                        </group>
+                            <notebook>
+                                <page string="Detalle de agenda" name="detalle">
+                                    <field name="detalle_horario_ids">
+                                        <tree editable="bottom">
+                                            <field name="days" widget="many2many_tags"/>
+                                            <field name="hour_from" widget="float_time"/>
+                                            <field name="hour_to" widget="float_time" />
+                                        </tree>
+                                    </field>
+                                </page>
+                                <page string="Planificación Generada" name="planificacion">
+                                    <field name="planificacion_ids">
+                                        <tree>
+                                            <field name="date"/>
+                                            <field name="hour_from" widget="float_time"/>
+                                            <field name="hour_to" widget="float_time"/>
+                                            <field name="duration" widget="float_time"/>
+                                            <field name="state"/>
+                                        </tree>
+                                    </field>
+                                </page>
+                            </notebook>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers" />
+                            <field name="message_ids" widget="mail_thread" />
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="mmz_agenda_elearning_view_search" model="ir.ui.view">
+            <field name="name">mz.agenda.elearning.view.search</field>
+            <field name="model">mz.agenda.elearning</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="course_id"/>
+                    <!-- Panel de búsqueda del lado izquierdo -->
+                <searchpanel>
+                    <!-- <field name="asi_servicio_id" icon="fa-cogs" string="Servicio"/>
+                    <field name="programa_id" icon="fa-building" string="Programa"/> -->
+                </searchpanel>
+                </search>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_mz_agenda_elearning">
+            <field name="name">Agenda de Capacitaciones </field>
+            <field name="res_model">mz.agenda.elearning</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="domain">[('programa_id.modulo_id', '=', 2)]</field> -->
+        </record>
+
+    </data>
+</odoo>

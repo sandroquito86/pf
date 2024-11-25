@@ -5,6 +5,7 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from datetime import date
 
+
 class MzStudentAttendance(models.Model):
     _name = 'mz.attendance.student'
     _description = 'Asistencia de Estudiantes'

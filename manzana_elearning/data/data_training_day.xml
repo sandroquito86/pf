@@ -1,0 +1,47 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Catálogo -->
+        <record id="training_day_monday" model="training.day">
+            <field name="name">LUNES</field>
+            <field name="code">0</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <record id="training_day_tuesday" model="training.day">
+            <field name="name">MARTES</field>
+            <field name="code">1</field>
+            <field name="sequence">2</field>
+        </record>
+
+        <record id="training_day_wednesday" model="training.day">
+            <field name="name">MIÉRCOLES</field>
+            <field name="code">2</field>
+            <field name="sequence">3</field>
+        </record>
+
+        <record id="training_day_thursday" model="training.day">
+            <field name="name">JUEVES</field>
+            <field name="code">3</field>
+            <field name="sequence">4</field>
+        </record>
+
+        <record id="training_day_friday" model="training.day">
+            <field name="name">VIERNES</field>
+            <field name="code">4</field>
+            <field name="sequence">5</field>
+        </record>
+
+        <record id="training_day_saturday" model="training.day">
+            <field name="name">SÁBADO</field>
+            <field name="code">5</field>
+            <field name="sequence">6</field>
+        </record>
+
+        <record id="training_day_sunday" model="training.day">
+            <field name="name">DOMINGO</field>
+            <field name="code">6</field>
+            <field name="sequence">7</field>
+        </record>
+        
+    </data>    
+</odoo>

@@ -2,7 +2,50 @@
 <odoo>
     <data>
         <record id="website_slides.website_slides_menu_root" model="ir.ui.menu">
+            <field name="name">Generación de Ingresos</field>
             <field name="parent_id" ref="manzana_de_cuidados.menu_principal"/>
         </record>
+
+        <record id="website_slides.website_slides_menu_courses" model="ir.ui.menu">
+            <field name="name">Apertura de Capacitaciones</field>
+        </record>
+
+        <record id="website_slides.website_slides_menu_courses_content" model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+
+        <record id="website_slides.website_slides_menu_report_contents" model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+
+        <record id="website_slides.website_slides_menu_report_reviews" model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+
+        <menuitem name="Preparación de Capacitaciones"
+            id="website_slides_menu_agenda_capacitaciones"
+            parent="website_slides.website_slides_menu_root"
+            sequence="2"/>
+
+        <menuitem name="Ejecución de Capacitaciones"
+            id="website_slides_menu_ejecucion_capacitaciones"
+            parent="website_slides.website_slides_menu_root"
+            sequence="3"/>
+
+
+
+
+        <menuitem id="menu_action_mz_agenda_elearning" 
+            name="Agenda"
+            action="action_mz_agenda_elearning"
+            parent="website_slides_menu_agenda_capacitaciones"
+            sequence="1" />
+
+        <menuitem id="menu_action_mz_control_attendance_attendance" 
+            name="Control de Asistencias"
+            action="mz_control_attendance_attendance_action"
+            parent="website_slides_menu_ejecucion_capacitaciones"
+            sequence="1" />
+
     </data>
 </odoo>

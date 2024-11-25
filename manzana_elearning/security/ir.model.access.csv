@@ -10,10 +10,14 @@ access_mz_student_assignments,mz.student.assignments,model_mz_student_assignment
 
 access_mz_attendance_student,mz.attendance.student,model_mz_attendance_student,,1,1,1,1
 
+access_mz_agenda_elearning,mz.agenda.elearning,model_mz_agenda_elearning,,1,1,1,1
 
+access_mz_detalle_horarios_elearning,mz.detalle.horarios.elearning,model_mz_detalle_horarios_elearning,,1,1,1,1
 
+access_training_day,training.day,model_training_day,,1,1,1,1
 
+access_mz_planificacion_sesiones,mz.planificacion.sesiones,model_mz_planificacion_sesiones,,1,1,1,1
 
+access_mz_slide_channel_partner_offline,mz.slide.channel.partner.offline,model_mz_slide_channel_partner_offline,,1,1,1,1
 
-
-
+access_mz_control_attendance,mz.control.attendance,model_mz_control_attendance,,1,1,1,1

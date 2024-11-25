@@ -92,6 +92,7 @@ export class AttendanceBeneficiary extends Component {
 
     async saveAttendances() {
         const beneficiariesStudents = this.state.beneficiaries.filter(b => b.student_id)
+        console.log(beneficiariesStudents)
         const values = beneficiariesStudents.map(b => this.prepareValuesForCreate(b, this.state.slideChanel, this.state.dateToday))
         
         try {

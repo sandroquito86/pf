@@ -1,0 +1,29 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Catálogo -->
+        <record id="capacitacion_curso_charla" model="pf.catalogo">
+            <field name="name">Capacitaciones / Charlas</field>
+            <field name="descripcion">Catálogo de Capacitaciones / Charlas</field>
+        </record>
+        
+
+       
+        <!-- Tipo de servicios -->
+        <record id="capacitacion_elaboracion_moños_diademas" model="pf.items">
+            <field name="name">Elaboración de moños y diademas</field>
+            <field name="descripcion">Actividades creativas para aprender a crear accesorios y emprender.</field>
+            <field name="catalogo_id" ref="capacitacion_curso_charla"/>
+        </record>
+        <record id="capacitacion_manualidades_reciclaje" model="pf.items">
+            <field name="name">Manualidades con reciclaje</field>
+            <field name="descripcion">Actividades para crear objetos únicos utilizando materiales reutilizados.</field>
+            <field name="catalogo_id" ref="capacitacion_curso_charla"/>
+        </record>
+        <record id="capacitacion_peluqueria_spa" model="pf.items">
+            <field name="name">Peluquería y Spa</field>
+            <field name="descripcion">Aprende sobre los servicios de belleza y relajación; a su vez, recibe los beneficios de este servicio.</field>
+            <field name="catalogo_id" ref="capacitacion_curso_charla"/>
+        </record>
+        
+    </data>    
+</odoo>

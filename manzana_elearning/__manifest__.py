@@ -18,14 +18,19 @@ Long description of module's purpose
     'version': '0.5',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr',  'website_slides', 'web'],
+    'depends': ['base','hr',  'website_slides', 'web','manzana_de_cuidados','prefectura_base'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'data/data_catalogo.xml',
+        'data/data_training_day.xml',
 
         'views/mz_elearning_views.xml',
         'views/mz_attendance_student.xml',
+        'views/mz_agenda_elearning_views.xml',
+        'views/mz_slide_channel_partner_offline_views.xml',
+        'views/mz_control_attendance.xml',
         
         'views/mz_elearning_menu_views.xml',
         'views/website_slides_templates_course.xml',
@@ -40,7 +45,7 @@ Long description of module's purpose
         ],
         'web.assets_backend': [
             'manzana_elearning/static/src/components/attendance_beneficiary/attendance_beneficiary.js',
-            'manzana_elearning/static/src/components/attendance_beneficiary/attendance_beneficiary.xml',
+            'manzana_elearning/static/src/components/attendance_beneficiary/attendance_beneficiary.xml'
         ],
 },
 }

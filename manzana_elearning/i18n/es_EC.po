@@ -1,0 +1,4 @@
+#. module: website_slides
+#: model:ir.ui.menu,name:website_slides.website_slides_menu_courses
+msgid "Apertura de Capacitación"
+msgstr "Apertura de Capacitación"

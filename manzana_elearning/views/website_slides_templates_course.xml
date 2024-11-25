@@ -28,7 +28,7 @@
             <h3>Tareas del Curso</h3>
             <div class="mb-5 o_wslides_slides_list">
                 <ul class="o_wslides_js_slides_list_container list-unstyled">
-                    <t t-foreach="channel.assignments_ids" t-as="assignment">
+                    <t t-foreach="channel.assignments_ids" t-as="assignment" t-key="assignment.id + '_' + assignment.create_date">
                         <t t-if="assignment.published == 'done'">
                             <li t-att-class="'o_wslides_slide_list_category o_wslides_js_list_item mb-2'" >
                                 <ul class="list-unstyled pb-1 border-top">
@@ -45,7 +45,7 @@
                                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                                 <input type="hidden" name="assignment_id" t-att-value="assignment.id"/>
                                                 <div class="pt-2 pb-2 border-start ms-2 me-2 ps-2 d-flex flex-row align-items-center o_wslides_slides_list_slide_controls o_not_editable">
-                                                    <t t-set="student_assignment" t-value="assignment.student_assignments_ids.filtered(lambda t: t.student_id.id == 1)"/>
+                                                    <t t-set="student_assignment" t-value="assignment.student_assignments_ids.filtered(lambda t: t.student_id.user_id.id == request.env.user.id)"/>
                                                     <t t-set="deadline" t-value="assignment.deadline" />
 
                                                     <t t-if="student_assignment">

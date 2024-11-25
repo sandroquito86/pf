@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- views -->
+
+    <record id="slide_channel_partner_offline_view_search" model="ir.ui.view">
+            <field name="name">slide.channel.partner.offline.view.search</field>
+            <field name="model">mz.slide.channel.partner.offline</field>
+            <field name="arch" type="xml">
+                <search string="Beneficiarios Inscritos">
+                    <filter string="Beneficiarios Inscritos" name="filter_open" domain="[('state', '=', 'open')]"/>
+                </search>
+            </field>
+    </record>
+
+    <record id="view_slide_channel_partner_offline_tree" model="ir.ui.view">
+        <field name="name">view.slide.channel.partner.offline.tree</field>
+        <field name="model">mz.slide.channel.partner.offline</field>
+        <!-- <field name="groups_id" eval="[(4, ref('website_slides.group_website_slides_officer'))]"/> -->
+        <field name="arch" type="xml">
+            <tree string="Postulantes" editable="bottom" edit="1" sample="1">
+                <field name="beneficiary_id" options="{'no_open': True, 'no_create': True}"/>
+                <field name="agenda_id" column_invisible="True" /> <!---->
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'open'"/>
+                <button string="Confirmar Inscripción" name="action_confirm" type="object"
+                    icon="fa-thumbs-up"
+                    invisible="state != 'draft'"
+                />
+                <button string="Cancelar Inscripción" name="action_cancel" type="object"
+                    icon="fa-times"
+                    invisible="state != 'open'"
+                />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_slide_channel_partner_offline_enrolled_tree" model="ir.ui.view">
+        <field name="name">view.slide.channel.partner.offline.enrolled.tree</field>
+        <field name="model">mz.slide.channel.partner.offline</field>
+        <!-- <field name="groups_id" eval="[(4, ref('website_slides.group_website_slides_officer'))]"/> -->
+        <field name="arch" type="xml">
+            <tree string="Beneficiarios Inscritos" editable="bottom" edit="0" create="0" sample="1">
+                <field name="beneficiary_id" options="{'no_open': True, 'no_create': True}"/>
+                <field name="agenda_id" column_invisible="True" /> <!---->
+            </tree>
+        </field>
+    </record>
+
+    <!-- <record id="view_slide_channel_partner_offline_form" model="ir.ui.view">
+        <field name="name">view.slide.channel.partner.offline.form</field>
+        <field name="model">mz.slide.channel.partner.offline</field>
+        <field name="arch" type="xml">
+            <form string="Beneficiarios Inscritos">
+                <sheet>
+                    <group>
+                        <field name="beneficiary_id" options="{'no_open': True, 'no_create': True}"/>
+                        <field name="agenda_id" readonly="1"/>
+                        <field name="state"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record> -->
+
+    <!-- <record id="attendance_student_view_filter" model="ir.ui.view">
+        <field name="name">attendance_student_view_filter</field>
+        <field name="model">mz.attendance.student</field>
+        <field name="arch" type="xml">
+            <search string="Búsqueda de Asistencias">
+                <group expand="0" string="Group By">
+                    <filter string="Beneficiario" name="groupby_student_id" context="{'group_by': 'student_id'}"/>
+                    <filter string="Asistencia" name="groupby_name" context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record> -->
+
+    <!-- actions -->
+
+    <record id="slide_channel_partner_offline_action" model="ir.actions.act_window">
+        <field name="name">Inscripción de Beneficiarios</field>
+        <field name="res_model">mz.slide.channel.partner.offline</field>
+        <field name="view_mode">tree</field>
+        <field name="context"></field>
+        <field name="view_id" ref="view_slide_channel_partner_offline_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No attendance records found
+            </p><p>
+                The attendance records of your students will be displayed here.
+            </p>
+        </field>
+    </record>
+
+    <record id="slide_channel_partner_offline_enrolled_action" model="ir.actions.act_window">
+        <field name="name">Beneficiarios Inscritos</field>
+        <field name="res_model">mz.slide.channel.partner.offline</field>
+        <field name="view_mode">tree</field>
+        <field name="context"></field>
+        <field name="view_id" ref="view_slide_channel_partner_offline_enrolled_tree"/>
+        <field name="search_view_id" ref="manzana_elearning.slide_channel_partner_offline_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No attendance records found
+            </p><p>
+                The attendance records of your students will be displayed here.
+            </p>
+        </field>
+    </record>
+
+
+</odoo>

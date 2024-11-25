@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- views -->
+
+        <record id="survey_survey_view_form_inherit" model="ir.ui.view">
+            <field name="name">survey.survey.view.form.inherit</field>
+            <field name="model">survey.survey</field>
+            <field name="inherit_id" ref="survey.survey_survey_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='survey_type']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="attendance_success_min" />
+                    <field name="on_site_training" widget="boolean_toggle" />
+                    <label for="certification" />
+                    <div class="o_checkbox_optional_field">
+                        <field name="certification" />
+                        <div invisible="not certification" class="w-100">
+                            <field name="certification_report_layout" placeholder="Pick a Style..." class="w-50"/>
+                            <button name="action_survey_preview_certification_template"
+                                string="Vista Previa" type="object"
+                                icon="fa-external-link"  target="_blank" class="btn-link pt-0"/>
+                        </div>
+                    </div>
+                </xpath>
+
+                <xpath expr="//page[@name='questions']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+            </field>
+        </record>
+</odoo>
