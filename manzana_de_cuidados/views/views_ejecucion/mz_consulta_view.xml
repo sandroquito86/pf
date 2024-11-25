@@ -46,7 +46,7 @@
                             <group>
                                 <field name="fecha" required="1" readonly="1" force_save="1"/>
                                 <field name="hora" widget="float_time" readonly="1" force_save="1"/>
-                                <field name="genero" readonly="1" force_save="1"/>
+                                <field name="genero_id" readonly="1" force_save="1"/>
                                 <field name="fecha_nacimiento" readonly="1" force_save="1"/>
                                 <field name="edad" readonly="1" force_save="1"/>
                             </group>
@@ -167,7 +167,6 @@
             <field name="name">mz.consulta.form.custom</field>
             <field name="model">mz.consulta</field>
             <field name="arch" type="xml">
-            <!-- QUIERO QUE DESDE ESTA VISTA NO SE PUEDA CREAR, NO SE PUEDA EDITAR Y NO SE PUEDA ELIMINAR -->
                 <form string="Consulta Médica" create="false" delete="false" duplicate="false" edit="false">
                     <header>
                         <!-- Aquí puedes agregar botones de acción si los necesitas -->
@@ -208,7 +207,7 @@
                             <group>
                                 <field name="fecha" required="1" readonly="1" force_save="1"/>
                                 <field name="hora" widget="float_time" readonly="1" force_save="1"/>
-                                <field name="genero" readonly="1" force_save="1"/>
+                                <field name="genero_id" readonly="1" force_save="1"/>
                                 <field name="fecha_nacimiento" readonly="1" force_save="1"/>
                                 <field name="edad" readonly="1" force_save="1"/>
                             </group>
@@ -308,16 +307,10 @@
                     <field name="programa_id"/>
                     <field name="servicio_id"/>
                     <field name="personal_id"/>
-                    <filter string="Hoy" name="today" domain="[('fecha', '=', context_today().strftime('%Y-%m-%d'))]"/>
-                    <filter string="Esta Semana" name="this_week" domain="[
-                        ('fecha', '&gt;=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d')),
-                        ('fecha', '&lt;=', (context_today() + datetime.timedelta(days=6 - context_today().weekday())).strftime('%Y-%m-%d'))
-                    ]"/>
-                    <filter string="Este Mes" name="this_month" domain="[
-                        ('fecha', '&gt;=', (context_today().replace(day=1)).strftime('%Y-%m-%d')),
-                        ('fecha', '&lt;=', (context_today().replace(day=1, month=context_today().month+1) - datetime.timedelta(days=1)).strftime('%Y-%m-%d'))
-                    ]"/>
                     <group expand="1" string="Agrupar por">
+                        <filter string="Año" name="group_by_year" context="{'group_by':'fecha:year'}"/>
+                        <filter string="Mes" name="group_by_month" context="{'group_by':'fecha:month'}"/>
+                        <filter string="Día" name="group_by_day" context="{'group_by':'fecha:day'}"/>
                         <filter string="Beneficiario" name="group_beneficiario" context="{'group_by': 'beneficiario_id'}"/>
                         <filter string="Programa" name="group_programa" context="{'group_by': 'programa_id'}"/>
                         <filter string="Servicio" name="group_servicio" context="{'group_by': 'servicio_id'}"/>
@@ -343,7 +336,7 @@
             <field name="context">{'create': False}</field>
         </record>
 
-        <menuitem id="menu_consulta" name="Consultas" parent="menu_mz_ejecucion" action="action_ma_consulta_medica" sequence="30"/>
+        <menuitem id="menu_consulta" name="Médicas" parent="menu_mz_consultas" action="action_ma_consulta_medica" sequence="10"/>
 
     </data>
 </odoo>

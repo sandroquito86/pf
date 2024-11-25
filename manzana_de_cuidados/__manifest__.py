@@ -51,8 +51,13 @@ Long description of module's purpose
         'views/views_ejecucion/mz_agendar_servicio_view.xml',
         'views/views_ejecucion/mz_reagendar_servicio_view.xml',
         'views/views_ejecucion/mz_consulta_view.xml',
+        'views/views_ejecucion/mz_consulta_psicologica_view.xml',
+        'views/views_ejecucion/mz_cuidado_child_view.xml',
+        'views/views_ejecucion/mz_asesoria_legal_view.xml',
         'views/views_ejecucion/mz_asistencia_servicio_view.xml',
         'views/views_ejecucion/mz_historia_clinica_view.xml',
+        'views/views_ejecucion/mz_historia_clinica_psicologica_view.xml',
+        
         
         'views/views_employee/mz_empleado_view.xml',
         'views/views_employee/mz_colaborador_view.xml',

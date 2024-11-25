@@ -4,7 +4,7 @@ class HistoriaClinica(models.Model):
     _name = 'mz.historia.clinica'
     _description = 'Historia Clínica'
     _order = 'fecha desc'
-    _rec_name = 'beneficiario_id'
+    _rec_name = 'consulta_id'
 
     beneficiario_id = fields.Many2one('mz.beneficiario', string='Paciente Beneficiario', ondelete='cascade')
 

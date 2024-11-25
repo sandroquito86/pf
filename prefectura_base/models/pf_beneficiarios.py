@@ -37,11 +37,7 @@ class Beneficiarios(models.Model):
     direccion = fields.Char(string='Dirección', tracking=True)
     telefono = fields.Char(string='Teléfono', tracking=True)
     email = fields.Char(string='Correo Electrónico', tracking=True)
-    genero = fields.Selection([
-        ('masculino', 'Masculino'),
-        ('femenino', 'Femenino'),
-        ('otro', 'Otro')
-    ], string='Género')
+    genero_id = fields.Many2one('pf.items', string='Género', domain="[('catalogo_id', '=', ref('prefectura_base.genero'))]")
 
     
     

@@ -17,7 +17,6 @@
                 <field name="servicio_id" />
                 <field name="personal_id" />
                 <field name="codigo" optional="hide"/>
-                <field name="tipo_servicio" optional="hide"/>
                 <field name="asistio" />
                 <field name="atendido" widget="boolean_toggle" readonly="1"/>
             </tree>

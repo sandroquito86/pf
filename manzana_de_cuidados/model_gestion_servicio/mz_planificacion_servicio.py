@@ -343,6 +343,7 @@ class PlanificacionServicio(models.Model):
     dia = fields.Char(string='Dia', compute='_compute_dia', store=True)
     turno_extra = fields.Selection([('si', 'Si'), ('no', 'No')], string='Turno Extra', default='no')
     creado_por_usuario_id = fields.Many2one('res.users', string='Creado por')
+    estado_maximo_cont = fields.Selection([('abierto', 'Abierto'), ('cerrado', 'Cerrado')], compute="_compute_estado_maximo_cont", string='Estado Maximo Turnos', default='abierto', store=True)
 
     @api.depends('fecha')
     def _compute_dia(self):
@@ -351,6 +352,18 @@ class PlanificacionServicio(models.Model):
                 record.dia = format_date(record.fecha, 'EEEE', locale='es_ES')
             else:
                 record.dia = ''
+
+    @api.depends('beneficiario_ids')
+    def _compute_estado_maximo_cont(self):
+        for record in self:
+            if record.beneficiario_ids:
+                total_beneficiario = len(record.beneficiario_ids)
+                if total_beneficiario >= record.maximo_beneficiarios:
+                    record.estado_maximo_cont = 'cerrado'
+                else:
+                    record.estado_maximo_cont = 'abierto'
+            else:
+                record.estado_maximo_cont = 'abierto'
 
     @api.depends('fecha', 'horainicio', 'horafin', 'dia')
     def _compute_horario(self):

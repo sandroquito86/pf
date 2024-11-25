@@ -30,6 +30,8 @@ class Dependiente(models.Model):
     fecha_nacimiento = fields.Date(string='Fecha de Nacimiento', tracking=True)
     historia_clinica_ids = fields.One2many('mz.historia.clinica', 'dependiente_id', string='Historias Clínicas')
     consulta_count = fields.Integer(string='Número de Consultas', compute='_compute_consulta_count')
+    historia_psicologica_ids = fields.One2many('mz.historia.psicologica', 'dependiente_id', string='Historias Psicológicas')
+    consulta_psicolociga_count = fields.Integer(string='Número de Consultas Psicológicas', compute='_compute_consulta_psicologica_count')
     tipo_documento = fields.Selection([
         ('dni', 'DNI'),
         ('pasaporte', 'Pasaporte'),
@@ -38,7 +40,7 @@ class Dependiente(models.Model):
     numero_documento = fields.Char(string='Número de Documento', required=True, tracking=True)
     beneficiario_id = fields.Many2one('mz.beneficiario', string='Beneficiario', ondelete='cascade', required=True)
     edad = fields.Char(string="Edad", compute="_compute_edad", store=True)
-    genero = fields.Selection([('masculino', 'Masculino'), ('femenino', 'Femenino'), ('otro','Otro')], string='Género', tracking=True)
+    genero_id = fields.Many2one('pf.items', string='Género', domain="[('catalogo_id', '=', ref('prefectura_base.genero'))]")
     # creame un constrains para que el numero_documento y tipo_documento sean unico 
 
     _sql_constraints = [('unique_documento', 'UNIQUE(tipo_documento, numero_documento)', 'Ya existe un dependiente con este documento.')]
@@ -48,6 +50,11 @@ class Dependiente(models.Model):
         for dependiente in self:
             dependiente.consulta_count = len(dependiente.historia_clinica_ids)
 
+    @api.depends('historia_psicologica_ids')
+    def _compute_consulta_psicologica_count(self):
+        for dependiente in self:
+            dependiente.consulta_psicolociga_count = len(dependiente.historia_psicologica_ids)
+
 
     def action_view_historia_clinica(self):
         self.ensure_one()
@@ -56,6 +63,17 @@ class Dependiente(models.Model):
             'name': 'Historial Clínico',
             'view_mode': 'tree,form',
             'res_model': 'mz.historia.clinica',
+            'domain': [('dependiente_id', '=', self.id)],
+            'context': dict(self.env.context, create=False)
+        }
+    
+    def action_view_historia_clinica_psicologico(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Historial Psicológico',
+            'view_mode': 'tree,form',
+            'res_model': 'mz.historia.psicologica',
             'domain': [('dependiente_id', '=', self.id)],
             'context': dict(self.env.context, create=False)
         }

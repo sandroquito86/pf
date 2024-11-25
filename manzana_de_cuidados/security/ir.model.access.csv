@@ -89,6 +89,12 @@ access_solicitud_beneficiario_manager,access_solicitud_beneficiario_manager,mode
 access_mz_agendar_servicio_admin,mz.agendar_servicio.admin,model_mz_agendar_servicio,group_beneficiario_manager,1,1,1,1
 access_mz_asistencia_servicio_admin,mz.asistencia_servicio.admin,model_mz_asistencia_servicio,group_beneficiario_manager,1,1,1,1
 
+access_mz_historia_psicologica_admin,mz.historia.psicologica.admin,model_mz_historia_psicologica,group_beneficiario_manager,1,1,1,1
+access_mz_consulta_psicologica_admin,mz.consulta.psicologica.admin,model_mz_consulta_psicologica,group_beneficiario_manager,1,1,1,1
+access_mz_diagnostico_psicologico_linea_admin,mz.diagnostico.psicologico.linea.admin,model_mz_diagnostico_psicologico_linea,group_beneficiario_manager,1,1,1,1
+access_mz_cuidado_child_admin,mz.cuidado.child.admin,model_mz_cuidado_child,group_beneficiario_manager,1,1,1,1
+access_mz_asesoria_legal_admin,mz.asesoria.legal.admin,model_mz_asesoria_legal,group_beneficiario_manager,1,1,1,1
+
 access_mz_consulta_sistema,mz.consulta.sistema,model_mz_consulta,group_beneficiario_manager,1,1,1,1
 access_mz_diagnostico_linea_sistema,mz.mz.diagnostico.linea.sistema,model_mz_diagnostico_linea,group_beneficiario_manager,1,1,1,1
 access_pf_cie10_sistema,access_pf_cie10.sistema,prefectura_base.model_pf_cie10,group_beneficiario_manager,1,1,1,1

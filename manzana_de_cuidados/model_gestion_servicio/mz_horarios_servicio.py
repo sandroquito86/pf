@@ -128,7 +128,11 @@ class DetalleHorarios(models.Model):
 
     _sql_constraints = [('name_unique', 'UNIQUE(asignacion_horario_id,dias)', "No se permiten días repetidos.")]  
 
-
+    @api.constrains('horainicio', 'horafin')
+    def _check_hora_entrada(self):
+        for record in self:
+            if (record.horainicio < 0 or record.horainicio >= 24) or (record.horafin < 0 or record.horafin >= 24):
+                raise UserError("La hora de inicio y fin debe estar entre 00:00 y 23:59.")
 
     @api.onchange('dias')
     def _onchange_dias(self):

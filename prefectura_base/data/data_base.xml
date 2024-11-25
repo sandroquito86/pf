@@ -507,6 +507,117 @@
             <field name="descripcion">Tipo de dependiente nieta</field>
             <field name="catalogo_id" ref="tipo_dependiente"/>
         </record>
-        
+
+
+        <!-- Catálogo: Causa Legal -->
+    <record id="catalogo_causa_legal" model="pf.catalogo">
+    <field name="name">Causa Legal</field>
+    <field name="descripcion">Catálogo que contiene las diferentes causas legales disponibles</field>
+</record>
+
+    <!-- Ítems de Causa Legal -->
+    <!-- Familiar -->
+    <record id="item_divorcio" model="pf.items">
+        <field name="name">Divorcio</field>
+        <field name="descripcion">Causa legal relacionada con divorcios</field>
+        <field name="catalogo_id" ref="catalogo_causa_legal"/>
+    </record>
+    <record id="item_pension_alimenticia" model="pf.items">
+        <field name="name">Pensión Alimenticia</field>
+        <field name="descripcion">Causa legal para reclamo de pensión alimenticia</field>
+        <field name="catalogo_id" ref="catalogo_causa_legal"/>
+    </record>
+    <record id="item_custodia" model="pf.items">
+        <field name="name">Custodia de Menores</field>
+        <field name="descripcion">Causa legal sobre custodia de menores</field>
+        <field name="catalogo_id" ref="catalogo_causa_legal"/>
+    </record>
+    <record id="item_sucesiones" model="pf.items">
+        <field name="name">Sucesiones</field>
+        <field name="descripcion">Causa legal relacionada con sucesiones y herencias</field>
+        <field name="catalogo_id" ref="catalogo_causa_legal"/>
+    </record>
+
+    <!-- Laboral -->
+    <record id="item_despido" model="pf.items">
+        <field name="name">Despido Injustificado</field>
+        <field name="descripcion">Causa legal por despido sin justificación</field>
+        <field name="catalogo_id" ref="catalogo_causa_legal"/>
+    </record>
+    <record id="item_prestaciones" model="pf.items">
+        <field name="name">Prestaciones Laborales</field>
+        <field name="descripcion">Causa legal por reclamo de prestaciones laborales</field>
+        <field name="catalogo_id" ref="catalogo_causa_legal"/>
+    </record>
+    <record id="item_discriminacion" model="pf.items">
+        <field name="name">Discriminación Laboral</field>
+        <field name="descripcion">Causa legal por discriminación en el ámbito laboral</field>
+        <field name="catalogo_id" ref="catalogo_causa_legal"/>
+    </record>
+
+    <!-- Civil -->
+    <record id="item_contratos" model="pf.items">
+        <field name="name">Contratos</field>
+        <field name="descripcion">Causa legal relacionada con contratos civiles</field>
+        <field name="catalogo_id" ref="catalogo_causa_legal"/>
+    </record>
+    <record id="item_arrendamiento" model="pf.items">
+        <field name="name">Arrendamiento</field>
+        <field name="descripcion">Causa legal relacionada con arrendamientos</field>
+        <field name="catalogo_id" ref="catalogo_causa_legal"/>
+    </record>
+    <record id="item_deudas" model="pf.items">
+        <field name="name">Cobro de Deudas</field>
+        <field name="descripcion">Causa legal para el cobro de deudas</field>
+        <field name="catalogo_id" ref="catalogo_causa_legal"/>
+    </record>
+
+    <!-- Otros -->
+    <record id="item_otros" model="pf.items">
+        <field name="name">Otros</field>
+        <field name="descripcion">Causa legal no clasificada</field>
+        <field name="catalogo_id" ref="catalogo_causa_legal"/>
+    </record>
+
+
+    <!-- Catálogo: Tipo de Asesoría -->
+    <record id="catalogo_tipo_asesoria" model="pf.catalogo">
+        <field name="name">Tipo de Asesoría</field>
+        <field name="descripcion">Catálogo que contiene los tipos de asesorías legales disponibles</field>
+    </record>
+
+    <!-- Ítems del Catálogo: Tipo de Asesoría -->
+    <record id="item_familiar" model="pf.items">
+        <field name="name">Derecho Familiar</field>
+        <field name="descripcion">Asesoría legal en temas de derecho familiar</field>
+        <field name="catalogo_id" ref="catalogo_tipo_asesoria"/>
+    </record>
+    <record id="item_laboral" model="pf.items">
+        <field name="name">Derecho Laboral</field>
+        <field name="descripcion">Asesoría legal en temas de derecho laboral</field>
+        <field name="catalogo_id" ref="catalogo_tipo_asesoria"/>
+    </record>
+    <record id="item_civil" model="pf.items">
+        <field name="name">Derecho Civil</field>
+        <field name="descripcion">Asesoría legal en temas de derecho civil</field>
+        <field name="catalogo_id" ref="catalogo_tipo_asesoria"/>
+    </record>
+    <record id="item_penal" model="pf.items">
+        <field name="name">Derecho Penal</field>
+        <field name="descripcion">Asesoría legal en temas de derecho penal</field>
+        <field name="catalogo_id" ref="catalogo_tipo_asesoria"/>
+    </record>
+    <record id="item_mercantil" model="pf.items">
+        <field name="name">Derecho Mercantil</field>
+        <field name="descripcion">Asesoría legal en temas de derecho mercantil</field>
+        <field name="catalogo_id" ref="catalogo_tipo_asesoria"/>
+    </record>
+    <record id="item_administrativo" model="pf.items">
+        <field name="name">Derecho Administrativo</field>
+        <field name="descripcion">Asesoría legal en temas de derecho administrativo</field>
+        <field name="catalogo_id" ref="catalogo_tipo_asesoria"/>
+    </record>
+
+
   </data>
 </odoo>

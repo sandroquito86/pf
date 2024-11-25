@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista Form -->
+        <record id="view_mz_consulta_psicologica_form" model="ir.ui.view">
+            <field name="name">mz.consulta.psicologica.form</field>
+            <field name="model">mz.consulta.psicologica</field>
+            <field name="arch" type="xml">
+                <form string="Consulta Psicológica">
+                    <header>
+                        <button name="action_finalizar" type="object" string="Finalizar" class="btn-primary" invisible="state == 'final'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,final"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button 
+                                name="action_view_historial" 
+                                type="object" 
+                                class="oe_stat_button" 
+                                icon="fa-heartbeat"
+                                invisible="not beneficiario_id">
+                                <div class="o_stat_info">
+                                    <field name="historial_count" class="o_stat_value"/>
+                                    <span class="o_stat_text">Historial Psicológico</span>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="codigo" readonly="1" force_save="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="beneficiario_id" required="1" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="tipo_paciente" readonly="1" widget="badge"
+                                        decoration-success="tipo_paciente == 'titular'"
+                                        decoration-warning="tipo_paciente == 'dependiente'"/>
+                                <field name="dependiente_id" readonly="1" invisible="tipo_paciente != 'dependiente'" required="tipo_paciente == 'dependiente'"  options="{'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+                                <field name="programa_id" required="1" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="servicio_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="personal_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            </group>
+                            <group>
+                                <field name="fecha" required="1" readonly="1" force_save="1"/>
+                                <field name="hora" widget="float_time" readonly="1" force_save="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Motivo de Consulta y Evaluación">
+                                <group>
+                                    <field name="motivo_consulta" placeholder="Describa el motivo principal de la consulta" readonly="state == 'final'"/>
+                                    <field name="estado_emocional" placeholder="Describa el estado emocional actual del paciente" readonly="state == 'final'"/>
+                                    <field name="antecedentes_relevantes" placeholder="Describa los antecedentes relevantes" readonly="state == 'final'"/>
+                                    <field name="evaluacion_inicial" placeholder="Describa la evaluación inicial" readonly="state == 'final'"/>
+                                </group>
+                            </page>
+                            <page string="Plan de Intervención">
+                                <group>
+                                    <field name="plan_intervencion" placeholder="Describa el plan de intervención" readonly="state == 'final'"/>
+                                    <field name="observaciones" placeholder="Observaciones adicionales" readonly="state == 'final'"/>
+                                </group>
+                            </page>
+                            <page string="Diagnósticos">
+                                <group>
+                                    <field name="diagnostico_ids" context="{'default_consulta_id': active_id}" readonly="state == 'final'">
+                                        <tree editable="bottom">
+                                            <field name="cie10_id" options="{'no_create': True, 'no_open': True}"/>
+                                            <field name="detalle"/>
+                                            <field name="es_principal"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Seguimiento">
+                               <group>
+                                <group>
+                                    <field name="proxima_cita" readonly="estado_new_solicitud == 'solicitado'"/>
+                                    <field name="horario_id" readonly="estado_new_solicitud == 'solicitado'" options="{'domain_field': 'horario_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+                                    <field name="horario_id_domain" invisible="1" />
+                                    <field name="estado_new_solicitud" invisible="1"/>
+                                    <button name="solicitar_horario" invisible="state == 'final'" type="object" string="Solicitar" class="oe_highlight"/>
+                                </group>
+                                <group>
+                                    <field name="dias_disponibles_html" invisible="estado_new_solicitud == 'solicitado' or state == 'final'" widget="html" />
+                                </group>
+                            </group>
+                            </page>
+                        </notebook>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers"/>
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- action del boton desde asistencia  -->
+        <record id="action_consulta_psicologica_form" model="ir.actions.act_window">
+            <field name="name">Consulta Psicológica</field>
+            <field name="res_model">mz.consulta.psicologica</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+        </record>
+
+        <!-- Vista Form -->
+        <record id="view_mz_consulta_psicologica_form_read" model="ir.ui.view">
+            <field name="name">mz.consulta.psicologica.form.read</field>
+            <field name="model">mz.consulta.psicologica</field>
+            <field name="arch" type="xml">
+                <form string="Consulta Psicológica" create="false" delete="false" duplicate="false" edit="false">
+                    <header>
+                        <button name="action_finalizar" type="object" string="Finalizar" class="btn-primary" invisible="state == 'final'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,final"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="codigo" readonly="1" force_save="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="beneficiario_id" required="1" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="tipo_paciente" readonly="1" widget="badge"
+                                        decoration-success="tipo_paciente == 'titular'"
+                                        decoration-warning="tipo_paciente == 'dependiente'"/>
+                                <field name="dependiente_id" readonly="1" invisible="tipo_paciente != 'dependiente'" required="tipo_paciente == 'dependiente'"  options="{'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+                                <field name="programa_id" required="1" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="servicio_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="personal_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            </group>
+                            <group>
+                                <field name="fecha" required="1" readonly="1" force_save="1"/>
+                                <field name="hora" widget="float_time" readonly="1" force_save="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Motivo de Consulta y Evaluación">
+                                <group>
+                                    <field name="motivo_consulta" placeholder="Describa el motivo principal de la consulta" readonly="state == 'final'"/>
+                                    <field name="estado_emocional" placeholder="Describa el estado emocional actual del paciente" readonly="state == 'final'"/>
+                                    <field name="antecedentes_relevantes" placeholder="Describa los antecedentes relevantes" readonly="state == 'final'"/>
+                                    <field name="evaluacion_inicial" placeholder="Describa la evaluación inicial" readonly="state == 'final'"/>
+                                </group>
+                            </page>
+                            <page string="Plan de Intervención">
+                                <group>
+                                    <field name="plan_intervencion" placeholder="Describa el plan de intervención" readonly="state == 'final'"/>
+                                    <field name="observaciones" placeholder="Observaciones adicionales" readonly="state == 'final'"/>
+                                </group>
+                            </page>
+                            <page string="Diagnósticos">
+                                <group>
+                                    <field name="diagnostico_ids" context="{'default_consulta_id': active_id}" readonly="state == 'final'">
+                                        <tree editable="bottom">
+                                            <field name="cie10_id" options="{'no_create': True, 'no_open': True}"/>
+                                            <field name="detalle"/>
+                                            <field name="es_principal"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Seguimiento">
+                               <group>
+                                <group>
+                                    <field name="proxima_cita" readonly="estado_new_solicitud == 'solicitado'"/>
+                                    <field name="horario_id" readonly="estado_new_solicitud == 'solicitado'" options="{'domain_field': 'horario_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+                                    <field name="horario_id_domain" invisible="1" />
+                                    <field name="estado_new_solicitud" invisible="1"/>
+                                    <button name="solicitar_horario" invisible="state == 'final'" type="object" string="Solicitar" class="oe_highlight"/>
+                                </group>
+                                <group>
+                                    <field name="dias_disponibles_html" invisible="estado_new_solicitud == 'solicitado' or state == 'final'" widget="html" />
+                                </group>
+                            </group>
+                            </page>
+                        </notebook>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers"/>
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista Tree -->
+        <record id="view_mz_consulta_psicologica_tree" model="ir.ui.view">
+            <field name="name">mz.consulta.psicologica.tree</field>
+            <field name="model">mz.consulta.psicologica</field>
+            <field name="arch" type="xml">
+                <tree string="Consultas Psicológicas" >
+                <!-- create="false" delete="false" duplicate="false"  -->
+                    <field name="codigo"/>
+                    <field name="tipo_paciente" widget="badge"
+                           decoration-success="tipo_paciente == 'titular'"
+                           decoration-warning="tipo_paciente == 'dependiente'"/>
+                    <field name="beneficiario_id"/>
+                    <field name="fecha"/>
+                    <field name="hora" widget="float_time"/>
+                    <field name="personal_id"/>
+                    <field name="programa_id"/>
+                    <field name="servicio_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vista de Búsqueda -->
+        <record id="view_mz_consulta_psicologica_search" model="ir.ui.view">
+            <field name="name">mz.consulta.psicologica.search</field>
+            <field name="model">mz.consulta.psicologica</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Consultas Psicológicas">
+                    <field name="codigo"/>
+                    <field name="fecha"/>
+                    <field name="beneficiario_id"/>
+                    <field name="programa_id"/>
+                    <field name="servicio_id"/>
+                    <field name="personal_id"/>
+                    <group expand="1" string="Agrupar por">
+                        <filter string="Año" name="group_by_year" context="{'group_by':'fecha:year'}"/>
+                        <filter string="Mes" name="group_by_month" context="{'group_by':'fecha:month'}"/>
+                        <filter string="Día" name="group_by_day" context="{'group_by':'fecha:day'}"/>
+                        <filter string="Beneficiario" name="group_beneficiario" context="{'group_by': 'beneficiario_id'}"/>
+                        <filter string="Programa" name="group_programa" context="{'group_by': 'programa_id'}"/>
+                        <filter string="Servicio" name="group_servicio" context="{'group_by': 'servicio_id'}"/>
+                        <filter string="Personal" name="group_personal" context="{'group_by': 'personal_id'}"/>
+                    </group>
+                    <searchpanel>
+                        <field name="programa_id" string="Programa" icon="fa-building"/>
+                        <field name="servicio_id" string="Servicio" icon="fa-cogs"/>
+                        <field name="personal_id" string="Personal" icon="fa-user-md"/>
+                        <field name="beneficiario_id" string="Beneficiario" icon="fa-user"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <!-- Acción -->
+        <record id="action_mz_consulta_psicologicas" model="ir.actions.act_window">
+            <field name="name">Consultas Psicológicas</field>
+            <field name="res_model">mz.consulta.psicologica</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_mz_consulta_psicologica_tree"/>
+            <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz_consulta_psicologica_tree')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz_consulta_psicologica_form')})]"/>
+            <field name="search_view_id" ref="view_mz_consulta_psicologica_search"/>
+            <field name="context">{'create': False}</field>
+        </record>
+
+        <!-- Menú -->
+        <menuitem id="menu_consulta_psicologica" name="Psicológicas" parent="menu_mz_consultas" action="action_mz_consulta_psicologicas" sequence="15"/>
+    </data>
+</odoo>

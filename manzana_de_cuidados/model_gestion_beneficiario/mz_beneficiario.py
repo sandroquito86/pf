@@ -18,6 +18,8 @@ class Beneficiario(models.Model):
     
     historia_clinica_ids = fields.One2many('mz.historia.clinica', 'beneficiario_id', string='Historias Clínicas')
     consulta_count = fields.Integer(string='Número de Consultas', compute='_compute_consulta_count')
+    historia_psicologica_ids = fields.One2many('mz.historia.psicologica', 'beneficiario_id', string='Historias Psicológicas')
+    consulta_psicologica_count = fields.Integer(string='Número de Consultas Psicológicas', compute='_compute_consulta_psicologica_count')
     aistencia_servicio_ids = fields.One2many('mz.asistencia_servicio', 'beneficiario_id', string='Servicios recibidos')
     asis_servicio_count = fields.Integer(string='Número de Servicios', compute='_compute_asis_servicios_count')
 
@@ -62,6 +64,11 @@ class Beneficiario(models.Model):
     def _compute_consulta_count(self):
         for beneficiario in self:
             beneficiario.consulta_count = len(beneficiario.historia_clinica_ids)
+
+    @api.depends('historia_psicologica_ids')
+    def _compute_consulta_psicologica_count(self):
+        for beneficiario in self:
+            beneficiario.consulta_psicologica_count = len(beneficiario.historia_psicologica_ids)
 
     @api.depends('aistencia_servicio_ids')
     def _compute_asis_servicios_count(self):
@@ -179,6 +186,17 @@ class Beneficiario(models.Model):
             'name': 'Historial Clínico',
             'view_mode': 'tree,form',
             'res_model': 'mz.historia.clinica',
+            'domain': [('beneficiario_id', '=', self.id)],
+            'context': dict(self.env.context, create=False)
+        }
+    
+    def action_view_historia_clinica_psicologico(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Historial Psicológico',
+            'view_mode': 'tree,form',
+            'res_model': 'mz.historia.psicologica',
             'domain': [('beneficiario_id', '=', self.id)],
             'context': dict(self.env.context, create=False)
         }

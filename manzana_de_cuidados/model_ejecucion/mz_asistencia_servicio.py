@@ -23,8 +23,14 @@ class AsistenciaServicio(models.Model):
     servicio_id = fields.Many2one(string='Servicio', comodel_name='mz.asignacion.servicio', ondelete='restrict')
     personal_id = fields.Many2one(string='Personal', comodel_name='hr.employee', ondelete='restrict') 
     codigo = fields.Char(string='Código', readonly=True, store=True)
-    tipo_servicio = fields.Selection([('normal', 'Normal'), ('medico', 'Medico')], string='Tipo de Servicio', compute='_compute_tipo_servicio')
+    if_consulta_medica = fields.Boolean(string='Consulta Médica', compute='_compute_if_consulta_medica')
+    if_consulta_psicologica = fields.Boolean(string='Consulta Psicológica', compute='_compute_if_consulta_psicologica')
+    cuidado_child_id = fields.Many2one('mz.cuidado.child', string='Cuidado Infantil')
+    tipo_servicio = fields.Selection([('normal', 'Bienestar Personal'), ('medico', 'Salud'), ('cuidado_infantil', 'Cuidado Infantil'), ('mascota', 'Mascota'), ('asesoria_legal', 'Asesoria Legal')], string='Clasificación de Servicio', compute='_compute_tipo_servicio')
     consulta_id = fields.Many2one('mz.consulta', string='Consulta Médica')
+    consulta_psicologica_id = fields.Many2one('mz.consulta.psicologica', string='Consulta Psicológica')
+    cuidado_child_id = fields.Many2one('mz.cuidado.child', string='Cuidado Infantil')
+    asesoria_legal_id = fields.Many2one('mz.asesoria.legal', string='Asesoría Legal')
     active = fields.Boolean(string='Activo', default=True)
 
     # Signos vitales
@@ -56,6 +62,11 @@ class AsistenciaServicio(models.Model):
             else:
                 record.imc = 0
 
+    @api.depends('servicio_id')
+    def _compute_tipo_servicio(self):
+        for record in self:
+            record.tipo_servicio = record.servicio_id.servicio_id.tipo_servicio
+
     @api.depends('presion_sistolica', 'presion_diastolica')
     def _compute_presion_arterial(self):
         for record in self:
@@ -65,9 +76,14 @@ class AsistenciaServicio(models.Model):
                 record.presion_arterial = "N/A"
                 
     @api.depends('servicio_id')
-    def _compute_tipo_servicio(self):
+    def _compute_if_consulta_medica(self):
         for record in self:
-            record.tipo_servicio = record.servicio_id.servicio_id.tipo_servicio
+            record.if_consulta_medica = record.servicio_id.servicio_id.if_consulta_medica
+
+    @api.depends('servicio_id')
+    def _compute_if_consulta_psicologica(self):
+        for record in self:
+            record.if_consulta_psicologica = record.servicio_id.servicio_id.if_consulta_psicologica
 
     def action_asistio(self):
         self.asistio = 'si'
@@ -91,6 +107,45 @@ class AsistenciaServicio(models.Model):
             'res_id': self.consulta_id.id,
             'target': 'new',
             'views': [(self.env.ref('manzana_de_cuidados.view_mz_consulta_form_custom').id, 'form')],
+            'context': {'form_view_initial_mode': 'readonly'},
+        }
+    
+    def action_ver_consulta_psicologica(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Consulta Psicológica',
+            'res_model': 'mz.consulta.psicologica',
+            'view_mode': 'form',
+            'res_id': self.consulta_psicologica_id.id,
+            'target': 'new',
+            'views': [(self.env.ref('manzana_de_cuidados.view_mz_consulta_psicologica_form_read').id, 'form')],
+            'context': {'form_view_initial_mode': 'readonly'},
+        }
+    
+    def action_ver_cuidado_child(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Cuidado Infantil',
+            'res_model': 'mz.cuidado.child',
+            'view_mode': 'form',
+            'res_id': self.cuidado_child_id.id,
+            'target': 'new',
+            'views': [(self.env.ref('manzana_de_cuidados.view_mz_cuidado_child_form').id, 'form')],
+            'context': {'form_view_initial_mode': 'readonly'},
+        }
+    
+    def action_ver_asesoria_legal(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Asesoría Legal',
+            'res_model': 'mz.asesoria.legal',
+            'view_mode': 'form',
+            'res_id': self.asesoria_legal_id.id,
+            'target': 'new',
+            'views': [(self.env.ref('manzana_de_cuidados.view_mz_asesoria_legal_form').id, 'form')],
             'context': {'form_view_initial_mode': 'readonly'},
         }
     

@@ -47,6 +47,7 @@ class AgendarServicio(models.Model):
         for record in self:
             if record.programa_id:
                 record.modulo_id = record.programa_id.modulo_id.id
+                
     
     @api.constrains('tipo_beneficiario', 'dependiente_id')
     def _check_dependiente(self):
@@ -149,12 +150,22 @@ class AgendarServicio(models.Model):
     def _compute_horario_id_domain(self):
         for record in self:
             if record.servicio_id and record.personal_id and record.fecha_solicitud:
-                domain = [
-                    ('generar_horario_id.servicio_id', '=', record.servicio_id.id),
-                    ('generar_horario_id.personal_id', '=', record.personal_id.id),
-                    ('fecha', '=', record.fecha_solicitud),
-                    ('estado', '=', 'activo'),
-                ]
+                domain = ['|',  # OR operator
+                                # Primera condición
+                                '&', '&', '&',  # AND operators para la primera condición
+                                    ('generar_horario_id.servicio_id', '=', record.servicio_id.id),
+                                    ('generar_horario_id.personal_id', '=', record.personal_id.id),
+                                    ('fecha', '=', record.fecha_solicitud),
+                                    ('estado', '=', 'activo'),
+                                # Segunda condición
+                                '&', '&', '&', '&',  # AND operators para la segunda condición
+                                    ('generar_horario_id.servicio_id', '=', record.servicio_id.id),
+                                    ('generar_horario_id.personal_id', '=', record.personal_id.id),
+                                    ('fecha', '=', record.fecha_solicitud),
+                                    ('estado', '=', 'asignado'),
+                                    ('estado_maximo_cont', '=', 'abierto')
+                            ]
+                
                 horarios_planificados = self.env['mz.planificacion.servicio'].search(domain)
                 
                 horarios_disponibles = horarios_planificados.filtered(
@@ -187,14 +198,24 @@ class AgendarServicio(models.Model):
             if record.servicio_id and record.personal_id:
                 fecha_inicio = datetime.now().date()
                 fecha_fin = fecha_inicio + timedelta(days=30)
-                
                 domain = [
-                    ('generar_horario_id.servicio_id', '=', record.servicio_id.id),
-                    ('generar_horario_id.personal_id', '=', record.personal_id.id),
-                    ('fecha', '>=', fecha_inicio),
-                    ('fecha', '<=', fecha_fin),
-                    ('estado', '=', 'activo'),
-                ]
+                            '|',  # Operador OR
+                            # Primera condición
+                            '&', '&', '&', '&', # Agrupa las condiciones de esta parte
+                            ('generar_horario_id.servicio_id', '=', record.servicio_id.id),
+                            ('generar_horario_id.personal_id', '=', record.personal_id.id),
+                            ('fecha', '>=', fecha_inicio),
+                            ('fecha', '<=', fecha_fin),
+                            ('estado', '=', 'activo'),
+                            # Segunda condición
+                            '&', '&', '&', '&', '&',
+                            ('generar_horario_id.servicio_id', '=', record.servicio_id.id),
+                            ('generar_horario_id.personal_id', '=', record.personal_id.id),
+                            ('fecha', '>=', fecha_inicio),
+                            ('fecha', '<=', fecha_fin),
+                            ('estado', '=', 'asignado'),
+                            ('estado_maximo_cont', '=', 'abierto'),
+                        ]
                 
                 horarios_planificados = self.env['mz.planificacion.servicio'].search(domain)
                 horarios_disponibles = horarios_planificados.filtered(
@@ -240,6 +261,13 @@ class AgendarServicio(models.Model):
                         Seleccione un servicio y personal para ver días disponibles
                     </div>
                 '''
+
+
+    @api.onchange('servicio_id')
+    def _onchange_validar_servicio_if_dependiente(self):
+      for record in self:    
+        if record.servicio_id.servicio_id.tipo_servicio == 'cuidado_infantil' and record.tipo_beneficiario != 'dependiente':
+            raise UserError("Este servicio es Exclusivamente para dependietes(Hija o Hijo).")
 
     @api.onchange('programa_id')
     def _onchange_programa_id(self):
@@ -295,13 +323,6 @@ class AgendarServicio(models.Model):
                     raise UserError(f"No hay Turnos disponibles para el servicio de {record.servicio_id.servicio_id.name} con {record.personal_id.name}.")
             
 
-    @api.onchange('fecha_solicitud')
-    def _onchange_fecha_solicitud(self):
-        for record in self:
-            record.horario_id = False
-            
-
-    
     def _generate_codigo(self):
         current_year = datetime.now().year
         current_month = datetime.now().month
@@ -420,6 +441,7 @@ class AgendarServicio(models.Model):
 
     @api.onchange('fecha_solicitud')
     def _onchange_fecha_valida_solicitud(self):
+        self.horario_id = False
         if self.fecha_solicitud  and self.fecha_solicitud < fields.Date.today():
             self.fecha_solicitud = fields.Date.today()
             return {
@@ -486,11 +508,21 @@ class WizardReasignarSolicitud(models.TransientModel):
         for record in self:
             if record.solicitud_id.servicio_id and record.solicitud_id.personal_id and record.nueva_fecha:
                 domain = [
-                    ('generar_horario_id.servicio_id', '=', record.solicitud_id.servicio_id.id),
-                    ('generar_horario_id.personal_id', '=', record.solicitud_id.personal_id.id),
-                    ('fecha', '=', record.nueva_fecha),
-                    ('estado', '=', 'activo'),
-                ]
+                            '|',  # Operador OR
+                            # Primera condición
+                            '&', '&', '&', # Agrupa las condiciones de esta parte
+                            ('generar_horario_id.servicio_id', '=', record.solicitud_id.servicio_id.id),
+                            ('generar_horario_id.personal_id', '=', record.solicitud_id.personal_id.id),
+                            ('fecha', '=', record.fecha_solicitud),
+                            ('estado', '=', 'activo'),
+                            # Segunda condición
+                            '&', '&', '&', '&',
+                            ('generar_horario_id.servicio_id', '=', record.solicitud_id.servicio_id.id),
+                            ('generar_horario_id.personal_id', '=', record.solicitud_id.personal_id.id),
+                            ('fecha', '=', record.fecha_solicitud),
+                            ('estado', '=', 'asignado'),
+                            ('estado_maximo_cont', '=', 'abierto'),
+                        ]
                 horarios_planificados = self.env['mz.planificacion.servicio'].search(domain)
                 
                 horarios_disponibles = horarios_planificados.filtered(

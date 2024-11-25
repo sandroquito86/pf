@@ -26,11 +26,7 @@ class Consulta(models.Model):
     personal_id = fields.Many2one(string='Personal Médico', comodel_name='hr.employee', ondelete='restrict', tracking=True)
     asistencia_servicio_id = fields.Many2one('mz.asistencia.servicio', string='Asistencia Servicio')
     # Información del paciente
-    genero = fields.Selection([
-        ('masculino', 'Masculino'),
-        ('femenino', 'Femenino'),
-        ('otro', 'Otro')
-    ], string='Género')
+    genero_id = fields.Many2one('pf.items', string='Género', domain="[('catalogo_id', '=', ref('prefectura_base.genero'))]")
     fecha_nacimiento = fields.Date(string='Fecha de Nacimiento', tracking=True)
     edad = fields.Char(string="Edad", compute="_compute_edad")
     
@@ -186,12 +182,21 @@ class Consulta(models.Model):
     def _compute_horario_id_domain(self):
         for record in self:
             if record.servicio_id and record.personal_id and record.proxima_cita:
-                domain = [
-                    ('generar_horario_id.servicio_id', '=', record.servicio_id.id),
-                    ('generar_horario_id.personal_id', '=', record.personal_id.id),
-                    ('fecha', '=', record.proxima_cita),
-                    ('estado', '=', 'activo'),
-                ]
+                domain = ['|',  # OR operator
+                                # Primera condición
+                                '&', '&', '&',  # AND operators para la primera condición
+                                    ('generar_horario_id.servicio_id', '=', record.servicio_id.id),
+                                    ('generar_horario_id.personal_id', '=', record.personal_id.id),
+                                    ('fecha', '=', record.proxima_cita),
+                                    ('estado', '=', 'activo'),
+                                # Segunda condición
+                                '&', '&', '&', '&',  # AND operators para la segunda condición
+                                    ('generar_horario_id.servicio_id', '=', record.servicio_id.id),
+                                    ('generar_horario_id.personal_id', '=', record.personal_id.id),
+                                    ('fecha', '=', record.proxima_cita),
+                                    ('estado', '=', 'asignado'),
+                                    ('estado_maximo_cont', '=', 'abierto')
+                            ]
                 horarios_planificados = self.env['mz.planificacion.servicio'].search(domain)
                 
                 horarios_disponibles = horarios_planificados.filtered(
@@ -265,14 +270,14 @@ class Consulta(models.Model):
             if defaults['tipo_paciente'] == 'titular':
                 if defaults.get('beneficiario_id'):
                     beneficiario = self.env['mz.beneficiario'].browse(defaults['beneficiario_id'])
-                    defaults['genero'] = beneficiario.genero
+                    defaults['genero_id'] = beneficiario.genero_id
                     defaults['fecha_nacimiento'] = beneficiario.fecha_nacimiento
                     # Obtener el registro más reciente de mz.consulta para el beneficiario
                     consulta_reciente = self.search([('beneficiario_id', '=', beneficiario.id)], order='fecha desc, hora desc', limit=1)
             else:
                 if defaults.get('dependiente_id'):
                     dependiente = self.env['mz.dependiente'].browse(defaults['dependiente_id'])
-                    defaults['genero'] = dependiente.genero
+                    defaults['genero_id'] = dependiente.genero_id
                     defaults['fecha_nacimiento'] = dependiente.fecha_nacimiento    
                     # Obtener el registro más reciente de mz.consulta para el beneficiario
                     consulta_reciente = self.search([('dependiente_id', '=', dependiente.id)], order='fecha desc, hora desc', limit=1)  
@@ -333,12 +338,23 @@ class Consulta(models.Model):
                 fecha_fin = fecha_inicio + timedelta(days=30)
                 
                 domain = [
-                    ('generar_horario_id.servicio_id', '=', record.servicio_id.id),
-                    ('generar_horario_id.personal_id', '=', record.personal_id.id),
-                    ('fecha', '>=', fecha_inicio),
-                    ('fecha', '<=', fecha_fin),
-                    ('estado', '=', 'activo'),
-                ]
+                            '|',  # Operador OR
+                            # Primera condición
+                            '&', '&', '&', '&', # Agrupa las condiciones de esta parte
+                            ('generar_horario_id.servicio_id', '=', record.servicio_id.id),
+                            ('generar_horario_id.personal_id', '=', record.personal_id.id),
+                            ('fecha', '>=', fecha_inicio),
+                            ('fecha', '<=', fecha_fin),
+                            ('estado', '=', 'activo'),
+                            # Segunda condición
+                            '&', '&', '&', '&', '&',
+                            ('generar_horario_id.servicio_id', '=', record.servicio_id.id),
+                            ('generar_horario_id.personal_id', '=', record.personal_id.id),
+                            ('fecha', '>=', fecha_inicio),
+                            ('fecha', '<=', fecha_fin),
+                            ('estado', '=', 'asignado'),
+                            ('estado_maximo_cont', '=', 'abierto'),
+                        ]
                 
                 horarios_planificados = self.env['mz.planificacion.servicio'].search(domain)
                 horarios_disponibles = horarios_planificados.filtered(
@@ -387,7 +403,7 @@ class Consulta(models.Model):
     def _generate_codigo(self):
         current_year = datetime.now().year
         current_month = datetime.now().month
-        prefix = self.env.ref('manzana_de_cuidados.codigo_prefectura_items').name
+        prefix = self.env.ref('prefectura_base.codigo_prefectura_items').name
         
         # Buscar el último código generado este año, excluyendo los registros en estado borrador
         last_record = self.env['mz.agendar_servicio'].search([
@@ -433,6 +449,8 @@ class Consulta(models.Model):
             'codigo': codigo,
             'codigo_int': codigo_int,
             'state': 'borrador',  # Estado inicial
+            'tipo_beneficiario': self.tipo_paciente,
+            'dependiente_id': self.dependiente_id.id if self.dependiente_id else False,
         }
         
         # Crear el nuevo registro

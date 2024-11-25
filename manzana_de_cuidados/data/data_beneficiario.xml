@@ -23,7 +23,7 @@
             <field name="direccion">Av. Francisco de Orellana</field>
             <field name="telefono">+593 4 123 4567</field>
             <field name="email">juana.perez@example.com</field>
-            <field name="genero">femenino</field>
+            <field name="genero_id" ref="prefectura_base.genero_femenino"/>
             <field name="image" type="base64" file="manzana_de_cuidados/static/img/beneficiario1.jpeg"/>
             <field name="user_id" ref="res_user_juana_perez"/>
         </record>
@@ -56,7 +56,7 @@
             <field name="direccion">Av. 25 de Julio</field>
             <field name="telefono">+593 4 765 4321</field>
             <field name="email">maria.rodriguez@example.com</field>
-            <field name="genero">femenino</field>
+            <field name="genero_id" ref="prefectura_base.genero_femenino"/>
             <field name="image" type="base64" file="manzana_de_cuidados/static/img/beneficiario2.jpeg"/>
             <field name="user_id" ref="res_user_maria_rodriguez"/>
         </record>
@@ -89,7 +89,7 @@
             <field name="direccion">Av. Nicolás Lapentti</field>
             <field name="telefono">+593 4 234 5678</field>
             <field name="email">luisa.martinez@example.com</field>
-            <field name="genero">femenino</field>
+            <field name="genero_id" ref="prefectura_base.genero_femenino"/>
             <field name="image" type="base64" file="manzana_de_cuidados/static/img/beneficiario3.jpg"/>
             <field name="user_id" ref="res_user_luis_martinez"/>
         </record>
@@ -122,7 +122,7 @@
             <field name="direccion">Av. 9 de Octubre</field>
             <field name="telefono">+593 4 567 8901</field>
             <field name="email">karen.gomez@example.com</field>
-            <field name="genero">femenino</field>
+            <field name="genero_id" ref="prefectura_base.genero_femenino"/>
             <field name="image" type="base64" file="manzana_de_cuidados/static/img/beneficiario5.jpeg"/>
             <field name="user_id" ref="res_user_karen_gomez"/>
         </record>

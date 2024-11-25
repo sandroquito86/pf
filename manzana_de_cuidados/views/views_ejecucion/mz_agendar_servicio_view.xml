@@ -76,13 +76,13 @@
               <field name="beneficiario_id" widget="many2one"   readonly="state != 'borrador'" options="{'domain_field': 'beneficiario_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>
               <field name="tipo_beneficiario" readonly="state != 'borrador'"/>
               <field name="dependiente_id"  invisible="tipo_beneficiario != 'dependiente'" readonly="state != 'borrador'" required="tipo_beneficiario == 'dependiente'"  options="{'no_create_edit': True, 'no_open': True,'no_create': True}"/>
-              <field name="servicio_id" readonly="state != 'borrador'" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
+              <field name="servicio_id" readonly="state != 'borrador' or not tipo_beneficiario" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
               <field name="if_sub_servicio" invisible="1" />
               <field name="if_admin" invisible="1" />
               <field name="domain_sub_servicio_ids" invisible="1" />
               <field name="sub_servicio_id" required="if_sub_servicio" invisible="not if_sub_servicio"  readonly="state != 'borrador'" options="{'domain_field': 'domain_sub_servicio_ids', 'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
               <field name="personal_id_domain" invisible="1" />
-              <field name="personal_id" widget="many2one_avatar_user" readonly="state != 'borrador'" options="{'domain_field': 'personal_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+              <field name="personal_id" widget="many2one_avatar_user" readonly="state != 'borrador' or not servicio_id" options="{'domain_field': 'personal_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>
               <field name="horario_id_domain" invisible="1"/>
               <field name="fecha_solicitud" required="1" readonly="state != 'borrador'" />
               <field name="horario_id" readonly="not (fecha_solicitud and personal_id and servicio_id) or state != 'borrador'" force_save="1" options="{'domain_field': 'horario_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>

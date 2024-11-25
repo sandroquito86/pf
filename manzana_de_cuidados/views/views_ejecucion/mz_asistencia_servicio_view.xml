@@ -18,16 +18,30 @@
                 <field name="personal_id" />
                 <field name="codigo" optional="hide"/> 
                 <field name="fecha"/>
-                <field name="tipo_servicio" optional="hide"/>
                 <field name="asistio" />
                 <field name="atendido" widget="boolean_toggle" readonly="1"/>
                 <button name="action_asistio" type="object" string="Asistió" icon="fa-check" class="btn-primary" invisible="asistio != 'pendiente'"/>
                 <button name="action_no_asistio" type="object" string="No Asistió" icon="fa-times" class="btn-danger" invisible="asistio != 'pendiente'"/>
-                <button name="ingresar_signos" type="object" string="Signos Vitales" icon="fa-heartbeat" class="btn-primary" invisible="atendido or tipo_servicio != 'medico' or asistio != 'si'"/>
-                <button name="%(action_consulta_form)d" type="action" string="Consulta Médica" icon="fa-stethoscope" class="btn-info" invisible="atendido or tipo_servicio != 'medico' or asistio != 'si'"
+                <button name="ingresar_signos" type="object" string="Signos Vitales" icon="fa-heartbeat" class="btn-primary" invisible="atendido or not if_consulta_medica or asistio != 'si'"/>
+                <button name="%(action_consulta_form)d" type="action" string="Consulta Médica" icon="fa-stethoscope" class="btn-info" invisible="atendido or not if_consulta_medica or asistio != 'si'"
                     context="{'default_personal_id': personal_id, 'default_beneficiario_id': beneficiario_id, 'default_servicio_id': servicio_id, 'default_programa_id': programa_id, 'default_fecha': fecha, 'default_codigo': codigo, 'default_asistencia_servicio_id': id, 'default_presion_arterial': presion_arterial, 'default_presion_sistolica': presion_sistolica, 'default_presion_diastolica': presion_diastolica, 'default_frecuencia_cardiaca': frecuencia_cardiaca, 'default_frecuencia_respiratoria': frecuencia_respiratoria, 'default_temperatura': temperatura, 'default_peso': peso, 'default_altura': altura, 'default_imc': imc, 'default_dependiente_id': dependiente_id, 'default_tipo_paciente': tipo_beneficiario}"/>
                 <button name="action_ver_consulta" type="object" string="Ver Consulta Médica" icon="fa-eye" class="btn-secondary" invisible="not consulta_id"/>
+                <button name="%(action_consulta_psicologica_form)d" type="action" string="Consulta Psicológica" icon="fa-brain" class="btn-info" invisible="atendido or not if_consulta_psicologica or asistio != 'si'"
+                    context="{'default_personal_id': personal_id, 'default_beneficiario_id': beneficiario_id, 'default_servicio_id': servicio_id, 'default_programa_id': programa_id, 'default_fecha': fecha, 'default_codigo': codigo, 'default_asistencia_servicio_id': id, 'default_dependiente_id': dependiente_id, 'default_tipo_paciente': tipo_beneficiario}"/>
+                <button name="action_ver_consulta_psicologica" type="object" string="Ver Consulta Psicológica" icon="fa-eye" class="btn-secondary" invisible="not consulta_psicologica_id"/>
+                <button name="%(action_cuidado_child_form)d" type="action" string="Redistro de Cuidado" icon="fa-brain" class="btn-info" invisible="atendido or tipo_servicio != 'cuidado_infantil' or asistio != 'si'"
+                    context="{'default_personal_id': personal_id, 'default_beneficiario_id': beneficiario_id, 'default_servicio_id': servicio_id, 'default_programa_id': programa_id, 'default_fecha': fecha, 'default_codigo': codigo, 'default_asistencia_servicio_id': id, 'default_dependiente_id': dependiente_id, 'default_tipo_beneficiario': tipo_beneficiario}"/>
+                <button name="action_ver_cuidado_child" type="object" string="Ver Registro de Cuidado" icon="fa-eye" class="btn-secondary" invisible="not cuidado_child_id"/>
+                <button name="%(action_asesoria_legal_form)d" type="action" string="Asesoría Legal" icon="fa-brain" class="btn-info" invisible="atendido or tipo_servicio != 'asesoria_legal' or asistio != 'si'"
+                    context="{'default_asesor_id': personal_id, 'default_beneficiario_id': beneficiario_id, 'default_servicio_id': servicio_id, 'default_programa_id': programa_id, 'default_fecha': fecha, 'default_codigo': codigo, 'default_asistencia_servicio_id': id, 'default_dependiente_id': dependiente_id, 'default_tipo_beneficiario': tipo_beneficiario}"/>
+                <button name="action_ver_asesoria_legal" type="object" string="Ver Asesoría Legal" icon="fa-eye" class="btn-secondary" invisible="not asesoria_legal_id"/>
+                <field name="tipo_servicio" optional="hide"/>
+                <field name="if_consulta_medica" optional="hide"/>
+                <field name="if_consulta_psicologica" optional="hide"/>
+                <field name="cuidado_child_id" optional="hide"/>
+                <field name="asesoria_legal_id" optional="hide"/>
                 <field name="consulta_id" optional="hide"/>
+                <field name="consulta_psicologica_id" optional="hide"/>
                 <field name="presion_arterial" optional="hide"/>
                 <field name="presion_sistolica" optional="hide"/>
                 <field name="presion_diastolica" optional="hide"/>
@@ -59,7 +73,6 @@
                 <field name="personal_id" />
                 <field name="codigo" optional="hide"/> 
                 <field name="fecha"/>
-                <field name="tipo_servicio" optional="hide"/>
                 <field name="asistio" />
                 <field name="atendido" widget="boolean_toggle" readonly="1"/>
             </tree>
