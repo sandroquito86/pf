@@ -7,13 +7,12 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="servicio_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
-                    <field name="programa_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
+                    <field name="convoy_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
                     <field name="numero_turnos" />
                     <field name="personal_ids" />
                 </tree>
             </field>
         </record>
-
         <record id="view_mz__convoy_asignacion_servicio_form" model="ir.ui.view">
             <field name="name">mz.asignacion.servicio.form</field>
             <field name="model">mz.asignacion.servicio</field>
@@ -23,34 +22,33 @@
                         <div class="row justify-content-between position-relative w-100 m-0 mb-2">
                             <div class="oe_title">
                                 <h1>
-                                    <field name="name" placeholder="Nombre del Servicio" force_save="1"/>
+                                    <field name="name" placeholder="Nombre del Servicio" force_save="1" readonly="state in ('ejecutando', 'fin')"/>
                                 </h1>
                             </div>
                             <div class="o_employee_avatar m-0 p-0">
-                                <field name="image" widget="image" class="oe_avatar" options="{'preview_image': 'image'}"/>
+                                <field name="image" widget="image" class="oe_avatar" options="{'preview_image': 'image'}" readonly="state in ('ejecutando', 'fin')"/>
                             </div>
                         </div>
                         <group>
-                            <field name="convoy_id" required="1" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_convoy_id'}" />
-                            <field name="servicio_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
-                            <field name="programa_id" invisible="1" force_save="1"/>
-                            <field name="domain_sub_servicio_ids" invisible="1"/>
-                            <field name="sub_servicio_ids" invisible="not get_sub_servicio" widget="many2many_tags" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_sub_servicio_ids', 'create': False}"/>
-                            <field name="numero_turnos" help="Si el valor es 0, los turnos serán ilimitados"/>
-                            <field name="personal_ids">
+                            <field name="convoy_id" required="1" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_convoy_id'}" readonly="state in ('ejecutando', 'fin')"/>
+                            <field name="state" readonly="state in ('ejecutando', 'fin')"/>
+                            <field name="servicio_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" readonly="state in ('ejecutando', 'fin')"/>
+                            <field name="programa_id" invisible="1" force_save="1" readonly="state in ('ejecutando', 'fin')"/>
+                            <field name="domain_sub_servicio_ids" invisible="1" readonly="state in ('ejecutando', 'fin')"/>
+                            <field name="sub_servicio_ids" invisible="not get_sub_servicio" widget="many2many_tags" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_sub_servicio_ids', 'create': False}" readonly="state in ('ejecutando', 'fin')"/>
+                            <field name="numero_turnos" help="Si el valor es 0, los turnos serán ilimitados" readonly="state in ('ejecutando', 'fin')"/>
+                            <field name="personal_ids" readonly="state in ('ejecutando', 'fin')">
                                 <tree create="0" edit="0">
-                                    <field name="name" />
-                                    <field name="tipo_personal" />
+                                    <field name="name"/>
+                                    <field name="tipo_personal"/>
                                 </tree>
                             </field>
-                            <field name="domain_convoy_id" invisible="1"/>
-                            <field name="get_sub_servicio" invisible="1" />
+                            <field name="domain_convoy_id" invisible="1" readonly="state in ('ejecutando', 'fin')"/>
+                            <field name="get_sub_servicio" invisible="1" readonly="state in ('ejecutando', 'fin')"/>
                         </group>
-
-
                         <div class="oe_chatter">
-                            <field name="message_follower_ids" widget="mail_followers" />
-                            <field name="message_ids" widget="mail_thread" />
+                            <field name="message_follower_ids" widget="mail_followers"/>
+                            <field name="message_ids" widget="mail_thread"/>
                         </div>
                     </sheet>
                 </form>
@@ -74,6 +72,7 @@
                         <group>
                             <field name="servicio_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
                             <field name="sub_servicio_ids" invisible="not get_sub_servicio" widget="many2many_tags" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_sub_servicio_ids', 'create': False}"/>
+                            <field name="convoy_id" invisible="1" force_save="1"/>
                             <field name="programa_id" readonly="1" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_programa_id'}" />
                             <field name="numero_turnos" help="Si el valor es 0, los turnos serán ilimitados"/>
                             <field name="active" readonly="1" widget="boolean_toggle" />
@@ -137,16 +136,38 @@
             </field>
         </record>
 
+        <record id="mz_convoy_asignacion_servicio_search" model="ir.ui.view">
+            <field name="name">mz.asignacion.servicio.view.search</field>
+            <field name="model">mz.asignacion.servicio</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="servicio_id"/>
+                    <field name="convoy_id"/>
+                    <group expand="1" string="Group By">
+                        <filter name="groupby_programa" context="{'group_by' : 'convoy_id'}" string="Convoy"/>
+                    </group>
+                    <!-- Panel de búsqueda del lado izquierdo -->
+                    <searchpanel>
+                        <field name="convoy_id" icon="fa-building" string="Convoy"/>
+                        <field name="servicio_id" icon="fa-cogs" string="Servicio"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+
 
         <record model="ir.actions.act_window" id="action__convoy_mz_asignacion_servicio">
             <field name="name">Responsables de Servicios (CONVOY)</field>
             <field name="res_model">mz.asignacion.servicio</field>
             <field name="view_mode">kanban,tree,form</field>
+            <field name="search_view_id" ref="mz_convoy_asignacion_servicio_search"/>
             <field name="view_ids" eval="[(5, 0, 0),
         (0, 0, {'view_mode': 'kanban', 'view_id': ref('mz_convoy_asignacion_servicio_kanban')}),
         (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz__convoy_asignacion_servicio_tree')}),
         (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz__convoy_asignacion_servicio_form')})
     ]"/>
+            <field name="context">{'filtrar_programa': True}</field>
             <field name="domain">[('programa_id.modulo_id', '=', 4)]</field>
         </record>
 

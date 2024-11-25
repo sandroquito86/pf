@@ -48,16 +48,16 @@ class ConvoyBeneficiarioWizardDependiente(models.TransientModel):
         self.tipo_documento = dependiente.tipo_documento
         self.numero_documento = dependiente.numero_documento
 
-    @api.onchange('tipo_documento', 'numero_documento')
-    def _onchange_documento(self):
-        if self.tipo_documento == 'dni' and self.numero_documento:
-            if not utils.validar_cedula(self.numero_documento):
-                return {
-                    'warning': {
-                        'title': "Cédula Inválida",
-                        'message': "El número de cédula ingresado no es válido."
-                    }
-                }
+    # @api.onchange('tipo_documento', 'numero_documento')
+    # def _onchange_documento(self):
+    #     if self.tipo_documento == 'dni' and self.numero_documento:
+    #         if not utils.validar_cedula(self.numero_documento):
+    #             return {
+    #                 'warning': {
+    #                     'title': "Cédula Inválida",
+    #                     'message': "El sssnúmero de cédula ingresado no es válido."
+    #                 }
+    #             }
 
     @api.depends('fecha_nacimiento')
     def _compute_edad(self):
@@ -92,28 +92,7 @@ class ConvoyBeneficiarioWizardDependiente(models.TransientModel):
             if dependiente:
                 self._cargar_dependiente(dependiente)
 
-    def _cargar_dependiente(self, dependiente):
-        """Carga los datos del dependiente encontrado"""
-        self.dependiente_id = dependiente.id
-        self.tipo_dependiente = dependiente.tipo_dependiente.id
-        self.primer_apellido = dependiente.primer_apellido
-        self.segundo_apellido = dependiente.segundo_apellido
-        self.primer_nombre = dependiente.primer_nombre
-        self.segundo_nombre = dependiente.segundo_nombre
-        self.fecha_nacimiento = dependiente.fecha_nacimiento
-        self.tipo_documento = dependiente.tipo_documento
-        self.numero_documento = dependiente.numero_documento
-
-    @api.onchange('tipo_documento', 'numero_documento')
-    def _onchange_documento(self):
-        if self.tipo_documento == 'dni' and self.numero_documento:
-            if not utils.validar_cedula(self.numero_documento):
-                return {
-                    'warning': {
-                        'title': "Cédula Inválida",
-                        'message': "El número de cédula ingresado no es válido."
-                    }
-                }
+   
 
     def _prepare_dependiente_values(self):
         """Prepara los valores para crear/actualizar el dependiente"""
