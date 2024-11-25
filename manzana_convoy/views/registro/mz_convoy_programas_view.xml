@@ -14,7 +14,6 @@
                     <field name="state" widget="statusbar"/>
                     <button name="action_aprobar_convoy" string="Aprobar" type="object" class="oe_highlight" invisible="state != 'borrador'"/>
                     <button name="action_ejecutar_convoy" string="Iniciar Ejecución" type="object" class="oe_highlight" invisible="state != 'aprobado'" confirm="¿Está seguro de iniciar la ejecución de este convoy?"/>
-                    <button name="action_finalizar_manual" string="Finalizar Convoy" type="object" class="oe_highlight" invisible="state not in ('aprobado', 'ejecutando')" confirm="¿Está seguro de querer finalizar este convoy?"/>
                     <button name="%(action_mz_convoy_beneficiario_wizard)d" type="action" string="Beneficiarios" context="{'default_convoy_id': id}" class="oe_highlight" icon="fa-user" invisible="state != 'ejecutando'"/>
                 </header>
                 <sheet>
@@ -42,7 +41,7 @@
                     <group string="Informacion del CONVOY">
                         <field name="institucion_anfitriona" readonly="state in ('ejecutando', 'fin')"/>
                         <field name="formato_evento" readonly="state in ('ejecutando', 'fin')"/>
-                        <field name="director_coordinador" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"  readonly="state in ('ejecutando', 'fin')"/>
+                        <field name="director_coordinador" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" readonly="state in ('ejecutando', 'fin')"/>
                     </group>
                     <notebook>
                         <page string="Beneficiarios">
@@ -145,7 +144,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Servicios">
+                        <page string="Servicios" invisible="state == 'borrador'">
                             <div class="alert alert-info mb-0" role="alert">
                                 <i class="fa fa-info-circle me-2"/>
                             Guarde el registro antes de agregar servicios
@@ -157,9 +156,10 @@
                             'form_view_ref': 'manzana_convoy.view_mz_convoy_asignacion_servicio_form'
                         }">
                                 <tree delete="0">
+                                    <field name="state" invisible="1" />
                                     <field name="servicio_id"/>
                                     <field name="personal_ids" widget="many2many_tags"/>
-                                    <button name="eliminar_desde_o2m" type="object" icon="fa-trash" help="Eliminar servicio" confirm="¿Está seguro de querer eliminar este servicio y sus planificaciones relacionadas?"/>
+                                    <button name="eliminar_desde_o2m" type="object" icon="fa-trash" help="Eliminar servicio" confirm="¿Está seguro de querer eliminar este servicio y sus planificaciones relacionadas?" invisible="state != 'aprobado'"/>
                                 </tree>
                             </field>
                         </page>
@@ -199,6 +199,7 @@
                 <field name="director_coordinador"/>
                 <field name="state"/>
                 <field name="dia_semana"/>
+                <button name="action_finalizar_manual" string="Finalizar Convoy" type="object" class="oe_highlight" invisible="state not in ('aprobado', 'ejecutando')" confirm="¿Está seguro de querer finalizar este convoy?"/>
             </tree>
         </field>
     </record>
