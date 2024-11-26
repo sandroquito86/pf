@@ -17,20 +17,19 @@ _logger = logging.getLogger(__name__)
 
 class ManzanaElearning(http.Controller):
     @http.route('/manzana_beneficiary/attendees', type='json', auth='user', methods=['POST'])
-    def manzana_beneficiary_attendees(self, slideChanel):
-        attendees = request.env['slide.channel.partner'].sudo().search([('channel_id', '=', int(slideChanel))])
+    def manzana_beneficiary_attendees(self, agenda):
+        attendees = request.env['mz.slide.channel.partner.offline'].sudo().search([('agenda_id', '=', int(agenda)),('state', '=', 'open')])
         course_attendees = []
         for attendee in attendees:
             course_attendees.append({
             'id': attendee.id,
-            'student_id': attendee.student_id.id,
-            'name': attendee.partner_id.name,
+            'student_id': attendee.beneficiary_id.id,
+            'name': attendee.beneficiary_id.name,
             'attendance': True,
             'absent': False,
             'justified': False
         })
-
-
+        
         return json.dumps({
             'course_attendees': course_attendees
         })

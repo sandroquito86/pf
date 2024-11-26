@@ -2,14 +2,14 @@
 
 import { registry } from "@web/core/registry";
 
-import { useBus, useService } from "@web/core/utils/hooks";
+import { useService } from "@web/core/utils/hooks";
 
 import { DateTimePicker } from "@web/core/datetime/datetime_picker";
 import { DateTimeInput } from "@web/core/datetime/datetime_input";
 import { CheckBox } from "@web/core/checkbox/checkbox";
 const { DateTime } = luxon;
 
-import { Component, useState, onMounted, useEffect } from "@odoo/owl";
+import { Component, useState, onMounted, useEffect, EventBus } from "@odoo/owl";
 
 
 
@@ -18,10 +18,11 @@ export class AttendanceBeneficiary extends Component {
         this.rpc = useService("rpc");
         this.orm = useService("orm");
         this.notification = useService("notification");
+        this.bus = new EventBus();
 
         this.state = useState({
-            agenda: this.env.model.root.evalContext.agenda_id,
-            beneficiaries: [],
+            agenda : this.env.model.root.evalContext.agenda_id,
+            beneficiaries : [],
             isAttendanceSubmitted: false,
             attend: false,
             dateUi: DateTime.local().toFormat('dd/MM/yyyy'),

@@ -24,6 +24,8 @@ class AgendaElearning(models.Model):
     end_date = fields.Date(string='Fecha Fin', readonly=True, tracking=True, help="Fecha de finalización de la capacitación")
     members_applicants_count = fields.Integer('# Postulantes', compute='_compute_applicants_counts') #compute='_compute_members_counts'
     members_enrolled_count = fields.Integer('# Inscritos', compute='_compute_applicants_counts') #compute='_compute_members_counts'
+    if_certification = fields.Boolean('Certificación?', compute='_compute_certification', store=True, readonly=True)
+    certification = fields.Many2one('survey.survey', 'Certificación', compute='_compute_certification', store=True)
     state = fields.Selection([
         ('draft', 'Borrador'),
         ('planned', 'Planificado'),
@@ -45,6 +47,16 @@ class AgendaElearning(models.Model):
     )
 
 
+    @api.depends('course_id')
+    def _compute_certification(self):
+        for survey in self:
+            if survey.course_id:
+                slide_id = self.env['slide.slide'].search([('channel_id','=',survey.course_id.id),('slide_category','=','certification')])
+                survey.if_certification = (slide_id)
+                survey.certification = slide_id.survey_id.id
+            else:
+                survey.if_certification = False
+                survey.certification = False
 
     @api.depends('detalle_horario_ids.date')
     def _compute_end_date(self):
@@ -107,7 +119,8 @@ class AgendaElearning(models.Model):
 
 
     # _sql_constraints = [('name_unique', 'UNIQUE(course_id)', "Ya existe un horario para esta capacitación / curso.")]
-
+    def action_re_planificacion(self):
+        return self.action_crear_planificacion()
 
     def action_crear_planificacion(self):
         self.ensure_one()
@@ -169,9 +182,11 @@ class AgendaElearning(models.Model):
             
             fecha_actual += timedelta(days=1)
             fecha_final = fecha_actual - timedelta(days=1)
-        
+
+        self.env['mz.control.attendance'].sudo().create({
+            'agenda_id': self.id
+        })
         self.write({
-            'state': 'planned',
             'end_date': fecha_final
         })
         return True
@@ -238,11 +253,11 @@ class PlanificacionSesiones(models.Model):
         store=True
     )
     
-    state = fields.Selection([
-        ('pending', 'Pendiente'),
-        ('done', 'Realizada'),
-        ('cancelled', 'Cancelada')
-    ], string='Estado', default='pending')
+    # state = fields.Selection([
+    #     ('pending', 'Pendiente'),
+    #     ('done', 'Realizada'),
+    #     ('cancelled', 'Cancelada')
+    # ], string='Estado', default='pending')
 
     @api.depends('hour_from', 'hour_to')
     def _compute_duration(self):
@@ -253,27 +268,84 @@ class PlanificacionSesiones(models.Model):
 class ChannelUserRelationOffline(models.Model):
     _name = 'mz.slide.channel.partner.offline'
     _description = 'Participantes a capacitaciones presenciales'
-                
-
-    agenda_id = fields.Many2one(string='Agenda', comodel_name='mz.agenda.elearning')
-    beneficiary_id = fields.Many2one(string='Beneficiario', comodel_name='mz.beneficiario')
+    _rec_name = 'beneficiary_id'
+    
+    agenda_id = fields.Many2one(
+        string='Agenda', 
+        comodel_name='mz.agenda.elearning',
+        required=True
+    )
+    beneficiary_id = fields.Many2one(
+        string='Beneficiario', 
+        comodel_name='mz.beneficiario',
+        required=True
+    )
+    is_certifiable = fields.Boolean(
+        string='Acreedor a Certificación',
+        # compute='_compute_is_certifiable',
+        store=True
+    )
     state = fields.Selection([
         ('draft', 'En espera'),
         ('open', 'Inscrito'),
-        ('done', 'Asistió'),
         ('cancelled', 'Cancelado')
     ], string='Estado', default='draft', tracking=True)
-
-
+    attendance_ids = fields.One2many(
+        'mz.attendance.student',
+        'student_id',
+        string='Asistencias'
+    )
+    
+    _sql_constraints = [
+        ('unique_beneficiary_agenda', 
+         'unique(beneficiary_id, agenda_id)',
+         'El beneficiario ya está registrado en esta agenda.')
+    ]
+    
+    # @api.depends('attendance_ids.student_id', 'attendance_ids.state')
+    # def _compute_participants_count(self):
+    #     for record in self:
+    #         record.participants_count = self.search_count([
+    #             ('agenda_id', '=', record.agenda_id.id),
+    #             ('state', '=', 'open')
+    #         ])
+    
+    def _check_participant_limit(self, agenda):
+        """
+        Verifica si hay cupos disponibles en la agenda
+        """
+        if agenda.quota_limited and agenda.quota_max:
+            current_participants = self.search_count([
+                ('agenda_id', '=', agenda.id),
+                ('state', '=', 'open')
+            ])
+            if current_participants >= agenda.quota_max:
+                return False
+        return True
+    
+    @api.model
+    def create(self, vals):
+        if vals.get('state') == 'open':
+            agenda = self.env['mz.agenda.elearning'].browse(vals.get('agenda_id'))
+            if not self._check_participant_limit(agenda):
+                raise UserError(f'No hay cupos disponibles en este curso. Por favor, registre al participante en estado "En espera".')
+        return super().create(vals)
+    
     def action_confirm(self):
-        if any(registration.state != 'draft' for registration in self):
-            raise UserError('Time off request must be confirmed ("To Approve") in order to approve it.')
-        self.write({'state':'open'})
-
+        self.ensure_one()
+        if self.state != 'draft':
+            raise UserError('Solo se pueden confirmar registros en estado "En espera".')
+        
+        if not self._check_participant_limit(self.agenda_id):
+            raise UserError(f'No hay cupos disponibles en este curso (# Máximo de inscripciones: {self.agenda_id.quota_max}). El participante debe permanecer en lista de espera.')
+        
+        return self.write({'state': 'open'})
+    
     def action_cancel(self):
-        if any(registration.state not in ('open') for registration in self):
-            raise UserError('Time off request must be confirmed ("To Approve") in order to approve it.')
-        self.write({'state':'cancelled'})
+        self.ensure_one()
+        if self.state != 'open':
+            raise UserError('Solo se pueden cancelar registros en estado "Inscrito".')
+        return self.write({'state': 'cancelled'})
 
 
 class TrainingDay(models.Model):

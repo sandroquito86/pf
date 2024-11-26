@@ -12,7 +12,7 @@ class MzStudentAttendance(models.Model):
     _rec_name = 'student_id'
 
     student_id = fields.Many2one('mz.beneficiario', string='Beneficiario', required=True)
-    course_id = fields.Many2one('slide.channel', string='Curso', required=True)
+    agenda_id = fields.Many2one('mz.agenda.elearning', string='Curso', required=True)
     date = fields.Date(string='Fecha', required=True)
     state = fields.Selection([
         ('present', 'Asistió'),
@@ -27,22 +27,22 @@ class MzStudentAttendance(models.Model):
     
     _sql_constraints = [
         ('unique_attendance',
-         'UNIQUE(student_id, course_id, date)',
+         'UNIQUE(student_id, agenda_id, date)',
          'Ya existe un registro de asistencia para este estudiante en este curso y fecha.')
     ]
 
-    @api.constrains('date')
-    def _check_date(self):
-        for record in self:
-            if record.date > fields.Date.today():
-                raise ValidationError("No se pueden registrar asistencias para fechas futuras.")
+    # @api.constrains('date')
+    # def _check_date(self):
+    #     for record in self:
+    #         if record.date > fields.Date.today():
+    #             raise ValidationError("No se pueden registrar asistencias para fechas futuras.")
 
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             existing = self.search([
                 ('student_id', '=', vals.get('student_id')),
-                ('course_id', '=', vals.get('course_id')),
+                ('agenda_id', '=', vals.get('agenda_id')),
                 ('date', '=', vals.get('date'))
             ])
             if existing:

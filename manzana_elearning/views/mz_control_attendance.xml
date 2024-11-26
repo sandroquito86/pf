@@ -7,8 +7,21 @@
         <field name="name">mz.control.attendance.form</field>
         <field name="model">mz.control.attendance</field>
         <field name="arch" type="xml">
-            <form string="Control de Asistencias">
+            <form string="Control de Asistencias" create="0" edit="0">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_redirect_to_attendance"
+                            type="object"
+                            icon="fa-check-square-o"
+                            class="oe_stat_button">
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <!-- <field name="members_enrolled_count" nolabel="1"/> -->
+                                </span>
+                                <span class="o_stat_text">Asistencias</span>
+                            </div>
+                        </button>
+                    </div>
                     <group>
                         <field name="agenda_id" options="{'no_open': True, 'no_create': True}"/>
                         <field name="start_date" />
@@ -28,7 +41,7 @@
         <field name="name">mz.control.attendance.tree</field>
         <field name="model">mz.control.attendance</field>
         <field name="arch" type="xml">
-            <tree string="Control de Asistencias" sample="1">
+            <tree string="Control de Asistencias" create="0" edit="0" sample="1">
                 <field name="agenda_id" options="{'no_open': True, 'no_create': True}"/>
                 <field name="start_date" />
                 <field name="end_date" />

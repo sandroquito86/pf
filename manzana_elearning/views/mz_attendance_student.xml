@@ -10,7 +10,7 @@
         <field name="arch" type="xml">
             <tree string="Asistencias" edit="0" create="0" sample="1">
                 <field name="student_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
-                <field name="course_id" readonly="1"/>
+                <field name="agenda_id" readonly="1"/>
                 <field name="date" readonly="1" />
                 <field name="state"/>
                 <field name="sub_state"/>
@@ -40,7 +40,7 @@
                 <sheet>
                     <group>
                         <field name="student_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
-                        <field name="course_id" readonly="1"/>
+                        <field name="agenda_id" readonly="1"/>
                         <field name="date" readonly="1"/>
                         <field name="state"/>
                         <field name="sub_state"/>

@@ -18,7 +18,7 @@ Long description of module's purpose
     'version': '0.5',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr',  'website_slides', 'web','manzana_de_cuidados','prefectura_base'],
+    'depends': ['base','hr',  'website_slides', 'web','bus','manzana_de_cuidados','prefectura_base'],
 
     # always loaded
     'data': [
