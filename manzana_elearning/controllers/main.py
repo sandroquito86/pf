@@ -10,6 +10,8 @@ import json
 import logging
 import traceback
 
+from odoo.http import request, content_disposition
+
 _logger = logging.getLogger(__name__)
 
 
@@ -87,3 +89,38 @@ class ManzanaElearning(http.Controller):
                 return json.dumps({'success': False, 'error': 'No se encontró la tarea o no tienes permiso para eliminarla'})
         except Exception as e:
             return json.dumps({'success': False, 'error': str(e)})
+
+
+
+    def _generate_report(self, user_input, download=True):
+        report = request.env["ir.actions.report"].sudo()._render_qweb_pdf('survey.certification_report', [user_input], data={'report_type': 'pdf'})[0]
+
+        report_content_disposition = content_disposition('Certification.pdf')
+        if not download:
+            content_split = report_content_disposition.split(';')
+            content_split[0] = 'inline'
+            report_content_disposition = ';'.join(content_split)
+
+        return request.make_response(report, headers=[
+            ('Content-Type', 'application/pdf'),
+            ('Content-Length', len(report)),
+            ('Content-Disposition', report_content_disposition),
+        ])
+
+
+    @http.route(['/certificate/<int:survey_id>/get_certification'], type='http', auth='user', methods=['GET'], website=True)
+    def controller_get_certification(self, survey_id, input_id=None, **kwargs):
+        survey = request.env['survey.survey'].sudo().search([
+            ('id', '=', survey_id),
+            ('certification', '=', True)
+        ])
+
+        if not survey:
+            return request.redirect("/")
+
+        user_input = request.env['survey.user_input'].sudo().browse(int(input_id))
+
+        if not user_input:
+            raise UserError(_("El usuario no cuenta con una certificación."))
+
+        return self._generate_report(user_input.id, download=True)

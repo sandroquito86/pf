@@ -42,6 +42,12 @@
             <tree string="Beneficiarios Inscritos" editable="bottom" edit="0" create="0" sample="1">
                 <field name="beneficiary_id" options="{'no_open': True, 'no_create': True}"/>
                 <field name="agenda_id" column_invisible="True" /> <!---->
+                <field name="is_certifiable" widget="boolean_toggle" />
+                <field name="attendance_percentage" widget="progressbar" />
+                <field name="generated_certificate" column_invisible="True" />
+                <button name="action_get_certification" string="Descargar certificado" 
+                        invisible="(not generated_certificate and not is_certifiable) or (is_certifiable and  not generated_certificate)" class="oe_highlight p-1" type="object" icon="fa-download" />
+                <button name="action_create_certification" string="Generar certificado" invisible="not is_certifiable or generated_certificate" class="oe_highlight p-1" type="object" icon="fa-trophy" />
             </tree>
         </field>
     </record>

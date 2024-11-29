@@ -16,12 +16,13 @@ from odoo.tools import is_html_empty
 
 class Survey(models.Model):
     _inherit = 'survey.survey'
-    _description = 'Certificados de capacitaciones de E-learning de Manzana de Cuidados'
+    _description = 'Certificados de capacitaciones de Manzana de Cuidados'
 
 
 
     attendance_success_min = fields.Float('Asistencia mínima requerida (%)', default=80.0)
     on_site_training = fields.Boolean("Capacitación Presencial")
+    observations = fields.Text('Observaciones')
 
 
     _sql_constraints = [
@@ -50,6 +51,35 @@ class Survey(models.Model):
         
         survey = super().create(vals_list)
         return survey
+
+
+
+
+class SurveyUserInputInherit(models.Model):
+    _inherit = 'survey.user_input'
+    _description = 'Necesario para la emisión de Certificados de Manzana de Cuidados'
+
+
+    isOfflineCourseTest = fields.Boolean()
+    beneficiary_id = fields.Many2one('mz.beneficiario', string='Beneficiario', readonly=True)
+    scoring_success = fields.Boolean('Quizz Passed', compute='_compute_scoring_success', store=True, compute_sudo=True)
+
+
+    @api.depends('scoring_percentage', 'survey_id')
+    def _compute_scoring_success(self):
+        for user_input in self:
+            if not user_input.isOfflineCourseTest:
+                user_input.scoring_success = user_input.scoring_percentage >= user_input.survey_id.scoring_success_min
+            else:
+                user_input.scoring_success = True
+
+
+
+
+class ResConfigSettingsInherit(models.TransientModel):
+    _inherit = "res.config.settings"
+
+    module_website_slides_survey = fields.Boolean(string="Certifications", default=True)
 
 
     

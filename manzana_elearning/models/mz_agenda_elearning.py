@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from string import ascii_letters, digits
 import string
 import datetime
@@ -270,31 +270,19 @@ class ChannelUserRelationOffline(models.Model):
     _description = 'Participantes a capacitaciones presenciales'
     _rec_name = 'beneficiary_id'
     
-    agenda_id = fields.Many2one(
-        string='Agenda', 
-        comodel_name='mz.agenda.elearning',
-        required=True
-    )
-    beneficiary_id = fields.Many2one(
-        string='Beneficiario', 
-        comodel_name='mz.beneficiario',
-        required=True
-    )
-    is_certifiable = fields.Boolean(
-        string='Acreedor a Certificación',
-        # compute='_compute_is_certifiable',
-        store=True
-    )
+    agenda_id = fields.Many2one(string='Agenda', comodel_name='mz.agenda.elearning', required=True)
+    beneficiary_id = fields.Many2one(string='Beneficiario', comodel_name='mz.beneficiario', required=True)
+    attendance_percentage = fields.Float('Porcentaje de Asistencia', compute="_compute_attendance_percentage", default=0.0, store=True)
+    is_certifiable = fields.Boolean(string='Acreedor a Certificación', compute='_compute_is_certifiable', readonly=True, store=True)
+    certification_id = fields.Many2one('survey.survey', 'Certificación', compute='_compute_is_certifiable', store=True)
+    generated_certificate = fields.Boolean(string='Certificado Generado')
+    
     state = fields.Selection([
         ('draft', 'En espera'),
         ('open', 'Inscrito'),
         ('cancelled', 'Cancelado')
     ], string='Estado', default='draft', tracking=True)
-    attendance_ids = fields.One2many(
-        'mz.attendance.student',
-        'student_id',
-        string='Asistencias'
-    )
+    attendance_ids = fields.One2many('mz.attendance.student', 'student_id', string='Asistencias')
     
     _sql_constraints = [
         ('unique_beneficiary_agenda', 
@@ -302,13 +290,34 @@ class ChannelUserRelationOffline(models.Model):
          'El beneficiario ya está registrado en esta agenda.')
     ]
     
-    # @api.depends('attendance_ids.student_id', 'attendance_ids.state')
-    # def _compute_participants_count(self):
-    #     for record in self:
-    #         record.participants_count = self.search_count([
-    #             ('agenda_id', '=', record.agenda_id.id),
-    #             ('state', '=', 'open')
-    #         ])
+    @api.depends('attendance_ids.student_id', 'attendance_ids.state')
+    def _compute_attendance_percentage(self):
+        for record in self:
+            valid_session_dates = record.agenda_id.planificacion_ids.mapped('date')
+            if not valid_session_dates:
+                record.attendance_percentage = 0.0
+                continue
+            valid_attendances = record.attendance_ids.filtered(
+                lambda x: x.date in valid_session_dates and self._is_valid_attendance(x)
+            )
+            record.attendance_percentage = (len(valid_attendances) / len(valid_session_dates)) * 100
+
+
+    @api.depends('attendance_percentage', 'agenda_id.if_certification', 'agenda_id.certification.attendance_success_min')
+    def _compute_is_certifiable(self):
+        for record in self:
+            if not record.state == 'open' or not record.agenda_id.if_certification:
+                record.is_certifiable = False
+                continue
+                
+            min_attendance = record.agenda_id.certification.attendance_success_min
+            is_certifiable = bool(
+                min_attendance and 
+                record.attendance_percentage >= min_attendance
+            )
+            record.is_certifiable = is_certifiable
+            record.certification_id = record.agenda_id.certification.id if is_certifiable else False
+
     
     def _check_participant_limit(self, agenda):
         """
@@ -322,6 +331,46 @@ class ChannelUserRelationOffline(models.Model):
             if current_participants >= agenda.quota_max:
                 return False
         return True
+
+    def _is_valid_attendance(self, attendance):
+        return (attendance.state == 'Asistió' or 
+                (attendance.state == 'absent' and attendance.sub_state == 'jst'))
+
+
+    def _prepare_values_for_certification(self):
+        return {
+                'beneficiary_id': self.beneficiary_id.id,
+                'isOfflineCourseTest': True,
+                'state': 'done',
+                'survey_id': self.certification_id.id,
+                'scoring_success': True
+        }
+
+    def action_get_certification(self):
+        self.ensure_one()
+        # if not self.is_certifiable:
+        #     raise ValidationError('Este beneficiario aún no es elegible para la certificación de ese curso.')
+        has_certification_access = self.env['survey.user_input'].sudo().search([('beneficiary_id','=',self.beneficiary_id.id),('survey_id','=',self.certification_id.id)])
+        # if not has_certification_access:
+        #     create_certification_access = self.env['survey.user_input'].sudo().create(self._prepare_values_for_certification())
+        if not has_certification_access:
+            raise ValidationError('Este beneficiario no cuenta con una certificación.')
+        return {
+            'type': 'ir.actions.act_url',
+            'name': "Obtener Certificado",
+            'target': 'new',
+            'url': '/certificate/%s/get_certification?input_id=%s' % (self.certification_id.id, has_certification_access.id)
+        }
+
+    def action_create_certification(self):
+        if not self.is_certifiable:
+            raise ValidationError('Este beneficiario aún no es elegible para la certificación de ese curso.')
+        if self.generated_certificate:
+            raise ValidationError('Ya se ha generado un certificado para este beneficiario.')
+        create_certification_access = self.env['survey.user_input'].sudo().create(self._prepare_values_for_certification())
+        if create_certification_access:
+            self.write({'generated_certificate': True})
+
     
     @api.model
     def create(self, vals):

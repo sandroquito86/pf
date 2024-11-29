@@ -31,11 +31,28 @@ class MzStudentAttendance(models.Model):
          'Ya existe un registro de asistencia para este estudiante en este curso y fecha.')
     ]
 
-    # @api.constrains('date')
-    # def _check_date(self):
-    #     for record in self:
-    #         if record.date > fields.Date.today():
-    #             raise ValidationError("No se pueden registrar asistencias para fechas futuras.")
+    def _is_valid_attendance(self, attendance):
+        return (attendance.state == 'present' or 
+            (attendance.state == 'absent' and attendance.sub_state == 'jst'))
+
+    def _update_overtime_attendance_percentage(self, student_offline_ids, agenda):
+        valid_session_dates = agenda.planificacion_ids.mapped('date')
+        if not valid_session_dates:
+            return False
+            
+        for participant in student_offline_ids:
+            attendances = self.env['mz.attendance.student'].search([
+                ('student_id', '=', participant.beneficiary_id.id),
+                ('agenda_id', '=', agenda.id),
+                ('date', 'in', valid_session_dates)
+            ])
+            
+            valid_count = len(attendances.filtered(lambda a: self._is_valid_attendance(a)))
+            attendance_percentage = (valid_count / len(valid_session_dates)) * 100
+            participant.write({'attendance_percentage': attendance_percentage})
+        
+        return True
+
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -47,8 +64,19 @@ class MzStudentAttendance(models.Model):
             ])
             if existing:
                 raise ValidationError("Ya existe un registro de asistencia para este estudiante en este curso y fecha.")
+                
+        records = super().create(vals_list)
+        students = records.mapped('student_id')
+        agenda_id = records[0].agenda_id if records else False  # Más seguro que usar [0]
         
-        return super().create(vals_list)
+        student_offline_ids = self.env['mz.slide.channel.partner.offline'].sudo().search([
+            ('beneficiary_id', 'in', students.ids),
+            ('agenda_id', '=', agenda_id.id)  # Agregar filtro por agenda
+        ])
+
+        if student_offline_ids and agenda_id:
+            self._update_overtime_attendance_percentage(student_offline_ids, agenda_id)
+        return records
 
 
     def unlink(self):

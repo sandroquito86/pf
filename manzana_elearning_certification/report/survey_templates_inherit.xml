@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="certification_report_view_general_inherited" inherit_id="survey.certification_report_view_general">
+
+            <xpath expr="//div[hasclass('certification-top')]//h1" position="replace">
+                <h1>
+                    <b>Certificado</b>
+                </h1>
+            </xpath>
+
+            <xpath expr="//div[hasclass('certification-content')]" position="replace">
+                    <div class="page certification-content">
+                        <div class="oe_structure"/>
+                        <div t-if="user_input.scoring_success">
+                        <div class="oe_structure"/>
+                            <p> <span>Este certificado es ortorgado a</span>
+                                <br/>
+                                <t t-set="certif_style" t-value="''"/>
+                                <t t-set="certified_name" t-value="user_input.partner_id.name or user_input.beneficiary_id.name or user_input.email or ''"/>
+                                <t t-if="certified_name and certified_name.isupper()">
+                                    <t t-set="certif_style" t-value="certif_style + 'font-family: certification-serif;'"/>
+                                </t>
+                                <t t-if="len(certified_name) > 35 and layout_template == 'classic'">
+                                    <t t-set="certif_style" t-value="certif_style + 'font-size: 20px; line-height: 4; font-family: certification-serif; '"/>
+                                </t>
+                                <t t-elif="len(certified_name) > 20">
+                                    <t t-if="layout_template == 'modern'">
+                                        <t t-set="certif_style" t-value="certif_style + 'font-size: 40px; line-height: 4;'"/>
+                                    </t>
+                                    <t t-else="">
+                                        <t t-set="certif_style" t-value="certif_style + 'font-size: 30px; line-height: 4;'"/>
+                                    </t>
+                                </t>
+                                <span t-att-style="certif_style" class="user-name" t-out="certified_name">DEMO_CERTIFIED_NAME</span>
+
+                                <br/> <span>por La Prefectura Ciudadana del Guayas,</span> <span>por haber completado con éxito</span>
+                                <br/><b><span class="certification-name" t-field="user_input.survey_id.display_name">Functional Training</span></b>
+                             </p>
+                            <div class="oe_structure"/>
+                        </div>
+                        <div t-else="" class="certification-failed">
+                            <p>Certification Failed</p>
+                            <div class="oe_structure"/>
+                        </div>
+                        <div class="oe_structure"/>
+                    </div>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

@@ -25,11 +25,78 @@
                                 icon="fa-external-link"  target="_blank" class="btn-link pt-0"/>
                         </div>
                     </div>
+                    <field name="observations" />
                 </xpath>
 
                 <xpath expr="//page[@name='questions']" position="attributes">
                     <attribute name="invisible">True</attribute>
                 </xpath>
+                <xpath expr="//page[@name='options']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//page[@name='description']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//page[@name='description_done']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
             </field>
         </record>
+
+        <record id="survey_survey_view_kanban_inherit" model="ir.ui.view">
+            <field name="name">survey.survey.view.kanban.inherit</field>
+            <field name="model">survey.survey</field>
+            <field name="inherit_id" ref="survey.survey_survey_view_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//a[@name='action_send_survey']" position="replace"/>
+
+                <xpath expr="//a[@type='edit']" position="replace">
+                    <a role="menuitem" type="edit" class="dropdown-item">Editar</a>
+                </xpath>
+
+                <xpath expr="//div[@t-name='kanban-box']" position="replace">
+
+                    <div t-name="kanban-box"
+                        t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)}
+                                      oe_kanban_card oe_kanban_global_click
+                                      o_survey_kanban_card #{record.certification.raw_value ? 'o_survey_kanban_card_certification' : ''}">
+                        <!-- displayed in ungrouped mode -->
+                        <div class="o_survey_kanban_card_ungrouped row mx-0">
+                            <widget name="web_ribbon" title="Archived"
+                                bg_color="text-bg-danger"
+                                invisible="active"/>
+                            <div class="col-lg-2 col-sm-8 py-0 my-2 my-lg-0 col-12">
+                                <div class="d-flex flex-grow-1 flex-column my-0 my-lg-2">
+                                    <span class="fw-bold"><field name="title"/></span>
+                                    <span t-if="!selection_mode" class="d-flex align-items-center">
+                                        <field name="user_id" widget="many2one_avatar_user"
+                                            options="{'display_avatar_name': True}"/>
+                                            <span class="mx-1">-</span>
+                                        <t t-esc="luxon.DateTime.fromISO(record.create_date.raw_value).toFormat('MMM yyyy')"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- display correct information about certification -->
+                            
+                            
+                            
+                            
+                            
+                            <div t-if="!selection_mode" class="col-lg-3 col-sm-12 d-none d-sm-flex justify-content-end gap-1 my-2 ms-auto pb-lg-3 py-0">
+                                
+                                
+                                
+                                
+                                
+                            </div>
+                        </div>
+                        <!-- displayed in grouped mode -->
+                        
+                    </div>
+
+                </xpath>
+
+            </field>
+        </record>
+
 </odoo>

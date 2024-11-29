@@ -15,7 +15,7 @@ class ControlAttendance(models.Model):
     _description = 'Control de asistencias de las capacitaciones'
 
     
-    #name = fields.Char(string='Nombre',  compute='_compute_name', store=True)
+    name = fields.Char(string='Nombre',  compute='_compute_name', store=True)
     agenda_id = fields.Many2one(string='Agenda', comodel_name='mz.agenda.elearning')
     # total_time = fields.Float(string='Duración del Curso', related='course_id.total_time', digits=(10, 2), store=True)
     # members_enrolled_count = fields.Integer('# Inscritos', related='agenda_id.members_enrolled_count')
@@ -24,6 +24,16 @@ class ControlAttendance(models.Model):
     # members_applicants_count = fields.Integer('# Postulantes', compute='_compute_applicants_counts') #compute='_compute_members_counts'
     # members_enrolled_count = fields.Integer('# Inscritos', compute='_compute_applicants_counts') #compute='_compute_members_counts'
     # status = fields.Char(string='Estado',  related='agenda_id.state')
+
+
+    @api.depends('agenda_id')
+    def _compute_name(self):
+        for record in self:
+            if record.agenda_id:
+                record.name = f'Registro de Asistencia de {record.agenda_id.course_id.name}'
+                # record.asi_servicio_id = record.servicio_id.servicio_id.id
+            else:
+                record.name = ''
 
 
     def action_redirect_to_attendance(self):
