@@ -631,6 +631,7 @@ class Consulta(models.Model):
 
     @api.model
     def get_view(self, view_id=None, view_type='form', context=None, toolbar=False, submenu=False, **kwargs):
+        raise UserError(self._context.get('filtrar_programa'))
         context = context or {}
         user = self.env.user
         if user.has_group('manzana_de_cuidados.group_mz_prestador_servicio') or \

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Vista Form -->
-    <record id="pf_view_picking_type_form" model="ir.ui.view">
-        <field name="name">pf.stock.picking.type.form</field>
+    <record id="mz_view_picking_type_form" model="ir.ui.view">
+        <field name="name">mz.stock.picking.type.form</field>
         <field name="model">stock.picking.type</field>
         <field name="arch" type="xml">
-            <form>
+            <form create="0" edit="0" delete="0">
                 <sheet>
                     <div class="oe_button_box" name="button_box"/>
                     <widget name="web_ribbon" title="Archivado" bg_color="text-bg-danger" invisible="active"/>
@@ -52,11 +52,11 @@
     </record>
 
     <!-- Vista Tree -->
-    <record id="pf_view_picking_type_tree" model="ir.ui.view">
-        <field name="name">pf.stock.picking.type.tree</field>
+    <record id="mz_view_picking_type_tree" model="ir.ui.view">
+        <field name="name">mz.stock.picking.type.tree</field>
         <field name="model">stock.picking.type</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree create="0" edit="0" delete="0">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="programa_id"/>
@@ -69,8 +69,8 @@
     </record>
 
     <!-- Vista Search -->
-    <record id="pf_view_picking_type_search" model="ir.ui.view">
-        <field name="name">pf.stock.picking.type.search</field>
+    <record id="mz_view_picking_type_search" model="ir.ui.view">
+        <field name="name">mz.stock.picking.type.search</field>
         <field name="model">stock.picking.type</field>
         <field name="arch" type="xml">
             <search>
@@ -93,20 +93,20 @@
     </record>
 
     <!-- Acción -->
-    <record id="action_pf_picking_type" model="ir.actions.act_window">
+    <record id="action_mz_picking_type" model="ir.actions.act_window">
         <field name="name">Tipos de Operación</field>
         <field name="res_model">stock.picking.type</field>
         <field name="view_mode">tree,form</field>
         <field name="view_ids" eval="[(5, 0, 0),
                                      (0, 0, {
                                         'view_mode': 'tree', 
-                                        'view_id': ref('pf_view_picking_type_tree')
+                                        'view_id': ref('mz_view_picking_type_tree')
                                      }),
                                      (0, 0, {
                                         'view_mode': 'form', 
-                                        'view_id': ref('pf_view_picking_type_form')
+                                        'view_id': ref('mz_view_picking_type_form')
                                      })]"/>
-        <field name="context" eval="{'filtrar_programa': True}"/>
+        <field name="context" eval="{'filtrar_programa_tipo_operacion': True}"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Crear un nuevo tipo de operación
@@ -115,5 +115,5 @@
     </record>
 
     <!-- Menú -->
-    <menuitem id="menu_pf_picking_type" name="Tipos de Operación" parent="mc_conf_gestion_almacen" action="action_pf_picking_type" sequence="30"/>
+    <menuitem id="menu_action_mz_picking_type" name="Tipos de Operación" parent="menu_config_gestion_almacen" action="action_mz_picking_type" sequence="30"/>
 </odoo>

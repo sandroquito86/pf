@@ -5,30 +5,33 @@ class StockWarehouse(models.Model):
     _inherit = 'stock.warehouse'
 
     programa_id = fields.Many2one('pf.programas', string='Programa Asociado', ondelete='restrict')
-    code = fields.Char('Código', size=10)
+    code = fields.Char('Abreviatura', size=10)
+
+    _sql_constraints = [
+        ('unique_programa', 'unique(programa_id)', 
+         'Ya existe un almacén para este programa. Solo se permite un almacén por programa.')
+    ]
+
 
     @api.model
-    def default_get(self, fields_list):
-        defaults = super().default_get(fields_list)
-        if 'programa_id' in fields_list:
-            user = self.env.user
-            employee = self.env['hr.employee'].search([('user_id', '=', user.id)], limit=1)
-            if employee and employee.programa_id:
-                defaults['programa_id'] = employee.programa_id.id
-        return defaults
+    def create(self, vals):
+        # Crear el almacén
+        warehouse = super(StockWarehouse, self).create(vals)        
+        # Si tiene programa_id, actualizar todas las ubicaciones creadas automáticamente
+        if warehouse.programa_id:
+            # Buscar todas las ubicaciones asociadas al almacén
+            locations = self.env['stock.location'].search([('warehouse_id', '=', warehouse.id)])
+            # Actualizar el programa_id en todas las ubicaciones
+            if locations:
+                locations.write({'programa_id': warehouse.programa_id.id})        
+        return warehouse
 
-
-    def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
-        if self._context.get('filtrar_programa'):
-            # Aseguramos que args sea una lista antes de modificarla
-            args = args if args else []
-            # Agregamos el dominio para filtrar por programa
-            if self.env.user.programa_id:
-                args = [('programa_id', '=', self.env.user.programa_id.id)] + args
-            else:
-                # Si el usuario no tiene programa asignado, no mostramos ningún almacén
-                args = [('id', '=', False)]  # Dominio que no retornará resultados
-        
-        return super()._search(args, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
-
-   
+    def write(self, vals):
+        # Si se cambia el programa_id, actualizar las ubicaciones
+        res = super(StockWarehouse, self).write(vals)
+        if 'programa_id' in vals:
+            for warehouse in self:
+                locations = self.env['stock.location'].search([('warehouse_id', '=', warehouse.id)])
+                if locations:
+                    locations.write({'programa_id': warehouse.programa_id.id})
+        return res
