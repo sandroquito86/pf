@@ -627,7 +627,89 @@ class Consulta(models.Model):
             self.horario_id = False
 
     def action_finalizar(self):
-        self.write({'state': 'final'})
+        self.write({'state': 'final'})   
+
+    @api.model
+    def get_view(self, view_id=None, view_type='form', context=None, toolbar=False, submenu=False, **kwargs):
+        context = context or {}
+        user = self.env.user
+        if user.has_group('manzana_de_cuidados.group_mz_prestador_servicio') or \
+            user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
+            # Vistas completas para usuarios con permisos
+            if view_type == 'tree':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_consulta_tree').id
+            elif view_type == 'form':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_consulta_form').id
+        else:
+            # Vistas limitadas para usuarios sin permisos
+            if view_type == 'tree':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_consulta_tree_limit').id
+            elif view_type == 'form':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_consulta_form_limit').id
+
+
+        return super().get_view(
+            view_id=view_id, 
+            view_type=view_type, 
+            context=context, 
+            toolbar=toolbar, 
+            submenu=submenu,
+            **kwargs
+        )
+    
+
+    def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
+        """
+        Método _search personalizado para filtrar turnos cuando viene el contexto
+        """
+        args = args or []
+        user = self.env.user
+        
+        # Evitar recursión usando un contexto especial
+        if not self._context.get('disable_custom_search'):
+            if self._context.get('filtrar_programa'):                   
+                # Verificar grupos
+                if user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
+                    # Para coordinador: ver solo programas de módulo 2
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                        ('programa_id.modulo_id', '=', 2)
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+                
+                elif user.has_group('manzana_de_cuidados.group_mz_registro_informacion') or \
+                    user.has_group('manzana_de_cuidados.group_coordinador_manzana') or \
+                    user.has_group('manzana_de_cuidados.group_manzana_lider_estrategia'):
+                    # Para admin/asistente: ver servicios propios o creados por ellos
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                        ('programa_id', '=', user.programa_id.id),
+                        ('state', '=', 'final')
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+                elif user.has_group('manzana_de_cuidados.group_mz_prestador_servicio'):
+                    # Para admin/asistente: ver servicios propios o creados por ellos
+                    if_medico = False
+                    for servicio in user.employee_id.servicios_ids:
+                        if servicio.servicio_id.if_consulta_medica:
+                            if_medico = True
+                            break
+                    if if_medico:
+                        programa_ids = self.with_context(disable_custom_search=True).search([
+                                    '|',
+                                        '&',
+                                            ('programa_id', '=', user.programa_id.id),
+                                            ('state', '=', 'final'),
+                                        ('personal_id', '=', user.employee_id.id)
+                                    ]).ids
+                        base_args = [('id', 'in', programa_ids)]
+                    else:
+                        base_args = [('id', 'in', [])]
+                else :
+                    # Para usuarios sin rol especial: ver solo sus propios programas
+                    base_args = [('id', 'in', [])]
+
+                args = base_args + args
+
+        return super(Consulta, self)._search(args, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
     
 class MzDiagnosticoLinea(models.Model):
     _name = 'mz.diagnostico.linea'

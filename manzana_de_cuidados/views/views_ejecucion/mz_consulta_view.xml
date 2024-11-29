@@ -45,7 +45,7 @@
                             </group>
                             <group>
                                 <field name="fecha" required="1" readonly="1" force_save="1"/>
-                                <field name="hora" widget="float_time" readonly="1" force_save="1"/>
+                                <field name="hora" string="probandoo" widget="float_time" readonly="1" force_save="1"/>
                                 <field name="genero_id" readonly="1" force_save="1"/>
                                 <field name="fecha_nacimiento" readonly="1" force_save="1"/>
                                 <field name="edad" readonly="1" force_save="1"/>
@@ -98,7 +98,7 @@
                             </page>
                             <page string="Receta Médica">
                                 <group>
-                                    <field name="picking_id" readonly="1" />
+                                    <field name="picking_id" readonly="1" force_save="1" />
                                 </group>
                                 <field name="receta_ids" readonly="state == 'final'">
                                     <tree editable="bottom">
@@ -139,6 +139,7 @@
             <field name="name">Consulta Médica</field>
             <field name="res_model">mz.consulta</field>
             <field name="view_mode">form</field>
+            <field name="context">{'filtrar_consulta': True, 'default_modulo_id': 2}</field>
             <field name="target">current</field>
         </record>
 
@@ -158,7 +159,30 @@
                     <field name="hora" widget="float_time"/>
                     <field name="personal_id"/>
                     <field name="programa_id"/>
-                    <field name="servicio_id"/>
+                    <field name="state"  widget="badge"
+                            decoration-success="state == 'final'"
+                            decoration-info="state == 'draft'"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_mz_consulta_tree_limit" model="ir.ui.view">
+            <field name="name">mz.consulta.tree</field>
+            <field name="model">mz.consulta</field>
+            <field name="arch" type="xml">
+                <tree string="Consultas Médicas" create="false" delete="false" duplicate="false" edit="false">
+                    <field name="codigo"/>
+                    <field name="tipo_paciente"  widget="badge"
+                                        decoration-success="tipo_paciente == 'titular'"
+                                        decoration-warning="tipo_paciente == 'dependiente'"/>
+                    <field name="beneficiario_id"/>
+                    <field name="fecha"/>
+                    <field name="hora" widget="float_time"/>
+                    <field name="personal_id"/>
+                    <field name="programa_id"/>
+                    <field name="state"  widget="badge"
+                            decoration-success="state == 'final'"
+                            decoration-info="state == 'draft'"/>
                 </tree>
             </field>
         </record>
@@ -295,6 +319,96 @@
             </field>
         </record>
 
+        <record id="view_mz_consulta_form_limit" model="ir.ui.view">
+            <field name="name">mz.consulta.form.limit</field>
+            <field name="model">mz.consulta</field>
+            <field name="arch" type="xml">
+                <form string="Consulta Médica" create="false" delete="false" duplicate="false" edit="false">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,final"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="codigo" readonly="1" force_save="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="beneficiario_id" required="1" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="tipo_paciente" readonly="1" widget="badge"
+                                        decoration-success="tipo_paciente == 'titular'"
+                                        decoration-warning="tipo_paciente == 'dependiente'"/>
+                                <field name="dependiente_id" readonly="1" invisible="tipo_paciente != 'dependiente'" required="tipo_paciente == 'dependiente'"  options="{'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+                                <field name="programa_id" required="1" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="servicio_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="personal_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            </group>
+                            <group>
+                                <field name="fecha" required="1" readonly="1" force_save="1"/>
+                                <field name="hora" widget="float_time" readonly="1" force_save="1"/>
+                                <field name="genero_id" readonly="1" force_save="1"/>
+                                <field name="fecha_nacimiento" readonly="1" force_save="1"/>
+                                <field name="edad" readonly="1" force_save="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Signos Vitales">
+                                <group>
+                                    <group>
+                                        <field name="presion_arterial"/>
+                                        <field name="presion_sistolica"/>
+                                        <field name="presion_diastolica"/>
+                                        <field name="frecuencia_cardiaca"/>
+                                        <field name="frecuencia_respiratoria"/>
+                                    </group>
+                                    <group>
+                                        <field name="temperatura"/>
+                                        <field name="peso"/>
+                                        <field name="altura"/>
+                                        <field name="imc"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Receta Médica">
+                                <group>
+                                    <field name="picking_id" readonly="1"/>
+                                </group>
+                                <field name="receta_ids">
+                                    <tree editable="bottom">
+                                        <field name="producto_id"/>
+                                        <field name="cantidad"/>
+                                        <field name="instrucciones"/>
+                                        <field name="en_inventario"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Seguimiento">
+                               <group>
+                                <group>
+                                    <field name="observaciones" placeholder="Observaciones adicionales"/>
+                                    <field name="proxima_cita" readonly="estado_new_solicitud == 'solicitado'"/>
+                                    <field name="horario_id" readonly="estado_new_solicitud == 'solicitado'" options="{'domain_field': 'horario_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+                                    <field name="horario_id_domain" invisible="1" />
+                                    <field name="estado_new_solicitud" invisible="1"/>
+                                </group>
+                                <group>
+                                    
+                                </group>
+                            </group>
+                            </page>
+                        </notebook>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers"/>
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
         <!-- Vista de Búsqueda -->
         <record id="view_mz_consulta_search" model="ir.ui.view">
             <field name="name">mz.consulta.search</field>
@@ -326,17 +440,18 @@
             </field>
         </record>
 
-        <record id="action_ma_consulta_medica" model="ir.actions.act_window">
-            <field name="name">Consultas Médicas</field>
-            <field name="res_model">mz.consulta</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="view_mz_consulta_tree"/>
-            <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz_consulta_tree')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz_consulta_form_custom')})]"/>
-            <field name="search_view_id" ref="view_mz_consulta_search"/>
-            <field name="context">{'create': False}</field>
-        </record>
+    <record id="action_server_open_consulta_dinamic" model="ir.actions.act_window">
+        <field name="name">Consulta Médica</field>
+        <field name="res_model">mz.consulta</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'filtrar_programa': True, 'default_modulo_id': 2}</field>
+        <field name="domain">[('programa_id.modulo_id', '=', 2)]</field>
+    </record>
 
-        <menuitem id="menu_consulta" name="Médicas" parent="menu_mz_consultas" action="action_ma_consulta_medica" sequence="10"/>
+    <menuitem id="menu_action_ma_consulta_medica_d" name="Médicas" 
+        parent="menu_mz_consultas" action="action_server_open_consulta_dinamic" sequence="10"/>
+
+        
 
     </data>
 </odoo>

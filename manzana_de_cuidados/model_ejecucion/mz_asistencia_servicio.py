@@ -13,7 +13,8 @@ class AsistenciaServicio(models.Model):
 
     planificacion_id = fields.Many2one('mz.planificacion.servicio', string='Planificación', required=True, ondelete='cascade')
     beneficiario_id = fields.Many2one('mz.beneficiario', string='Beneficiario', required=True)
-    tipo_beneficiario = fields.Selection([('titular', 'Titular'),('dependiente', 'Dependiente') ], string='Tipo de Beneficiario', default='titular')    
+    tipo_beneficiario = fields.Selection([('titular', 'Titular'),('dependiente', 'Dependiente') ], string='Tipo de Beneficiario', default='titular') 
+    mascota_id = fields.Many2one('mz.mascota', string='Mascota')   
     dependiente_id = fields.Many2one('mz.dependiente', string='Dependiente')
     fecha = fields.Date('Fecha')
     asistio = fields.Selection([('si', 'Si'), ('no', 'No'), ('pendiente', 'Pendiente')], string='Asistió', default='pendiente')
@@ -31,6 +32,7 @@ class AsistenciaServicio(models.Model):
     consulta_psicologica_id = fields.Many2one('mz.consulta.psicologica', string='Consulta Psicológica')
     cuidado_child_id = fields.Many2one('mz.cuidado.child', string='Cuidado Infantil')
     asesoria_legal_id = fields.Many2one('mz.asesoria.legal', string='Asesoría Legal')
+    servicio_veterinario_id = fields.Many2one('mz.servicio.veterinario', string='Servicio Veterinario')
     active = fields.Boolean(string='Activo', default=True)
 
     # Signos vitales
@@ -149,6 +151,19 @@ class AsistenciaServicio(models.Model):
             'context': {'form_view_initial_mode': 'readonly'},
         }
     
+    def action_ver_servicio_mascota(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Serrvicio Veterinario',
+            'res_model': 'mz.servicio.veterinario',
+            'view_mode': 'form',
+            'res_id': self.servicio_veterinario_id.id,
+            'target': 'new',
+            'views': [(self.env.ref('manzana_de_cuidados.view_mz_servicio_veterinario_form').id, 'form')],
+            'context': {'form_view_initial_mode': 'readonly'},
+        }
+    
     def ingresar_signos(self):
         self.ensure_one()
         return {
@@ -160,7 +175,68 @@ class AsistenciaServicio(models.Model):
             'res_id': self.id,
             'target': 'new',
         }
+    
+    @api.model
+    def get_view(self, view_id=None, view_type='form', context=None, toolbar=False, submenu=False, **kwargs):
+        context = context or {}
+        user = self.env.user
 
+        if user.has_group('manzana_de_cuidados.group_mz_prestador_servicio') or \
+        user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
+            # Vistas completas para usuarios con permisos
+            if view_type == 'tree':
+                view_id = self.env.ref('manzana_de_cuidados.view_asistencia_servicio_tree').id
+        else:
+            # Vistas limitadas para usuarios sin permisos
+            if view_type == 'tree':
+                view_id = self.env.ref('manzana_de_cuidados.view_asistencia_servicio_tree_limit').id
+
+        return super().get_view(
+            view_id=view_id, 
+            view_type=view_type, 
+            context=context, 
+            toolbar=toolbar, 
+            submenu=submenu,
+            **kwargs
+        )
+    
+
+    def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
+        """
+        Método _search personalizado para filtrar turnos cuando viene el contexto
+        """
+        args = args or []
+        user = self.env.user
+        
+        # Evitar recursión usando un contexto especial
+        if not self._context.get('disable_custom_search'):
+            if self._context.get('filtrar_programa'):                   
+                # Verificar grupos
+                if user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
+                    # Para coordinador: ver solo programas de módulo 2
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                        ('programa_id.modulo_id', '=', 2)
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+                
+                elif user.has_group('manzana_de_cuidados.group_mz_registro_informacion') or \
+                    user.has_group('manzana_de_cuidados.group_manzana_lider_estrategia') or \
+                    user.has_group('manzana_de_cuidados.group_coordinador_manzana'):
+                    # Para admin/asistente: ver servicios propios o creados por ellos
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                        ('programa_id', '=', user.programa_id.id)
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+                else :
+                    # Para usuarios sin rol especial: ver solo sus propios programas
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                                    ('personal_id', '=', user.employee_id.id)
+                                ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+
+                args = base_args + args
+
+        return super(AsistenciaServicio, self)._search(args, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
 
 class PlanificacionServicio(models.Model):
     _inherit = 'mz.planificacion.servicio'
@@ -179,6 +255,9 @@ class PlanificacionServicio(models.Model):
     def _compute_beneficiarios_count(self):
         for record in self:
             record.beneficiarios_count = len(record.asistencia_ids)
+
+
+    
 
     # @api.depends('fecha', 'horainicio')
     # def _compute_horario(self):

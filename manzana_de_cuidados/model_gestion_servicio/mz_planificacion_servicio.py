@@ -211,7 +211,7 @@ class GenerarHorarios(models.Model):
                         ('asignacion_horario_id', '=', horario.id), 
                         ('dias', '=', ultimo_dia_asignar)
                     ])
-                    
+                                        
                     if horas_dia:
                         for horas in horas_dia:
                             hora_ini = horas.horainicio
@@ -309,11 +309,87 @@ class GenerarHorarios(models.Model):
         self.ensure_one()
         if self.es_replanificacion and self.planificacion_original_id:
             self.planificacion_original_id.estado = 'replanificado'
+        for turno in self.turno_disponibles_ids:
+            turno.estado = 'activo'
         self.estado = 'confirmado'
         
     def action_cancelar(self):
         self.ensure_one()
         self.estado = 'cancelado'
+
+
+    @api.model
+    def get_view(self, view_id=None, view_type='form', context=None, toolbar=False, submenu=False, **kwargs):
+        context = context or {}
+        user = self.env.user
+
+        if user.has_group('manzana_de_cuidados.group_coordinador_manzana') or \
+        user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
+            # Vistas completas para usuarios con permisos
+            if view_type == 'tree':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_genera_planificacion_servicio_tree').id
+            elif view_type == 'form':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_genera_planificacion_servicio_form').id
+        else:
+            # Vistas limitadas para usuarios sin permisos
+            if view_type == 'tree':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_genera_planificacion_servicio_tree_limit').id
+            elif view_type == 'form':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_genera_planificacion_servicio_form_limit').id
+
+        return super().get_view(
+            view_id=view_id, 
+            view_type=view_type, 
+            context=context, 
+            toolbar=toolbar, 
+            submenu=submenu,
+            **kwargs
+        )
+    
+
+    def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
+        """
+        Método _search personalizado para filtrar las planificaciones cuando viene el contexto
+        """
+        args = args or []
+        user = self.env.user
+        
+        # Evitar recursión usando un contexto especial
+        if not self._context.get('disable_custom_search'):
+            if self._context.get('filtrar_programa'):                   
+                # Verificar grupos
+                if user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
+                    # Para coordinador: ver solo programas de módulo 2
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                        ('programa_id.modulo_id', '=', 2)
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+                
+                elif user.has_group('manzana_de_cuidados.group_coordinador_manzana') or \
+                    user.has_group('manzana_de_cuidados.group_mz_registro_informacion'):
+                    # Para admin/asistente: ver servicios propios o creados por ellos
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                        ('programa_id', '=', user.programa_id.id)
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+                elif user.has_group('manzana_de_cuidados.group_manzana_lider_estrategia'):
+                    # Para admin/asistente: ver servicios propios o creados por ellos
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                        ('programa_id', '=', user.programa_id.id),
+                        ('estado', 'in', ['confirmado', 'replanificado'])
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+                else :
+                    # Para usuarios sin rol especial: ver solo sus propios programas
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                        ('personal_id', '=', user.employee_id.id),
+                        ('estado', 'in', ['confirmado', 'replanificado'])
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+
+                args = base_args + args
+
+        return super(GenerarHorarios, self)._search(args, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
 
     # def es_bisiesto(self, anio):
     #     return anio % 4 == 0 and (anio % 100 != 0 or anio % 400 == 0) 
@@ -336,7 +412,7 @@ class PlanificacionServicio(models.Model):
     horafin = fields.Float(string='Hora Fin', index=True,)
     hora = fields.Char(string='Hora')    
     beneficiario_ids = fields.Many2many(string='Beneficiarios', comodel_name='mz.beneficiario', relation='mz_planificacion_servicio_beneficiario_rel',)
-    estado = fields.Selection([('activo', 'Activo'), ('inactivo', 'Inactivo'), ('asignado', 'Asignado'),('concluido', 'Concluido')], string='Estado', default='activo')
+    estado = fields.Selection([('activo', 'Activo'), ('inactivo', 'Inactivo'), ('asignado', 'Asignado'),('concluido', 'Concluido')], string='Estado', default='inactivo')
     observacion = fields.Char(string='Observación')
     fecha_actualizacion = fields.Date(string='Fecha Actualiza', readonly=True, default=fields.Datetime.now, )
     maximo_beneficiarios = fields.Integer(string='Beneficiarios Maximos', default=1, required=True)

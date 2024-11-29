@@ -6,7 +6,7 @@
             <field name="name">mz.consulta.psicologica.form</field>
             <field name="model">mz.consulta.psicologica</field>
             <field name="arch" type="xml">
-                <form string="Consulta Psicológica">
+                <form string="Consulta Psicológica" duplicate="false">
                     <header>
                         <button name="action_finalizar" type="object" string="Finalizar" class="btn-primary" invisible="state == 'final'"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,final"/>
@@ -186,12 +186,67 @@
             </field>
         </record>
 
+        <record id="view_mz_consulta_psicologica_form_limit" model="ir.ui.view">
+            <field name="name">mz.consulta.psicologica.form.read</field>
+            <field name="model">mz.consulta.psicologica</field>
+            <field name="arch" type="xml">
+                <form string="Consulta Psicológica" create="false" delete="false" duplicate="false" edit="false">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,final"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="codigo" readonly="1" force_save="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="beneficiario_id" required="1" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="tipo_paciente" readonly="1" widget="badge"
+                                        decoration-success="tipo_paciente == 'titular'"
+                                        decoration-warning="tipo_paciente == 'dependiente'"/>
+                                <field name="dependiente_id" readonly="1" invisible="tipo_paciente != 'dependiente'" required="tipo_paciente == 'dependiente'"  options="{'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+                                <field name="programa_id" required="1" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="servicio_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="personal_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            </group>
+                            <group>
+                                <field name="fecha" required="1" readonly="1" force_save="1"/>
+                                <field name="hora" widget="float_time" readonly="1" force_save="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Seguimiento">
+                               <group>
+                                <group>
+                                    <field name="proxima_cita" readonly="estado_new_solicitud == 'solicitado'"/>
+                                    <field name="horario_id" readonly="estado_new_solicitud == 'solicitado'" options="{'domain_field': 'horario_id_domain', 'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+                                    <field name="horario_id_domain" invisible="1" />
+                                    <field name="estado_new_solicitud" invisible="1"/>
+                                    <button name="solicitar_horario" invisible="state == 'final'" type="object" string="Solicitar" class="oe_highlight"/>
+                                </group>
+                                <group>
+                                    <field name="dias_disponibles_html" invisible="estado_new_solicitud == 'solicitado' or state == 'final'" widget="html" />
+                                </group>
+                            </group>
+                            </page>
+                        </notebook>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers"/>
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
         <!-- Vista Tree -->
         <record id="view_mz_consulta_psicologica_tree" model="ir.ui.view">
             <field name="name">mz.consulta.psicologica.tree</field>
             <field name="model">mz.consulta.psicologica</field>
             <field name="arch" type="xml">
-                <tree string="Consultas Psicológicas" >
+                <tree string="Consultas Psicológicas" create="false" delete="false" duplicate="false" edit="false">
                 <!-- create="false" delete="false" duplicate="false"  -->
                     <field name="codigo"/>
                     <field name="tipo_paciente" widget="badge"
@@ -202,7 +257,31 @@
                     <field name="hora" widget="float_time"/>
                     <field name="personal_id"/>
                     <field name="programa_id"/>
-                    <field name="servicio_id"/>
+                    <field name="state"  widget="badge"
+                            decoration-success="state == 'final'"
+                            decoration-info="state == 'draft'"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_mz_consulta_psicologica_tree_limit" model="ir.ui.view">
+            <field name="name">mz.consulta.psicologica.tree</field>
+            <field name="model">mz.consulta.psicologica</field>
+            <field name="arch" type="xml">
+                <tree string="Consultas Psicológicas" create="false" delete="false" duplicate="false" edit="false">
+                <!-- create="false" delete="false" duplicate="false"  -->
+                    <field name="codigo"/>
+                    <field name="tipo_paciente" widget="badge"
+                           decoration-success="tipo_paciente == 'titular'"
+                           decoration-warning="tipo_paciente == 'dependiente'"/>
+                    <field name="beneficiario_id"/>
+                    <field name="fecha"/>
+                    <field name="hora" widget="float_time"/>
+                    <field name="personal_id"/>
+                    <field name="programa_id"/>
+                    <field name="state"  widget="badge"
+                            decoration-success="state == 'final'"
+                            decoration-info="state == 'draft'"/>
                 </tree>
             </field>
         </record>
@@ -238,8 +317,27 @@
             </field>
         </record>
 
+        <record id="action_mz_consulta_psicologica" model="ir.actions.server">
+            <field name="name">Consultas Psicológicas</field>
+            <field name="model_id" ref="model_mz_consulta_psicologica"/>
+            <field name="binding_model_id" ref="model_mz_consulta_psicologica"/>
+            <field name="state">code</field>
+            <field name="code">action = model.get_appropriate_view()</field>
+        </record>
+
+    <record id="action_mz_consulta_psicologica_dinamic" model="ir.actions.act_window">
+        <field name="name">Consultas Psicológicas</field>
+        <field name="res_model">mz.consulta.psicologica</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'filtrar_programa': True, 'default_modulo_id': 2}</field>
+        <field name="domain">[('programa_id.modulo_id', '=', 2)]</field>
+    </record>
+
+        <menuitem id="menu_consulta_psicologica" name="Psicológicas" 
+            parent="menu_mz_consultas" action="action_mz_consulta_psicologica_dinamic" sequence="15"/>
+
         <!-- Acción -->
-        <record id="action_mz_consulta_psicologicas" model="ir.actions.act_window">
+        <!-- <record id="action_mz_consulta_psicologicas" model="ir.actions.act_window">
             <field name="name">Consultas Psicológicas</field>
             <field name="res_model">mz.consulta.psicologica</field>
             <field name="view_mode">tree,form</field>
@@ -247,9 +345,9 @@
             <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz_consulta_psicologica_tree')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz_consulta_psicologica_form')})]"/>
             <field name="search_view_id" ref="view_mz_consulta_psicologica_search"/>
             <field name="context">{'create': False}</field>
-        </record>
+        </record> -->
 
         <!-- Menú -->
-        <menuitem id="menu_consulta_psicologica" name="Psicológicas" parent="menu_mz_consultas" action="action_mz_consulta_psicologicas" sequence="15"/>
+        <!-- <menuitem id="menu_consulta_psicologica" name="Psicológicas" parent="menu_mz_consultas" action="action_mz_consulta_psicologicas" sequence="15"/> -->
     </data>
 </odoo>

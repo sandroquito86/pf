@@ -81,6 +81,151 @@
         </field>
     </record>
 
+    <record id="view_mz_cuidado_child_form_read" model="ir.ui.view">
+        <field name="name">mz.cuidado.child.form</field>
+        <field name="model">mz.cuidado.child</field>
+        <field name="arch" type="xml">
+            <form create="false" delete="false" duplicate="false" edit="false">
+                <header>
+                    <field name="state" widget="statusbar" 
+                           statusbar_visible="borrador,en_curso,finalizado"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="codigo" readonly="1" force_save="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="tipo_servicio" requiere="1" readonly="state in 'en_curso,finalizado'" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="fecha" readonly="1" force_save="1"/>
+                            <field name="hora_entrada" widget="float_time" readonly="state in 'en_curso,finalizado'"/>
+                            <field name="hora_salida" widget="float_time" readonly="state == 'finalizado'"/>
+                            <field name="programa_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="asistencia_servicio_id" readonly="1" force_save="1" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="beneficiario_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="dependiente_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="personal_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="telefono_contacto" requiere="1" readonly="state in 'en_curso,finalizado'"/>
+                            <field name="contacto_emergencia" readonly="state in 'en_curso,finalizado'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <!-- Página para Detalles del Servicio: Guardería -->
+                        <page string="Detalles del Servicio - Guardería" name="detalles_guarderia" invisible="tipo_servicio != 'guarderia'">
+                            <group>
+                                <group invisible="tipo_servicio != 'guarderia'" >
+                                    <field name="comportamiento" readonly="state == 'finalizado'"/>
+                                    <field name="incidentes" readonly="state == 'finalizado'"/>
+                                    <field name="alimentacion" readonly="state == 'finalizado'"/>
+                                    <field name="siesta" readonly="state == 'finalizado'"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Página para Detalles del Servicio: Lectura -->
+                        <page string="Detalles del Servicio - Lectura" name="detalles_lectura" invisible="tipo_servicio != 'lectura'">
+                            <group>
+                                <group invisible="tipo_servicio != 'lectura'" readonly="state == 'finalizado'">
+                                    <field name="nivel_participacion" readonly="state == 'finalizado'"/>
+                                    <field name="tema_lectura" readonly="state == 'finalizado'"/>
+                                    <field name="comprension" readonly="state == 'finalizado'"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Página para Observaciones -->
+                        <page string="Observaciones" name="observaciones">
+                            <group>
+                                <group string="Observaciones y Seguimiento" readonly="state == 'finalizado'">
+                                    <field name="observaciones" readonly="state == 'finalizado'"/>
+                                    <field name="requiere_seguimiento" widget="boolean_toggle" readonly="state == 'finalizado'"/>
+                                    <field name="motivo_seguimiento" invisible="not requiere_seguimiento" readonly="state == 'finalizado'"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    
+
+    <!-- Vista de formulario -->
+    <record id="view_mz_cuidado_child_form_limit" model="ir.ui.view">
+        <field name="name">mz.cuidado.child.form</field>
+        <field name="model">mz.cuidado.child</field>
+        <field name="arch" type="xml">
+            <form  create="false" delete="false" duplicate="false" edit="false">
+                <header>
+                    <field name="state" widget="statusbar" 
+                           statusbar_visible="borrador,en_curso,finalizado"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="codigo" readonly="1" force_save="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="tipo_servicio" requiere="1" readonly="state in 'en_curso,finalizado'" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="fecha" readonly="1" force_save="1"/>
+                            <field name="hora_entrada" widget="float_time" readonly="state in 'en_curso,finalizado'"/>
+                            <field name="hora_salida" widget="float_time" readonly="state == 'finalizado'"/>
+                            <field name="programa_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="asistencia_servicio_id" readonly="1" force_save="1" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="beneficiario_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="dependiente_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="personal_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <!-- Página para Detalles del Servicio: Guardería -->
+                        <page string="Detalles del Servicio - Guardería" name="detalles_guarderia" invisible="tipo_servicio != 'guarderia'">
+                            <group>
+                                <group invisible="tipo_servicio != 'guarderia'" >
+                                    <field name="comportamiento" readonly="state == 'finalizado'"/>
+                                    <field name="incidentes" readonly="state == 'finalizado'"/>
+                                    <field name="alimentacion" readonly="state == 'finalizado'"/>
+                                    <field name="siesta" readonly="state == 'finalizado'"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Página para Detalles del Servicio: Lectura -->
+                        <page string="Detalles del Servicio - Lectura" name="detalles_lectura" invisible="tipo_servicio != 'lectura'">
+                            <group>
+                                <group invisible="tipo_servicio != 'lectura'" readonly="state == 'finalizado'">
+                                    <field name="nivel_participacion" readonly="state == 'finalizado'"/>
+                                    <field name="tema_lectura" readonly="state == 'finalizado'"/>
+                                    <field name="comprension" readonly="state == 'finalizado'"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Página para Observaciones -->
+                        
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
     <!-- action del boton desde asistencia  -->
         <record id="action_cuidado_child_form" model="ir.actions.act_window">
             <field name="name">Cuidado Infantil</field>
@@ -94,10 +239,7 @@
         <field name="name">mz.cuidado.child.tree</field>
         <field name="model">mz.cuidado.child</field>
         <field name="arch" type="xml">
-            <tree decoration-info="state == 'borrador'"
-                  decoration-success="state == 'finalizado'"
-                  decoration-warning="state == 'en_curso'"
-                  decoration-danger="state == 'cancelado'">
+            <tree create="false" delete="false" duplicate="false" edit="false">
                 <field name="codigo"/>
                 <field name="fecha"/>
                 <field name="tipo_servicio"/>
@@ -154,8 +296,19 @@
         </field>
     </record>
 
+    <record id="action_mz_cuidado_childs" model="ir.actions.server">
+        <field name="name">Servicios de Cuidado Infantil</field>
+        <field name="model_id" ref="model_mz_cuidado_child"/>
+        <field name="binding_model_id" ref="model_mz_cuidado_child"/>
+        <field name="state">code</field>
+        <field name="code">action = model.get_appropriate_view()</field>
+    </record>
+
+    <menuitem id="menu_mz_cuidado_childs" name="Servicios de Cuidado Infantil" 
+        parent="menu_mz_servicios_prestado" action="action_mz_cuidado_childs" sequence="20"/>
+
     <!-- Acción de ventana -->
-    <record id="action_mz_cuidado_child" model="ir.actions.act_window">
+    <!-- <record id="action_mz_cuidado_child" model="ir.actions.act_window">
         <field name="name">Servicios Infantiles</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">mz.cuidado.child</field>
@@ -166,13 +319,13 @@
                 Registre un nuevo servicio infantil
             </p>
         </field>
-    </record>
+    </record> -->
 
     <!-- Elemento de menú -->
-    <menuitem id="menu_mz_cuidado_child"
+    <!-- <menuitem id="menu_mz_cuidado_child"
               name="Servicios Infantiles"
               parent="menu_mz_servicios_prestado"
               action="action_mz_cuidado_child"
-              sequence="20"/>
+              sequence="20"/> -->
 </data>
 </odoo>

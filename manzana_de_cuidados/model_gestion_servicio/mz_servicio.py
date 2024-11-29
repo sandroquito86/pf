@@ -18,7 +18,7 @@ class Servicio(models.Model):
     active = fields.Boolean(default=True, string='Activo')
     if_derivacion = fields.Boolean(default=False, string='Derivación')
     image = fields.Binary(string='Imagen', attachment=True)
-    tipo_servicio = fields.Selection([('normal', 'Bienestar Personal'), ('medico', 'Salud'), ('cuidado_infantil', 'Cuidado Infantil'), ('mascota', 'Mascota'), ('asesoria_legal', 'Asesoria Legal')], string='Clasificación de Servicio', default='normal')
+    tipo_servicio = fields.Selection([('normal', 'Bienestar Personal'), ('medico', 'Salud'), ('cuidado_infantil', 'Cuidado Infantil'), ('mascota', 'Veterinario'), ('asesoria_legal', 'Asesoria Legal')], string='Clasificación de Servicio', default='normal')
     if_consulta_medica = fields.Boolean(string='Consulta Médica')
     if_consulta_psicologica = fields.Boolean(string='Consulta Psicológica')
     catalogo_tipo_servicio_id = fields.Many2one('pf.items', string='Tipo de Servicio',  domain=_get_tipo_servicio_domain)

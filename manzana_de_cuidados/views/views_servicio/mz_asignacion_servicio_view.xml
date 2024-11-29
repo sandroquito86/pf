@@ -19,7 +19,7 @@
             <field name="name">mz.asignacion.servicio.tree.limit</field>
             <field name="model">mz.asignacion.servicio</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree create="false" delete="false" duplicate="false" edit="false">
                     <field name="servicio_id"  options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
                     <field name="programa_id"  options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
                     <field name="personal_ids" />
@@ -79,7 +79,7 @@
             <field name="name">mz.asignacion.servicio.form.limit</field>
             <field name="model">mz.asignacion.servicio</field>
             <field name="arch" type="xml">
-                <form string="Nuevo">
+                <form string="Nuevo" create="false" delete="false" duplicate="false" edit="false">
                     <sheet>
                         <div class="row justify-content-between position-relative w-100 m-0 mb-2">
                             <div class="oe_title">
@@ -96,7 +96,7 @@
                                 <field name="servicio_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'servicio_domain_id'}" />
                                 <field name="domain_sub_servicio_ids" invisible="1"/>
                                 <field name="sub_servicio_ids" invisible="not get_sub_servicio" widget="many2many_tags"  options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_sub_servicio_ids', 'create': False}"/>
-                                <field name="personal_ids" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_personal_ids', 'create': False}" />
+                                <field name="personal_ids" readonly="1" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_personal_ids', 'create': False}" />
                                 <field name="domain_programa_id" invisible="1" />
                                 <field name="if_admin" invisible="1" />
                                 <field name="get_sub_servicio" invisible="1" />
@@ -154,6 +154,46 @@
             </field>
         </record>
 
+        <record id="mz_asignacion_servicio_kanban_limit" model="ir.ui.view">
+            <field name="name">mz.asignacion.servicio.kanban</field>
+            <field name="model">mz.asignacion.servicio</field>
+            <field name="arch" type="xml">
+                <kanban default_order="name" create="false" delete="false" duplicate="false" edit="false" >
+                    <field name="id"/>
+                    <field name="name"/>
+                    <templates>
+                        <t t-name="kanban-menu">
+                            <a role="menuitem" type="open" class="dropdown-item">Configuration</a>
+                            <a role="menuitem" type="object" name="toggle_active" class="dropdown-item">
+                                <t t-if="record.active.raw_value">Archive</t>
+                                <t t-else="">Restore</t>
+                            </a>
+                            <a role="menuitem" t-if="widget.deletable" type="delete" class="dropdown-item">Delete</a>
+                        </t>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_vignette oe_semantic_html_override oe_kanban_global_click" t-att-data-id="record.id.raw_value" t-att-data-action-id="'action_mz_asignacion_servicio_form'">
+                                <div class="o_kanban_image">
+                                    <img alt="img" t-att-src="kanban_image('mz.asignacion.servicio', 'image', record.id.raw_value)" class="o_image_64_max" height="52"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <h4 class="oe_partner_heading">
+                                        <a type="open" class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </a>
+                                    </h4>
+                                    <div>
+                                        <span class="fa fa-users"/> <field name="count_responsables" invisible="1"/> <field name="responsables_text"/> 
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+
         <record id="mz_asignacion_servicio_view_search" model="ir.ui.view">
             <field name="name">mz.asignacion.servicio.view.search</field>
             <field name="model">mz.asignacion.servicio</field>
@@ -173,14 +213,6 @@
             </field>
         </record>
 
-        <record model="ir.actions.act_window" id="action_mz_asignacion_servicio">
-            <field name="name">Servicio de Programa y Responsables Asignados</field>
-            <field name="res_model">mz.asignacion.servicio</field>
-            <field name="view_mode">kanban,tree,form</field>
-            <field name="domain">[('programa_id.modulo_id', '=', 2)]</field>
-            <field name="groups_id" eval="[(4, ref('group_manzana_lider_estrategia')), (4, ref('group_beneficiario_manager'))]"/>
-        </record>
-
         <record id="action_mz_asignacion_servicio_form" model="ir.actions.act_window">
             <field name="name">Servicio de Programa y Responsables Asignados</field>
             <field name="res_model">mz.asignacion.servicio</field>
@@ -188,19 +220,39 @@
             <field name="target">current</field>
         </record>
 
-        <menuitem id="menu_action_mz_asignacion_servicio" name="Servicio de Programa y Responsables Asignados" action="action_mz_asignacion_servicio" groups="manzana_de_cuidados.group_manzana_lider_estrategia,manzana_de_cuidados.group_beneficiario_manager" parent="menu_planificacion_curso" sequence="10" />
+        <!-- <record model="ir.actions.act_window" id="action_mz_asignacion_servicio">
+            <field name="name">Servicio de Programa y Responsables Asignados</field>
+            <field name="res_model">mz.asignacion.servicio</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('programa_id.modulo_id', '=', 2)]</field>
+            <field name="groups_id" eval="[(4, ref('group_manzana_lider_estrategia')), (4, ref('group_beneficiario_manager'))]"/>
+        </record> -->
+
+        
+
+    <record id="action_mz_asignacion_servicio_dinamic" model="ir.actions.act_window">
+        <field name="name">Servicio de Programa y Responsables Asignados</field>
+        <field name="res_model">mz.asignacion.servicio</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{'filtrar_programa': True, 'default_modulo_id': 2}</field>
+        <field name="domain">[('programa_id.modulo_id', '=', 2)]</field>
+    </record>
+
+    <menuitem id="menu_action_mz_asignacion_servicio_d" name="Servicio de Programa y Responsables Asignados" parent="menu_planificacion_curso" action="action_mz_asignacion_servicio_dinamic" sequence="10"/>
+
+        <!-- <menuitem id="menu_action_mz_asignacion_servicio" name="Servicio de Programa y Responsables Asignados" action="action_mz_asignacion_servicio" groups="manzana_de_cuidados.group_manzana_lider_estrategia,manzana_de_cuidados.group_beneficiario_manager" parent="menu_planificacion_curso" sequence="10" /> -->
 
         <!-- action de mz.asignacion.servicio limitada  -->
-        <record model="ir.actions.act_window" id="action_mz_asignacion_servicio_limit">
+        <!-- <record model="ir.actions.act_window" id="action_mz_asignacion_servicio_limit">
             <field name="name">Servicio de Programa y Responsables Asignados</field>
             <field name="res_model">mz.asignacion.servicio</field>
             <field name="view_mode">kanban,tree,form</field>
             <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'kanban', 'view_id': ref('mz_asignacion_servicio_kanban')}), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz_asignacion_servicio_tree_limit')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz_asignacion_servicio_form_limit')})]"/>
             <field name="domain">[('programa_id.modulo_id', '=', 2)]</field>
             <field name="groups_id" eval="[(4, ref('group_coordinador_manzana')), (4, ref('group_mz_prestador_servicio'))]"/>
-        </record>
+        </record> -->
         <!-- menu de mz.asignacion.servicio limitada -->
-        <menuitem id="menu_action_mz_asignacion_servicio_limit" name="Servicio de Programa y Responsables Asignados" action="action_mz_asignacion_servicio_limit"  groups="manzana_de_cuidados.group_coordinador_manzana,manzana_de_cuidados.group_mz_prestador_servicio" parent="menu_planificacion_curso" sequence="10" />
+        <!-- <menuitem id="menu_action_mz_asignacion_servicio_limit" name="Servicio de Programa y Responsables Asignados" action="action_mz_asignacion_servicio_limit"  groups="manzana_de_cuidados.group_coordinador_manzana,manzana_de_cuidados.group_mz_prestador_servicio" parent="menu_planificacion_curso" sequence="10" /> -->
 
 
     </data>

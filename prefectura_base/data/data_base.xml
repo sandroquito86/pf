@@ -618,6 +618,57 @@
         <field name="catalogo_id" ref="catalogo_tipo_asesoria"/>
     </record>
 
+    <!-- Catálogo de Especies -->
+    <record id="catalogo_especie" model="pf.catalogo">
+        <field name="name">Catálogo de Especies</field>
+        <field name="descripcion">Este catálogo define las especies de animales disponibles.</field>
+    </record>
+
+    <!-- Items del Catálogo -->
+    <record id="item_perro" model="pf.items">
+        <field name="name">Perro</field>
+        <field name="descripcion">Especie correspondiente a perros.</field>
+        <field name="catalogo_id" ref="catalogo_especie"/>
+    </record>
+    <record id="item_gato" model="pf.items">
+        <field name="name">Gato</field>
+        <field name="descripcion">Especie correspondiente a gatos.</field>
+        <field name="catalogo_id" ref="catalogo_especie"/>
+    </record>
+    <record id="item_ave" model="pf.items">
+        <field name="name">Ave</field>
+        <field name="descripcion">Especie correspondiente a aves.</field>
+        <field name="catalogo_id" ref="catalogo_especie"/>
+    </record>
+    <record id="item_otro" model="pf.items">
+        <field name="name">Otro</field>
+        <field name="descripcion">Especie no categorizada como perro, gato o ave.</field>
+        <field name="catalogo_id" ref="catalogo_especie"/>
+    </record>
+
+    <!-- Catálogo: Tipos de Servicio Veterinarios -->
+    <record id="catalogo_tipos_servicio_veterinario" model="pf.catalogo">
+        <field name="name">Tipos de Servicio Veterinarios</field>
+        <field name="descripcion">Catálogo de servicios veterinarios ofrecidos en la clínica.</field>
+    </record>
+    
+    <!-- Ítems del catálogo -->
+    <record id="item_consulta_general_vet" model="pf.items">
+        <field name="catalogo_id" ref="catalogo_tipos_servicio_veterinario"/>
+        <field name="name">Consulta General</field>
+        <field name="descripcion">Servicio de consulta general para mascotas.</field>
+    </record>
+    <record id="item_vacunacion_vet" model="pf.items">
+        <field name="catalogo_id" ref="catalogo_tipos_servicio_veterinario"/>
+        <field name="name">Vacunación</field>
+        <field name="descripcion">Aplicación de vacunas a mascotas.</field>
+    </record>
+    <record id="item_desparasitacion_vet" model="pf.items">
+        <field name="catalogo_id" ref="catalogo_tipos_servicio_veterinario"/>
+        <field name="name">Desparasitación</field>
+        <field name="descripcion">Eliminación de parásitos internos o externos.</field>
+    </record>
+
 
   </data>
 </odoo>

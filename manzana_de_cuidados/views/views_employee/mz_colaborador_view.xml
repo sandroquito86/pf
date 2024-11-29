@@ -49,20 +49,6 @@
                             </group>
 
                         </group>
-                    <!-- <group>
-                        <group string="Ubicación">
-                            <field name="private_street" placeholder="Ingrese la dirección completa"/>
-                            <label for="latitud" string="Coordenadas"/>
-                            <div class="o_row">
-                                <field name="latitud" placeholder="Latitud"/>
-                                <field name="longitud" placeholder="Longitud"/>
-                            </div>
-                        </group>
-                        <group string="Información Profesional">
-                            <field name="job_title" required="1" placeholder="Ej: Técnico de Campo"/>
-                            <field name="experiencia" placeholder="Describa la experiencia relevante"/>
-                        </group>
-                    </group> -->
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids"/>
@@ -170,7 +156,7 @@
     </record>
 
     <!-- Action Window -->
-    <record id="mz_action_employee" model="ir.actions.act_window">
+    <record id="mz_action_employee_colaborador" model="ir.actions.act_window">
         <field name="name">Colaboradores</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">hr.employee</field>
@@ -195,6 +181,6 @@
     </record>
 
     <!-- Menú Item -->
-    <menuitem id="menu_mz_employee" name="Colaboradores" action="mz_action_employee" parent="menu_employee" sequence="20"/>
+    <menuitem id="menu_mz_employee" name="Colaboradores" action="mz_action_employee_colaborador" parent="menu_employee" sequence="20"/>
 
 </odoo>

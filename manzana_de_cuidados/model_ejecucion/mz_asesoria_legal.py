@@ -183,3 +183,87 @@ class MzAsesoriaLegal(models.Model):
         else:
             raise UserError('No se ha generado el código de asistencia.')
         return asesoria
+    
+    def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
+        """
+        Método _search personalizado para filtrar turnos cuando viene el contexto
+        """
+        args = args or []
+        user = self.env.user
+        
+        # Evitar recursión usando un contexto especial
+        if not self._context.get('disable_custom_search'):
+            if self._context.get('filtrar_programa'):                   
+                # Verificar grupos
+                if user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
+                    # Para coordinador: ver solo programas de módulo 2
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                        ('programa_id.modulo_id', '=', 2)
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+                
+                elif user.has_group('manzana_de_cuidados.group_mz_registro_informacion') or \
+                    user.has_group('manzana_de_cuidados.group_coordinador_manzana') or \
+                    user.has_group('manzana_de_cuidados.group_manzana_lider_estrategia'):
+                    # Para admin/asistente: ver servicios propios o creados por ellos
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                        ('programa_id', '=', user.programa_id.id),
+                        ('state', '=', 'finalizado')
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+                elif user.has_group('manzana_de_cuidados.group_mz_prestador_servicio'):
+                    # Para admin/asistente: ver servicios propios o creados por ellos
+                    if_asesoria = False
+                    for servicio in user.employee_id.servicios_ids:
+                        if servicio.servicio_id.tipo_servicio == 'asesoria_legal':
+                            if_asesoria = True
+                            break
+                    if if_asesoria:
+                        programa_ids = self.with_context(disable_custom_search=True).search([
+                                        ('programa_id', '=', user.programa_id.id)
+                                    ]).ids
+                        base_args = [('id', 'in', programa_ids)]
+                    else:
+                        base_args = [('id', 'in', [])]
+                else :
+                    # Para usuarios sin rol especial: ver solo sus propios programas
+                    base_args = [('id', 'in', [])]
+
+                args = base_args + args
+
+        return super(MzAsesoriaLegal, self)._search(args, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
+    
+
+    def get_appropriate_view(self):
+        # Obtener el usuario actual
+        user = self.env.user
+        
+        # Definir vistas por defecto (limitadas)
+        tree_view = self.env.ref('manzana_de_cuidados.view_mz_asesoria_legal_tree').id
+        form_view = self.env.ref('manzana_de_cuidados.view_mz_asesoria_legal_form_limit').id
+        
+        # Verificar si el usuario tiene permisos específicos
+        if (user.has_group('manzana_de_cuidados.group_mz_prestador_servicio') or \
+            user.has_group('manzana_de_cuidados.group_beneficiario_manager')):
+            # Vistas completas para usuarios con permisos
+            tree_view = self.env.ref('manzana_de_cuidados.view_mz_asesoria_legal_tree').id
+            form_view = self.env.ref('manzana_de_cuidados.view_mz_asesoria_legal_form_read').id
+        
+        # Preparar la acción de ventana
+        action = {
+            'name': 'Asesorías Legales',
+            'type': 'ir.actions.act_window',
+            'res_model': 'mz.asesoria.legal',
+            'view_mode': 'tree,form',
+            'views': [
+                (tree_view, 'tree'),
+                (form_view, 'form')
+            ],
+            'context': {
+                'default_modulo_id': 2,
+                'filtrar_programa': True
+            },
+            'target': 'current'
+        }
+        
+        return action

@@ -9,3 +9,5 @@ from . import mz_consulta_psicologica
 from . import mz_historia_clinica_psicologica
 from . import mz_cuidado_child
 from . import mz_asesoria_legal
+from . import mz_servicio_veterinario
+from . import mz_receta_veterinaria_linea

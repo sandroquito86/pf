@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+    <!-- Form View -->
+    <record id="view_mz_servicio_veterinario_form" model="ir.ui.view">
+        <field name="name">mz.servicio.veterinario.form</field>
+        <field name="model">mz.servicio.veterinario</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_iniciar" string="Iniciar" type="object" class="oe_highlight" invisible="state != 'borrador'"/>
+                    <button name="action_finalizar" string="Finalizar" type="object" class="oe_highlight" invisible="state != 'en_curso'"/>
+                    <field name="state" widget="statusbar" 
+                    statusbar_visible="borrador,en_curso,finalizado"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="codigo" readonly="1" force_save="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="tipo_servicio_id"  force_save="1" readonly="state in ('en_curso','finalizado')" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="beneficiario_id" required="1" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="mascota_id" required="1" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="veterinario_id" required="1" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="programa_id" required="1" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="fecha" required="1" readonly="1" force_save="1"/>
+                        </group>
+                        <group>
+                            <field name="hora_inicio" widget="float_time" required="1" readonly="state in ('en_curso','finalizado')"/>
+                            <field name="hora_fin" widget="float_time" readonly="state == 'finalizado'"/>
+                            <field name="motivo_consulta" required="1" readonly="state == 'finalizado'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Detalles de la Consulta" name="detalles_consulta">
+                            <group>
+                                <group string="Signos Vitales" readonly="state == 'finalizado'">
+                                    <field name="temperatura" widget="float" readonly="state == 'finalizado'"/>
+                                    <field name="peso_actual" widget="float" readonly="state == 'finalizado'"/>
+                                    <field name="frecuencia_cardiaca" readonly="state == 'finalizado'"/>
+                                    <field name="frecuencia_respiratoria" readonly="state == 'finalizado'"/>
+                                    <field name="sintomas" readonly="state == 'finalizado'"/>
+                                </group>
+                                <group string="Diagnóstico y Tratamiento" readonly="state == 'finalizado'">
+                                    <field name="diagnostico" readonly="state == 'finalizado'"/>
+                                    <field name="tratamiento" readonly="state == 'finalizado'"/>
+                                    <field name="observaciones" readonly="state == 'finalizado'"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Receta Médica">
+                                <group>
+                                    <field name="picking_id" readonly="1" force_save="1"/>
+                                </group>
+                                <field name="receta_ids" readonly="state == 'finalizado'">
+                                    <tree editable="bottom">
+                                        <field name="producto_id"/>
+                                        <field name="cantidad"/>
+                                        <field name="instrucciones"/>
+                                        <field name="en_inventario"/>
+                                    </tree>
+                                </field>
+                            </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_mz_servicio_veterinario_form_read" model="ir.ui.view">
+        <field name="name">mz.servicio.veterinario.form</field>
+        <field name="model">mz.servicio.veterinario</field>
+        <field name="arch" type="xml">
+            <form create="false" delete="false" duplicate="false" edit="false">
+                <header>
+                    <field name="state" widget="statusbar" 
+                    statusbar_visible="borrador,en_curso,finalizado"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="codigo" readonly="1" force_save="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="tipo_servicio_id"  force_save="1" readonly="state in ('en_curso','finalizado')" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="beneficiario_id" required="1" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="mascota_id" required="1" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="veterinario_id" required="1" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="programa_id" required="1" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="fecha" required="1" readonly="1" force_save="1"/>
+                        </group>
+                        <group>
+                            <field name="hora_inicio" widget="float_time" required="1" readonly="state in ('en_curso','finalizado')"/>
+                            <field name="hora_fin" widget="float_time" readonly="state == 'finalizado'"/>
+                            <field name="motivo_consulta" required="1" readonly="state == 'finalizado'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Detalles de la Consulta" name="detalles_consulta">
+                            <group>
+                                <group string="Signos Vitales" readonly="state == 'finalizado'">
+                                    <field name="temperatura" widget="float" readonly="state == 'finalizado'"/>
+                                    <field name="peso_actual" widget="float" readonly="state == 'finalizado'"/>
+                                    <field name="frecuencia_cardiaca" readonly="state == 'finalizado'"/>
+                                    <field name="frecuencia_respiratoria" readonly="state == 'finalizado'"/>
+                                    <field name="sintomas" readonly="state == 'finalizado'"/>
+                                </group>
+                                <group string="Diagnóstico y Tratamiento" readonly="state == 'finalizado'">
+                                    <field name="diagnostico" readonly="state == 'finalizado'"/>
+                                    <field name="tratamiento" readonly="state == 'finalizado'"/>
+                                    <field name="observaciones" readonly="state == 'finalizado'"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Receta Médica">
+                                <group>
+                                    <field name="picking_id" readonly="1" force_save="1"/>
+                                </group>
+                                <field name="receta_ids" readonly="state == 'finalizado'">
+                                    <tree editable="bottom">
+                                        <field name="producto_id"/>
+                                        <field name="cantidad"/>
+                                        <field name="instrucciones"/>
+                                        <field name="en_inventario"/>
+                                    </tree>
+                                </field>
+                            </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_mz_servicio_veterinario_tree" model="ir.ui.view">
+        <field name="name">mz.servicio.veterinario.tree</field>
+        <field name="model">mz.servicio.veterinario</field>
+        <field name="arch" type="xml">
+            <tree create="false" delete="false" duplicate="false" edit="false">
+                <field name="codigo"/>
+                <field name="fecha"/>
+                <field name="tipo_servicio_id"/>
+                <field name="beneficiario_id"/>
+                <field name="mascota_id"/>
+                <field name="veterinario_id"/>
+                <field name="hora_inicio" widget="float_time"/>
+                <field name="hora_fin" widget="float_time"/>
+                <field name="motivo_consulta"/>
+                <field name="state" widget="badge"
+                    decoration-info="state == 'borrador'"
+                    decoration-warning="state == 'en_curso'"
+                    decoration-success="state == 'finalizado'"/>
+            </tree>
+        </field>
+    </record>
+    <!-- Vista de búsqueda -->
+    <record id="view_mz_servicio_veterinario_search" model="ir.ui.view">
+        <field name="name">mz.servicio.veterinario.search</field>
+        <field name="model">mz.servicio.veterinario</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="codigo"/>
+                <field name="beneficiario_id"/>
+                <field name="veterinario_id"/>
+                <field name="tipo_servicio_id"/>
+                <filter string="Borrador" name="draft" domain="[('state', '=', 'borrador')]"/>
+                <filter string="En Curso" name="en_curso" domain="[('state', '=', 'en_curso')]"/>
+                <filter string="Finalizado" name="done" domain="[('state', '=', 'finalizado')]"/>
+                
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Mascota" name="group_mascota_id" 
+                            context="{'group_by': 'mascota_id'}"/>
+                    <filter string="Estado" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Fecha" name="group_fecha" context="{'group_by': 'fecha'}"/>
+                    <filter string="Veterinario" name="group_veterinario_id" 
+                            context="{'group_by': 'veterinario_id'}"/>
+                </group>
+                <searchpanel>
+                    <field name="state" string="Estado" icon="fa-tasks"/>
+                    <field name="programa_id" string="Programa" icon="fa-building"/>
+                    <field name="veterinario_id" string="Asesor" icon="fa-user"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <!-- action del boton desde asistencia  -->
+        <record id="action_servicio_veterinario_form" model="ir.actions.act_window">
+            <field name="name">Servicio Veterinario</field>
+            <field name="res_model">mz.servicio.veterinario</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+        </record>
+
+    <record id="action_mz_servicio_veterinarios" model="ir.actions.server">
+        <field name="name">Servicio Veterinario</field>
+        <field name="model_id" ref="model_mz_servicio_veterinario"/>
+        <field name="binding_model_id" ref="model_mz_servicio_veterinario"/>
+        <field name="state">code</field>
+        <field name="code">action = model.get_appropriate_view()</field>
+    </record>
+
+    <menuitem id="menu_mz_servicio_veteinario_prestado" name="Servicio Veterinario" 
+        parent="menu_mz_servicios_prestado" action="action_mz_servicio_veterinarios" sequence="40"/>
+
+        <!-- Acción de ventana -->
+    <!-- <record id="action_mz_servicio_veterinario" model="ir.actions.act_window">
+        <field name="name">Servicio Veterinario</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mz.servicio.veterinario</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_mz_servicio_veterinario_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Registre un nueva servicio veterinario
+            </p>
+        </field>
+    </record> -->
+
+    <!-- Elemento de menú -->
+    <!-- <menuitem id="menu_mz_servicio_veteinario_prestado"
+              name="Servicio Veterinario"
+              parent="menu_mz_servicios_prestado"
+              action="action_mz_servicio_veterinario"
+              sequence="40"/> -->
+</data>
+</odoo>

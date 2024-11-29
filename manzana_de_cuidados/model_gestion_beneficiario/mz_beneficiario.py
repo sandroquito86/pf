@@ -58,7 +58,11 @@ class Beneficiario(models.Model):
     tiene_discapacidad_hogar = fields.Selection([('si', 'SI'),('no', 'NO')], string='¿Hay personas con discapacidad viviendo en su hogar?', default='no')
     tipo_discapacidad_hogar_id = fields.Many2one('pf.items', string='¿Qué tipo de discapacidad tiene?',
                                                  domain=lambda self: [('catalogo_id', '=', self.env.ref('prefectura_base.tipos_discapacidad').id)])   
-
+    mascota_ids = fields.One2many(
+        'mz.mascota',
+        'beneficiario_id',
+        string='Mascotas'
+    )
 
     @api.depends('historia_clinica_ids')
     def _compute_consulta_count(self):

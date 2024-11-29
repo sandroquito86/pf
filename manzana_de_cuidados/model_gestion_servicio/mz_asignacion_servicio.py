@@ -202,6 +202,176 @@ class AsignarServicio(models.Model):
             record.active = True
             # Lógica adicional para retirar el programa del sitio web
 
+    @api.model
+    def create(self, vals):
+        # Llamar al método create original
+        record = super(AsignarServicio, self).create(vals)
+        
+        # Verificar si hay personal asignado
+        if 'personal_ids' in vals:
+            self._actualizar_servicios_empleados(vals['personal_ids'], record.id)
+        
+        return record
+
+    def write(self, vals):        
+        # Si se modifican los empleados
+        if 'personal_ids' in vals:
+            # Obtener los IDs de empleados antes y después de la modificación
+            for record in self:
+                # Obtener los IDs de empleados originales
+                empleados_originales = record.personal_ids.ids
+                result = super(AsignarServicio, self).write(vals)
+                empleados_originales_pos = record.personal_ids.ids
+                empleados_actualizados = []
+                
+                # Si se proporcionan nuevos empleados en vals
+                nuevos_empleados = vals.get('personal_ids', [])
+                
+                # Determinar cambios
+                if isinstance(nuevos_empleados[0], (list, tuple)):
+                    # Manejar diferentes formatos de comandos de Odoo
+                    if nuevos_empleados[0][0] in (0, 1, 2):  # Comandos de creación, actualización, borrado
+                        # Convertir comandos a lista de IDs
+                        empleados_actualizados = [
+                            emp[1] if emp[0] in (1, 4) else emp[2]['id'] if emp[0] == 0 else None 
+                            for emp in nuevos_empleados if emp[0] != 2
+                        ]
+                    else:
+                        for emp in nuevos_empleados:
+                            empleados_actualizados.append(emp[1])
+                else:
+                    empleados_actualizados = nuevos_empleados
+            
+                
+                # Eliminar empleados que ya no están
+                empleados_eliminados = set(empleados_originales) - set(empleados_originales_pos)
+                # Actualizar servicios de empleados
+                self._actualizar_servicios_empleados(
+                    [(4, emp_id) for emp_id in empleados_actualizados], 
+                    record.id
+                )
+                
+                # Eliminar servicios de empleados que ya no están
+                for emp_id in empleados_eliminados:
+                    self._eliminar_servicio_empleado(emp_id, record.id)
+        # Llamar al método write original
+        result = super(AsignarServicio, self).write(vals)
+        
+        return result
+
+    def _actualizar_servicios_empleados(self, personal_ids, servicio_id):
+        """
+        Método para agregar servicios a los empleados
+        :param personal_ids: Lista de IDs de empleados
+        :param servicio_id: ID del servicio a agregar
+        """
+        Employee = self.env['hr.employee']
+        
+        # Iterar sobre los empleados
+        for comando in personal_ids:
+            # Manejar diferentes tipos de comandos de Odoo
+            if comando[0] == 4:  # Enlace de registro existente
+                empleado = Employee.browse(comando[1])
+                if empleado:
+                    # Agregar el servicio al campo many2many
+                    empleado.write({
+                        'servicios_ids': [(4, servicio_id)]
+                    })
+
+    def _eliminar_servicio_empleado(self, empleado_id, servicio_id):
+        """
+        Método para eliminar un servicio de un empleado
+        :param empleado_id: ID del empleado
+        :param servicio_id: ID del servicio a eliminar
+        """
+        Employee = self.env['hr.employee']
+        empleado = Employee.browse(empleado_id)
+        
+        if empleado:
+            # Eliminar el servicio del campo many2many
+            empleado.write({
+                'servicios_ids': [(3, servicio_id)]
+            })
+
+    @api.model
+    def get_view(self, view_id=None, view_type='form', context=None, toolbar=False, submenu=False, **kwargs):
+        context = context or {}
+        user = self.env.user
+
+        if user.has_group('manzana_de_cuidados.group_manzana_lider_estrategia') or \
+        user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
+            # Vistas completas para usuarios con permisos
+            if view_type == 'tree':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_asignacion_servicio_tree').id
+            elif view_type == 'form':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_asignacion_servicio_form').id
+            elif view_type == 'kanban':
+                view_id = self.env.ref('manzana_de_cuidados.mz_asignacion_servicio_kanban').id
+        else:
+            # Vistas limitadas para usuarios sin permisos
+            if view_type == 'tree':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_asignacion_servicio_tree_limit').id
+            elif view_type == 'form':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_asignacion_servicio_form_limit').id
+            elif view_type == 'kanban':
+                view_id = self.env.ref('manzana_de_cuidados.mz_asignacion_servicio_kanban_limit').id
+
+        return super().get_view(
+            view_id=view_id, 
+            view_type=view_type, 
+            context=context, 
+            toolbar=toolbar, 
+            submenu=submenu,
+            **kwargs
+        )
+    
+
+    def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
+        """
+        Método _search personalizado para filtrar programas cuando viene el contexto
+        """
+        args = args or []
+        user = self.env.user
+        
+        # Evitar recursión usando un contexto especial
+        if not self._context.get('disable_custom_search'):
+            if self._context.get('filtrar_programa'):                   
+                # Verificar grupos
+                if user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
+                    # Para coordinador: ver solo programas de módulo 2
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                        ('programa_id.modulo_id', '=', 2)
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+                
+                elif user.has_group('manzana_de_cuidados.group_manzana_lider_estrategia'):
+                    # Para admin/asistente: ver servicios propios o creados por ellos
+                    programa_ids = self.with_context(disable_custom_search=True).search(['|', 
+                        ('programa_id', '=', user.programa_id.id), 
+                        ('programa_id.create_uid', '=', user.id)
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+                
+                elif user.has_group('manzana_de_cuidados.group_coordinador_manzana')or \
+                    user.has_group('manzana_de_cuidados.group_mz_registro_informacion'):
+                    # Para usuarios sin rol especial: ver solo sus propios programas
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                        ('programa_id', '=', user.programa_id.id)
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+                else :
+                    # Para usuarios sin rol especial: ver solo sus propios programas
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                        ('id', 'in', user.employee_id.servicios_ids.ids)
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+
+                args = base_args + args
+
+        return super(AsignarServicio, self)._search(args, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
+
+    
+
     
 
 class Pf_programas(models.Model):
@@ -287,6 +457,77 @@ class Pf_programas(models.Model):
         for record in self:
             record.active = True
             # Lógica adicional para retirar el programa del sitio web
+
+    @api.model
+    def get_view(self, view_id=None, view_type='form', context=None, toolbar=False, submenu=False, **kwargs):
+        context = context or {}
+        user = self.env.user
+
+        if user.has_group('manzana_de_cuidados.group_manzana_lider_estrategia') or \
+        user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
+            # Vistas completas para usuarios con permisos
+            if view_type == 'tree':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_pf_programas_tree').id
+            elif view_type == 'form':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_pf_programas_form').id
+            elif view_type == 'kanban':
+                view_id = self.env.ref('manzana_de_cuidados.ma_pf_programas_view_kanban').id
+        else:
+            # Vistas limitadas para usuarios sin permisos
+            if view_type == 'tree':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_pf_programas_tree_limit').id
+            elif view_type == 'form':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_pf_programas_form_limit').id
+            elif view_type == 'kanban':
+                view_id = self.env.ref('manzana_de_cuidados.ma_pf_programas_view_kanban_limit').id
+
+        return super().get_view(
+            view_id=view_id, 
+            view_type=view_type, 
+            context=context, 
+            toolbar=toolbar, 
+            submenu=submenu,
+            **kwargs
+        )
+    
+
+    def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
+        """
+        Método _search personalizado para filtrar programas cuando viene el contexto
+        """
+        args = args or []
+        user = self.env.user
+        
+        # Evitar recursión usando un contexto especial
+        if not self._context.get('disable_custom_search'):
+            if self._context.get('filtrar_programa'):                   
+                # Verificar grupos
+                if user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
+                    # Para coordinador: ver solo programas de módulo 2
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                        ('modulo_id', '=', 2)
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+                
+                elif user.has_group('manzana_de_cuidados.group_manzana_lider_estrategia'):
+                    # Para admin/asistente: ver servicios propios o creados por ellos
+                    programa_ids = self.with_context(disable_custom_search=True).search(['|', 
+                        ('id', '=', user.programa_id.id), 
+                        ('create_uid', '=', user.id)
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+                
+                else:
+                    # Para usuarios sin rol especial: ver solo sus propios programas
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                        ('id', '=', user.programa_id.id)
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+
+                args = base_args + args
+
+        return super(Pf_programas, self)._search(args, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
+
 
 
 
