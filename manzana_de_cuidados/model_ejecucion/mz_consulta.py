@@ -552,61 +552,75 @@ class Consulta(models.Model):
 
     def generar_orden_entrega(self):
         self.ensure_one()
-        
         if self.picking_id:
             raise UserError('Ya existe una orden de entrega para esta consulta.')
-        
+
         productos_en_stock = self.receta_ids.filtered(lambda r: r.en_inventario)
-        
         if productos_en_stock:
-            # Buscar el tipo de operación para salidas
-            picking_type = self.env['stock.picking.type'].search([
-                ('code', '=', 'outgoing'),
-                ('company_id', '=', self.env.company.id)
-            ], limit=1)
-            
+            usuario = self.env.user
+            if not usuario.programa_id:
+                raise UserError('El usuario no tiene un programa asignado.')
+            # Buscar el tipo de operación para salidas del programa del usuario
+            picking_type = self.env['stock.picking.type'].search([('code', '=', 'outgoing'), ('programa_id', '=', usuario.programa_id.id)], limit=1)
             if not picking_type:
-                raise UserError('No se encontró un tipo de operación para salida de inventario.')
-            
-            # Verificar que las ubicaciones existan
-            if not picking_type.default_location_src_id or not picking_type.default_location_dest_id:
-                raise UserError('Las ubicaciones origen y destino no están configuradas en el tipo de operación.')
-            
+                raise UserError('No se encontró un tipo de operación para salida de inventario en el programa.')
+            # Buscar ubicación origen (stock) del programa
+            ubicacion_origen = self.env['stock.location'].search([('programa_id', '=', usuario.programa_id.id)], limit=1)
+            if not ubicacion_origen:
+                raise UserError('No se encontró una ubicación de origen válida para el programa.')
+            # Buscar ubicación destino (cliente)
+            ubicacion_destino = self.env.ref('stock.stock_location_customers')
             # Asegurarse que el partner_id sea válido
             if not self.beneficiario_id.user_id.partner_id:
                 raise UserError('El beneficiario no tiene un contacto asociado.')
-            
+
             valores_picking = {
                 'partner_id': self.beneficiario_id.user_id.partner_id.id,
                 'picking_type_id': picking_type.id,
-                'location_id': picking_type.default_location_src_id.id,
-                'location_dest_id': picking_type.default_location_dest_id.id,
+                'location_id': ubicacion_origen.id,
+                'location_dest_id': ubicacion_destino.id,
                 'origin': f'Consulta {self.codigo}',
                 'company_id': self.env.company.id,
                 'scheduled_date': fields.Datetime.now(),
-                'move_type': 'direct',  # Entrega directa
+                'move_type': 'direct',
                 'state': 'draft',
             }
-            
             # Crear el picking
             picking = self.env['stock.picking'].create(valores_picking)
-            
+            # Buscar ubicaciones del programa con stock disponible
+            ubicaciones_programa = self.env['stock.location'].search([('programa_id', '=', usuario.programa_id.id)])
+
             # Crear los movimientos de stock
             for linea in productos_en_stock:
-                move_vals = {
-                    'name': linea.producto_id.name,
-                    'product_id': linea.producto_id.id,
-                    'product_uom_qty': linea.cantidad,
-                    'product_uom': linea.producto_id.uom_id.id,
-                    'picking_id': picking.id,
-                    'location_id': picking.location_id.id,
-                    'location_dest_id': picking.location_dest_id.id,
-                    'company_id': self.env.company.id,
-                    'state': 'draft',
-                    'picking_type_id': picking_type.id,
-                }
-                self.env['stock.move'].create(move_vals)
-            
+                # Buscar quants disponibles en las ubicaciones del programa
+                quants_disponibles = self.env['stock.quant'].search([('product_id', '=', linea.producto_id.id), ('location_id', 'in', ubicaciones_programa.ids), ('quantity', '>', 0)],
+                                                                     order='quantity desc')
+                cantidad_pendiente = linea.cantidad
+                moves_to_create = []
+                # Crear movimientos desde las ubicaciones con stock disponible
+                for quant in quants_disponibles:
+                    if cantidad_pendiente <= 0:
+                        break
+
+                    cantidad_a_mover = min(cantidad_pendiente, quant.quantity)
+                    moves_to_create.append({
+                        'name': linea.producto_id.name,
+                        'product_id': linea.producto_id.id,
+                        'product_uom_qty': cantidad_a_mover,
+                        'product_uom': linea.producto_id.uom_id.id,
+                        'picking_id': picking.id,
+                        'location_id': quant.location_id.id,
+                        'location_dest_id': ubicacion_destino.id,
+                        'company_id': self.env.company.id,
+                        'state': 'draft',
+                        'picking_type_id': picking_type.id,
+                    })
+                    cantidad_pendiente -= cantidad_a_mover
+
+                # Crear los movimientos
+                for move_vals in moves_to_create:
+                    self.env['stock.move'].create(move_vals)
+
             self.picking_id = picking.id
             return True
         else:
@@ -631,7 +645,6 @@ class Consulta(models.Model):
 
     @api.model
     def get_view(self, view_id=None, view_type='form', context=None, toolbar=False, submenu=False, **kwargs):
-        raise UserError(self._context.get('filtrar_programa'))
         context = context or {}
         user = self.env.user
         if user.has_group('manzana_de_cuidados.group_mz_prestador_servicio') or \

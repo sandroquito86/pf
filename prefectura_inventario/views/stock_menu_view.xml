@@ -1,14 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Dar acceso al menú de configuración de inventario -->
-    
-        <menuitem name="Gestión del Almacen" id="mc_conf_gestion_almacen" parent="manzana_de_cuidados.menu_configuracion" groups="group_stock_program_manager"  sequence="400"/>
-        
-        <menuitem name="Reporte Inventario" id="mc_reporte_reporte_inventario" parent="manzana_de_cuidados.menu_principal" groups="group_stock_program_manager"  sequence="400"/>
-       
- 
 
-        <!-- <menuitem id="menu_pf_inventario_catalogos" name="Catálogos" parent="stock.menu_stock_config_settings" sequence="100"/> -->
+        <menuitem name="Inventario" id="pf_inventario" parent="prefectura_base.menu_prefectura_root"/>
+
+
+        <menuitem name="Información General" id="pf_inventario_info_general" parent="pf_inventario"/>
+        <menuitem name="Resumen de inventario" id="pf_inventario_resumen_inventario" action="stock.stock_picking_type_action" parent="pf_inventario_info_general"/>
+
+
+        <menuitem name="Traslados" id="pf_inventario_traslados" parent="pf_inventario"/>
+        <menuitem id="pf_inventario_traslado_recibido" name="Recibidos" parent="pf_inventario_traslados" action="stock.action_picking_tree_incoming" sequence="20" groups="stock.group_stock_manager,stock.group_stock_user"/>
+        <menuitem id="pf_inventario_traslado_entregas" name="Entregas" parent="pf_inventario_traslados" action="stock.action_picking_tree_outgoing" sequence="21" groups="stock.group_stock_manager,stock.group_stock_user"/>
+        <menuitem id="pf_inventario_traslado_internos" name="Internos" parent="pf_inventario_traslados" action="stock.action_picking_tree_internal" sequence="22" groups="stock.group_stock_multi_locations"/>
+
+
+        <menuitem name="Productos" id="pf_inventario_productos" parent="pf_inventario"/>
+        <menuitem id="pf_inventario_productos_producto" name="Producto" action="stock.product_template_action_product" parent="pf_inventario_productos" sequence="1"/>
+
+        <menuitem name="Reportes" id="pf_inventario_reportes" parent="pf_inventario"/>
+        <menuitem id="pf_inventario_reportes_existencia" name="Existencia" action="stock.action_product_stock_view" parent="pf_inventario_reportes" sequence="1"/>
+        <menuitem id="pf_inventario_reportes_ubicaciones" name="Ubicaciones" parent="pf_inventario_reportes" sequence="150" action="stock.action_view_quants" groups="stock.group_stock_multi_locations,stock.group_tracking_owner,base.group_no_one"/>
+        <menuitem name="Historial de Movimientos" action="stock.stock_move_line_action" id="pf_inventario_reportes_historial_movimiento" parent="pf_inventario_reportes" sequence="200"/>
+
+        <menuitem name="Gestión del almacen" id="pf_inventario_gestion_almacen" parent="pf_inventario" groups="stock.group_stock_manager"/>
+
+        <menuitem name="Catálogo" id="pf_inventario_catalogo" parent="pf_inventario" groups="stock.group_stock_manager"/>
+
+        <menuitem id="pf_inventario_catalogo_categoria_producto" name="Categorías de productos" action="product.product_category_action_form" parent="pf_inventario_catalogo" sequence="1"/>
+
+
+
+
     </data>
 </odoo>

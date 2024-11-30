@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
+
 
 
 class RecetaLinea(models.Model):
@@ -15,12 +17,23 @@ class RecetaLinea(models.Model):
     @api.depends('producto_id', 'cantidad')
     def _compute_en_inventario(self):
         for linea in self:
-            linea.en_inventario = linea.producto_id.qty_available >= linea.cantidad
-
-    @api.onchange('producto_id', 'cantidad')
-    def _onchange_producto_cantidad(self):
-        if self.producto_id and self.cantidad:
-            self.en_inventario = self.producto_id.qty_available >= self.cantidad
+            if not linea.producto_id or not linea.cantidad:
+                linea.en_inventario = False
+                continue                
+            usuario = self.env.user
+            if not usuario.programa_id:
+                linea.en_inventario = False
+                continue                
+            # Buscar ubicaciones del programa
+            ubicaciones = self.env['stock.location'].search([('programa_id', '=', usuario.programa_id.id)])  
+            # raise UserError(ubicaciones)       
+            if not ubicaciones:
+                linea.en_inventario = False
+                continue                
+            # Obtener la cantidad total disponible en todas las ubicaciones del programa
+            cantidad_disponible = sum(self.env['stock.quant'].search([
+                    ('product_id', '=', linea.producto_id.id), ('location_id', 'in', ubicaciones.ids), ('quantity', '>', 0)]).mapped('quantity'))            
+            linea.en_inventario = cantidad_disponible >= linea.cantidad
 
     @api.depends('consulta_id')
     def _compute_domain_producto_id(self):

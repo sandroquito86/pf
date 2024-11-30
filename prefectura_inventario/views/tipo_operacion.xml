@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View Inheritance -->
+    <record id="pf_view_picking_type_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.type.form.inherit</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_form"/>
+        <field name="arch" type="xml">
+            <form position="attributes">
+                <attribute name="create">0</attribute>
+                <attribute name="edit">0</attribute>
+                <attribute name="delete">0</attribute>
+            </form>
+            <xpath expr="//sheet" position="replace">
+                <sheet>
+                    <div class="oe_button_box" name="button_box"/>
+                    <widget name="web_ribbon" title="Archivado" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="ej. Recepción de Productos"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="active" invisible="1"/>
+                            <field name="programa_id" options="{'no_create': True}" readonly="1"/>
+                            <field name="code"/>
+                            <field name="sequence_code"/>
+                            <field name="sequence_id"/>
+                            <field name="company_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="warehouse_id"/>
+                            <field name="default_location_src_id" domain="[('usage', '!=', 'view')]"/>
+                            <field name="default_location_dest_id" domain="[('usage', '!=', 'view')]"/>
+                            <field name="show_reserved" groups="base.group_no_one"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Operaciones por Defecto" name="operation_settings">
+                            <group>
+                                <group string="Reserva">
+                                    <field name="reservation_method" widget="radio"/>
+                                    <field name="reservation_days_before" invisible="reservation_method != 'by_date'"/>
+                                    <field name="reservation_days_before_priority" invisible="reservation_method != 'by_date'"/>
+                                </group>
+                                <group string="Validación">
+                                    <field name="auto_show_reception_report"/>
+                                    <field name="auto_print_delivery_slip"/>
+                                    <field name="print_label"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Tree View Inheritance -->
+    <record id="pf_view_picking_type_tree_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.type.tree.inherit</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_tree"/>
+        <field name="arch" type="xml">
+            <tree position="attributes">
+                <attribute name="create">0</attribute>
+                <attribute name="edit">0</attribute>
+                <attribute name="delete">0</attribute>
+            </tree>
+            <tree position="replace">
+                <tree>
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="programa_id"/>
+                    <field name="code"/>
+                    <field name="warehouse_id"/>
+                    <field name="active" invisible="1"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </tree>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View Inheritance -->
+    <record id="pf_view_picking_type_search_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.type.search.inherit</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_pickingtype_filter"/>
+        <field name="arch" type="xml">
+            <search position="replace">
+                <search>
+                    <field name="name"/>
+                    <field name="programa_id"/>
+                    <field name="warehouse_id"/>
+                    <field name="code"/>
+                    <separator/>
+                    <filter string="Entradas" name="in" domain="[('code', '=', 'incoming')]"/>
+                    <filter string="Salidas" name="out" domain="[('code', '=', 'outgoing')]"/>
+                    <filter string="Internos" name="internal" domain="[('code', '=', 'internal')]"/>
+                    <filter string="Archivados" name="inactive" domain="[('active', '=', False)]"/>
+                    <group expand="0" string="Agrupar Por">
+                        <filter string="Programa" name="programa" context="{'group_by': 'programa_id'}"/>
+                        <filter string="Almacén" name="warehouse" context="{'group_by': 'warehouse_id'}"/>
+                        <filter string="Tipo de Operación" name="code" context="{'group_by': 'code'}"/>
+                    </group>
+                </search>
+            </search>
+        </field>
+    </record>
+
+    <!-- Modificar la acción existente -->
+    <record id="stock.action_picking_type_list" model="ir.actions.act_window">
+        <field name="context">{'filtrar_programa_tipo_operacion': True}</field>
+    </record>
+
+    <menuitem name="Tipos de Operaciones" action="stock.action_picking_type_list" id="pf_inventario_gestion_almacen_tipo_operacion" parent="pf_inventario_gestion_almacen" sequence="3"/>
+
+</odoo>

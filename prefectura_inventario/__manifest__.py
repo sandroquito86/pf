@@ -18,13 +18,16 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','product','stock','prefectura_base','manzana_de_cuidados'],
+    'depends': ['base','product','stock','prefectura_base'],
 
     # always loaded
     'data': [
         # 'data/stock_grupos.xml',      
-        # 'security/ir.model.access.csv', 
-        # 'views/stock_menu_view.xml',
+        'security/ir.model.access.csv', 
+        'views/stock_menu_view.xml',
+        'views/almacen.xml',
+        'views/ubicacion.xml',
+        'views/tipo_operacion.xml',
         # #DATA         
         # 'data/pf_inventario_catalogo_data.xml',   
 
@@ -33,13 +36,11 @@ Long description of module's purpose
         # 'views/conf_gestion_almacen/stock_almacen_view.xml',
         # 'views/conf_gestion_almacen/stock_ubicaciones_view.xml',
         # 'views/conf_gestion_almacen/stock_tipo_operacion_view.xml',
-        # #REPORTE
-        # 'views/reporte/stock_reporte_programa_view.xml',
-
+      
         # # 'views/inventario/pf_inventario_catalogo_views.xml',  
         # # 'views/inventario/pf_inventario_items_views.xml',
 
-        # 'views/stock/stock_product_view.xml', 
+        #'views/stock/stock_product_view.xml', 
         # # # WIZARD 
         # # 'wizard/product_reabastecer_view.xml',   
     ],
