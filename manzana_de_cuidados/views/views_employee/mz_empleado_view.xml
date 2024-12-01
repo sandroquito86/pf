@@ -185,7 +185,7 @@
                     <field name="last_activity" invisible="1"/>
                     <field name="work_contact_id" invisible="1"/>
                     <header>
-                        <button name="action_inactivar_empleado" type="object" string="Inactivar Empleado" class="btn-danger" invisible="not active"/>
+                        <button name="action_inactivar_empleado" type="object" string="Inactivar Empleado" class="btn-danger" invisible="not active" groups="manzana_de_cuidados.group_beneficiario_manager,manzana_de_cuidados.group_mz_registro_informacion"/>
                     </header>
                     <sheet>
                         <div name="button_box" class="oe_button_box">
@@ -249,7 +249,7 @@
                                 <field name="work_email" widget="email" required="1"/>
                                 <field name="company_id" invisible="1"/>
                                 <field name="modulo_id" invisible="1"/>
-                                <field name="sucursal_id" readonly="1" force_save="1" options="{'no_edit': True, 'no_create': True, 'no_open': True}"/>
+                                <field name="sucursal_id" readonly="1" groups="manzana_de_cuidados.group_beneficiario_manager,manzana_de_cuidados.group_mz_registro_informacion" force_save="1" options="{'no_edit': True, 'no_create': True, 'no_open': True}"/>
                                 <field name="programa_id" options="{'no_edit': True, 'no_create': True, 'no_open': True}"/>
                                 <field name="servicios_ids" readonly="1" options="{'no_edit': True, 'no_create': True, 'no_open': True}" widget="many2many_tags"/>
                                 <field name="company_country_id" invisible="1"/>
@@ -348,7 +348,6 @@
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" groups="base.group_user" options="{'post_refresh': 'recipients'}"/>
-                        <field name="activity_ids"/>
                         <field name="message_ids"/>
                     </div>
                 </form>
@@ -553,6 +552,26 @@
                 </tree>
             </field>
         </record>
+
+    <record id="action_mz_hr_employee_dinamic" model="ir.actions.act_window">
+        <field name="name">Empleados</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'kanban', 'view_id': ref('mz_hr_employee_kanban_view')}), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz_hr_employee_tree')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz_hr_employee_form')})]"/>
+        <field name="context">{'filtrar_programa': True, 'default_modulo_id': 2, 'default_tipo_personal': 'interno'}</field>
+        <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Registrar nuevo Empleado
+                </p>
+                <p>
+                    Registre los datos del Empleado para Manzana de Cuidados.
+                </p>
+            </field>
+        <field name="domain">[('programa_id.modulo_id', '=', 2),('tipo_personal', '=', 'interno')]</field>
+    </record>
+
+    <menuitem id="menu_mz_hr_employee" name="Empleados" 
+        parent="menu_employee" action="action_mz_hr_employee_dinamic" sequence="10"/>
 
         <!-- Actualización de la acción -->
         <!-- <record id="action_mz_hr_employee_new" model="ir.actions.act_window">

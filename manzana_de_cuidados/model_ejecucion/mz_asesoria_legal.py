@@ -184,6 +184,38 @@ class MzAsesoriaLegal(models.Model):
             raise UserError('No se ha generado el código de asistencia.')
         return asesoria
     
+
+    
+
+    @api.model
+    def get_view(self, view_id=None, view_type='form', context=None, toolbar=False, submenu=False, **kwargs):
+        context = context or {}
+        user = self.env.user
+        if user.has_group('manzana_de_cuidados.group_mz_prestador_servicio') or \
+            user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
+            # Vistas completas para usuarios con permisos
+            if view_type == 'tree':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_asesoria_legal_tree').id
+            elif view_type == 'form':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_asesoria_legal_form').id
+        else:
+            # Vistas limitadas para usuarios sin permisos
+            if view_type == 'tree':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_asesoria_legal_tree').id
+            elif view_type == 'form':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_asesoria_legal_form_limit').id
+
+
+        return super().get_view(
+            view_id=view_id, 
+            view_type=view_type, 
+            context=context, 
+            toolbar=toolbar, 
+            submenu=submenu,
+            **kwargs
+        )
+    
+
     def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
         """
         Método _search personalizado para filtrar turnos cuando viene el contexto
@@ -219,8 +251,13 @@ class MzAsesoriaLegal(models.Model):
                             if_asesoria = True
                             break
                     if if_asesoria:
+                        employee_id = self.env['hr.employee'].search([('user_id', '=', user.id)], limit=1)
                         programa_ids = self.with_context(disable_custom_search=True).search([
-                                        ('programa_id', '=', user.programa_id.id)
+                                    '|',
+                                        '&',
+                                            ('programa_id', '=', user.programa_id.id),
+                                            ('state', '=', 'finalizado'),
+                                        ('personal_id', '=', employee_id.id)
                                     ]).ids
                         base_args = [('id', 'in', programa_ids)]
                     else:
@@ -232,38 +269,3 @@ class MzAsesoriaLegal(models.Model):
                 args = base_args + args
 
         return super(MzAsesoriaLegal, self)._search(args, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
-    
-
-    def get_appropriate_view(self):
-        # Obtener el usuario actual
-        user = self.env.user
-        
-        # Definir vistas por defecto (limitadas)
-        tree_view = self.env.ref('manzana_de_cuidados.view_mz_asesoria_legal_tree').id
-        form_view = self.env.ref('manzana_de_cuidados.view_mz_asesoria_legal_form_limit').id
-        
-        # Verificar si el usuario tiene permisos específicos
-        if (user.has_group('manzana_de_cuidados.group_mz_prestador_servicio') or \
-            user.has_group('manzana_de_cuidados.group_beneficiario_manager')):
-            # Vistas completas para usuarios con permisos
-            tree_view = self.env.ref('manzana_de_cuidados.view_mz_asesoria_legal_tree').id
-            form_view = self.env.ref('manzana_de_cuidados.view_mz_asesoria_legal_form_read').id
-        
-        # Preparar la acción de ventana
-        action = {
-            'name': 'Asesorías Legales',
-            'type': 'ir.actions.act_window',
-            'res_model': 'mz.asesoria.legal',
-            'view_mode': 'tree,form',
-            'views': [
-                (tree_view, 'tree'),
-                (form_view, 'form')
-            ],
-            'context': {
-                'default_modulo_id': 2,
-                'filtrar_programa': True
-            },
-            'target': 'current'
-        }
-        
-        return action

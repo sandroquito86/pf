@@ -450,12 +450,13 @@ class ConsultaPsicologica(models.Model):
                             if_medico = True
                             break
                     if if_medico:
+                        employee_id = self.env['hr.employee'].search([('user_id', '=', user.id)], limit=1)
                         programa_ids = self.with_context(disable_custom_search=True).search([
                                     '|',
                                         '&',
                                             ('programa_id', '=', user.programa_id.id),
                                             ('state', '=', 'final'),
-                                        ('personal_id', '=', user.employee_id.id)
+                                        ('personal_id', '=', employee_id.id)
                                     ]).ids
                         base_args = [('id', 'in', programa_ids)]
                     else:

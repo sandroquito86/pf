@@ -9,6 +9,54 @@ class PfEmployee(models.Model):
 
     servicios_ids = fields.Many2many('mz.asignacion.servicio', string="Servicios Asignados")
 
+    def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
+        """
+        Método _search personalizado para filtrar Empleados cuando viene el contexto
+        """
+        args = args or []
+        user = self.env.user
+        
+        # Evitar recursión usando un contexto especial
+        if not self._context.get('disable_custom_search'):
+            valor = ''
+            if self._context.get('filtrar_programa_v_2'):
+                valor = 'externo'
+            else:
+                valor = 'interno'
+            if self._context.get('filtrar_programa') or self._context.get('filtrar_programa_v_2'):                   
+                # Verificar grupos
+                if user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
+                    # Para coordinador: ver solo programas de módulo 2
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                        ('programa_id.modulo_id', '=', 2),('tipo_personal', '=', valor)
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+                
+                elif user.has_group('manzana_de_cuidados.group_mz_registro_informacion') or \
+                    user.has_group('manzana_de_cuidados.group_coordinador_manzana') or \
+                    user.has_group('manzana_de_cuidados.group_manzana_lider_estrategia'):
+                    # Para admin/asistente: ver servicios propios o creados por ellos
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                        ('programa_id', '=', user.programa_id.id),
+                        ('tipo_personal', '=', valor)
+                    ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+                else:
+                    employee_id = self.with_context(disable_custom_search=True).search([
+                        ('user_id', '=', user.id)
+                    ])
+                    programa_ids = self.with_context(disable_custom_search=True).search([
+                                    ('id', '=', employee_id.id),('tipo_personal', '=', valor)
+                                ]).ids
+                    base_args = [('id', 'in', programa_ids)]
+            else:
+                # Para usuarios sin rol especial: ver solo sus propios programas
+                base_args = [('id', 'in', [])]
+
+            args = base_args + args
+
+        return super(PfEmployee, self)._search(args, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
+
     # def get_appropriate_view(self):
     #     # Obtener el usuario actual
     #     user = self.env.user

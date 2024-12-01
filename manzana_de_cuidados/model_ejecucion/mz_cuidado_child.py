@@ -193,7 +193,35 @@ class MzCuidadoChild(models.Model):
             raise UserError('No se ha generado el código de asistencia.')
         return cuidado_child
     
+    @api.model
+    def get_view(self, view_id=None, view_type='form', context=None, toolbar=False, submenu=False, **kwargs):
+        context = context or {}
+        user = self.env.user
+        if user.has_group('manzana_de_cuidados.group_mz_prestador_servicio') or \
+            user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
+            # Vistas completas para usuarios con permisos
+            if view_type == 'tree':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_cuidado_child_tree').id
+            elif view_type == 'form':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_cuidado_child_form').id
+        else:
+            # Vistas limitadas para usuarios sin permisos
+            if view_type == 'tree':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_cuidado_child_tree').id
+            elif view_type == 'form':
+                view_id = self.env.ref('manzana_de_cuidados.view_mz_cuidado_child_form_limit').id
 
+
+        return super().get_view(
+            view_id=view_id, 
+            view_type=view_type, 
+            context=context, 
+            toolbar=toolbar, 
+            submenu=submenu,
+            **kwargs
+        )
+    
+    
     def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
         """
         Método _search personalizado para filtrar turnos cuando viene el contexto
@@ -203,8 +231,9 @@ class MzCuidadoChild(models.Model):
         
         # Evitar recursión usando un contexto especial
         if not self._context.get('disable_custom_search'):
-            if self._context.get('filtrar_programa'):                   
+            if self._context.get('filtrar_cuidado'):                 
                 # Verificar grupos
+                employee_id = self.env['hr.employee'].search([('user_id', '=', user.id)], limit=1)
                 if user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
                     # Para coordinador: ver solo programas de módulo 2
                     programa_ids = self.with_context(disable_custom_search=True).search([
@@ -217,19 +246,24 @@ class MzCuidadoChild(models.Model):
                     user.has_group('manzana_de_cuidados.group_manzana_lider_estrategia'):
                     # Para admin/asistente: ver servicios propios o creados por ellos
                     programa_ids = self.with_context(disable_custom_search=True).search([
-                        ('programa_id', '=', user.programa_id.id)
+                        ('programa_id', '=', user.programa_id.id),
+                        ('state', '=', 'finalizado')
                     ]).ids
                     base_args = [('id', 'in', programa_ids)]
                 elif user.has_group('manzana_de_cuidados.group_mz_prestador_servicio'):
                     # Para admin/asistente: ver servicios propios o creados por ellos
                     if_cuidado_child = False
-                    for servicio in user.employee_id.servicios_ids:
+                    for servicio in employee_id.servicios_ids:
                         if servicio.servicio_id.tipo_servicio == 'cuidado_infantil':
                             if_cuidado_child = True
                             break
                     if if_cuidado_child:
                         programa_ids = self.with_context(disable_custom_search=True).search([
-                                        ('programa_id', '=', user.programa_id.id)
+                                    '|',
+                                        '&',
+                                            ('programa_id', '=', user.programa_id.id),
+                                            ('state', '=', 'finalizado'),
+                                        ('personal_id', '=', employee_id.id)
                                     ]).ids
                         base_args = [('id', 'in', programa_ids)]
                     else:
@@ -242,40 +276,5 @@ class MzCuidadoChild(models.Model):
 
         return super(MzCuidadoChild, self)._search(args, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
     
-
-    def get_appropriate_view(self):
-        # Obtener el usuario actual
-        user = self.env.user
-        
-        # Definir vistas por defecto (limitadas)
-        tree_view = self.env.ref('manzana_de_cuidados.view_mz_cuidado_child_tree').id
-        form_view = self.env.ref('manzana_de_cuidados.view_mz_cuidado_child_form_limit').id
-        
-        # Verificar si el usuario tiene permisos específicos
-        if (user.has_group('manzana_de_cuidados.group_mz_prestador_servicio') or \
-            user.has_group('manzana_de_cuidados.group_beneficiario_manager')):
-            # Vistas completas para usuarios con permisos
-            tree_view = self.env.ref('manzana_de_cuidados.view_mz_cuidado_child_tree').id
-            form_view = self.env.ref('manzana_de_cuidados.view_mz_cuidado_child_form_read').id
-        
-        # Preparar la acción de ventana
-        action = {
-            'name': 'Servicios de Cuidado Infantil',
-            'type': 'ir.actions.act_window',
-            'res_model': 'mz.cuidado.child',
-            'view_mode': 'tree,form',
-            'views': [
-                (tree_view, 'tree'),
-                (form_view, 'form')
-            ],
-            'context': {
-                'default_modulo_id': 2,
-                'filtrar_programa': True
-            },
-            'target': 'current'
-        }
-        
-        return action
-
 
 
