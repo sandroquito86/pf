@@ -26,6 +26,8 @@ class Beneficiarios(models.Model):
     ciudad_id = fields.Many2one('res.country.ciudad', string='Ciudad' , ondelete='restrict', 
                                    domain="[('state_id', '=?', provincia_id)]")
     user_id = fields.Many2one('res.users', string="Usuario", help="Usuario asociado para acceder al sistema")
+
+    partner_id = fields.Many2one('res.partner', string='Contacto', ondelete='restrict')
     
     programa_ids = fields.Many2many('pf.programas', string='Programas',)
     tipo_documento = fields.Selection([

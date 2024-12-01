@@ -552,11 +552,14 @@ class WizardReplanificarTurnos(models.TransientModel):
         })
         self.planificacion_id = nueva_planificacion.id
 
+        
         # Inactivar los turnos de la planificación original
+        # confirmado, replanificado, cancelado 
         turnos_a_inactivar = self.env['mz.planificacion.servicio'].search([
             ('generar_horario_id', '=', self.planificacion_original_id.id),
             ('fecha', '>=', self.fecha_inicio),
-            ('fecha', '<=', self.fecha_fin)
+            ('fecha', '<=', self.fecha_fin),
+            ('estado', 'in', ['activo', 'asignado'])
         ])
         if turnos_a_inactivar:
             turnos_a_inactivar.write({'estado': 'inactivo'})

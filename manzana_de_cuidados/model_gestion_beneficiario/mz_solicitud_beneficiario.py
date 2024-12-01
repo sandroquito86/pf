@@ -97,7 +97,7 @@ class MzSolicitudBeneficiario(models.Model):
                 'provincia_id': record.provincia_id.id,
                 'ciudad_id': record.ciudad_id.id
             })
-            beneficiario.crear_user()
+            beneficiario.crear_contacto()
             record.state = 'approved'
 
 

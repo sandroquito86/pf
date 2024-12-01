@@ -170,18 +170,28 @@ class Beneficiario(models.Model):
                 raise UserError("Ya existe un beneficiario con este número y tipo de documento.")
     
 
-    def crear_user(self):
-        user_vals = {
+    # def crear_user(self):
+    #     user_vals = {
+    #         'name': self.name,
+    #         'login': self.email,
+    #         'email': self.email,
+    #         'company_id': self.company_id.id,
+    #         'company_ids': [(4, self.company_id.id)],
+    #         'password': self.numero_documento,
+    #         # 'groups_id': [(6, 0, [self.env.ref('prefectura_base.group_portal').id])]
+    #     }
+    #     user = self.env['res.users'].create(user_vals)
+    #     self.user_id = user.id
+
+    def crear_contacto(self):
+        partner_vals = {
             'name': self.name,
-            'login': self.email,
             'email': self.email,
             'company_id': self.company_id.id,
-            'company_ids': [(4, self.company_id.id)],
-            'password': self.numero_documento,
-            # 'groups_id': [(6, 0, [self.env.ref('prefectura_base.group_portal').id])]
+            'phone': self.telefono,
         }
-        user = self.env['res.users'].create(user_vals)
-        self.user_id = user.id
+        partner = self.env['res.partner'].create(partner_vals)
+        self.partner_id = partner.id
 
     def action_view_historia_clinica(self):
         self.ensure_one()
