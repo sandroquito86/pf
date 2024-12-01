@@ -288,7 +288,6 @@
                     <field name="tipo_servicio" string="Tipo de Servicio" icon="fa-cogs"/>
                     <field name="state" string="Estado" icon="fa-cogs"/>
                     <field name="programa_id" string="Programa" icon="fa-building"/>
-                    <field name="servicio_id" string="Servicio" icon="fa-cogs"/>
                     <field name="personal_id" string="Personal" icon="fa-user-md"/>
                     <field name="beneficiario_id" string="Beneficiario" icon="fa-user"/>
                 </searchpanel>
@@ -297,7 +296,7 @@
     </record>
 
     <record id="action_mz_cuidado_child_dinamic" model="ir.actions.act_window">
-        <field name="name">Servicios de Cuidado Infantil</field>
+        <field name="name">Cuidado Infantil</field>
         <field name="res_model">mz.cuidado.child</field>
         <field name="view_mode">tree,form</field>
         <field name="context">{'filtrar_cuidado': True, 'default_modulo_id': 2}</field>

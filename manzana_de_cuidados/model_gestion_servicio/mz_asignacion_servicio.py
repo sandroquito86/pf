@@ -35,7 +35,7 @@ class AsignarServicio(models.Model):
     responsables_text = fields.Char(string='Responsables Texto', compute='_compute_responsables_text')
 
     if_publicado = fields.Boolean(string='Publicado', default=False)
-    if_admin = fields.Boolean(string='Es administrador', compute='_compute_if_administrador', default=False)
+    if_admin = fields.Boolean(string='Es administrador', default=False)
     get_sub_servicio= fields.Boolean(string='Tiene Subservicios', compute='_compute_get_sub_servicio', default=False)
 
     mostrar_boton_publicar = fields.Boolean(string='Mostrar Botón Publicar', compute='_compute_mostrar_boton_publicar')
@@ -120,10 +120,15 @@ class AsignarServicio(models.Model):
             record.sub_servicio_ids = False
             record.personal_ids = False
 
-    @api.depends('servicio_id')
-    def _compute_if_administrador(self):
+    @api.onchange('programa_id')
+    def _onchange_if_administrador(self):
         for record in self:
-            record.if_admin = bool(self.env.ref('manzana_de_cuidados.group_beneficiario_manager') in self.env.user.groups_id)
+            groups = self.env.user.groups_id
+            if self.env.ref('manzana_de_cuidados.group_beneficiario_manager') in groups or \
+                self.env.ref('manzana_de_cuidados.group_manzana_lider_estrategia') in groups:
+                record.if_admin = True
+            else:
+                record.if_admin = False
 
 
     @api.depends('active', 'if_publicado')
@@ -166,14 +171,20 @@ class AsignarServicio(models.Model):
             else:
                 record.count_responsables = 0
 
-    @api.depends('servicio_id')
+    @api.depends('name')
     def _compute_domain_programas(self):
         for record in self:
-            programas = self.env['pf.programas'].search([('modulo_id', '=', self.env.ref('prefectura_base.modulo_2').id)])
-            if programas:
-                record.domain_programa_id = [('id', 'in', programas.ids)]
+            groups = self.env.user.groups_id
+            employee_id = self.env['hr.employee'].search([('user_id', '=', self.env.uid)])
+            if self.env.ref('manzana_de_cuidados.group_manzana_lider_estrategia') in groups:
+                record.domain_programa_id = ['|',('id', '=', employee_id.programa_id.id),('create_uid', '=', employee_id.user_id.id)]
             else:
-                record.domain_programa_id = [('id', 'in', [])]
+                programas = self.env['pf.programas'].search([('modulo_id', '=', self.env.ref('prefectura_base.modulo_2').id)])
+                if programas:
+                    record.domain_programa_id = [('id', 'in', programas.ids)]
+                else:
+                    record.domain_programa_id = [('id', 'in', [])]
+
     
     def action_publish(self):
         for record in self:
@@ -274,7 +285,7 @@ class AsignarServicio(models.Model):
                 empleado = Employee.browse(comando[1])
                 if empleado:
                     # Agregar el servicio al campo many2many
-                    empleado.write({
+                    empleado.sudo().write({
                         'servicios_ids': [(4, servicio_id)]
                     })
 
@@ -335,7 +346,7 @@ class AsignarServicio(models.Model):
         
         # Evitar recursión usando un contexto especial
         if not self._context.get('disable_custom_search'):
-            if self._context.get('filtrar_programa'):                   
+            if self._context.get('filtrar_servicio'):                   
                 # Verificar grupos
                 if user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
                     # Para coordinador: ver solo programas de módulo 2
@@ -384,6 +395,24 @@ class Pf_programas(models.Model):
     mostrar_boton_publicar = fields.Boolean(string='Mostrar Botón Publicar', compute='_compute_mostrar_boton_publicar')
     mostrar_bot_retirar_public = fields.Boolean(string='Mostrar Botón Retirar Publicar', compute='_compute_mostrar_bot_retirar_public')
     servicios_text = fields.Char(string='Servicios Texto', compute='_compute_servicio_text')
+
+    attachment_ids = fields.One2many('ir.attachment', 'res_id', string="Attachments")
+    # To display in form view
+    supported_attachment_ids = fields.Many2many(
+        'ir.attachment', string="Subir Archivos", compute='_compute_supported_attachment_ids',
+        inverse='_inverse_supported_attachment_ids')
+    supported_attachment_ids_count = fields.Integer(compute='_compute_supported_attachment_ids')
+
+    @api.depends('attachment_ids')
+    def _compute_supported_attachment_ids(self):
+        for holiday in self:
+            holiday.supported_attachment_ids = holiday.attachment_ids
+            holiday.supported_attachment_ids_count = len(holiday.attachment_ids.ids)
+
+
+    def _inverse_supported_attachment_ids(self):
+        for programa in self:
+            programa.attachment_ids = programa.supported_attachment_ids
 
     @api.depends('model_count_mz')
     def _compute_servicio_text(self):

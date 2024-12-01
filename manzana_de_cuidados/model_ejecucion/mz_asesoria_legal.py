@@ -145,6 +145,14 @@ class MzAsesoriaLegal(models.Model):
             if (record.hora_inicio < 0 or record.hora_inicio >= 24) or \
                (record.hora_fin and (record.hora_fin < 0 or record.hora_fin >= 24)):
                 raise UserError('Las horas deben estar entre 00:00 y 23:59.')
+            
+    @api.depends('fecha')
+    def _compute_hora_inicio(self):
+        for record in self:
+            user_tz = self.env.user.tz or 'UTC'  # Obtiene la zona horaria del usuario o usa 'UTC' por defecto
+            local_tz = pytz.timezone(user_tz)
+            ahora = datetime.now(pytz.utc).astimezone(local_tz)  # Convierte la hora actual a la zona horaria del usuario
+            record.hora_inicio = ahora.hour + ahora.minute / 60.0
 
     def action_iniciar(self):
         for record in self:
@@ -222,10 +230,11 @@ class MzAsesoriaLegal(models.Model):
         """
         args = args or []
         user = self.env.user
+        base_args = [('id', 'in', [])]
         
         # Evitar recursión usando un contexto especial
         if not self._context.get('disable_custom_search'):
-            if self._context.get('filtrar_programa'):                   
+            if self._context.get('filtrar_asesoria'):                   
                 # Verificar grupos
                 if user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
                     # Para coordinador: ver solo programas de módulo 2
@@ -257,14 +266,9 @@ class MzAsesoriaLegal(models.Model):
                                         '&',
                                             ('programa_id', '=', user.programa_id.id),
                                             ('state', '=', 'finalizado'),
-                                        ('personal_id', '=', employee_id.id)
+                                        ('asesor_id', '=', employee_id.id)
                                     ]).ids
                         base_args = [('id', 'in', programa_ids)]
-                    else:
-                        base_args = [('id', 'in', [])]
-                else :
-                    # Para usuarios sin rol especial: ver solo sus propios programas
-                    base_args = [('id', 'in', [])]
 
                 args = base_args + args
 

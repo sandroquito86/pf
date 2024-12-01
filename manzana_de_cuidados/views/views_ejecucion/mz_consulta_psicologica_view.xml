@@ -42,6 +42,7 @@
                                 <field name="personal_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
                             </group>
                             <group>
+                                <field name="genero_id" readonly="1" force_save="1"/>
                                 <field name="fecha" required="1" readonly="1" force_save="1"/>
                                 <field name="hora" widget="float_time" readonly="1" force_save="1"/>
                             </group>
@@ -309,7 +310,6 @@
                     </group>
                     <searchpanel>
                         <field name="programa_id" string="Programa" icon="fa-building"/>
-                        <field name="servicio_id" string="Servicio" icon="fa-cogs"/>
                         <field name="personal_id" string="Personal" icon="fa-user-md"/>
                         <field name="beneficiario_id" string="Beneficiario" icon="fa-user"/>
                     </searchpanel>
@@ -329,7 +329,7 @@
         <field name="name">Consultas Psicológicas</field>
         <field name="res_model">mz.consulta.psicologica</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{'filtrar_programa': True, 'default_modulo_id': 2}</field>
+        <field name="context">{'filtrar_consulta_psic': True, 'default_modulo_id': 2}</field>
         <field name="domain">[('programa_id.modulo_id', '=', 2)]</field>
     </record>
 

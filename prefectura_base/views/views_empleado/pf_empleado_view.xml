@@ -100,9 +100,6 @@
                     <field name="last_activity_time" invisible="1"/>
                     <field name="last_activity" invisible="1"/>
                     <field name="work_contact_id" invisible="1"/>
-                    <header>
-                        <button name="action_inactivar_empleado" type="object" string="Inactivar Empleado" class="btn-danger" invisible="not active"/>
-                    </header>
                     <sheet>
                         <div name="button_box" class="oe_button_box">
                         </div>

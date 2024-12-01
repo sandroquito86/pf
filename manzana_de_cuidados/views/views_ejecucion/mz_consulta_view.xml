@@ -432,7 +432,6 @@
                     </group>
                     <searchpanel>
                         <field name="programa_id" string="Programa" icon="fa-building"/>
-                        <field name="servicio_id" string="Servicio" icon="fa-cogs"/>
                         <field name="personal_id" string="Personal" icon="fa-user-md"/>
                         <field name="beneficiario_id" string="Beneficiario" icon="fa-user"/>
                     </searchpanel>

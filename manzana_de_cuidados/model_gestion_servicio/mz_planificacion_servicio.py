@@ -55,7 +55,7 @@ class GenerarHorarios(models.Model):
 
     if_admin = fields.Boolean(string='Es administrador', compute='_compute_if_administrador', default=False)
 
-    @api.depends('servicio_id')
+    @api.depends('name','maximo_beneficiarios')
     def _compute_if_administrador(self):
         for record in self:
             # Captura los permisos del que esta logeado y valida si tiene el permiso de sistemas

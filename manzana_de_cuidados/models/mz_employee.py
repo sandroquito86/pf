@@ -19,11 +19,11 @@ class PfEmployee(models.Model):
         # Evitar recursión usando un contexto especial
         if not self._context.get('disable_custom_search'):
             valor = ''
-            if self._context.get('filtrar_programa_v_2'):
+            if self._context.get('filtrar_colaborador'):
                 valor = 'externo'
             else:
                 valor = 'interno'
-            if self._context.get('filtrar_programa') or self._context.get('filtrar_programa_v_2'):                   
+            if self._context.get('filtrar_employee') or self._context.get('filtrar_colaborador'):                   
                 # Verificar grupos
                 if user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
                     # Para coordinador: ver solo programas de módulo 2
@@ -49,11 +49,8 @@ class PfEmployee(models.Model):
                                     ('id', '=', employee_id.id),('tipo_personal', '=', valor)
                                 ]).ids
                     base_args = [('id', 'in', programa_ids)]
-            else:
-                # Para usuarios sin rol especial: ver solo sus propios programas
-                base_args = [('id', 'in', [])]
 
-            args = base_args + args
+                args = base_args + args
 
         return super(PfEmployee, self)._search(args, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
 

@@ -167,7 +167,7 @@
                 </group>
                 <searchpanel>
                     <field name="programa_id" icon="fa-building" string="Programa"/>
-                    <field name="servicio_id" icon="fa-cogs" string="Servicio"/>
+                    <field name="servicio_base_id" icon="fa-cogs" string="Servicio"/>
                     <field name="personal_id" icon="fa-user-md" string="Empleado" select="multi" hierarchize="false"/>
                     <field name="beneficiario_id" icon="fa-user" string="Beneficiario" select="multi" hierarchize="false"/>
                 </searchpanel> 
@@ -181,7 +181,7 @@
         <field name="name">Asistencia</field>
         <field name="res_model">mz.asistencia_servicio</field>
         <field name="view_mode">tree</field>
-        <field name="context">{'filtrar_programa': True, 'default_modulo_id': 2}</field>
+        <field name="context">{'filtrar_asistencia': True, 'default_modulo_id': 2}</field>
         <field name="domain">[('programa_id.modulo_id', '=', 2)]</field>
     </record>
 

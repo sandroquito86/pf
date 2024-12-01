@@ -3,6 +3,8 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from datetime import datetime, timedelta
+import pytz
+from babel.dates import format_date
 
 class MzCuidadoChild(models.Model):
     _name = 'mz.cuidado.child'
@@ -142,6 +144,14 @@ class MzCuidadoChild(models.Model):
         for record in self:
             if (record.hora_entrada < 0 or record.hora_entrada >= 24) or (record.hora_salida and (record.hora_salida < 0 or record.hora_salida >= 24)):
                 raise UserError("La hora de entrada y la de salida debe estar entre 00:00 y 23:59.")
+            
+    @api.onchange('fecha')
+    def _onchange_hora_entrada(self):
+        for record in self:
+            user_tz = self.env.user.tz or 'UTC'  # Obtiene la zona horaria del usuario o usa 'UTC' por defecto
+            local_tz = pytz.timezone(user_tz)
+            ahora = datetime.now(pytz.utc).astimezone(local_tz)  # Convierte la hora actual a la zona horaria del usuario
+            record.hora_entrada = ahora.hour + ahora.minute / 60.0
 
     def action_iniciar(self):
         for record in self:
@@ -228,6 +238,7 @@ class MzCuidadoChild(models.Model):
         """
         args = args or []
         user = self.env.user
+        base_args = [('id', 'in', [])]
         
         # Evitar recursión usando un contexto especial
         if not self._context.get('disable_custom_search'):
@@ -266,11 +277,6 @@ class MzCuidadoChild(models.Model):
                                         ('personal_id', '=', employee_id.id)
                                     ]).ids
                         base_args = [('id', 'in', programa_ids)]
-                    else:
-                        base_args = [('id', 'in', [])]
-                else :
-                    # Para usuarios sin rol especial: ver solo sus propios programas
-                    base_args = [('id', 'in', [])]
 
                 args = base_args + args
 

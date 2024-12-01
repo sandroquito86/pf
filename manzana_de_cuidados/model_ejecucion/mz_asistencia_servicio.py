@@ -22,6 +22,7 @@ class AsistenciaServicio(models.Model):
     observacion = fields.Text(string='Observación')
     programa_id = fields.Many2one('pf.programas', string='Programa', required=True)
     servicio_id = fields.Many2one(string='Servicio', comodel_name='mz.asignacion.servicio', ondelete='restrict')
+    servicio_base_id = fields.Many2one(string='Servicios', comodel_name='mz.servicio', ondelete='restrict', related='servicio_id.servicio_id', store=True)
     personal_id = fields.Many2one(string='Personal', comodel_name='hr.employee', ondelete='restrict') 
     codigo = fields.Char(string='Código', readonly=True, store=True)
     if_consulta_medica = fields.Boolean(string='Consulta Médica', compute='_compute_if_consulta_medica')
@@ -210,7 +211,7 @@ class AsistenciaServicio(models.Model):
         
         # Evitar recursión usando un contexto especial
         if not self._context.get('disable_custom_search'):
-            if self._context.get('filtrar_programa'):                   
+            if self._context.get('filtrar_asistencia'):                   
                 # Verificar grupos
                 if user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
                     # Para coordinador: ver solo programas de módulo 2

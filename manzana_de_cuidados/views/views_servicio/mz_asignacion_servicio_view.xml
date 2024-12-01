@@ -57,7 +57,7 @@
                                 <field name="if_publicado" readonly="1" widget="boolean_toggle"/>
                                 <field name="personal_ids" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_personal_ids', 'create': False}" />
                                 <field name="domain_programa_id" invisible="1" />
-                                <field name="if_admin" invisible="1" />
+                                <field name="if_admin"  />
                                 <field name="get_sub_servicio" invisible="1" />
                                 <field name="count_responsables" invisible="1"  />
                                 <field name="mostrar_boton_publicar" invisible="1"/>
@@ -234,7 +234,7 @@
         <field name="name">Servicio de Programa y Responsables Asignados</field>
         <field name="res_model">mz.asignacion.servicio</field>
         <field name="view_mode">kanban,tree,form</field>
-        <field name="context">{'filtrar_programa': True, 'default_modulo_id': 2}</field>
+        <field name="context">{'filtrar_servicio': True, 'default_modulo_id': 2}</field>
         <field name="domain">[('programa_id.modulo_id', '=', 2)]</field>
     </record>
 

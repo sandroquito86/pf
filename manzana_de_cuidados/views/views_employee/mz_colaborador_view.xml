@@ -52,7 +52,6 @@
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids"/>
-                    <field name="activity_ids"/>
                     <field name="message_ids"/>
                 </div>
             </form>
@@ -180,12 +179,12 @@
         <field name="domain">[('tipo_personal', '=', 'externo')]</field>
     </record> -->
 
-     <record id="mz_action_employee_colaborador_dinamic" model="ir.actions.act_window">
+    <record id="mz_action_employee_colaborador_dinamic" model="ir.actions.act_window">
         <field name="name">Colaboradores</field>
         <field name="res_model">hr.employee</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_mz_employee_kanban')}), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz_employee_tree')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz_employee_form')})]"/>
-        <field name="context">{'filtrar_programa_v_2': True, 'default_modulo_id': 2, 'default_tipo_personal': 'externo'}</field>
+        <field name="context">{'filtrar_colaborador': True, 'default_modulo_id': 2, 'default_tipo_personal': 'externo'}</field>
         <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Registrar nuevo Colaborador

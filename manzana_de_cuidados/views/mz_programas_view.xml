@@ -67,6 +67,8 @@
                                 <field name="fecha_documento"/>
                                 <field name="file" filename="name_file"/>
                                 <field name="name_file" invisible="1"/>
+                                <label for="supported_attachment_ids" string="Documentos de Respaldo" />
+                                <field name="supported_attachment_ids" widget="many2many_binary" nolabel="1"/>
                             </group>
                         </page>
                     </notebook>

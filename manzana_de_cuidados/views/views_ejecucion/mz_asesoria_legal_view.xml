@@ -253,7 +253,7 @@
         <field name="name">Asesorías Legales</field>
         <field name="res_model">mz.asesoria.legal</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{'filtrar_programa': True, 'default_modulo_id': 2}</field>
+        <field name="context">{'filtrar_asesoria': True, 'default_modulo_id': 2}</field>
         <field name="domain">[('programa_id.modulo_id', '=', 2)]</field>
     </record>
 

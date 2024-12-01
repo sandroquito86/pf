@@ -558,7 +558,7 @@
         <field name="res_model">hr.employee</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'kanban', 'view_id': ref('mz_hr_employee_kanban_view')}), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz_hr_employee_tree')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz_hr_employee_form')})]"/>
-        <field name="context">{'filtrar_programa': True, 'default_modulo_id': 2, 'default_tipo_personal': 'interno'}</field>
+        <field name="context">{'filtrar_employee': True, 'default_modulo_id': 2, 'default_tipo_personal': 'interno'}</field>
         <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Registrar nuevo Empleado

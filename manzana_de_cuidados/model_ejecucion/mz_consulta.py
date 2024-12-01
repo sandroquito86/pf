@@ -678,6 +678,7 @@ class Consulta(models.Model):
         """
         args = args or []
         user = self.env.user
+        base_args = [('id', 'in', [])]
         
         # Evitar recursión usando un contexto especial
         if not self._context.get('disable_custom_search'):
@@ -716,11 +717,6 @@ class Consulta(models.Model):
                                         ('personal_id', '=', employee_id.id)
                                     ]).ids
                         base_args = [('id', 'in', programa_ids)]
-                    else:
-                        base_args = [('id', 'in', [])]
-                else :
-                    # Para usuarios sin rol especial: ver solo sus propios programas
-                    base_args = [('id', 'in', [])]
 
                 args = base_args + args
 

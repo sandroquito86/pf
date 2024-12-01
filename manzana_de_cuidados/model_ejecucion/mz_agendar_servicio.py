@@ -27,6 +27,7 @@ class AgendarServicio(models.Model):
     mascota_id = fields.Many2one('mz.mascota', string='Mascota', ondelete='restrict', domain="[('beneficiario_id', '=', beneficiario_id),('estado', '=', 'activo')]")
     programa_id = fields.Many2one('pf.programas', string='Programa', required=True, default=lambda self: self.env.programa_id)
     servicio_id = fields.Many2one(string='Servicio', comodel_name='mz.asignacion.servicio', ondelete='restrict',domain="[('programa_id', '=?', programa_id)]")  
+    servicio_base_id = fields.Many2one(string='Servicios', comodel_name='mz.servicio', ondelete='restrict', related='servicio_id.servicio_id', store=True)
     # generar_horario_id
     personal_id_domain = fields.Char(compute="_compute_personal_id_domain", readonly=True, store=False, )
     personal_id = fields.Many2one(string='Personal', comodel_name='hr.employee', ondelete='restrict',)
@@ -281,8 +282,11 @@ class AgendarServicio(models.Model):
         if record.servicio_id.servicio_id.tipo_servicio == 'cuidado_infantil' and record.tipo_beneficiario != 'dependiente':
             raise UserError("Este servicio es Exclusivamente para dependietes(Hija o Hijo).")
         if record.servicio_id.servicio_id.tipo_servicio == 'mascota':
-            record.dependiente_id = False
-            record.tipo_beneficiario = 'titular'
+            if record.tipo_beneficiario == 'dependiente':
+                record.dependiente_id = False
+                record.tipo_beneficiario = 'titular'
+                record.servicio_id = False
+            
 
     @api.onchange('programa_id')
     def _onchange_programa_id(self):
@@ -382,13 +386,24 @@ class AgendarServicio(models.Model):
     @api.model
     def create(self, vals):
         if vals.get('tipo_beneficiario') == 'titular':
-            existe_asistencia = self.env['mz.asistencia_servicio'].search([
-                ('beneficiario_id', '=', vals.get('beneficiario_id')),
-                ('asistio', '=', 'pendiente'),
-                ('servicio_id', '=', vals.get('servicio_id'))
-            ],limit=1)
-            if existe_asistencia:
-                raise UserError(f'El beneficiario ya tiene una solicitud pendiente en {existe_asistencia.servicio_id.name} con {existe_asistencia.personal_id.name}. para la fecha {existe_asistencia.fecha}.')
+            servicio = self.env['mz.asignacion.servicio'].browse(vals.get('servicio_id'))
+            if servicio.servicio_id.tipo_servicio == 'mascota':
+                existe_asistencia = self.env['mz.asistencia_servicio'].search([
+                    ('beneficiario_id', '=', vals.get('beneficiario_id')),
+                    ('mascota_id', '=', vals.get('mascota_id')),
+                    ('asistio', '=', 'pendiente'),
+                    ('servicio_id', '=', vals.get('servicio_id'))
+                ],limit=1)
+                if existe_asistencia:
+                    raise UserError(f'La macosta ya tiene una solicitud pendiente en {existe_asistencia.servicio_id.name} con {existe_asistencia.personal_id.name}. para la fecha {existe_asistencia.fecha}.')
+            else:
+                existe_asistencia = self.env['mz.asistencia_servicio'].search([
+                    ('beneficiario_id', '=', vals.get('beneficiario_id')),
+                    ('asistio', '=', 'pendiente'),
+                    ('servicio_id', '=', vals.get('servicio_id'))
+                ],limit=1)
+                if existe_asistencia:
+                    raise UserError(f'El beneficiario ya tiene una solicitud pendiente en {existe_asistencia.servicio_id.name} con {existe_asistencia.personal_id.name}. para la fecha {existe_asistencia.fecha}.')
         else:
             existe_asistencia = self.env['mz.asistencia_servicio'].search([
                 ('beneficiario_id', '=', vals.get('beneficiario_id')),
@@ -413,13 +428,24 @@ class AgendarServicio(models.Model):
             if asistencias_count >= record.horario_id.maximo_beneficiarios:
                 raise UserError(f"No se puede aprobar. El turno ya ha alcanzado su capacidad máxima de {record.horario_id.maximo_beneficiarios} beneficiarios.")
             if record.tipo_beneficiario == 'titular':
-                existe_asistencia = self.env['mz.asistencia_servicio'].search([
-                    ('beneficiario_id', '=', record.beneficiario_id.id),
-                    ('asistio', '=', 'pendiente'),
-                    ('servicio_id', '=', record.servicio_id.id)
-                ],limit=1)
-                if existe_asistencia:
-                    raise UserError(f'El beneficiario ya tiene una solicitud pendiente en {existe_asistencia.servicio_id.name} con {existe_asistencia.personal_id.name}. para la fecha {existe_asistencia.fecha}.')
+                servicio = record.servicio_id
+                if servicio.servicio_id.tipo_servicio == 'mascota':
+                    existe_asistencia = self.env['mz.asistencia_servicio'].search([
+                        ('beneficiario_id', '=', record.beneficiario_id.id),
+                        ('mascota_id', '=', record.mascota_id.id),
+                        ('asistio', '=', 'pendiente'),
+                        ('servicio_id', '=', record.servicio_id.id)
+                    ],limit=1)
+                    if existe_asistencia:
+                        raise UserError(f'La macosta ya tiene una solicitud pendiente en {existe_asistencia.servicio_id.name} con {existe_asistencia.personal_id.name}. para la fecha {existe_asistencia.fecha}.')
+                else:
+                    existe_asistencia = self.env['mz.asistencia_servicio'].search([
+                        ('beneficiario_id', '=', record.beneficiario_id.id),
+                        ('asistio', '=', 'pendiente'),
+                        ('servicio_id', '=', record.servicio_id.id)
+                    ],limit=1)
+                    if existe_asistencia:
+                        raise UserError(f'El beneficiario ya tiene una solicitud pendiente en {existe_asistencia.servicio_id.name} con {existe_asistencia.personal_id.name}. para la fecha {existe_asistencia.fecha}.')
             else:
                 existe_asistencia = self.env['mz.asistencia_servicio'].search([
                     ('beneficiario_id', '=', record.beneficiario_id.id),
@@ -531,7 +557,7 @@ class AgendarServicio(models.Model):
         
         # Evitar recursión usando un contexto especial
         if not self._context.get('disable_custom_search'):
-            if self._context.get('filtrar_programa'):                   
+            if self._context.get('filtrar_turno'):                   
                 # Verificar grupos
                 if user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
                     # Para coordinador: ver solo programas de módulo 2

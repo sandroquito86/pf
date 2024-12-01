@@ -24,7 +24,7 @@ class ConsultaPsicologica(models.Model):
     servicio_id = fields.Many2one(string='Servicio', comodel_name='mz.asignacion.servicio', ondelete='restrict', domain="[('programa_id', '=?', programa_id)]")
     personal_id = fields.Many2one(string='Personal Psicológico', comodel_name='hr.employee', ondelete='restrict', tracking=True)
     asistencia_servicio_id = fields.Many2one('mz.asistencia.servicio', string='Asistencia Servicio')
-    genero_id = fields.Many2one('pf.items', string='Género', domain="[('catalogo_id', '=', ref('prefectura_base.genero'))]")
+    genero_id = fields.Many2one('pf.items', string='Género')
     fecha_nacimiento = fields.Date(string='Fecha de Nacimiento')
     # Campos específicos para consulta psicológica
     motivo_consulta = fields.Text(string='Motivo de Consulta', required=True, tracking=True)
@@ -421,10 +421,11 @@ class ConsultaPsicologica(models.Model):
         """
         args = args or []
         user = self.env.user
+        base_args = [('id', 'in', [])]
         
         # Evitar recursión usando un contexto especial
         if not self._context.get('disable_custom_search'):
-            if self._context.get('filtrar_programa'):                   
+            if self._context.get('filtrar_consulta_psic'):                   
                 # Verificar grupos
                 if user.has_group('manzana_de_cuidados.group_beneficiario_manager'):
                     # Para coordinador: ver solo programas de módulo 2
@@ -459,11 +460,6 @@ class ConsultaPsicologica(models.Model):
                                         ('personal_id', '=', employee_id.id)
                                     ]).ids
                         base_args = [('id', 'in', programa_ids)]
-                    else:
-                        base_args = [('id', 'in', [])]
-                else :
-                    # Para usuarios sin rol especial: ver solo sus propios programas
-                    base_args = [('id', 'in', [])]
 
                 args = base_args + args
 
@@ -525,7 +521,7 @@ class ConsultaPsicologica(models.Model):
     #         ],
     #         'context': {
     #             'default_modulo_id': 2,
-    #             'filtrar_programa': True
+    #             'filtrar_consulta_psic': True
     #         },
     #         'target': 'current'
     #     }
