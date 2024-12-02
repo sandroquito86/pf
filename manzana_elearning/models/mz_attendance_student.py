@@ -14,6 +14,7 @@ class MzStudentAttendance(models.Model):
     student_id = fields.Many2one('mz.beneficiario', string='Beneficiario', required=True)
     agenda_id = fields.Many2one('mz.agenda.elearning', string='Curso', required=True)
     date = fields.Date(string='Fecha', required=True)
+    observations = fields.Char(string="Observaciones")
     state = fields.Selection([
         ('present', 'Asistió'),
         ('absent', 'No Asistió')
@@ -87,3 +88,17 @@ class MzStudentAttendance(models.Model):
     @api.returns('self', lambda value: value.id)
     def copy(self, default=None):
         raise exceptions.UserError(_('You cannot duplicate an attendance.'))
+
+
+    def action_open_beneficiary(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Beneficiario',
+            'res_model': 'mz.beneficiario',
+            'view_mode': 'form',
+            'res_id': self.student_id.id,
+            'target': 'new',
+            'views': [(self.env.ref('manzana_de_cuidados.mz_beneficiario_view_form_limit').id, 'form')],
+            'context': {'form_view_initial_mode': 'readonly'},
+        }

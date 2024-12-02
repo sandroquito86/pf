@@ -24,6 +24,7 @@
                         type="object"
                         icon="fa-graduation-cap"
                         class="oe_stat_button"
+                        invisible="not is_async_mode"
                         groups="website_slides.group_website_slides_officer">
                         <div class="o_stat_info">
                             <span class="o_stat_value">
@@ -33,24 +34,19 @@
                         </div>
                     </button>
                 </xpath>
-                <xpath expr="//button[@name='action_redirect_to_members']" position="after">
-                    <button name="action_view_attendances_student"
-                        type="object"
-                        icon="fa-users"
-                        class="oe_stat_button"
-                        groups="website_slides.group_website_slides_officer">
-                        <div class="o_stat_info">
-                            <!-- <span class="o_stat_value">
-                                <field name="members_all_count" nolabel="1"/>
-                            </span> -->
-                            <span class="o_stat_text">Asistencias</span>
-                        </div>
-                    </button>
+
+                <xpath expr="//button[@name='action_redirect_to_completed_members']" position="attributes">
+                    <attribute name="invisible">not is_async_mode</attribute>
                 </xpath>
+                
                 <xpath expr="//div[hasclass('oe_title')]" position="after">
                     <div class="oe_title">
                         <label for="course_item" string="Capacitación"/>
                         <field name="course_item" />
+                    </div>
+                    <div class="oe_title">
+                        <label for="type_event" string="Tipo"/>
+                        <field name="type_event" />
                     </div>
                     <div class="oe_title">
                         <label for="total_time" string="Duración Total de Capacitación"/>
@@ -78,10 +74,6 @@
                 </xpath>
 
                 <xpath expr="//page[@name='karma_rules']" position="after">
-                    <page string="Asistencias" name="mz_elearning_asistencias">
-                        <!-- TEMPLATE RENDERIZADO CON JS -->
-                        <widget name="mze_attendance_beneficiary"/>
-                    </page>
                     <page string="Tareas" name="mz_elearning_task">
                         <field name="assignments_ids">
                             <tree>
@@ -130,6 +122,40 @@
         </record>
 
 
+        <record id="slide_channel_view_kanban_inherit" model="ir.ui.view">
+            <field name="name">slide.channel.view.kanban.inherit</field>
+            <field name="model">slide.channel</field>
+            <field name="inherit_id" ref="website_slides.slide_channel_view_kanban"/>
+            <field name="arch" type="xml">
+                <!-- Ocultar Add Attendees -->
+                <xpath expr="//a[@name='action_channel_enroll']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                
+                <!-- Ocultar Invite -->
+                <xpath expr="//a[@name='action_channel_invite']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//div[@class='d-flex'][4]" position="after">
+                    <div class="d-flex">
+                        <span class="me-auto"><label for="type_event" class="mb0">Tipo</label></span>
+                        <field name="type_event"/>
+                    </div>
+                </xpath>
+                <xpath expr="//div[@class='d-flex'][1]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//div[@class='d-flex'][4]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//div[hasclass('container')]/div[2]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
         <record id="slide_channel_partner_view_tree_inherit" model="ir.ui.view">
             <field name="name">slide.channel.partner.view.tree.inherit</field>
             <field name="model">slide.channel.partner</field>
@@ -147,6 +173,30 @@
             <field name="model">slide.slide</field>
             <field name="inherit_id" ref="website_slides.view_slide_slide_form"/>
             <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="is_async_mode" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='slide_resource_downloadable']" position="attributes">
+                <attribute name="invisible">not is_async_mode</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='is_preview']" position="attributes">
+                <attribute name="invisible">not is_async_mode</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='public_views']" position="attributes">
+                <attribute name="invisible">not is_async_mode</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='total_views']" position="attributes">
+                <attribute name="invisible">not is_async_mode</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="invisible">not is_async_mode</attribute>
+            </xpath>
 
             <xpath expr="//page[@name='description']//field[@name='description']" position="attributes">
                 <attribute name="placeholder">Por ejemplo, actividades creativas para aprender a crear accesorios y emprender.</attribute>
