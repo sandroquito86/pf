@@ -669,6 +669,91 @@
         <field name="descripcion">Eliminación de parásitos internos o externos.</field>
     </record>
 
+    <!-- Catálogo Principal -->
+    <record id="catalogo_terapias" model="pf.catalogo">
+        <field name="name">Catálogo de Terapias</field>
+        <field name="descripcion">Catálogo completo de terapias y servicios terapéuticos disponibles</field>
+    </record>
+
+    <!-- Items de Terapias -->
+    <record id="item_terapia_fisica" model="pf.items">
+        <field name="name">Terapia Física</field>
+        <field name="descripcion">Servicios de terapia física y rehabilitación física</field>
+        <field name="catalogo_id" ref="catalogo_terapias"/>
+    </record>
+
+    <record id="item_terapia_ocupacional" model="pf.items">
+        <field name="name">Terapia Ocupacional</field>
+        <field name="descripcion">Terapia enfocada en la recuperación de habilidades para actividades diarias</field>
+        <field name="catalogo_id" ref="catalogo_terapias"/>
+    </record>
+
+    <record id="item_terapia_lenguaje" model="pf.items">
+        <field name="name">Terapia de Lenguaje</field>
+        <field name="descripcion">Servicios de terapia para mejorar la comunicación y el habla</field>
+        <field name="catalogo_id" ref="catalogo_terapias"/>
+    </record>
+
+    <record id="item_psicopedagogia" model="pf.items">
+        <field name="name">Psicopedagogía</field>
+        <field name="descripcion">Apoyo en procesos de aprendizaje y desarrollo educativo</field>
+        <field name="catalogo_id" ref="catalogo_terapias"/>
+    </record>
+
+    <record id="item_terapia_caballos" model="pf.items">
+        <field name="name">Terapia Asistida con Caballos</field>
+        <field name="descripcion">Terapia mediante interacción con caballos para desarrollo físico y emocional</field>
+        <field name="catalogo_id" ref="catalogo_terapias"/>
+    </record>
+
+    <record id="item_hidroterapia" model="pf.items">
+        <field name="name">Hidroterapia</field>
+        <field name="descripcion">Terapia física en medio acuático</field>
+        <field name="catalogo_id" ref="catalogo_terapias"/>
+    </record>
+
+    <record id="item_horticultura" model="pf.items">
+        <field name="name">Horticultura</field>
+        <field name="descripcion">Terapia mediante actividades de jardinería y cultivo</field>
+        <field name="catalogo_id" ref="catalogo_terapias"/>
+    </record>
+
+    <record id="item_arteterapia" model="pf.items">
+        <field name="name">Arteterapia</field>
+        <field name="descripcion">Terapia mediante expresión artística</field>
+        <field name="catalogo_id" ref="catalogo_terapias"/>
+    </record>
+
+    <record id="item_gimnasia_terapeutica" model="pf.items">
+        <field name="name">Gimnasia Terapéutica</field>
+        <field name="descripcion">Ejercicios terapéuticos adaptados para rehabilitación</field>
+        <field name="catalogo_id" ref="catalogo_terapias"/>
+    </record>
+
+    <record id="item_musicoterapia" model="pf.items">
+        <field name="name">Musicoterapia</field>
+        <field name="descripcion">Terapia mediante la música y elementos sonoros</field>
+        <field name="catalogo_id" ref="catalogo_terapias"/>
+    </record>
+
+    <record id="item_atencion_temprana" model="pf.items">
+        <field name="name">Atención Temprana</field>
+        <field name="descripcion">Intervención temprana para el desarrollo infantil</field>
+        <field name="catalogo_id" ref="catalogo_terapias"/>
+    </record>
+
+    <record id="item_integracion_sensorial" model="pf.items">
+        <field name="name">Integración Sensorial</field>
+        <field name="descripcion">Terapia para mejorar el procesamiento sensorial</field>
+        <field name="catalogo_id" ref="catalogo_terapias"/>
+    </record>
+
+    <record id="item_psicologia" model="pf.items">
+        <field name="name">Psicología</field>
+        <field name="descripcion">Servicios de atención y apoyo psicológico</field>
+        <field name="catalogo_id" ref="catalogo_terapias"/>
+    </record>
+
 
   </data>
 </odoo>

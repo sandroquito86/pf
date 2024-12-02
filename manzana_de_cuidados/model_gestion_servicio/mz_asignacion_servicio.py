@@ -98,15 +98,6 @@ class AsignarServicio(models.Model):
             else:
                 record.get_sub_servicio = False
 
-    @api.onchange('servicio_id')
-    def _onchange_if_administrador(self):
-        for record in self:
-            groups = self.env.user.groups_id
-            if self.env.ref('manzana_de_cuidados.group_beneficiario_manager') in groups:
-                record.if_admin = True
-            else:
-                record.if_admin = False
-
     @api.onchange('programa_id')
     def _onchange_programa_id(self):
         for record in self:
@@ -300,7 +291,7 @@ class AsignarServicio(models.Model):
         
         if empleado:
             # Eliminar el servicio del campo many2many
-            empleado.write({
+            empleado.sudo().write({
                 'servicios_ids': [(3, servicio_id)]
             })
 
@@ -501,7 +492,9 @@ class Pf_programas(models.Model):
                 view_id = self.env.ref('manzana_de_cuidados.view_mz_pf_programas_form').id
             elif view_type == 'kanban':
                 view_id = self.env.ref('manzana_de_cuidados.ma_pf_programas_view_kanban').id
-        else:
+        elif user.has_group('manzana_de_cuidados.group_coordinador_manzana')or \
+            user.has_group('manzana_de_cuidados.group_mz_prestador_servicio') or \
+            user.has_group('manzana_de_cuidados.group_mz_registro_informacion'):
             # Vistas limitadas para usuarios sin permisos
             if view_type == 'tree':
                 view_id = self.env.ref('manzana_de_cuidados.view_mz_pf_programas_tree_limit').id

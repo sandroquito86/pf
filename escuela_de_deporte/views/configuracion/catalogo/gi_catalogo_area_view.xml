@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_gi_area_tree">
+            <field name="name">gi.area.tree</field>
+            <field name="model">gi.area</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_gi_area_form" model="ir.ui.view">
+            <field name="name">gi.area.form</field>
+            <field name="model">gi.area</field>
+            <field name="arch" type="xml">
+                <form string="Nuevo">
+                    <sheet>
+                        <group>                            
+                            <group>
+                                <field name="name"/>
+                                <field name="company_domain_id"/>
+                                <field name="reparto_id" options="{'domain_field': 'company_domain_id'}"/>
+                                 <field name="attachment_ids" widget="many2many_binary_preview"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+
+        <record model="ir.actions.act_window" id="action_gi_area">
+            <field name="name">Catálogo Área</field>
+            <field name="res_model">gi.area</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_action_gi_area" name="Áreas" action="action_gi_area" parent="menu_gi_conf_catalogo" sequence="20" />
+
+
+
+    </data>
+</odoo>

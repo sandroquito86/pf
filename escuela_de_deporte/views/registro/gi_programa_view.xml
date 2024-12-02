@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Vista de formulario -->
-    <record id="view_mz_pf_programas_form" model="ir.ui.view">
-        <field name="name">mz.pf.programas.form</field>
+    <record id="view_gi_pf_programas_form" model="ir.ui.view">
+        <field name="name">gi.pf.programas.form</field>
         <field name="model">pf.programas</field>
         <field name="arch" type="xml">
             <form string="Manzanas">
                 <header>
                     <button name="action_activar" string="Activar Programa" type="object" class="btn-primary" invisible="active"/>
                     <button name="action_publish" string="Publicar Programa" type="object" class="btn-primary" invisible="not mostrar_boton_publicar"/>
-                    <button name="action_unpublish_wizard" string="Retirar Publicación" type="object" class="btn-secondary" invisible="not mostrar_bot_retirar_public"/>
+                    <button name="action_publish_wizard" string="Retirar Publicación" type="object" class="btn-secondary" invisible="not mostrar_bot_retirar_public"/>
                 </header>
                 <sheet>
                     <div class="row justify-content-between position-relative w-100 m-0 mb-2">
@@ -45,15 +45,15 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Servicios">
-                            <field name="servicio_ids" readonly="1" force_save="1">
+                        <page string="Terapias">
+                            <field name="terapia_ids" readonly="1" force_save="1">
                                 <tree>
-                                    <field name="servicio_id"/>
+                                    <field name="tipo_terapia_id"/>
                                 </tree>
                             </field>
                         </page>
                         <page string="Autoridades">
-                            <field name="autoridades_ids" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_autoridades_ids'}" context="{'tree_view_ref': 'manzana_de_cuidados.view_autoridades_hr_employee_tree'}">
+                            <field name="autoridades_ids" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_autoridades_ids'}" context="{'tree_view_ref': 'guayas_integra.view_autoridades_gi_hr_employee_tree'}">
                             </field>
                         </page>
                         <page string="Normativa">
@@ -82,8 +82,8 @@
     </record>
 
      <!-- Vista de formulario limitada-->
-    <record id="view_mz_pf_programas_form_limit" model="ir.ui.view">
-        <field name="name">mz.pf.programas.form.limit</field>
+    <record id="view_gi_pf_programas_form_limit" model="ir.ui.view">
+        <field name="name">gi.pf.programas.form.limit</field>
         <field name="model">pf.programas</field>
         <field name="arch" type="xml">
             <form string="Programas" create="false" delete="false" duplicate="false" edit="false">
@@ -119,10 +119,10 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Servicios">
-                            <field name="servicio_ids" readonly="1" force_save="1">
+                        <page string="Terapias">
+                            <field name="terapia_ids" readonly="1" force_save="1">
                                 <tree>
-                                    <field name="servicio_id"/>
+                                    <field name="tipo_terapia_id"/>
                                 </tree>
                             </field>
                         </page>
@@ -138,15 +138,15 @@
 
 
     <!-- Vista de árbol -->
-    <record id="view_mz_pf_programas_tree" model="ir.ui.view">
-        <field name="name">mz.pf.programas.tree</field>
+    <record id="view_gi_pf_programas_tree" model="ir.ui.view">
+        <field name="name">gi.pf.programas.tree</field>
         <field name="model">pf.programas</field>
         <field name="arch" type="xml">
             <tree string="Programas">
                 <field name="name"/>
                 <field name="sucursal_id"/>
                 <field name="phone"/>
-                <field name="servicio_ids"/>
+                <field name="terapia_ids"/>
                 <field name="autoridades_ids"/>
                 <field name="if_publicado"/>
             </tree>
@@ -154,22 +154,22 @@
     </record>
 
     <!-- Vista de árbol limitada-->
-    <record id="view_mz_pf_programas_tree_limit" model="ir.ui.view">
-        <field name="name">mz.pf.programas.tree.limit</field>
+    <record id="view_gi_pf_programas_tree_limit" model="ir.ui.view">
+        <field name="name">gi.pf.programas.tree.limit</field>
         <field name="model">pf.programas</field>
         <field name="arch" type="xml">
             <tree string="Programas" create="false" delete="false" duplicate="false" edit="false" >
                 <field name="name"/>
                 <field name="sucursal_id"/>
                 <field name="phone"/>
-                <field name="servicio_ids"/>
+                <field name="terapia_ids"/>
             </tree>
         </field>
     </record>
 
     <!-- Search view for "model" -->
-    <record id="mz_pf_programas_view_search" model="ir.ui.view">
-        <field name="name">mz.pf.programas.search</field>
+    <record id="gi_pf_programas_view_search" model="ir.ui.view">
+        <field name="name">gi.pf.programas.search</field>
         <field name="model">pf.programas</field>
         <field name="type">search</field>
         <field name="arch" type="xml">
@@ -184,11 +184,11 @@
     </record>
 
     <!-- vista kanban para programas  -->
-    <record id="ma_pf_programas_view_kanban" model="ir.ui.view">
-        <field name="name">mz.pf.programas</field>
+    <record id="gi_pf_programas_view_kanban" model="ir.ui.view">
+        <field name="name">gi.pf.programas</field>
         <field name="model">pf.programas</field>
         <field name="arch" type="xml">
-            <kanban default_order="name" action="action_brand_model" type="object">
+            <kanban default_order="name" action="action_brand_model_terapia" type="object">
                 <field name="id"/>
                 <field name="name"/>
                 <templates>
@@ -219,13 +219,10 @@
                                     <span class="fa fa-phone"/>
                                     <field name="phone"/>
                                 </div>
-                                <!-- <div>
-                                    <field name="model_count_mz"/> SERVICIOS
-                                </div> -->
                                 <div>
                                     <span class="fa fa-headset"/>
-                                    <field name="model_count_mz" invisible="1"/>
-                                    <field name="servicios_text"/>
+                                    <field name="model_count" invisible="1"/>
+                                    <field name="terapia_text"/>
                                 </div>
                             </div>
                         </div>
@@ -236,11 +233,11 @@
     </record>
 
 
-    <record id="ma_pf_programas_view_kanban_limit" model="ir.ui.view">
-        <field name="name">mz.pf.programas</field>
+    <record id="gi_pf_programas_view_kanban_limit" model="ir.ui.view">
+        <field name="name">gi.pf.programas</field>
         <field name="model">pf.programas</field>
         <field name="arch" type="xml">
-            <kanban default_order="name" action="action_brand_model" type="object" create="false" delete="false" duplicate="false" edit="false">
+            <kanban default_order="name" action="action_brand_model_terapia" type="object" create="false" delete="false" duplicate="false" edit="false">
                 <field name="id"/>
                 <field name="name"/>
                 <templates>
@@ -271,13 +268,10 @@
                                     <span class="fa fa-phone"/>
                                     <field name="phone"/>
                                 </div>
-                                <!-- <div>
-                                    <field name="model_count_mz"/> SERVICIOS
-                                </div> -->
                                 <div>
                                     <span class="fa fa-headset"/>
-                                    <field name="model_count_mz" invisible="1"/>
-                                    <field name="servicios_text"/>
+                                    <field name="model_count" invisible="1"/>
+                                    <field name="terapia_text"/>
                                 </div>
                             </div>
                         </div>
@@ -294,7 +288,7 @@
     <!-- vista de autoridades  tree - pertenecientre a hr.employee  -->
 
     <!-- Vista de árbol personalizada para autoridades_ids -->
-    <record id="view_autoridades_hr_employee_tree" model="ir.ui.view">
+    <record id="view_autoridades_gi_hr_employee_tree" model="ir.ui.view">
         <field name="name">autoridades.hr.employee.tree</field>
         <field name="model">hr.employee</field>        <!-- Cambia 'res.partner' por el modelo correcto -->
         <field name="arch" type="xml">
@@ -306,43 +300,14 @@
         </field>
     </record>
 
-    <record id="action_mz_pf_programas_dynamic" model="ir.actions.act_window">
-        <field name="name">Manzanas</field>
+    <record id="action_gi_pf_programas_dynamic" model="ir.actions.act_window">
+        <field name="name">Centros</field>
         <field name="res_model">pf.programas</field>
         <field name="view_mode">kanban,tree,form</field>
-        <field name="context">{'filtrar_programa': True, 'default_modulo_id': 2}</field>
-        <field name="domain">[('modulo_id', '=', 2)]</field>
+        <field name="context">{'filtrar_programa_gi': True, 'default_modulo_id': 1}</field>
+        <field name="domain">[('modulo_id', '=', 1)]</field>
     </record>
 
-    <menuitem id="menu_pf_programa_d" name="Manzanas" parent="menu_programas" action="action_mz_pf_programas_dynamic" sequence="10"/>
+    <menuitem id="menu_pf_programa_d" name="Centros" parent="menu_gi_registro" action="action_gi_pf_programas_dynamic" sequence="10"/>
 
-
-    <!-- Acción para Cursos -->
-    <!-- <record id="action_mz_pf_programas" model="ir.actions.act_window">
-        <field name="name">Programas</field>
-        <field name="res_model">pf.programas</field>
-        <field name="view_mode">kanban,tree,form</field>
-        <field name="context">{'default_modulo_id':2}</field>
-        <field name="domain">[('modulo_id', '=', 2)]</field>
-        <field name="groups_id" eval="[(4, ref('group_manzana_lider_estrategia')), (4, ref('group_beneficiario_manager'))]"/>
-    </record> -->
-
-
-    <!-- Menú para Cursos -->
-    <!-- <menuitem id="menu_pf_programa" name="Programas" parent="menu_programas" action="action_mz_pf_programas" sequence="10" groups="manzana_de_cuidados.group_manzana_lider_estrategia,manzana_de_cuidados.group_beneficiario_manager"/> -->
-
-    <!-- Acción para Cursos -->
-    <!-- <record id="action_mz_pf_programas_limit" model="ir.actions.act_window">
-        <field name="name">Programas</field>
-        <field name="res_model">pf.programas</field>
-        <field name="view_mode">kanban,tree,form</field>
-        <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'kanban', 'view_id': ref('ma_pf_programas_view_kanban')}), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz_pf_programas_tree_limit')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz_pf_programas_form_limit')})]"/>
-        <field name="context">{'default_modulo_id':2}</field>
-        <field name="domain">[('modulo_id', '=', 2)]</field>
-        <field name="groups_id" eval="[(4, ref('group_coordinador_manzana'))]"/>
-    </record> -->
-
-
-    <!-- Menú para Cursos -->
-    <!-- <menuitem id="menu_pf_programa_limit" name="Programas" parent="menu_programas" action="action_mz_pf_programas_limit" sequence="10" groups="manzana_de_cuidados.group_coordinador_manzana"/> -->
 </odoo>

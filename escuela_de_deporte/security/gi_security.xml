@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Definir la Categoría del Módulo -->
+    <record id="module_category_guayas_integra_administrativo" model="ir.module.category">
+        <field name="name">Guayas Integra Administrativo</field>
+        <field name="description">Categoría para el módulo Guayas Integra Grupos Administrativos</field>
+        <field name="sequence">100</field> <!-- Ajusta la secuencia según tu preferencia -->
+    </record>
+
+    <!-- Definir el Grupo de Acceso para Beneficiarios -->
+    <record id="group_guayas_coordinador" model="res.groups">
+        <field name="name">Coordinador Guayas Integra</field>
+        <field name="category_id" ref="module_category_guayas_integra_administrativo"/>
+    </record>
+
+    <record id="group_guayas_administrativo" model="res.groups">
+        <field name="name">Administrativo</field>
+        <field name="category_id" ref="module_category_guayas_integra_administrativo"/>
+    </record>
+
+    <record id="group_guayas_especialista_terapia" model="res.groups">
+        <field name="name">Especialista de Terapias</field>
+        <field name="category_id" ref="module_category_guayas_integra_administrativo"/>
+    </record>
+
+    <record id="group_guayas_administrativo_analista_1" model="res.groups">
+        <field name="name">Administrativa Analista 1</field>
+        <field name="category_id" ref="module_category_guayas_integra_administrativo"/>
+    </record>
+
+    <record id="group_guayas_administrativo_analista_2" model="res.groups">
+        <field name="name">Administrativa Analista 2</field>
+        <field name="category_id" ref="module_category_guayas_integra_administrativo"/>
+    </record>
+
+    <record id="group_guayas_sistema" model="res.groups">
+        <field name="name">Sistema</field>
+        <field name="category_id" ref="module_category_guayas_integra_administrativo"/>
+    </record>
+
+    <!-- Definir la Categoría del Módulo -->
+    <record id="module_category_guayas_integra_operativo" model="ir.module.category">
+        <field name="name">Guayas Integra Operativo</field>
+        <field name="description">Categoría para el módulo Guayas Integra Grupos Operativos</field>
+        <field name="sequence">101</field> <!-- Ajusta la secuencia según tu preferencia -->
+    </record>
+
+    <record id="group_guayas_medico_area" model="res.groups">
+        <field name="name">Médico del Área</field>
+        <field name="category_id" ref="module_category_guayas_integra_operativo"/>
+    </record>
+
+    <record id="group_guayas_psicologo" model="res.groups">
+        <field name="name">Psicólogo</field>
+        <field name="category_id" ref="module_category_guayas_integra_operativo"/>
+    </record>
+    <record id="group_guayas_fisioterapeuta" model="res.groups">
+        <field name="name">Fisioterapeuta</field>
+        <field name="category_id" ref="module_category_guayas_integra_operativo"/>
+    </record>
+
+    <record id="group_guayas_terapeuta" model="res.groups">
+        <field name="name">Terapeuta</field>
+        <field name="category_id" ref="module_category_guayas_integra_operativo"/>
+    </record>
+
+</odoo>

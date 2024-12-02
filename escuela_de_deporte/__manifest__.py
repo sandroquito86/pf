@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "guayas_integra",
+    'name': "escuela_de_deporte",
 
     'summary': "Short (1 phrase/line) summary of the module's purpose",
 
@@ -25,16 +25,16 @@ Long description of module's purpose
 
         'security/gi_security.xml',
         'security/ir.model.access.csv',
-        'views/gi_beneficiarios_menu_view.xml',
+        # 'views/gi_beneficiarios_menu_view.xml',
         #CONFIGURACION        
         # CATALOGO
-        'views/configuracion/catalogo/gi_catalogo_area_view.xml',
+        # 'views/configuracion/catalogo/gi_catalogo_area_view.xml',
         # PLANIFICACIÓN
         
         #REGISTRO  
-        'views/registro/gi_programa_view.xml',
+        # 'views/registro/gi_programa_view.xml',
           
-        'views/registro/gi_solicitud_beneficiario_view.xml',   
+        # 'views/registro/gi_solicitud_beneficiario_view.xml',   
           
     ],
     # only loaded in demonstration mode

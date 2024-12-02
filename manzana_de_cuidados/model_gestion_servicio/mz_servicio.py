@@ -15,7 +15,6 @@ class Servicio(models.Model):
 
     name = fields.Char(string='Nombre', required=True)
     descripcion = fields.Text(string='Descripción')
-    active = fields.Boolean(default=True, string='Activo')
     if_derivacion = fields.Boolean(default=False, string='Derivación')
     image = fields.Binary(string='Imagen', attachment=True)
     tipo_servicio = fields.Selection([('normal', 'Bienestar Personal'), ('medico', 'Salud'), ('cuidado_infantil', 'Cuidado Infantil'), ('mascota', 'Veterinario'), ('asesoria_legal', 'Asesoria Legal')], string='Clasificación de Servicio', default='normal')

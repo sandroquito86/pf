@@ -2,4 +2,4 @@
 
 from . import gi_catalogo_general
 from . import gi_area
-from . import gi_servicio
+from . import gi_terapia
