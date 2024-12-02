@@ -27,6 +27,7 @@ class MzElearning(models.Model):
     name = fields.Char('Name', translate=True, required=False, compute='_compute_name', store=True)
     course_item = fields.Many2one('pf.items', string="Capacitación", required=True, ondelete="cascade", domain=_get_tipo_dependiente_domain , tracking=True)
     assignments_ids = fields.One2many('mz.elearning.assignments', 'course_id')
+    type_event = fields.Selection([('cpt', 'Curso/ Capacitación'),('chl', 'Charla/ Taller')], string='Tipo', default='cpt', tracking=True, required=True)
     # programas_ids = fields.One2many('mz.elearning.programs', 'course_id')
     is_async_mode = fields.Boolean(string="Modo Asincrónico", tracking=False)
 
@@ -35,12 +36,6 @@ class MzElearning(models.Model):
     def _compute_name(self):
         for record in self:
             record.name = f'{record.course_item.name}' if record.course_item.name else ''
-            
-
-    def action_view_attendances_student(self):
-        action = self.env["ir.actions.actions"]._for_xml_id("manzana_elearning.slide_channel_partner_offline_action")
-        action['domain'] = [('course_id', 'in', self.ids)]
-        return action
 
 
 
@@ -68,6 +63,8 @@ class ChannelBeneficiaryRelation(models.Model):
 class MzElearningSlide(models.Model):
     _inherit = 'slide.slide'
     _description = 'Sección de contenidos'
+
+    is_async_mode = fields.Boolean(related="channel_id.is_async_mode")
 
 
     @api.model_create_multi

@@ -18,7 +18,31 @@
             <field name="active">False</field>
         </record>
 
+        <record id="website_slides.website_slides_menu_report_courses" model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+
+        <record id="website_slides.website_slides_menu_report_attendees" model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+
         <record id="website_slides.website_slides_menu_report_reviews" model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+
+        <record id="website_slides.website_slides_menu_report_quizzes" model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+
+        <record id="website_slides.website_slides_menu_config_settings" model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+
+        <record id="website_slides.website_slides_menu_config_course_groups" model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+
+        <record id="website_slides.website_slides_menu_config_content_tags" model="ir.ui.menu">
             <field name="active">False</field>
         </record>
 

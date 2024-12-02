@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <record model="ir.actions.server" id="action_generate_certification">
+        <field name="name">Generar Certificados</field>
+        <field name="model_id" ref="model_mz_slide_channel_partner_offline"/>
+        <field name="binding_model_id" ref="model_mz_slide_channel_partner_offline" />
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                records.action_create_certification()
+        </field>
+    </record>
+
+    <record model="ir.actions.server" id="action_send_certification">
+        <field name="name">Enviar Certificados (e-mail)</field>
+        <field name="model_id" ref="model_mz_slide_channel_partner_offline"/>
+        <field name="binding_model_id" ref="model_mz_slide_channel_partner_offline" />
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                records.send_certifications()
+        </field>
+    </record>
+
     <!-- views -->
 
     <record id="slide_channel_partner_offline_view_search" model="ir.ui.view">
@@ -8,7 +30,26 @@
             <field name="model">mz.slide.channel.partner.offline</field>
             <field name="arch" type="xml">
                 <search string="Beneficiarios Inscritos">
+                    <field name="programa_id"/>
+                    <!-- <filter string="Beneficiarios Inscritos" name="filter_open" domain="[('state', '=', 'open')]"/> -->
+                    <searchpanel>
+                        <field name="programa_id" icon="fa-building" string="Manzana"/>
+                        <field name="state" icon="fa-cogs" string="Estados"/>
+                    </searchpanel>
+                </search>
+            </field>
+    </record>
+
+    <record id="slide_channel_partner_offline_view_enrolled_search" model="ir.ui.view">
+            <field name="name">slide.channel.partner.offline.view.search</field>
+            <field name="model">mz.slide.channel.partner.offline</field>
+            <field name="arch" type="xml">
+                <search string="Beneficiarios Inscritos">
+                    <field name="programa_id"/>
                     <filter string="Beneficiarios Inscritos" name="filter_open" domain="[('state', '=', 'open')]"/>
+                    <searchpanel>
+                        <field name="programa_id" icon="fa-building" string="Manzana"/>
+                    </searchpanel>
                 </search>
             </field>
     </record>
@@ -19,7 +60,8 @@
         <!-- <field name="groups_id" eval="[(4, ref('website_slides.group_website_slides_officer'))]"/> -->
         <field name="arch" type="xml">
             <tree string="Postulantes" editable="bottom" edit="1" sample="1">
-                <field name="beneficiary_id" options="{'no_open': True, 'no_create': True}"/>
+                <field name="beneficiary_domain" column_invisible="True" />
+                <field name="beneficiary_id" options="{'domain_field':'beneficiary_domain','no_open': True, 'no_create': True}"/>
                 <field name="agenda_id" column_invisible="True" /> <!---->
                 <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'open'"/>
                 <button string="Confirmar Inscripción" name="action_confirm" type="object"
@@ -45,9 +87,23 @@
                 <field name="is_certifiable" widget="boolean_toggle" />
                 <field name="attendance_percentage" widget="progressbar" />
                 <field name="generated_certificate" column_invisible="True" />
-                <button name="action_get_certification" string="Descargar certificado" 
-                        invisible="(not generated_certificate and not is_certifiable) or (is_certifiable and  not generated_certificate)" class="oe_highlight p-1" type="object" icon="fa-download" />
-                <button name="action_create_certification" string="Generar certificado" invisible="not is_certifiable or generated_certificate" class="oe_highlight p-1" type="object" icon="fa-trophy" />
+                <button name="action_get_certification" 
+                        string="Descargar certificado" 
+                        invisible="(not generated_certificate and not is_certifiable) or (is_certifiable and  not generated_certificate)" 
+                        class="oe_highlight p-1" 
+                        type="object" 
+                        icon="fa-download" />
+                <button name="action_create_certification"
+                        string="Generar certificado" 
+                        invisible="not is_certifiable or generated_certificate" 
+                        class="oe_highlight p-1" 
+                        type="object" 
+                        icon="fa-trophy" />
+                <button name="action_open_attendance_beneficiary" type="object" 
+                        string="Ver Asistencias" 
+                        icon="fa-eye" 
+                        class="btn btn-link p-0 align-baseline fst-italic" 
+                        />
             </tree>
         </field>
     </record>
@@ -81,6 +137,31 @@
         </field>
     </record> -->
 
+    <!-- <record id="mz_convoy_view_agendar_servicio_search" model="ir.ui.view">
+        <field name="name">mz.agendar.servicio.search</field>
+        <field name="model">mz.agendar_servicio</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Agendar Turno">
+                <field name="codigo"/>
+                <field name="beneficiario_id"/>
+                <field name="personal_id"/>
+                <group expand="1" string="Agrupar por">
+                    <filter string="Año" name="group_by_year" context="{'group_by':'fecha_solicitud:year'}"/>
+                    <filter string="Mes" name="group_by_month" context="{'group_by':'fecha_solicitud:month'}"/>
+                    <filter string="Día" name="group_by_day" context="{'group_by':'fecha_solicitud:day'}"/>
+                    <filter string="Programa" name="group_by_programa" context="{'group_by':'programa_id'}"/>
+                    <filter string="Servicio" name="group_by_servicio" context="{'group_by':'servicio_id'}"/>
+                    <filter string="Personal" name="group_by_personal" context="{'group_by':'personal_id'}"/>
+                </group>
+                <searchpanel>
+                    <field name="programa_id" icon="fa-building" string="Programa"/>
+                    <field name="servicio_id" icon="fa-cogs" string="Servicio"/>
+                    <field name="personal_id" icon="fa-user-md" string="Persona" select="multi" hierarchize="false"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record> -->
+
     <!-- actions -->
 
     <record id="slide_channel_partner_offline_action" model="ir.actions.act_window">
@@ -89,6 +170,7 @@
         <field name="view_mode">tree</field>
         <field name="context"></field>
         <field name="view_id" ref="view_slide_channel_partner_offline_tree"/>
+        <field name="search_view_id" ref="slide_channel_partner_offline_view_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
                 No attendance records found
@@ -104,7 +186,7 @@
         <field name="view_mode">tree</field>
         <field name="context"></field>
         <field name="view_id" ref="view_slide_channel_partner_offline_enrolled_tree"/>
-        <field name="search_view_id" ref="manzana_elearning.slide_channel_partner_offline_view_search"/>
+        <field name="search_view_id" ref="manzana_elearning.slide_channel_partner_offline_view_enrolled_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
                 No attendance records found

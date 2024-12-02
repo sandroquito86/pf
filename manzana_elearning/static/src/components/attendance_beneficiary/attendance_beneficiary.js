@@ -32,23 +32,19 @@ export class AttendanceBeneficiary extends Component {
 
         
         onMounted(async ()=>{
-            console.log(this.bus)
             await this.loadPlannedDates();
             await this.checkAndLoadAttendance();
         })
 
         useEffect(
             () => {
-                // Función asíncrona autoejecutable
                 (async () => {
                     if (this.state.date) {
                         await this.checkAndLoadAttendance();
                     }
                 })();
 
-                // Retornar función de limpieza
                 return () => {
-                    // Limpiar recursos si es necesario
                     this.state.beneficiaries = [];
                     this.state.isAttendanceSubmitted = false;
                 };
@@ -113,6 +109,7 @@ export class AttendanceBeneficiary extends Component {
 
     onDateChanged(ev) {
         this.state.date = ev;
+        this.state.dateUi = this.state.date.toFormat('dd/MM/yyyy')
     }
 
     onOptionChanged(beneficiaryId, state) {

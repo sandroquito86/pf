@@ -10,10 +10,16 @@
         <field name="arch" type="xml">
             <tree string="Asistencias" edit="0" create="0" sample="1">
                 <field name="student_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
-                <field name="agenda_id" readonly="1"/>
+                <field name="agenda_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
                 <field name="date" readonly="1" />
                 <field name="state"/>
                 <field name="sub_state"/>
+                <field name="observations"/>
+                <button name="action_open_beneficiary" type="object" 
+                        string="Ver Beneficiario" 
+                        icon="fa-eye" 
+                        class="btn btn-link p-0 align-baseline fst-italic" 
+                        />
             </tree>
         </field>
     </record>

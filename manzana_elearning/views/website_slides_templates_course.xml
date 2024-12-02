@@ -21,6 +21,18 @@
         </t>
     </xpath>
 
+    <xpath expr="//ul[@id='profile_extra_info_tablist']/li[hasclass('o_wslides_course_header_nav_review')]" position="replace">
+        <t t-if="channel.is_async_mode">
+            <li t-if="channel.allow_comment" class="nav-item o_wslides_course_header_nav_review">
+                                    <a t-att-class="'nav-link %s' % ('active' if active_tab == 'review' else '')"
+                                        id="review-tab" data-bs-toggle="pill" href="#review" role="tab" aria-controls="review"
+                                        t-att-aria-selected="'true' if active_tab == 'review' else 'false'">
+                                        Reseñas<t t-if="rating_count"> (<t t-esc="rating_count"/>)</t>
+                                    </a>
+                                </li>
+        </t>
+    </xpath>
+
     <!-- Añadir el contenido de la nueva pestaña "TAREAS" -->
     <xpath expr="//div[@id='courseMainTabContent']" position="inside">
         <div t-att-class="'tab-pane fade %s' % ('show active' if active_tab == 'tareas' else '')" id="tareas" role="tabpanel" aria-labelledby="tareas-tab">
@@ -202,6 +214,62 @@
         </div>
     </xpath>
 </template>
+
+<template id="course_sidebar_inherit" inherit_id="website_slides.course_sidebar">
+    <xpath expr="//div[hasclass('o_wslides_sidebar_top')]" position="replace">
+        <div class="o_wslides_sidebar_top bg-white px-3 py-2 py-md-3 mb-3 mb-md-5">
+            <div class="o_wslides_sidebar_top d-flex justify-content-between">
+                <t t-if="channel.is_async_mode">
+                    <t t-call="website_slides.course_join"/>
+                    <button t-attf-class="btn d-md-none bg-white ms-1 border #{'alert' if channel.is_member else ''} #{'align-self-start' if channel.is_member or channel.enroll == 'invite' else 'align-self-end'}" type="button" data-bs-toggle="collapse" data-bs-target="#o_wslides_sidebar_collapse" aria-expanded="false" aria-controls="o_wslides_sidebar_collapse">More info</button>
+                </t>
+                <t t-else="">
+                    <div class="flex-grow-1 d-grid">
+                        <div class="btn btn-primary btn-block">
+                            <span class="cta-title text_small_caps">
+                                Curso Presencial
+                            </span>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </xpath>
+
+    <!-- <xpath expr="//div[hasclass('o_wslides_sidebar_collapse')]" position="replace">
+        <table class="table table-sm mt-3">
+                <t t-if="channel.is_async_mode">
+                    <tr t-if="channel.user_id">
+                        <th class="border-top-0">Responsible</th>
+                        <td class="border-top-0 text-break"><span t-esc="channel.user_id.display_name"/></td>
+                    </tr>
+                    <tr>
+                        <th class="border-top-0">Last Update</th>
+                        <td class="border-top-0"><t t-esc="channel.slide_last_update" t-options="{'widget': 'date'}"/></td>
+                    </tr>
+                    <tr t-if="channel.total_time">
+                        <th class="border-top-0">Completion Time</th>
+                        <td class="border-top-0"><t class="fw-bold" t-esc="channel.total_time" t-options="{'widget': 'duration', 'unit': 'hour', 'round': 'minute'}"/></td>
+                    </tr>
+                    <tr>
+                        <th>Members</th>
+                        <td><t t-esc="channel.members_count"/></td>
+                    </tr>
+                </t>
+                
+            </table>
+    </xpath> -->
+</template>
+
+<!-- <template id="course_not_join">
+    <div class="o_wslides_js_course_join flex-grow-1 d-grid">
+            <div class="btn btn-primary btn-block o_wslides_js_course_join_link">
+                <span class="cta-title text_small_caps">
+                    Curso Presencial
+                </span>
+            </div>
+    </div>
+</template> -->
 
 
 </data></odoo>
