@@ -21,9 +21,9 @@
                             <field name="active" invisible="1"/>
                             <field name="warehouse_id" invisible="not id" required="id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="programa_id" invisible="not id"/>
-                            <field name="domain_location_general_id" invisible="1" />
-                            <field name="location_id" domain="[]" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_location_general_id'}"/>
-                            <field name="usage"/>
+                            <field name="domain_location_id" invisible="1" />
+                            <field name="location_id" domain="[]" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_location_id'}"/>
+                            <field name="usage" readonly="1" />
                             <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                         </group>
                         <group>
@@ -39,10 +39,10 @@
                                 <group>
                                     <field name="comment" placeholder="Observaciones..."/>
                                 </group>
-                                <group>
-                                    <field name="scrap_location"/>
+                                <!-- <group>
+                                    <field name="scrap_location" readonly="1" />
                                     <field name="return_location"/>
-                                </group>
+                                </group> -->
                             </group>
                         </page>
                     </notebook>
@@ -98,8 +98,8 @@
 
     <!-- Action Override -->
     <record id="stock.action_location_form" model="ir.actions.act_window">
-        <!-- <field name="context">{'filtrar_programa_ubicacion': True}</field>
-        <field name="domain">[('visible_en_programa', '=', True)]</field> -->
+        <field name="context">{'search_default_in_location':1,'filtrar_programa_ubicacion': True}</field>
+      
     </record>
 
     <menuitem name="Ubicación" action="stock.action_location_form" id="pf_inventario_gestion_almacen_ubicacion" parent="pf_inventario_gestion_almacen" sequence="2"/>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Action para Recibidos -->
+    <record id="action_picking_tree_incoming_manzana" model="ir.actions.act_window">
+        <field name="name">Recibidos</field>
+        <field name="res_model">stock.picking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{
+        'manzana_context': True, 
+        'default_picking_type_code': 'incoming', 
+        'contact_display': 'partner_address',
+        'create': False,
+        'edit': False,
+        'delete': False
+    }</field>
+        <field name="domain">[('picking_type_code','=','incoming')]</field>
+        <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+    </record>
+
+    <!-- Action para Entregas -->
+    <record id="action_picking_tree_outgoing_manzana" model="ir.actions.act_window">
+        <field name="name">Entregas</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_mode">tree,kanban,form,calendar,activity</field>
+        <field name="context">{
+        'contact_display': 'partner_address', 
+        'restricted_picking_type_code': 'outgoing',
+        'search_default_delivery': 1,
+        'manzana_context': True
+    }</field>
+        <field name="domain">[('picking_type_code','=','outgoing')]</field>
+        <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+    </record>
+
+    <!-- Action para Internos -->
+    <record id="action_picking_tree_internal_manzana" model="ir.actions.act_window">
+        <field name="name">Internos</field>
+        <field name="res_model">stock.picking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'manzana_context': True, 'default_picking_type_code': 'internal', 'contact_display': 'partner_address'}</field>
+        <field name="domain">[('picking_type_code','=','internal')]</field>
+        <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+    </record>
+
+    <!-- Actualización de los menús para usar los nuevos actions -->
+    <menuitem id="mz_inventario_traslado_recibido" name="Recibidos" parent="mz_inventario_gestion_traslados" action="action_picking_tree_incoming_manzana" sequence="20" groups="stock.group_stock_user"/>
+
+    <menuitem id="mz_inventario_traslado_entregas" name="Entregas" parent="mz_inventario_gestion_traslados" action="action_picking_tree_outgoing_manzana" sequence="21" groups="stock.group_stock_user"/>
+
+    <menuitem id="mz_inventario_traslado_internos" name="Internos" parent="mz_inventario_gestion_traslados" action="action_picking_tree_internal_manzana" sequence="22" groups="stock.group_stock_user,stock.group_stock_multi_locations"/>
+</odoo>

@@ -219,7 +219,7 @@
     </record>
     
     <record id="action_equipo_all" model="ir.actions.act_window">
-      <field name="name">Equipos</field>
+      <field name="name">Equipos Guayas Integra</field>
       <field name="res_model">pg_equipos.pg_equipos</field>
       <field name="view_mode">tree,form,kanban,pivot,graph</field>
     </record>

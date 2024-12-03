@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pf_product_category_form_view_inherit" model="ir.ui.view">
+        <field name="name">product.category.form.inherit</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="stock.product_category_form_view_inherit"/>
+        <field name="arch" type="xml">
+            <!-- Ocultar botón de Putaway Rules -->
+            <xpath expr="//button[@name='%(stock.category_open_putaway)d']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Ocultar grupo de logística -->
+            <!-- <xpath expr="//group[@name='logistics']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath> -->
+        </field>
+    </record>
+</odoo>

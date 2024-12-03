@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View Inheritance -->
+    <record id="pf_view_location_form_inherit" model="ir.ui.view">
+        <field name="name">stock.location.form.inherit</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml">
+            <!-- Reemplazar contenido del sheet -->
+            <xpath expr="//sheet" position="replace">
+                <sheet>
+                    <widget name="web_ribbon" title="Archivado" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="ej. Zona A"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="active" invisible="1"/>
+                            <field name="warehouse_id" invisible="not id" required="id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="programa_id" invisible="not id"/>
+                            <field name="domain_location_id" invisible="1" />
+                            <field name="location_id" domain="[]" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_location_id'}"/>
+                            <field name="usage" readonly="1" />
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="posx" placeholder="5"/>
+                            <field name="posy" placeholder="3"/>
+                            <field name="posz" placeholder="1"/>
+                            <field name="barcode"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Información Adicional" name="additional_info">
+                            <group>
+                                <group>
+                                    <field name="comment" placeholder="Observaciones..."/>
+                                </group>
+                                <!-- <group>
+                                    <field name="scrap_location" readonly="1" />
+                                    <field name="return_location"/>
+                                </group> -->
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Tree View Inheritance -->
+    <record id="pf_view_location_tree_inherit" model="ir.ui.view">
+        <field name="name">stock.location.tree.inherit</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_tree2"/>
+        <field name="arch" type="xml">
+            <tree position="replace">
+                <tree string="Ubicaciones">
+                    <field name="display_name"/>
+                    <field name="programa_id"/>
+                    <field name="active" invisible="1"/>
+                    <field name="usage"/>
+                    <field name="location_id"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="barcode"/>
+                </tree>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View Inheritance -->
+    <record id="pf_view_location_search_inherit" model="ir.ui.view">
+        <field name="name">stock.location.search.inherit</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_search"/>
+        <field name="arch" type="xml">
+            <search position="replace">
+                <search string="Ubicaciones">
+                    <field name="name"/>
+                    <field name="programa_id"/>
+                    <field name="location_id"/>
+                    <field name="barcode"/>
+                    <separator/>
+                    <filter string="Ubicaciones Internas" name="internal_loc" domain="[('usage', '=', 'internal')]"/>
+                    <filter string="Archivado" name="inactive" domain="[('active', '=', False)]"/>
+                    <group expand="0" string="Agrupar Por">
+                        <filter string="Programa" name="programa" domain="[]" context="{'group_by': 'programa_id'}"/>
+                        <filter string="Ubicación Padre" name="location" domain="[]" context="{'group_by': 'location_id'}"/>
+                        <filter string="Tipo" name="tipo" domain="[]" context="{'group_by': 'usage'}"/>
+                    </group>
+                </search>
+            </search>
+        </field>
+    </record>
+    <record id="action_location_manzana" model="ir.actions.act_window">
+        <field name="name">Ubicaciones</field>
+        <field name="res_model">stock.location</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('visible_en_programa', '=', True)]</field>
+
+        <field name="context">{'filtrar_programa_ubicacion': True, 'manzana_context': True}</field>
+    </record>
+
+    <!-- Menú para ubicaciones en manzana -->
+    <menuitem id="mz_inventario_gestion_almacen_ubicacion" name="Ubicaciones" action="action_location_manzana" parent="mz_inventario_gestion_almacen" sequence="2"/>
+</odoo>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista product.template -->
+    <record id="pf_product_template_form_inherit" model="ir.ui.view">
+        <field name="name">product.template.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_product_tmpl_forecast_report']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_view_orderpoints'][1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_view_orderpoints'][2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_view_related_putaway_rules']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='%(stock.action_product_replenish)d']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vista product.product easy form -->
+    <record id="pf_product_product_view_form_easy_inherit" model="ir.ui.view">
+        <field name="name">product.product.view.form.easy.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="stock.product_product_view_form_easy_inherit_stock"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_related_putaway_rules']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='%(stock.action_product_replenish)d']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vista product.product normal form -->
+    <record id="pf_product_form_view_procurement_button_inherit" model="ir.ui.view">
+        <field name="name">product.product.view.form.procurement.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="stock.product_form_view_procurement_button"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_related_putaway_rules']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_view_orderpoints'][1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_view_orderpoints'][2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='%(stock.action_product_replenish)d']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Ocultar grupo de operaciones -->
+    <record id="pf_product_template_form_inherit_hide_operations" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.hide.operations</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.view_template_property_form"/>
+        <field name="arch" type="xml">
+            <!-- Ocultar grupo de Logística -->
+            <xpath expr="//group[@name='group_lots_and_weight']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Ocultar grupo de Ubicaciones contrapartes -->
+            <xpath expr="//group[@name='stock_property']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Ocultar grupo de operaciones -->
+            <xpath expr="//group[@name='operations']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="pf_product_product_stock_tree_inherit" model="ir.ui.view">
+        <field name="name">product.product</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="stock.product_product_stock_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_orderpoints']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+
+
+</odoo>

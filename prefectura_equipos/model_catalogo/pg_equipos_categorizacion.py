@@ -58,11 +58,7 @@ class Categoria(models.Model):
     
     
          
-    def _track_subtype(self, init_values):        
-        self.ensure_one() #garantiza la uitransferencia de un solo registro       
-        return self.env.ref('prefectura_equipos.asset_historico_categoria')               
-        return sModelosuper(Categoria, self)._track_subtype(init_values)
-       
+     
     _sql_constraints = [('name_unique', 'UNIQUE(grupo_id,name)',"Nombre de la categoria debe ser unico dentro de un mismo grupo!!"),
                         ] 
     

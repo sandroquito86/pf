@@ -9,13 +9,6 @@
             <!-- Limpiar la vista original -->
             <xpath expr="//sheet" position="replace">
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="action_view_all_routes" string="Routes" icon="fa-refresh" class="oe_stat_button" type="object">
-                            <div class="o_stat_info">
-                                <span class="o_stat_text">Routes</span>
-                            </div>
-                        </button>
-                    </div>
                     <widget name="web_ribbon" title="Archivado" bg_color="text-bg-danger" invisible="active"/>
                     <label for="name"/>
                     <h1>
@@ -25,9 +18,9 @@
                         <group>
                             <field name="active" invisible="1"/>
                             <field name="company_id" invisible="1"/>
-                            <field name="programa_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_programa_general_id'}"/>
+                            <field name="programa_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_programa_id'}"/>
                             <field name="code" placeholder="ej. AC"/>
-                            <field name="domain_programa_general_id" invisible="1"/>
+                            <field name="domain_programa_id" invisible="1"/>
                         </group>
                         <group invisible="1">
                             <field name="company_id" groups="base.group_multi_company" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>

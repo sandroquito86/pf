@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pf_view_production_lot_kanban_inherit" model="ir.ui.view">
+        <field name="name">stock.production.lot.kanban.inherit</field>
+        <field name="model">stock.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_kanban"/>
+        <field name="arch" type="xml">
+            <kanban position="attributes">
+                <attribute name="create">false</attribute>
+            </kanban>
+        </field>
+    </record>
+</odoo>

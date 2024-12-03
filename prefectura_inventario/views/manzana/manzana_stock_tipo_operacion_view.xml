@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Modificar la acción existente -->
+    <record id="action_picking_type_manzana" model="ir.actions.act_window">
+        <field name="name">Tipos de Operación</field>
+        <field name="res_model">stock.picking.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'filtrar_programa_tipo_operacion': True, 'manzana_context': True,'create': False,
+        'edit': False,
+        'delete': False}</field>
+        <field name="search_view_id" ref="stock.view_pickingtype_filter"/>
+    </record>
+
+    <menuitem name="Tipos de Operación" action="action_picking_type_manzana" id="mz_inventario_gestion_almacen_tipo_operacion" parent="mz_inventario_gestion_almacen" sequence="3"/>
+</odoo>
