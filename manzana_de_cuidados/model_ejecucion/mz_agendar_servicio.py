@@ -342,28 +342,45 @@ class AgendarServicio(models.Model):
                     raise UserError(f"No hay Turnos disponibles para el servicio de {record.servicio_id.servicio_id.name} con {record.personal_id.name}.")
             
 
+    # def _generate_codigo(self):
+    #     current_year = datetime.now().year
+    #     current_month = datetime.now().month
+    #     prefix = self.env.ref('prefectura_base.codigo_prefectura_items').name
+        
+    #     # Buscar el último código generado este año, excluyendo los registros en estado borrador
+    #     last_record = self.search([
+    #         ('create_date', '>=', f'{current_year}-01-01 00:00:00'),
+    #         ('state', '!=', 'borrador'),
+    #         ('programa_id', '=', self.programa_id.id),
+    #     ], order='codigo_int desc', limit=1)
+    #     if last_record and last_record.codigo and last_record.codigo_int:
+    #         last_number = last_record.codigo_int
+    #     else:
+    #         last_number = 0
+
+    #     new_number = last_number + 1
+    #     # asigna valor al codigo_int del nuevo registro
+    #     self.codigo_int = new_number
+    #     new_number_str = str(new_number).zfill(7)
+        
+    #     return f'{prefix}-{self.programa_id.sigla}-{new_number_str}-{current_month:02d}-{current_year}'
+
     def _generate_codigo(self):
-        current_year = datetime.now().year
-        current_month = datetime.now().month
         prefix = self.env.ref('prefectura_base.codigo_prefectura_items').name
         
-        # Buscar el último código generado este año, excluyendo los registros en estado borrador
-        last_record = self.search([
-            ('create_date', '>=', f'{current_year}-01-01 00:00:00'),
-            ('state', '!=', 'borrador'),
-            ('programa_id', '=', self.programa_id.id),
-        ], order='codigo_int desc', limit=1)
-        if last_record and last_record.codigo and last_record.codigo_int:
-            last_number = last_record.codigo_int
-        else:
-            last_number = 0
-
-        new_number = last_number + 1
-        # asigna valor al codigo_int del nuevo registro
-        self.codigo_int = new_number
-        new_number_str = str(new_number).zfill(7)
+        # Si el registro es nuevo, primero guardamos para obtener el ID
+        if not self.id:
+            self._cr.execute('SAVEPOINT pregenerate_code')
+            self.flush()
         
-        return f'{prefix}-{self.programa_id.sigla}-{new_number_str}-{current_month:02d}-{current_year}'
+        # Usamos el ID del registro para el código
+        codigo_numero = str(self.id).zfill(5)  # Convierte el ID a 5 dígitos
+        
+        # Generamos el código final
+        codigo = f'{prefix}-{self.programa_id.sigla}-{codigo_numero}'
+        
+        
+        return codigo
 
     # def aprobar_horario(self):
     #     for record in self:
@@ -531,7 +548,9 @@ class AgendarServicio(models.Model):
                 view_id = self.env.ref('manzana_de_cuidados.view_agendar_servicio_tree').id
             elif view_type == 'form':
                 view_id = self.env.ref('manzana_de_cuidados.view_agendar_servicio_form').id
-        else:
+        elif user.has_group('manzana_de_cuidados.group_manzana_lider_estrategia') or \
+             user.has_group('manzana_de_cuidados.group_mz_registro_informacion') or \
+             user.has_group('manzana_de_cuidados.group_coordinador_manzana'):
             # Vistas limitadas para usuarios sin permisos
             if view_type == 'tree':
                 view_id = self.env.ref('manzana_de_cuidados.view_agendar_servicio_tree_limit').id

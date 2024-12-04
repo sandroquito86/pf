@@ -121,7 +121,7 @@
         'create': False,
         'edit': False,
         'delete': False,
-        'filtrar_programa': True
+        'filtrar_convoy': True
     }</field>
     </record>
 

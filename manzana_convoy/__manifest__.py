@@ -53,6 +53,15 @@ Long description of module's purpose
 
         #EJECUCION
         'views/ejecucion/mz_agendar_servicio_view.xml', 
+        'views/ejecucion/mz_asistencia_view.xml',  
+
+        #REGISTROS PRESTADOS
+        'views/servicios_prestados/mz_consulta_view.xml', 
+        'views/servicios_prestados/mz_consulta_psicologica_view.xml', 
+        'views/servicios_prestados/mz_cuidado_infantil_view.xml', 
+        'views/servicios_prestados/mz_asesoria_legal_view.xml', 
+        'views/servicios_prestados/mz_servicio_veterinario_view.xml', 
+        
         
         
         # 'views/registro/convoy_view.xml',   

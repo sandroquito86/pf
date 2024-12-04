@@ -156,7 +156,7 @@
                             'form_view_ref': 'manzana_convoy.view_mz_convoy_asignacion_servicio_form'
                         }">
                                 <tree delete="0">
-                                    <field name="state" invisible="1" />
+                                    <field name="state" column_invisible="1"/>
                                     <field name="servicio_id"/>
                                     <field name="personal_ids" widget="many2many_tags"/>
                                     <button name="eliminar_desde_o2m" type="object" icon="fa-trash" help="Eliminar servicio" confirm="¿Está seguro de querer eliminar este servicio y sus planificaciones relacionadas?" invisible="state != 'aprobado'"/>
@@ -173,8 +173,10 @@
                         </page>
                         <page string="Fichas Legalizadas">
                             <group>
-                                <field name="ficha_evento_legalizada" widget="many2many_binary_preview" readonly="state in ('ejecutando', 'fin')"/>
-                                <field name="ficha_implantacion_legalizada" widget="many2many_binary_preview" readonly="state in ('ejecutando', 'fin')"/>
+                                <field name="ficha_evento_legalizada" filename="ficha_evento_legalizada_name"/>
+                                <field name="ficha_evento_legalizada_name" invisible="1"/>
+                                <field name="ficha_implantacion_legalizada" filename="ficha_implantacion_legalizada_name"/>
+                                <field name="ficha_implantacion_legalizada_name" invisible="1"/>
                             </group>
                         </page>
                     </notebook>

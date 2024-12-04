@@ -175,7 +175,7 @@
                     <field name="tipo_paciente"  widget="badge"
                                         decoration-success="tipo_paciente == 'titular'"
                                         decoration-warning="tipo_paciente == 'dependiente'"/>
-                    <field name="beneficiario_id"/>
+                    <!-- <field name="beneficiario_id"/> -->
                     <field name="fecha"/>
                     <field name="hora" widget="float_time"/>
                     <field name="personal_id"/>

@@ -43,17 +43,33 @@ class AgendarServicio(models.Model):
     @api.onchange('fecha_solicitud')
     def _onchange_fecha_solicitud(self):
         for record in self:
-            if record.convoy_id:
-                fecha_solicitud = record.fecha_solicitud
-                if fecha_solicitud:
-                    if not (record.convoy_id.fecha_inicio_evento <= fecha_solicitud <= record.convoy_id.fecha_hasta_evento):
+            fecha_actual = datetime.now() - timedelta(hours=5)
+            warning = {}
+
+            # Caso 1: Sin convoy asignado
+            if not record.convoy_id:
+                if record.fecha_solicitud and record.fecha_solicitud < fecha_actual.date():
+                    record.fecha_solicitud = fecha_actual.date()
+                    warning = {
+                        'title': "Fecha inválida",
+                        'message': "La fecha ha sido ajustada a la fecha actual."
+                    }
+                # Limpiar el horario cuando cambia la fecha
+                record.horario_id = False
+            
+            # Caso 2: Con convoy asignado
+            else:
+                if record.fecha_solicitud:
+                    if not (record.convoy_id.fecha_inicio_evento <= record.fecha_solicitud <= record.convoy_id.fecha_hasta_evento):
                         raise UserError('La fecha seleccionada debe estar dentro del rango de fechas del convoy: {} - {}'.format(
                             record.convoy_id.fecha_inicio_evento.strftime('%d/%m/%Y'),
                             record.convoy_id.fecha_hasta_evento.strftime('%d/%m/%Y')
                         ))
-            else:
-                super(AgendarServicio, self)._onchange_fecha_solicitud()
-        
+            
+            # Retornar warning si existe
+            if warning:
+                return {'warning': warning}
+            
 
     @api.model
     def create(self, vals):
@@ -97,9 +113,10 @@ class AgendarServicio(models.Model):
             # Asignar el horario creado al registro de agendar_servicio
             vals['horario_id'] = horario.id
             vals['fecha_solicitud'] = fecha_actual
-            vals['state'] = 'solicitud'
-            
-            return super(AgendarServicio, self).create(vals)
+            vals['state'] = 'solicitud'            
+            servicio = super(AgendarServicio, self).create(vals)
+            servicio.solicitar_horario()
+            return servicio
     
     @api.onchange('personal_id')
     def _onchange_personal_id(self):

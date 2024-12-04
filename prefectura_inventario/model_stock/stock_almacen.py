@@ -29,23 +29,31 @@ class StockWarehouse(models.Model):
             es_coordinador = user.has_group('manzana_de_cuidados.group_coordinador_manzana')
             es_sistema = user.has_group('manzana_de_cuidados.group_beneficiario_manager')
             es_stock_manager = user.has_group('stock.group_stock_manager')
+            
             if es_stock_manager:
                 # Si es stock manager, puede ver todos los programas
                 programas = self.env['pf.programas'].search([])
-                record.domain_programa_id = [('id', 'in', programas.ids)] if programas else [('id', '=', False)]
+                domain = str([('id', 'in', programas.ids)]) if programas else str([('id', '=', False)])
+                record.domain_programa_id = domain
+                
             elif es_coordinador:
                 # Si es coordinador, solo ve su programa
                 if user.programa_id:
-                    record.domain_programa_id = [('id', '=', user.programa_id.id)]
+                    record.domain_programa_id = str([('id', '=', user.programa_id.id)])
                 else:
-                    record.domain_programa_id = [('id', '=', False)]
+                    record.domain_programa_id = str([('id', '=', False)])
+                    
             elif es_sistema:
                 # Si es sistema, ve todos los programas del módulo 2
-                programas = self.env['pf.programas'].search([('modulo_id', '=', self.env.ref('prefectura_base.modulo_2').id)])
-                record.domain_programa_id = [('id', 'in', programas.ids)] if programas else [('id', '=', False)]
+                programas = self.env['pf.programas'].search([
+                    ('modulo_id', '=', self.env.ref('prefectura_base.modulo_2').id)
+                ])
+                domain = str([('id', 'in', programas.ids)]) if programas else str([('id', '=', False)])
+                record.domain_programa_id = domain
+                
             else:
                 # Para otros usuarios, no ven ningún programa
-                record.domain_programa_id = [('id', '=', False)]
+                record.domain_programa_id = str([('id', '=', False)])
 
     @api.model
     def create(self, vals):
@@ -72,27 +80,7 @@ class StockWarehouse(models.Model):
     
    
 
-    @api.depends('code')
-    def _compute_domain_programas(self):
-        for record in self:
-            user = self.env.user
-            es_coordinador = user.has_group('manzana_de_cuidados.group_coordinador_manzana')
-            es_sistema = user.has_group('manzana_de_cuidados.group_beneficiario_manager')
-
-            if es_coordinador:
-                # Si es coordinador, solo ve su programa
-                if user.programa_id:
-                    record.domain_programa_id = [('id', '=', user.programa_id.id)]
-                else:
-                    record.domain_programa_id = [('id', '=', False)]
-            elif es_sistema:
-                # Si es sistema, ve todos los programas del módulo 2
-                programas = self.env['pf.programas'].search([('modulo_id', '=', self.env.ref('prefectura_base.modulo_2').id)])
-                record.domain_programa_id = [('id', 'in', programas.ids)] if programas else [('id', '=', False)]
-            else:
-                # Para otros usuarios, no ven ningún programa
-                record.domain_programa_id = [('id', '=', False)]
-
+   
         
     def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
         if self._context.get('filtrar_programa_almacen'):

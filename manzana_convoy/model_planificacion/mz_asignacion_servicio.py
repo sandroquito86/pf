@@ -23,7 +23,7 @@ class AsignarServicio(models.Model):
         args = args or []
         user = self.env.user
         
-        if self._context.get('filtrar_programa'):                   
+        if self._context.get('filtrar_convoy'):                   
             # Verificar grupos
             if user.has_group('manzana_convoy.group_mz_convoy_coordinador'):
                 # Para coordinador: ver solo servicios de su convoy

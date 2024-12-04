@@ -5,4 +5,5 @@ from . import model_planificacion
 from . import model_wizard
 from . import model_registro
 from . import model_ejecucion
+from . import model_servicios_prestados
 

@@ -38,48 +38,15 @@ class ConsultaPsicologica(models.Model):
     horario_id_domain = fields.Char(compute="_compute_horario_id_domain", readonly=True, store=False, )
     horario_id = fields.Many2one(string='Turno', comodel_name='mz.planificacion.servicio', ondelete='restrict') 
     dias_disponibles_html = fields.Html(    string='Días Disponibles',    compute='_compute_dias_disponibles_html',    sanitize=False)
+    state = fields.Selection([('draft', 'Borrador'), ('final', 'Finalizado')], string='Estado', default='draft', tracking=True)
+    tipo_paciente = fields.Selection([('titular', 'Titular'), ('dependiente', 'Dependiente')], string='Tipo de Paciente', default='titular', required=True, tracking=True)
+    dependiente_id = fields.Many2one('mz.dependiente', string='Dependiente', tracking=True, domain="[('beneficiario_id', '=', beneficiario_id)]")
+    historia_psicologica_id = fields.Many2one('mz.historia.psicologica', string='Historia Psicológica', readonly=True, store=True)
+    diagnostico_ids = fields.One2many('mz.diagnostico.psicologico.linea', 'consulta_id', string='Diagnósticos')
+    historial_count = fields.Integer(string='Cantidad de Historias', compute='_compute_historial_count')
+    estado_new_solicitud = fields.Selection([('borrador', 'Borrador'), ('solicitado', 'Solicitado')], string='Estado Solicitud', default='borrador', tracking=True)
 
-    state = fields.Selection([
-        ('draft', 'Borrador'),
-        ('final', 'Finalizado')
-    ], string='Estado', default='draft', tracking=True)
-
-    tipo_paciente = fields.Selection([
-        ('titular', 'Titular'),
-        ('dependiente', 'Dependiente')
-    ], string='Tipo de Paciente', default='titular', required=True, tracking=True)
-    
-    dependiente_id = fields.Many2one(
-        'mz.dependiente',
-        string='Dependiente',
-        tracking=True,
-        domain="[('beneficiario_id', '=', beneficiario_id)]"
-    )
-
-    historia_psicologica_id = fields.Many2one(
-        'mz.historia.psicologica', 
-        string='Historia Psicológica', 
-        readonly=True,
-        store=True
-    )
-
-    diagnostico_ids = fields.One2many(
-        'mz.diagnostico.psicologico.linea',
-        'consulta_id',
-        string='Diagnósticos'
-    )
-    historial_count = fields.Integer(
-        string='Cantidad de Historias',
-        compute='_compute_historial_count'
-    )
-
-    estado_new_solicitud = fields.Selection([
-    ('borrador', 'Borrador'),
-    ('solicitado', 'Solicitado')], string='Estado Solicitud', default='borrador', tracking=True)
-
-    _sql_constraints = [
-        ('codigo_unique', 'unique(codigo)', 'El código de la consulta debe ser único.')
-    ]
+    _sql_constraints = [('codigo_unique', 'unique(codigo)', 'El código de la consulta debe ser único.')]
 
     @api.depends('fecha')
     def _compute_hora(self):
@@ -476,57 +443,17 @@ class ConsultaPsicologica(models.Model):
                 view_id = self.env.ref('manzana_de_cuidados.view_mz_consulta_psicologica_tree').id
             elif view_type == 'form':
                 view_id = self.env.ref('manzana_de_cuidados.view_mz_consulta_psicologica_form').id
-        else:
+        elif user.has_group('manzana_de_cuidados.group_manzana_lider_estrategia') or \
+             user.has_group('manzana_de_cuidados.group_mz_registro_informacion') or \
+             user.has_group('manzana_de_cuidados.group_coordinador_manzana'):
             # Vistas limitadas para usuarios sin permisos
             if view_type == 'tree':
                 view_id = self.env.ref('manzana_de_cuidados.view_mz_consulta_psicologica_tree_limit').id
             elif view_type == 'form':
                 view_id = self.env.ref('manzana_de_cuidados.view_mz_consulta_psicologica_form_limit').id
 
-
-        return super().get_view(
-            view_id=view_id, 
-            view_type=view_type, 
-            context=context, 
-            toolbar=toolbar, 
-            submenu=submenu,
-            **kwargs
-        )
-    
-
-    # def get_appropriate_view(self):
-    #     # Obtener el usuario actual
-    #     user = self.env.user
-        
-    #     # Definir vistas por defecto (limitadas)
-    #     tree_view = self.env.ref('manzana_de_cuidados.view_mz_consulta_psicologica_tree_limit').id
-    #     form_view = self.env.ref('manzana_de_cuidados.view_mz_consulta_psicologica_form_limit').id
-        
-    #     # Verificar si el usuario tiene permisos específicos
-    #     if (user.has_group('manzana_de_cuidados.group_mz_prestador_servicio') or \
-    #         user.has_group('manzana_de_cuidados.group_beneficiario_manager')):
-    #         # Vistas completas para usuarios con permisos
-    #         tree_view = self.env.ref('manzana_de_cuidados.view_mz_consulta_psicologica_tree').id
-    #         form_view = self.env.ref('manzana_de_cuidados.view_mz_consulta_psicologica_form_read').id
-        
-    #     # Preparar la acción de ventana
-    #     action = {
-    #         'name': 'Consulta Psicológicas',
-    #         'type': 'ir.actions.act_window',
-    #         'res_model': 'mz.consulta.psicologica',
-    #         'view_mode': 'tree,form',
-    #         'views': [
-    #             (tree_view, 'tree'),
-    #             (form_view, 'form')
-    #         ],
-    #         'context': {
-    #             'default_modulo_id': 2,
-    #             'filtrar_consulta_psic': True
-    #         },
-    #         'target': 'current'
-    #     }
-        
-    #     return action
+        return super().get_view(view_id=view_id, view_type=view_type, context=context, toolbar=toolbar, submenu=submenu, **kwargs)
+   
 
 class DiagnosticoPsicologicoLinea(models.Model):
     _name = 'mz.diagnostico.psicologico.linea'

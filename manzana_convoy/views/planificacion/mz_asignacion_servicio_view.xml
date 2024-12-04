@@ -167,7 +167,7 @@
         (0, 0, {'view_mode': 'tree', 'view_id': ref('view_mz__convoy_asignacion_servicio_tree')}),
         (0, 0, {'view_mode': 'form', 'view_id': ref('view_mz__convoy_asignacion_servicio_form')})
     ]"/>
-            <field name="context">{'filtrar_programa': True}</field>
+            <field name="context">{'filtrar_convoy': True}</field>
             <field name="domain">[('programa_id.modulo_id', '=', 4)]</field>
         </record>
 

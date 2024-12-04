@@ -16,128 +16,32 @@ class MzCuidadoChild(models.Model):
     # Campos de identificación y control
     codigo = fields.Char(string='Código', required=True,  store=True)
 
-    tipo_servicio = fields.Selection([
-        ('guarderia', 'Guardería'),
-        ('lectura', 'Animación a la Lectura')
-    ], string='Tipo de Servicio', required=True, tracking=True, default='guarderia')
-    
-    # Campos relacionales
-    beneficiario_id = fields.Many2one(
-        'mz.beneficiario',
-        string='Beneficiario',
-        required=True,
-        tracking=True
-    )
+    tipo_servicio = fields.Selection([('guarderia', 'Guardería'), ('lectura', 'Animación a la Lectura')], string='Tipo de Servicio', required=True, tracking=True, default='guarderia')
+    beneficiario_id = fields.Many2one(   'mz.beneficiario', string='Beneficiario', required=True, tracking=True)
     servicio_id = fields.Many2one(string='Servicio', comodel_name='mz.asignacion.servicio', ondelete='restrict')
     tipo_beneficiario = fields.Selection([('titular', 'Titular'),('dependiente', 'Dependiente') ], string='Tipo de Beneficiario')
-    dependiente_id = fields.Many2one(
-        'mz.dependiente',
-        string='Niño/a',
-        required=True,
-        domain="[('beneficiario_id', '=', beneficiario_id)]",
-        tracking=True
-    )
-    personal_id = fields.Many2one(
-        'hr.employee',
-        string='Prestador de Servicio',
-        required=True,
-        tracking=True
-    )
-    programa_id = fields.Many2one(
-        'pf.programas',
-        string='Programa',
-        required=True
-    )
-    asistencia_servicio_id = fields.Many2one(
-        'mz.asistencia_servicio',
-        string='Asistencia Servicio'
-    )
-
-    # Campos de tiempo
-    fecha = fields.Date(
-        string='Fecha',
-        required=True,
-        default=fields.Date.context_today,
-        tracking=True
-    )
-    hora_entrada = fields.Float(
-        string='Hora de Entrada',
-        required=True,
-        tracking=True
-    )
-    hora_salida = fields.Float(
-        string='Hora de Salida',
-        tracking=True
-    )
-
-    # Campos de contacto
-    telefono_contacto = fields.Char(
-        string='Teléfono de Contacto',
-        required=True,
-        tracking=True
-    )
-    contacto_emergencia = fields.Char(
-        string='Contacto de Emergencia',
-        tracking=True
-    )
-
-    # Estado del servicio
-    state = fields.Selection([
-        ('borrador', 'Borrador'),
-        ('en_curso', 'En Curso'),
-        ('finalizado', 'Finalizado')
-    ], string='Estado', default='borrador', tracking=True)
-
-    # Campos específicos de guardería
-    comportamiento = fields.Text(
-        string='Cambios de Comportamiento',
-        tracking=True
-    )
-    incidentes = fields.Text(
-        string='Incidentes',
-        tracking=True
-    )
-    alimentacion = fields.Selection([
-        ('completa', 'Comió Todo'),
-        ('parcial', 'Comió Parcialmente'),
-        ('no_comio', 'No Comió')
-    ], string='Alimentación', tracking=True)
-    siesta = fields.Selection([
-        ('si', 'Sí durmió'),
-        ('no', 'No durmió'),
-        ('parcial', 'Durmió poco')
-    ], string='Siesta', tracking=True)
-
+    dependiente_id = fields.Many2one('mz.dependiente', string='Niño/a', required=True, domain="[('beneficiario_id', '=', beneficiario_id)]", tracking=True)
+    personal_id = fields.Many2one('hr.employee', string='Prestador de Servicio', required=True, tracking=True)
+    programa_id = fields.Many2one('pf.programas', string='Programa', required=True)
+    asistencia_servicio_id = fields.Many2one('mz.asistencia_servicio', string='Asistencia Servicio' )
+    fecha = fields.Date(string='Fecha', required=True, default=fields.Date.context_today, tracking=True    )
+    hora_entrada = fields.Float(string='Hora de Entrada', required=True, tracking=True)
+    hora_salida = fields.Float(string='Hora de Salida', tracking=True)
+    telefono_contacto = fields.Char(string='Teléfono de Contacto', required=True, tracking=True)
+    contacto_emergencia = fields.Char(string='Contacto de Emergencia', tracking=True)
+    state = fields.Selection([('borrador', 'Borrador'), ('en_curso', 'En Curso'), ('finalizado', 'Finalizado')], string='Estado', default='borrador', tracking=True)
+    comportamiento = fields.Text(string='Cambios de Comportamiento', tracking=True)
+    incidentes = fields.Text(string='Incidentes', tracking=True)
+    alimentacion = fields.Selection([('completa', 'Comió Todo'), ('parcial', 'Comió Parcialmente'), ('no_comio', 'No Comió')], string='Alimentación', tracking=True)
+    siesta = fields.Selection([('si', 'Sí durmió'), ('no', 'No durmió'), ('parcial', 'Durmió poco')], string='Siesta', tracking=True)
     # Campos específicos de lectura
-    nivel_participacion = fields.Selection([
-        ('baja', 'Baja'),
-        ('media', 'Media'),
-        ('alta', 'Alta')
-    ], string='Nivel de Participación', tracking=True)
-    tema_lectura = fields.Char(
-        string='Tema de Lectura',
-        tracking=True
-    )
-    comprension = fields.Selection([
-        ('excelente', 'Excelente'),
-        ('buena', 'Buena'),
-        ('regular', 'Regular'),
-        ('necesita_apoyo', 'Necesita Apoyo')
-    ], string='Nivel de Comprensión', tracking=True)
-
+    nivel_participacion = fields.Selection([('baja', 'Baja'), ('media', 'Media'), ('alta', 'Alta')], string='Nivel de Participación', tracking=True)
+    tema_lectura = fields.Char(string='Tema de Lectura', tracking=True)
+    comprension = fields.Selection([('excelente', 'Excelente'), ('buena', 'Buena'), ('regular', 'Regular'), ('necesita_apoyo', 'Necesita Apoyo')], string='Nivel de Comprensión', tracking=True)
     # Campos comunes
-    observaciones = fields.Text(
-        string='Observaciones',
-        tracking=True
-    )
-    requiere_seguimiento = fields.Boolean(
-        string='Requiere Seguimiento',
-        tracking=True
-    )
-    motivo_seguimiento = fields.Text(
-        string='Motivo del Seguimiento',
-        tracking=True
-    )
+    observaciones = fields.Text(string='Observaciones', tracking=True)
+    requiere_seguimiento = fields.Boolean(string='Requiere Seguimiento', tracking=True)
+    motivo_seguimiento = fields.Text(string='Motivo del Seguimiento', tracking=True)
 
     @api.constrains('hora_entrada', 'hora_salida')
     def _check_hora_entrada(self):
@@ -214,7 +118,9 @@ class MzCuidadoChild(models.Model):
                 view_id = self.env.ref('manzana_de_cuidados.view_mz_cuidado_child_tree').id
             elif view_type == 'form':
                 view_id = self.env.ref('manzana_de_cuidados.view_mz_cuidado_child_form').id
-        else:
+        elif user.has_group('manzana_de_cuidados.group_manzana_lider_estrategia') or \
+             user.has_group('manzana_de_cuidados.group_mz_registro_informacion') or \
+             user.has_group('manzana_de_cuidados.group_coordinador_manzana'):
             # Vistas limitadas para usuarios sin permisos
             if view_type == 'tree':
                 view_id = self.env.ref('manzana_de_cuidados.view_mz_cuidado_child_tree').id

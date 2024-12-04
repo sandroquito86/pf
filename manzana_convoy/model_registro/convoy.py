@@ -49,10 +49,14 @@ class FichaEvento(models.Model):
     colaboradores_ids = fields.Many2many(string='Colaboradores', comodel_name='hr.employee', relation='mz_convoy_colaborador_rel', 
                                       column1='convoy_id', column2='colaborador_id')
 
-    ficha_evento_legalizada = fields.Many2many(comodel_name='ir.attachment', relation='pf_mz_convoy_ficha_evento_legalizada', 
-                                      column1='convoy_id', column2='ficha_id', string='Ficha Evento Legalizada')
-    ficha_implantacion_legalizada = fields.Many2many(comodel_name='ir.attachment', relation='pf_mz_convoy_ficha_impantacion_legalizada', 
-                                      column1='convoy_id', column2='ficha_id', string='Ficha Implantación Legalizada')
+   
+    
+    ficha_evento_legalizada = fields.Binary(string="Ficha Evento Legalizada", attachment=True)
+    ficha_evento_legalizada_name = fields.Char(string="Nombre Ficha Evento")
+
+    ficha_implantacion_legalizada = fields.Binary(string="Ficha Implantación Legalizada", attachment=True)
+    ficha_implantacion_legalizada_name = fields.Char(string="Nombre Ficha Implantación")
+
     beneficiario_ids = fields.One2many('mz_convoy.beneficiario', 'convoy_id', string='Beneficiarios')
     beneficiario_count = fields.Integer( string='Número de Beneficiarios', compute='_compute_beneficiario_count')
     beneficiarios_masivo_count = fields.Integer(string='Masivo', compute='_compute_beneficiarios_count')
@@ -261,6 +265,11 @@ class FichaEvento(models.Model):
     def action_ejecutar_convoy(self):
         """Método para ejecutar convoy y asignar permisos a operadores"""
         self.ensure_one()
+        if not self.servicio_ids:
+            raise UserError("Debe existir al menos un servicio asignado al convoy")
+    
+        if not self.operadores_ids:
+            raise UserError("Debe existir al menos un operador asignado al convoy")
         # Buscar todos los registros de horarios relacionados con este convoy
         horarios = self.env['mz.genera.planificacion.servicio'].search([('convoy_id', '=', self.id)])
         if horarios:

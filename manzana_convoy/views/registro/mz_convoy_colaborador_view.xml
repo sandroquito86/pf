@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem id="menu_mz_convoy_employee" name="Colaboradores" action="manzana_de_cuidados.mz_action_employee" parent="mz_convoy_menu_registro" 
+    <!-- <menuitem id="menu_mz_convoy_employee" name="Colaboradores" action="manzana_de_cuidados.mz_action_employee" parent="mz_convoy_menu_registro" 
     groups="group_mz_convoy_administrador,group_mz_convoy_coordinador"
-    sequence="100"/>
+    sequence="100"/> -->
 </odoo>

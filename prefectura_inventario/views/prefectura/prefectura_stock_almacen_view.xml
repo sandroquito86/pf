@@ -18,9 +18,10 @@
                         <group>
                             <field name="active" invisible="1"/>
                             <field name="company_id" invisible="1"/>
+                             <field name="domain_programa_id" invisible="1"/>
                             <field name="programa_id" options="{'no_create': True, 'no_open': True, 'no_create_edit': True, 'domain_field': 'domain_programa_id'}"/>
                             <field name="code" placeholder="ej. AC"/>
-                            <field name="domain_programa_id" invisible="1"/>
+                           
                         </group>
                         <group invisible="1">
                             <field name="company_id" groups="base.group_multi_company" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>

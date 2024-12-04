@@ -14,7 +14,7 @@ from datetime import timedelta
 
 
 
-class GenerarHorarios(models.Model):
+class ConvoyGenerarHorarios(models.Model):
     _inherit = 'mz.genera.planificacion.servicio'
 
     
@@ -39,7 +39,7 @@ class GenerarHorarios(models.Model):
         args = args or []
         user = self.env.user
         
-        if self._context.get('filtrar_programa'):
+        if self._context.get('filtrar_convoy'):
             # Verificar grupos
             if user.has_group('manzana_convoy.group_mz_convoy_coordinador'):
                 # Para coordinador: ver solo horarios de programas en sus convoyes
@@ -55,7 +55,7 @@ class GenerarHorarios(models.Model):
                 
             args = base_args + args
             
-        return super(GenerarHorarios, self)._search(
+        return super(ConvoyGenerarHorarios, self)._search(
             args, 
             offset=offset, 
             limit=limit, 

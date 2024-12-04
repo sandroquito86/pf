@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <record id="action_mz_convoy_consulta_psicologica" model="ir.actions.act_window">
+            <field name="name">Consultas Psicológicas</field>
+            <field name="res_model">mz.consulta.psicologica</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'filtrar_convoy': True,  'default_modulo_id': 4}</field>
+            <field name="domain">[('programa_id.modulo_id', '=', 4)]</field>
+        </record>
+
+        <menuitem id="menu_action_mz_convoy_consulta_psicologica" name="Psicológicas" parent="menu_mz_convoy_servicios_consultas" action="action_mz_convoy_consulta_psicologica" sequence="20"/>
+
+    </data>
+</odoo>

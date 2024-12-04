@@ -643,6 +643,14 @@ class Consulta(models.Model):
     def action_finalizar(self):
         self.write({'state': 'final'})   
 
+     
+
+
+
+
+
+   
+
     @api.model
     def get_view(self, view_id=None, view_type='form', context=None, toolbar=False, submenu=False, **kwargs):
         context = context or {}
@@ -654,7 +662,9 @@ class Consulta(models.Model):
                 view_id = self.env.ref('manzana_de_cuidados.view_mz_consulta_tree').id
             elif view_type == 'form':
                 view_id = self.env.ref('manzana_de_cuidados.view_mz_consulta_form').id
-        else:
+        elif user.has_group('manzana_de_cuidados.group_manzana_lider_estrategia') or \
+             user.has_group('manzana_de_cuidados.group_mz_registro_informacion') or \
+             user.has_group('manzana_de_cuidados.group_coordinador_manzana'):
             # Vistas limitadas para usuarios sin permisos
             if view_type == 'tree':
                 view_id = self.env.ref('manzana_de_cuidados.view_mz_consulta_tree_limit').id
