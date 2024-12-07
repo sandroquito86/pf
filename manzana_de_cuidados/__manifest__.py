@@ -35,6 +35,8 @@ Long description of module's purpose
         'views/mz_catalogo_views.xml',
         'views/mz_catalogo_items_views.xml',
         'views/mz_programas_view.xml',
+        'views/wizard/mz_convoy_control_asistencia.xml',        
+
         
         'views/views_servicio/mz_servicio_view.xml',
         'views/views_servicio/mz_sub_servicios_view.xml',

@@ -22,8 +22,8 @@ class AsignarServicio(models.Model):
         """
         args = args or []
         user = self.env.user
-        
-        if self._context.get('filtrar_convoy'):                   
+        base_args = [('id', '=', -1)]  # Dominio imposible por defecto
+        if self._context.get('filtrar_convoy'):
             # Verificar grupos
             if user.has_group('manzana_convoy.group_mz_convoy_coordinador'):
                 # Para coordinador: ver solo servicios de su convoy
@@ -31,10 +31,16 @@ class AsignarServicio(models.Model):
                     ('director_coordinador.user_id', '=', user.id)
                 ]).ids
                 base_args = [('convoy_id', 'in', convoy_ids)]
-            
             elif user.has_group('manzana_convoy.group_mz_convoy_administrador'):
                 # Para admin/asistente: ver servicios con modulo_id = 4
-                base_args = [('programa_id.modulo_id', '=', 4)]            
+                base_args = [('programa_id.modulo_id', '=', 4)]
+            elif user.has_group('manzana_convoy.group_mz_convoy_operador'):
+                # Para operador: ver solo servicios de convoyes donde está asignado y están en ejecución
+                convoy_ids = self.env['mz.convoy'].search([
+                    ('state', '=', 'ejecutando'),
+                    ('operadores_ids', 'in', user.employee_id.id)
+                ]).ids
+                base_args = [('convoy_id', 'in', convoy_ids)]
             args = base_args + args
         return super(AsignarServicio, self)._search(args, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
     

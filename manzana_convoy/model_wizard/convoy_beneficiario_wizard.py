@@ -86,10 +86,11 @@ class ConvoyBeneficiarioWizard(models.TransientModel):
     discapacidad_hogar = fields.Selection([('si', 'SI'), ('no', 'NO')], string='¿Hay personas con discapacidad viviendo en su hogar?')
     tiene_discapacidad_hogar = fields.Selection([('si', 'SI'), ('no', 'NO')], string='¿Hay personas con discapacidad viviendo en su hogar?', default='no')
     tipo_discapacidad_hogar_id = fields.Many2one('pf.items', string='¿Qué tipo de discapacidad tiene?',
-                                                 domain=lambda self: [('catalogo_id', '=', self.env.ref('prefectura_base.tipos_discapacidad').id)])   
- 
-    servicio_id = fields.Many2one('mz.asignacion.servicio', string='Servicio', domain="[('programa_id', '=', programa_id)]")
+                                                 domain=lambda self: [('catalogo_id', '=', self.env.ref('prefectura_base.tipos_discapacidad').id)])    
     dependientes_ids = fields.One2many('mz_convoy.dependiente_wizard', 'wizard_id', string='Dependientes')
+    
+    servicio_ids = fields.Many2many(string='Servicios a Recibir', comodel_name='mz.asignacion.servicio', relation='wz_beneficiario_servicio_rel', domain="[('programa_id', '=', programa_id)]", column1='wz_beneficiario_id', column2='sevicio_id',)
+    
 
     @api.model
     def default_get(self, fields_list):
@@ -187,48 +188,59 @@ class ConvoyBeneficiarioWizard(models.TransientModel):
             ], limit=1)             
             self._cargar_beneficiario(beneficiario)
         else:
-            self.apellido_paterno = False
-            self.apellido_materno = False
-            self.primer_nombre = False
-            self.segundo_nombre = False
-            self.es_extranjero = False
-            self.pais_id = False
-            self.celular = False
-            self.operadora_id = False
-            self.fecha_nacimiento = False
-            self.estado_civil_id = False
-            self.genero_id = False
-            self.provincia_id = False
-            self.ciudad_id = False
-            self.direccion = False
-            self.email = False
-            self.tiene_discapacidad = False
-            self.recibe_bono = False
-            self.dependientes_ids = [(5, 0, 0)]  # Limpiar dependientes
+            # Limpiar campos básicos
+            campos_basicos = {
+                'apellido_paterno': False,
+                'apellido_materno': False,
+                'primer_nombre': False,
+                'segundo_nombre': False,
+                'es_extranjero': False,
+                'pais_id': False,
+                'celular': False,
+                'operadora_id': False,
+                'fecha_nacimiento': False,
+                'estado_civil_id': False,
+                'genero_id': False,
+                'provincia_id': False,
+                'ciudad_id': False,
+                'direccion': False,
+                'email': False,
+                'tiene_discapacidad': False,
+                'recibe_bono': False,
+                'dependientes_ids': [(5, 0, 0)]
+            }
+            
+            # Campos socioeconómicos
+            campos_socioeconomicos = {
+                'nivel_instruccion_id': False,
+                'situacion_laboral_id': False,
+                'tipo_vivienda_id': False,
+                'tiene_internet': False,
+                'tiene_agua_potable': False,
+                'tiene_luz_electrica': False,
+                'tiene_alcantarillado': False,
+                'es_cuidador': False,
+                'hora_tarea_domestica': False,
+                'sostiene_hogar': False,
+                'enfermedad_catastrofica': False,
+                'hombres_hogar': False,
+                'mujer_hogar': False,
+                'ninos_menores': False,
+                'ninos_5_estudiando': False,
+                'mujeres_embarazadas': False,
+                'mujeres_embarazadas_chequeos': False,
+                'mujeres_embarazadas_menores': False,
+                'mayor_65': False,
+                'tiene_discapacidad_hogar': False,
+                'tipo_discapacidad_hogar_id': False
+            }
 
-            # Limpiar campos socioeconómicos si existen
+            # Actualizar campos básicos
+            self.update(campos_basicos)
+
+            # Actualizar campos socioeconómicos si existen
             if hasattr(self, 'nivel_instruccion_id'):
-                self.nivel_instruccion_id = False
-                self.situacion_laboral_id = False
-                self.tipo_vivienda_id = False
-                self.tiene_internet = False
-                self.tiene_agua_potable = False
-                self.tiene_luz_electrica = False
-                self.tiene_alcantarillado = False
-                self.es_cuidador = False
-                self.hora_tarea_domestica = False
-                self.sostiene_hogar = False
-                self.enfermedad_catastrofica = False
-                self.hombres_hogar = False
-                self.mujer_hogar = False
-                self.ninos_menores = False
-                self.ninos_5_estudiando = False
-                self.mujeres_embarazadas = False
-                self.mujeres_embarazadas_chequeos = False
-                self.mujeres_embarazadas_menores = False
-                self.mayor_65 = False
-                self.tiene_discapacidad_hogar = False
-                self.tipo_discapacidad_hogar_id = False
+                self.update(campos_socioeconomicos)
                 
 
     def _cargar_beneficiario(self, beneficiario):
@@ -262,6 +274,8 @@ class ConvoyBeneficiarioWizard(models.TransientModel):
         for dep_convoy in dependientes_convoy:
             if dep_convoy.dependiente_id:
                 self.dependientes_ids = [(0, 0, {
+                    'programa_id': self.programa_id.id,  # Agregamos el programa_id
+                    'dependiente_id': dep_convoy.dependiente_id.id,
                     'tipo_dependiente': dep_convoy.dependiente_id.tipo_dependiente.id,
                     'primer_apellido': dep_convoy.dependiente_id.primer_apellido,
                     'segundo_apellido': dep_convoy.dependiente_id.segundo_apellido,
@@ -368,11 +382,8 @@ class ConvoyBeneficiarioWizard(models.TransientModel):
         
         return vals
     
-   
-    
     def action_register(self):
         """Registra o actualiza el beneficiario en mz.beneficiario y lo añade al convoy."""
-        
         # Preparar los valores para el beneficiario
         vals = self._prepare_beneficiary_values()
         
@@ -382,20 +393,19 @@ class ConvoyBeneficiarioWizard(models.TransientModel):
         ], limit=1)
         
         if existing_beneficiario:
-            # Si existe, actualizamos los campos del beneficiario existente
             existing_beneficiario.write(vals)
             beneficiario = existing_beneficiario
         else:
-            # Si no existe, creamos uno nuevo
             beneficiario = self.env['mz.beneficiario'].create(vals)
+
+        # IMPORTANTE: Asignamos el beneficiario_id al wizard para que esté disponible
+        self.beneficiario_id = beneficiario.id
 
         # Actualizar o crear relación convoy-beneficiario
         rel_vals = {
             'tipo_registro': self.tipo_registro,
             'fecha_registro': fields.Datetime.now(),
         }
-        if self.tipo_registro in ['asistencia', 'socioeconomico']:
-            rel_vals['servicio_id'] = self.servicio_id.id if self.servicio_id else False
 
         # Buscar si ya existe la relación
         existing_rel = self.env['mz_convoy.beneficiario'].search([
@@ -404,10 +414,8 @@ class ConvoyBeneficiarioWizard(models.TransientModel):
         ], limit=1)
 
         if existing_rel:
-            # Si existe, solo actualizamos
             existing_rel.write(rel_vals)
         else:
-            # Si no existe, creamos nueva relación
             rel_vals.update({
                 'convoy_id': self.convoy_id.id,
                 'beneficiario_id': beneficiario.id,
@@ -415,74 +423,182 @@ class ConvoyBeneficiarioWizard(models.TransientModel):
             })
             self.env['mz_convoy.beneficiario'].create(rel_vals)
 
-        # Obtener los dependientes actuales en el convoy
+        # Procesar los dependientes actuales
         dependientes_actuales = self.env['mz_convoy.beneficiario'].search([
             ('convoy_id', '=', self.convoy_id.id),
             ('beneficiario_id', '=', beneficiario.id),
             ('tipo_beneficiario', '=', 'dependiente')
         ])
 
-        # Crear lista de IDs de dependientes en el wizard
         dependientes_wizard_ids = self.dependientes_ids.mapped('dependiente_id.id')
 
-        # Eliminar registros de dependientes que ya no están en el wizard
         for dep_actual in dependientes_actuales:
             if dep_actual.dependiente_id.id not in dependientes_wizard_ids:
                 dep_actual.unlink()
 
-        # Procesar los dependientes del beneficiario
+        # Procesar los dependientes del wizard
         for dependiente_wizard in self.dependientes_ids:
-            dependiente_vals = {
-                'primer_apellido': dependiente_wizard.primer_apellido,
-                'segundo_apellido': dependiente_wizard.segundo_apellido,
-                'primer_nombre': dependiente_wizard.primer_nombre,
-                'segundo_nombre': dependiente_wizard.segundo_nombre,
-                'fecha_nacimiento': dependiente_wizard.fecha_nacimiento,
-                'tipo_dependiente': dependiente_wizard.tipo_dependiente.id,
-                'tipo_documento': dependiente_wizard.tipo_documento,
-                'numero_documento': dependiente_wizard.numero_documento,
-                'beneficiario_id': beneficiario.id,
-            }
-            
             # Buscar si el dependiente ya existe
-            existing_dependiente = self.env['mz.dependiente'].search([
-                ('numero_documento', '=', dependiente_wizard.numero_documento),
-                ('beneficiario_id', '=', beneficiario.id)
+            existing_dependiente = dependiente_wizard.dependiente_id or self.env['mz.dependiente'].search([
+                ('tipo_documento', '=', dependiente_wizard.tipo_documento),
+                ('numero_documento', '=', dependiente_wizard.numero_documento)
             ], limit=1)
-            
+
             if existing_dependiente:
-                # Si existe, actualizamos sus datos
+                # Si existe, solo actualizamos sus datos si hay cambios
+                dependiente_vals = dependiente_wizard._prepare_dependiente_values()
                 existing_dependiente.write(dependiente_vals)
+                dependiente = existing_dependiente
             else:
-                # Si no existe, lo creamos
-                existing_dependiente = self.env['mz.dependiente'].create(dependiente_vals)
+                raise UserError('No se encontró el dependiente en el sistema')
 
-            # Buscar si ya existe la relación convoy-dependiente
-            existing_dep_rel = self.env['mz_convoy.beneficiario'].search([
-                ('convoy_id', '=', self.convoy_id.id),
-                ('dependiente_id', '=', existing_dependiente.id),
-                ('tipo_beneficiario', '=', 'dependiente')
-            ], limit=1)
-
-            if existing_dep_rel:
-                # Si existe, solo actualizamos
-                dep_rel_vals = {
-                    'fecha_registro': fields.Datetime.now(),
-                }
-                existing_dep_rel.write(dep_rel_vals)
+            # Crear relación convoy-dependiente si no existe
+            convoy_dependiente = self.env['mz_convoy.beneficiario'].search([
+            ('convoy_id', '=', self.convoy_id.id),
+            ('beneficiario_id', '=', beneficiario.id),
+            ('dependiente_id', '=', dependiente.id),
+            ('tipo_beneficiario', '=', 'dependiente')
+                ], limit=1)
+            if convoy_dependiente:
+                # Si existe, agregamos los nuevos servicios a los existentes
+                if dependiente_wizard.servicio_ids:
+                    convoy_dependiente.write({
+                        'servicio_ids': [(4, servicio.servicio_id.id) for servicio in dependiente_wizard.servicio_ids]
+                    })
             else:
-                # Si no existe, creamos nueva relación para el dependiente
-                dep_rel_vals = {
+                # Si no existe, creamos con los servicios iniciales
+                self.env['mz_convoy.beneficiario'].create({
                     'convoy_id': self.convoy_id.id,
                     'beneficiario_id': beneficiario.id,
-                    'dependiente_id': existing_dependiente.id,
+                    'dependiente_id': dependiente.id,
                     'tipo_beneficiario': 'dependiente',
+                    'tipo_registro': self.tipo_registro,
                     'fecha_registro': fields.Datetime.now(),
-                }
-                self.env['mz_convoy.beneficiario'].create(dep_rel_vals)
+                    'servicio_ids': [(6, 0, dependiente_wizard.servicio_ids.mapped('servicio_id').ids)]
+                })
 
-        # Recargar la vista para reflejar cambios
+       
+        self._crear_agendas_servicios()
+
         return {
             'type': 'ir.actions.client',
             'tag': 'reload',
         }
+    
+    def _crear_agendas_servicios(self):
+        """Crea las agendas y turnos para cada servicio seleccionado"""
+        AgendarServicio = self.env['mz.agendar_servicio']
+        
+        # Obtenemos el beneficiario recién creado/actualizado
+        beneficiario = self.env['mz.beneficiario'].search([
+            ('numero_documento', '=', self.numero_documento)
+        ], limit=1)
+        
+        if not beneficiario:
+            raise UserError('No se encontró el beneficiario para crear las agendas')
+            
+        # Solo procesamos servicios si el titular tiene servicios seleccionados
+        if self.servicio_ids:
+            for servicio in self.servicio_ids:
+                personal = self._obtener_siguiente_personal(servicio)
+                agenda_vals = {
+                    'convoy_id': self.convoy_id.id,
+                    'programa_id': self.programa_id.id,
+                    'beneficiario_id': beneficiario.id,
+                    'tipo_beneficiario': 'titular',
+                    'servicio_id': servicio.id,
+                    'personal_id': personal.id,
+                }
+                
+                try:
+                    # Creamos la agenda
+                    AgendarServicio.create(agenda_vals)
+                    
+                    # Agregamos el servicio al registro convoy-beneficiario
+                    convoy_beneficiario = self.env['mz_convoy.beneficiario'].search([
+                        ('convoy_id', '=', self.convoy_id.id),
+                        ('beneficiario_id', '=', beneficiario.id)
+                    ], limit=1)
+                    
+                    if convoy_beneficiario:
+                        convoy_beneficiario.write({
+                            'servicio_ids': [(4, servicio.servicio_id.id)]
+                        })
+                except Exception as e:
+                    raise UserError(f'Error al crear agenda para el servicio {servicio.name}: {str(e)}')
+
+        # Procesamos los dependientes que tengan servicios seleccionados
+        # raise UserError("aqui estoy")
+
+        for dependiente_wizard in self.dependientes_ids:
+            # raise UserError("llego")
+            if dependiente_wizard.servicio_ids:
+                for servicio in dependiente_wizard.servicio_ids:
+                    # Obtenemos el siguiente personal disponible
+                    personal = self._obtener_siguiente_personal(servicio)
+                    
+                    # Valores para la agenda del dependiente
+                    agenda_vals = {
+                        'convoy_id': self.convoy_id.id,
+                        'programa_id': self.programa_id.id,
+                        'beneficiario_id': beneficiario.id,
+                        'tipo_beneficiario': 'dependiente',
+                        'dependiente_id': dependiente_wizard.dependiente_id.id,
+                        'servicio_id': servicio.id,
+                        'personal_id': personal.id,
+                    }
+                    
+                    try:
+                        # Creamos la agenda
+                        AgendarServicio.create(agenda_vals)
+                        # raise UserError("aqui {}".format(str(agenda_vals)))
+                        
+                        # Buscamos el registro convoy-dependiente
+                        convoy_dependiente = self.env['mz_convoy.beneficiario'].search([
+                            ('convoy_id', '=', self.convoy_id.id),
+                            ('beneficiario_id', '=', beneficiario.id),
+                            ('dependiente_id', '=', dependiente_wizard.dependiente_id.id),
+                            ('tipo_beneficiario', '=', 'dependiente')
+                        ], limit=1)
+                        
+                        if convoy_dependiente:
+                            convoy_dependiente.write({
+                                'servicio_ids': [(4, servicio.servicio_id.id)]
+                            })
+                    except Exception as e:
+                        raise UserError(f'Error al crear agenda para el servicio {servicio.name} del dependiente {dependiente_wizard.name}: {str(e)}')
+        
+    def _obtener_siguiente_personal(self, servicio_id):
+        """
+        Obtiene el siguiente personal disponible para el servicio usando un sistema rotativo
+        """
+        AgendarServicio = self.env['mz.agendar_servicio']
+        
+        # Obtenemos todo el personal disponible para este servicio
+        personal_ids = servicio_id.personal_ids
+
+        if not personal_ids:
+            raise UserError(f'No hay personal asignado al servicio {servicio_id.name}')
+
+        # Buscamos las últimas agendas creadas para este servicio
+        ultimas_agendas = AgendarServicio.search([
+            ('servicio_id', '=', servicio_id.id),
+            ('convoy_id', '=', self.convoy_id.id)
+        ], order='create_date desc')
+
+        # Si no hay agendas previas, comenzamos con el primer personal
+        if not ultimas_agendas:
+            return personal_ids[0]
+
+        # Obtenemos el último personal asignado
+        ultimo_personal = ultimas_agendas[0].personal_id
+        
+        # Encontramos su posición en la lista
+        try:
+            indice_actual = list(personal_ids).index(ultimo_personal)
+            # Retornamos el siguiente, o volvemos al principio si estamos al final
+            siguiente_indice = (indice_actual + 1) % len(personal_ids)
+            return personal_ids[siguiente_indice]
+        except ValueError:
+            # Si el último personal ya no está en la lista, comenzamos con el primero
+            return personal_ids[0]

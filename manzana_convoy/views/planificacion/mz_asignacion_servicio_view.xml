@@ -125,7 +125,7 @@
                                         <field name="responsables_text"/>
                                     </div>
                                     <div>
-                                        <strong>Turnos: </strong>
+                                        <strong>Número de Turnos: </strong>
                                         <field name="numero_turnos"/>
                                     </div>
                                 </div>

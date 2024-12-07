@@ -28,6 +28,8 @@
                 <sheet>
                     <group>
                         <group>
+                            <field name="tipo_documento"/>
+                            <field name="numero_documento"/>
                             <field name="tipo_dependiente"/>
                             <field name="primer_apellido"/>
                             <field name="segundo_apellido"/>
@@ -35,10 +37,13 @@
                             <field name="segundo_nombre"/>
                         </group>
                         <group>
+                        <field name="dependiente_id" force_save="1"/>
                             <field name="fecha_nacimiento"/>
                             <field name="edad" readonly="1"/>
-                            <field name="tipo_documento"/>
-                            <field name="numero_documento"/>
+                        </group>
+                        <group>
+                            <field name="programa_id"/>
+                            <field name="servicio_ids" widget="many2many_tags" />
                         </group>
                     </group>
                 </sheet>

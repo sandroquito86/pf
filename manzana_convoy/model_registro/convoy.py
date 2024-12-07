@@ -47,10 +47,9 @@ class FichaEvento(models.Model):
     operadores_ids = fields.Many2many(string='Operadores', comodel_name='hr.employee', relation='convoy_operador_rel', 
                                       column1='convoy_id', column2='employee_id',domain="[('user_id','!=',False)]")
     colaboradores_ids = fields.Many2many(string='Colaboradores', comodel_name='hr.employee', relation='mz_convoy_colaborador_rel', 
-                                      column1='convoy_id', column2='colaborador_id')
-
+                                      column1='convoy_id', column2='colaborador_id') 
+    permisos_ids = fields.One2many('mz_convoy.permisos', 'convoy_id', string='Permisos Personal Convoy')
    
-    
     ficha_evento_legalizada = fields.Binary(string="Ficha Evento Legalizada", attachment=True)
     ficha_evento_legalizada_name = fields.Char(string="Nombre Ficha Evento")
 
@@ -263,146 +262,95 @@ class FichaEvento(models.Model):
             raise UserError(f"Error al aprobar convoy: {str(e)}")
 
     def action_ejecutar_convoy(self):
-        """Método para ejecutar convoy y asignar permisos a operadores"""
-        self.ensure_one()
+        """Método para ejecutar convoy y asignar permisos a operadores y prestadores"""
+        self.ensure_one()        
         if not self.servicio_ids:
             raise UserError("Debe existir al menos un servicio asignado al convoy")
-    
         if not self.operadores_ids:
             raise UserError("Debe existir al menos un operador asignado al convoy")
-        # Buscar todos los registros de horarios relacionados con este convoy
-        horarios = self.env['mz.genera.planificacion.servicio'].search([('convoy_id', '=', self.id)])
-        if horarios:
-            horarios.write({'estado': 'confirmado'})
-        # Validar estado
+            
         if self.state != 'aprobado':
             raise UserError("Solo se pueden ejecutar convoyes en estado aprobado")
-        
-        # Validar que sea el día de inicio
+            
         fecha_actual = (fields.Datetime.now() - timedelta(hours=5)).date()
         if self.fecha_inicio_evento != fecha_actual:
             raise UserError("Solo se pueden ejecutar convoyes en su fecha de inicio programada")
-        
+
         try:
-            # Obtener el grupo de operadores
+            grupo_base = self.env.ref('base.group_user')
             grupo_operador = self.env.ref('manzana_convoy.group_mz_convoy_operador')
-            if not grupo_operador:
-                raise UserError("No se encontró el grupo de operadores")
+            grupo_prestador = self.env.ref('manzana_convoy.group_mz_convoy_prestador_servicio')
+            grupo_coordinador = self.env.ref('manzana_convoy.group_mz_convoy_coordinador')
             
-            # Asignar permisos a los usuarios de los operadores
+            if not grupo_operador or not grupo_prestador or not grupo_coordinador:
+                raise UserError("No se encontraron los grupos necesarios")
+            # Procesar coordinador
+            if self.director_coordinador and self.director_coordinador.user_id:
+                valores_permisos = {'convoy_id': self.id, 'user_id': self.director_coordinador.user_id.id, 'permisos_originales': [(6, 0, self.director_coordinador.user_id.groups_id.ids)]}                
+                self.env['mz_convoy.permisos'].create(valores_permisos)                
+                self.director_coordinador.user_id.write({'groups_id': [(6, 0, [grupo_base.id]), (4, grupo_coordinador.id)]})
             for operador in self.operadores_ids:
-                if operador.user_id:
-                    if grupo_operador.id not in operador.user_id.groups_id.ids:
-                        operador.user_id.write({
-                            'groups_id': [(4, grupo_operador.id)]
-                        })
-            
-            # Actualizar estado del convoy
-            self.write({
-                'state': 'ejecutando',
-            })
-            
-            # Registrar mensaje en el chatter
+                if not operador.user_id:
+                    continue
+                valores_permisos = {'convoy_id': self.id, 'user_id': operador.user_id.id, 'permisos_originales': [(6, 0, operador.user_id.groups_id.ids)]}                
+                self.env['mz_convoy.permisos'].create(valores_permisos)                
+                operador.user_id.write({
+                    'groups_id': [(6, 0, [grupo_base.id]), (4, grupo_operador.id)]})
+            for servicio in self.servicio_ids:
+                for prestador in servicio.personal_ids:
+                    if not prestador.user_id:
+                        continue
+                    permiso_existente = self.env['mz_convoy.permisos'].search([('convoy_id', '=', self.id), ('user_id', '=', prestador.user_id.id)])
+                    if not permiso_existente:
+                        valores_permisos = {'convoy_id': self.id, 'user_id': prestador.user_id.id, 'permisos_originales': [(6, 0, prestador.user_id.groups_id.ids)]}
+                        self.env['mz_convoy.permisos'].create(valores_permisos)
+                    prestador.user_id.write({'groups_id': [(6, 0, [grupo_base.id]), (4, grupo_prestador.id)]})
+            # Actualizar horarios
+            horarios = self.env['mz.genera.planificacion.servicio'].search([('convoy_id', '=', self.id)])
+            if horarios:
+                horarios.write({'estado': 'confirmado'})
+            self.write({'state': 'ejecutando'})
             mensaje = f"""
             ▶️ Convoy Iniciado
             - Fecha de inicio: {fields.Datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
             - Fecha programada inicio: {self.fecha_inicio_evento.strftime('%d/%m/%Y')}
             - Fecha programada fin: {self.fecha_hasta_evento.strftime('%d/%m/%Y')}
             - Operadores asignados: {len(self.operadores_ids)}
-            """
-            
-            self.message_post(
-                body=mensaje,
-                message_type='notification',
-                subtype_xmlid='mail.mt_note'
-            )
-            
+            - Se han guardado y modificado los permisos de operadores y prestadores de servicio
+            """            
+            self.message_post(body=mensaje, message_type='notification', subtype_xmlid='mail.mt_note')
         except Exception as e:
             raise UserError(f"Error al ejecutar convoy: {str(e)}")
-
+   
     def action_finalizar_manual(self, es_automatico=False):
-        """Método para finalizar convoy
-        @param es_automatico: Boolean que indica si fue llamado por el cron
-        """
+        """Método para finalizar convoy"""
         self.ensure_one()
-        # Validar estado
+        
         if self.state != 'ejecutando':
             if es_automatico:
                 return
             raise UserError("Solo se pueden finalizar convoyes en estado ejecutando")
 
-        # Validar que sea la fecha hasta (solo para finalización manual)
         if not es_automatico:
             fecha_actual = (fields.Datetime.now() - timedelta(hours=5)).date()
-            if self.fecha_hasta_evento != fecha_actual:
+            if self.fecha_hasta_evento > fecha_actual:
                 raise UserError("Solo se pueden finalizar convoyes en su fecha de fin programada")
 
         try:
-            # Verificar si el coordinador tiene otros convoyes activos
-            otros_convoyes_coordinador = self.search_count([
-                ('id', '!=', self.id),
-                ('state', 'in', ['aprobado', 'ejecutando']),
-                ('director_coordinador', '=', self.director_coordinador.id)
-            ])
-
-            # Verificar operadores con otros convoyes ejecutándose
-            operadores_sin_otros_convoyes = []
-            operadores_con_otros_convoyes = []
-            grupo_operador = self.env.ref('manzana_convoy.group_mz_convoy_operador')
-            
-            for operador in self.operadores_ids:
-                if operador.user_id:
-                    otros_convoyes_operador = self.search_count([
-                        ('id', '!=', self.id),
-                        ('state', '=', 'ejecutando'),
-                        ('operadores_ids', 'in', [operador.id])
-                    ])
-                    
-                    if otros_convoyes_operador == 0:
-                        operadores_sin_otros_convoyes.append(operador)
-                        # Quitar permiso de operador
-                        operador.user_id.write({
-                            'groups_id': [(3, grupo_operador.id)]
-                        })
-                    else:
-                        operadores_con_otros_convoyes.append(operador)
-
-            # Si no tiene otros convoyes activos, quitar permiso de coordinador
-            if otros_convoyes_coordinador == 0 and self.director_coordinador and self.director_coordinador.user_id:
-                grupo_coordinador = self.env.ref('manzana_convoy.group_mz_convoy_coordinador')
-                self.director_coordinador.user_id.write({
-                    'groups_id': [(3, grupo_coordinador.id)]
-                })
-
-            # Cambiar estado
-            self.write({'state': 'fin',})
-
+            for permiso in self.permisos_ids:
+                if permiso.user_id:
+                    permiso.user_id.write({'groups_id': [(6, 0, permiso.permisos_originales.ids)]})
+            self.permisos_ids.unlink()
+            self.write({'state': 'fin'})
             fecha_hora_actual = fields.Datetime.now() - timedelta(hours=5)
-            # Preparar mensaje según tipo de finalización
             titulo = "🔄 Convoy Finalizado Automáticamente" if es_automatico else "✅ Convoy Finalizado Manualmente"
             mensaje = f"""
             {titulo}
             - Fecha de finalización: {fecha_hora_actual.strftime('%d/%m/%Y %H:%M:%S')}
             - Fecha programada fin: {self.fecha_hasta_evento.strftime('%d/%m/%Y')}
+            - Se han restaurado los permisos originales de todos los usuarios
             """
-
-            if self.director_coordinador:
-                if otros_convoyes_coordinador == 0:
-                    mensaje += "❌ Se removieron permisos de coordinador por no tener más convoyes activos."
-                else:
-                    mensaje += "✅ El coordinador mantiene sus permisos por tener otros convoyes activos."
-
-            # Agregar información sobre los operadores
-            if operadores_sin_otros_convoyes:
-                mensaje += f"❌ Se removieron permisos de operador a {len(operadores_sin_otros_convoyes)} operadores por no tener más convoyes en ejecución."
-            if operadores_con_otros_convoyes:
-                mensaje += f"✅ {len(operadores_con_otros_convoyes)} operadores mantienen sus permisos por tener otros convoyes en ejecución."
-
-            self.message_post(
-                body=mensaje,
-                message_type='notification',
-                subtype_xmlid='mail.mt_note'
-            )
+            self.message_post(body=mensaje, message_type='notification', subtype_xmlid='mail.mt_note')
 
         except Exception as e:
             error_msg = f"Error al finalizar convoy: {str(e)}"
@@ -410,18 +358,18 @@ class FichaEvento(models.Model):
                 logger.error(error_msg)
                 return
             raise UserError(error_msg)
-
-    def _cron_verificar_fecha_finalizacion(self):
-        """Método para verificar y finalizar convoyes por fecha"""
-        fecha_actual = (fields.Datetime.now() - timedelta(hours=5)).date()
-        # Buscar convoyes que deben finalizarse
-        convoyes_para_finalizar = self.search([
-            ('state', '=', 'ejecutando'),
-            ('fecha_hasta_evento', '=', fecha_actual)
-        ])
         
-        for convoy in convoyes_para_finalizar:
-            convoy.action_finalizar_manual(es_automatico=True)
+        def _cron_verificar_fecha_finalizacion(self):
+            """Método para verificar y finalizar convoyes por fecha"""
+            fecha_actual = (fields.Datetime.now() - timedelta(hours=5)).date()
+            # Buscar convoyes que deben finalizarse
+            convoyes_para_finalizar = self.search([
+                ('state', '=', 'ejecutando'),
+                ('fecha_hasta_evento', '=', fecha_actual)
+            ])
+            
+            for convoy in convoyes_para_finalizar:
+                convoy.action_finalizar_manual(es_automatico=True)
 
   
 class ConvoyMiembroMesaTecnica(models.Model):

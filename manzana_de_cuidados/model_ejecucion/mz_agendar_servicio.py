@@ -419,8 +419,8 @@ class AgendarServicio(models.Model):
                     ('asistio', '=', 'pendiente'),
                     ('servicio_id', '=', vals.get('servicio_id'))
                 ],limit=1)
-                if existe_asistencia:
-                    raise UserError(f'El beneficiario ya tiene una solicitud pendiente en {existe_asistencia.servicio_id.name} con {existe_asistencia.personal_id.name}. para la fecha {existe_asistencia.fecha}.')
+                # if existe_asistencia:
+                #     raise UserError(f'El beneficiario ya tiene una solicitud pendiente en {existe_asistencia.servicio_id.name} con {existe_asistencia.personal_id.name}. para la fecha {existe_asistencia.fecha}.')
         else:
             existe_asistencia = self.env['mz.asistencia_servicio'].search([
                 ('beneficiario_id', '=', vals.get('beneficiario_id')),
@@ -461,8 +461,8 @@ class AgendarServicio(models.Model):
                         ('asistio', '=', 'pendiente'),
                         ('servicio_id', '=', record.servicio_id.id)
                     ],limit=1)
-                    if existe_asistencia:
-                        raise UserError(f'El beneficiario ya tiene una solicitud pendiente en {existe_asistencia.servicio_id.name} con {existe_asistencia.personal_id.name}. para la fecha {existe_asistencia.fecha}.')
+                    # if existe_asistencia:
+                    #     raise UserError(f'El beneficiario ya tiene una solicitud pendiente en {existe_asistencia.servicio_id.name} con {existe_asistencia.personal_id.name}. para la fecha {existe_asistencia.fecha}.')
             else:
                 existe_asistencia = self.env['mz.asistencia_servicio'].search([
                     ('beneficiario_id', '=', record.beneficiario_id.id),

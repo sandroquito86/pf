@@ -8,35 +8,31 @@
             <tree string="Asistencia" create="False" delete="False" duplicate="false">
                 <field name="planificacion_id"/>
                 <field name="beneficiario_id"/>
-                <field name="tipo_beneficiario" widget="badge"
-                                        decoration-success="tipo_beneficiario == 'titular'"
-                                        decoration-warning="tipo_beneficiario == 'dependiente'"/>
+                <field name="tipo_beneficiario" widget="badge" decoration-success="tipo_beneficiario == 'titular'" decoration-warning="tipo_beneficiario == 'dependiente'"/>
                 <field name="dependiente_id" optional="hide"/>
                 <field name="tipo_beneficiario" optional="hide"/>
                 <field name="programa_id" optional="hide"/>
-                <field name="servicio_id" />
                 <field name="personal_id" />
-                <field name="codigo" optional="hide"/> 
+                <field name="servicio_id" />
+                <field name="sub_servicio_id" />
+                <field name="observacion" optional="hide"/>
+                <field name="codigo" optional="hide"/>
                 <field name="fecha"/>
                 <field name="asistio" />
-                <field name="atendido" widget="boolean_toggle" readonly="1"/>
-                <button name="action_asistio" type="object" string="Asistió" icon="fa-check" class="btn-primary" invisible="asistio != 'pendiente'"/>
+                <field name="atendido" optional="hide" widget="boolean_toggle" readonly="1"/>
+                <!-- <button name="action_asistio" type="object" string="Asistió" icon="fa-check" class="btn-primary" invisible="asistio != 'pendiente'"/> -->
+                <button name="%(action_control_asistencia)d" string="Asistió" type="action" icon="fa-check" class="btn-primary" invisible="asistio != 'pendiente'"/>
                 <button name="action_no_asistio" type="object" string="No Asistió" icon="fa-times" class="btn-danger" invisible="asistio != 'pendiente'"/>
                 <button name="ingresar_signos" type="object" string="Signos Vitales" icon="fa-heartbeat" class="btn-primary" invisible="atendido or not if_consulta_medica or asistio != 'si'"/>
-                <button name="%(action_consulta_form)d" type="action" string="Consulta Médica" icon="fa-stethoscope" class="btn-info" invisible="atendido or not if_consulta_medica or asistio != 'si'"
-                    context="{'default_personal_id': personal_id, 'default_beneficiario_id': beneficiario_id, 'default_servicio_id': servicio_id, 'default_programa_id': programa_id, 'default_fecha': fecha, 'default_codigo': codigo, 'default_asistencia_servicio_id': id, 'default_presion_arterial': presion_arterial, 'default_presion_sistolica': presion_sistolica, 'default_presion_diastolica': presion_diastolica, 'default_frecuencia_cardiaca': frecuencia_cardiaca, 'default_frecuencia_respiratoria': frecuencia_respiratoria, 'default_temperatura': temperatura, 'default_peso': peso, 'default_altura': altura, 'default_imc': imc, 'default_dependiente_id': dependiente_id, 'default_tipo_paciente': tipo_beneficiario}"/>
+                <button name="%(action_consulta_form)d" type="action" string="Consulta Médica" icon="fa-stethoscope" class="btn-info" invisible="atendido or not if_consulta_medica or asistio != 'si'" context="{'default_personal_id': personal_id, 'default_beneficiario_id': beneficiario_id, 'default_servicio_id': servicio_id, 'default_programa_id': programa_id, 'default_fecha': fecha, 'default_codigo': codigo, 'default_asistencia_servicio_id': id, 'default_presion_arterial': presion_arterial, 'default_presion_sistolica': presion_sistolica, 'default_presion_diastolica': presion_diastolica, 'default_frecuencia_cardiaca': frecuencia_cardiaca, 'default_frecuencia_respiratoria': frecuencia_respiratoria, 'default_temperatura': temperatura, 'default_peso': peso, 'default_altura': altura, 'default_imc': imc, 'default_dependiente_id': dependiente_id, 'default_tipo_paciente': tipo_beneficiario}"/>
                 <button name="action_ver_consulta" type="object" string="Ver Consulta Médica" icon="fa-eye" class="btn-secondary" invisible="not consulta_id"/>
-                <button name="%(action_consulta_psicologica_form)d" type="action" string="Consulta Psicológica" icon="fa-brain" class="btn-info" invisible="atendido or not if_consulta_psicologica or asistio != 'si'"
-                    context="{'default_personal_id': personal_id, 'default_beneficiario_id': beneficiario_id, 'default_servicio_id': servicio_id, 'default_programa_id': programa_id, 'default_fecha': fecha, 'default_codigo': codigo, 'default_asistencia_servicio_id': id, 'default_dependiente_id': dependiente_id, 'default_tipo_paciente': tipo_beneficiario}"/>
+                <button name="%(action_consulta_psicologica_form)d" type="action" string="Consulta Psicológica" icon="fa-brain" class="btn-info" invisible="atendido or not if_consulta_psicologica or asistio != 'si'" context="{'default_personal_id': personal_id, 'default_beneficiario_id': beneficiario_id, 'default_servicio_id': servicio_id, 'default_programa_id': programa_id, 'default_fecha': fecha, 'default_codigo': codigo, 'default_asistencia_servicio_id': id, 'default_dependiente_id': dependiente_id, 'default_tipo_paciente': tipo_beneficiario}"/>
                 <button name="action_ver_consulta_psicologica" type="object" string="Ver Consulta Psicológica" icon="fa-eye" class="btn-secondary" invisible="not consulta_psicologica_id"/>
-                <button name="%(action_cuidado_child_form)d" type="action" string="Redistro de Cuidado" icon="fa-brain" class="btn-info" invisible="atendido or tipo_servicio != 'cuidado_infantil' or asistio != 'si'"
-                    context="{'default_personal_id': personal_id, 'default_beneficiario_id': beneficiario_id, 'default_servicio_id': servicio_id, 'default_programa_id': programa_id, 'default_fecha': fecha, 'default_codigo': codigo, 'default_asistencia_servicio_id': id, 'default_dependiente_id': dependiente_id, 'default_tipo_beneficiario': tipo_beneficiario}"/>
+                <button name="%(action_cuidado_child_form)d" type="action" string="Redistro de Cuidado" icon="fa-brain" class="btn-info" invisible="atendido or tipo_servicio != 'cuidado_infantil' or asistio != 'si'" context="{'default_personal_id': personal_id, 'default_beneficiario_id': beneficiario_id, 'default_servicio_id': servicio_id, 'default_programa_id': programa_id, 'default_fecha': fecha, 'default_codigo': codigo, 'default_asistencia_servicio_id': id, 'default_dependiente_id': dependiente_id, 'default_tipo_beneficiario': tipo_beneficiario}"/>
                 <button name="action_ver_cuidado_child" type="object" string="Ver Registro de Cuidado" icon="fa-eye" class="btn-secondary" invisible="not cuidado_child_id"/>
-                <button name="%(action_asesoria_legal_form)d" type="action" string="Asesoría Legal" icon="fa-brain" class="btn-info" invisible="atendido or tipo_servicio != 'asesoria_legal' or asistio != 'si'"
-                    context="{'default_asesor_id': personal_id, 'default_beneficiario_id': beneficiario_id, 'default_servicio_id': servicio_id, 'default_programa_id': programa_id, 'default_fecha': fecha, 'default_codigo': codigo, 'default_asistencia_servicio_id': id, 'default_dependiente_id': dependiente_id, 'default_tipo_beneficiario': tipo_beneficiario}"/>
+                <button name="%(action_asesoria_legal_form)d" type="action" string="Asesoría Legal" icon="fa-brain" class="btn-info" invisible="atendido or tipo_servicio != 'asesoria_legal' or asistio != 'si'" context="{'default_asesor_id': personal_id, 'default_beneficiario_id': beneficiario_id, 'default_servicio_id': servicio_id, 'default_programa_id': programa_id, 'default_fecha': fecha, 'default_codigo': codigo, 'default_asistencia_servicio_id': id, 'default_dependiente_id': dependiente_id, 'default_tipo_beneficiario': tipo_beneficiario}"/>
                 <button name="action_ver_asesoria_legal" type="object" string="Ver Asesoría Legal" icon="fa-eye" class="btn-secondary" invisible="not asesoria_legal_id"/>
-                <button name="%(action_servicio_veterinario_form)d" type="action" string="Servicio Veterinario" icon="fa-brain" class="btn-info" invisible="atendido or tipo_servicio != 'mascota' or asistio != 'si'"
-                    context="{'default_veterinario_id': personal_id, 'default_beneficiario_id': beneficiario_id, 'default_servicio_id': servicio_id, 'default_programa_id': programa_id, 'default_fecha': fecha, 'default_codigo': codigo, 'default_asistencia_servicio_id': id, 'default_mascota_id': mascota_id}"/>
+                <button name="%(action_servicio_veterinario_form)d" type="action" string="Servicio Veterinario" icon="fa-brain" class="btn-info" invisible="atendido or tipo_servicio != 'mascota' or asistio != 'si'" context="{'default_veterinario_id': personal_id, 'default_beneficiario_id': beneficiario_id, 'default_servicio_id': servicio_id, 'default_programa_id': programa_id, 'default_fecha': fecha, 'default_codigo': codigo, 'default_asistencia_servicio_id': id, 'default_mascota_id': mascota_id}"/>
                 <button name="action_ver_servicio_mascota" type="object" string="Ver Servicio de Mascota" icon="fa-eye" class="btn-secondary" invisible="not servicio_veterinario_id"/>
                 <field name="tipo_servicio" optional="hide"/>
                 <field name="mascota_id" optional="hide"/>
@@ -68,18 +64,16 @@
             <tree string="Asistencia" create="False" delete="False" duplicate="false">
                 <field name="planificacion_id"/>
                 <field name="beneficiario_id"/>
-                <field name="tipo_beneficiario" widget="badge"
-                                        decoration-success="tipo_beneficiario == 'titular'"
-                                        decoration-warning="tipo_beneficiario == 'dependiente'"/>
+                <field name="tipo_beneficiario" widget="badge" decoration-success="tipo_beneficiario == 'titular'" decoration-warning="tipo_beneficiario == 'dependiente'"/>
                 <field name="dependiente_id" optional="hide"/>
                 <field name="tipo_beneficiario" optional="hide"/>
                 <field name="programa_id" optional="hide"/>
                 <field name="servicio_id" />
                 <field name="personal_id" />
-                <field name="codigo" optional="hide"/> 
+                <field name="codigo" optional="hide"/>
                 <field name="fecha"/>
                 <field name="asistio" />
-                <field name="atendido" widget="boolean_toggle" readonly="1"/>
+                <field name="atendido" optional="hide" widget="boolean_toggle" readonly="1"/>
             </tree>
         </field>
     </record>
@@ -96,11 +90,9 @@
                             <field name="programa_id" options="{'no_create': True, 'no_open': True}" readonly="1" force_save="1"/>
                             <field name="servicio_id" options="{'no_create': True, 'no_open': True}" readonly="1" force_save="1"/>
                             <field name="planificacion_id" options="{'no_create': True, 'no_open': True}" readonly="1" force_save="1"/>
-                            <field name="tipo_beneficiario" widget="badge"
-                                        decoration-success="tipo_beneficiario == 'titular'"
-                                        decoration-warning="tipo_beneficiario == 'dependiente'"/>
+                            <field name="tipo_beneficiario" widget="badge" decoration-success="tipo_beneficiario == 'titular'" decoration-warning="tipo_beneficiario == 'dependiente'"/>
                             <field name="beneficiario_id" options="{'no_create': True, 'no_open': True}" readonly="1" force_save="1"/>
-                            <field name="dependiente_id" invisible="tipo_beneficiario != 'dependiente'" required="tipo_beneficiario == 'dependiente'"  options="{'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+                            <field name="dependiente_id" invisible="tipo_beneficiario != 'dependiente'" required="tipo_beneficiario == 'dependiente'" options="{'no_create_edit': True, 'no_open': True,'no_create': True}"/>
                             <field name="fecha" readonly="1" force_save="1"/>
                         </group>
                         <group>
@@ -123,10 +115,10 @@
         <field name="model">mz.asistencia_servicio</field>
         <field name="arch" type="xml">
             <form>
-                 <h1 class="d-flex flex-row align-items-center">
+                <h1 class="d-flex flex-row align-items-center">
                     <field name="beneficiario_id" readonly="1" style="font-size: min(4vw, 2.6rem);"/>
                 </h1>
-                
+
                 <group string="Signos Vitales">
                     <group>
                         <field name="presion_arterial"/>
@@ -142,7 +134,7 @@
                         <field name="imc"/>
                     </group>
                 </group>
-                
+
                 <!-- ... resto del formulario ... -->
             </form>
         </field>
@@ -165,12 +157,12 @@
                     <filter string="Beneficiario" name="group_by_beneficiario" context="{'group_by': 'beneficiario_id'}"/>
                     <filter string="Fecha" name="group_by_fecha" context="{'group_by': 'fecha'}"/>
                 </group>
-                <searchpanel>
+                <!-- <searchpanel>
                     <field name="programa_id" icon="fa-building" string="Programa"/>
                     <field name="servicio_base_id" icon="fa-cogs" string="Servicio"/>
                     <field name="personal_id" icon="fa-user-md" string="Empleado" select="multi" hierarchize="false"/>
                     <field name="beneficiario_id" icon="fa-user" string="Beneficiario" select="multi" hierarchize="false"/>
-                </searchpanel> 
+                </searchpanel>  -->
             </search>
         </field>
     </record>
@@ -185,9 +177,8 @@
         <field name="domain">[('programa_id.modulo_id', '=', 2)]</field>
     </record>
 
-    <menuitem id="menu_action_mz_asistencia_servicio_d" name="Asistencia" 
-            parent="menu_mz_ejecucion" action="action_mz_asistencia_servicio_dinamic" sequence="20"/>
- 
+    <menuitem id="menu_action_mz_asistencia_servicio_d" name="Asistencia" parent="menu_mz_ejecucion" action="action_mz_asistencia_servicio_dinamic" sequence="20"/>
+
     <!-- <record id="action_mz_asistencia_servicio_new_del" model="ir.actions.act_window">
         <field name="name">Asistencia</field>
         <field name="res_model">mz.asistencia_servicio</field>
@@ -199,11 +190,7 @@
     </record>
 
 
-    <menuitem id="menu_action_mz_asistencia_servicio_del" 
-              name="Asistencia" 
-              parent="menu_mz_ejecucion" 
-              groups="manzana_de_cuidados.group_beneficiario_manager"
-              action="action_mz_asistencia_servicio_new_del" sequence="20"/>
+    <menuitem id="menu_action_mz_asistencia_servicio_del" name="Asistencia" parent="menu_mz_ejecucion" groups="manzana_de_cuidados.group_beneficiario_manager" action="action_mz_asistencia_servicio_new_del" sequence="20"/>
 
 
     <record id="action_mz_asistencia_servicio_lider_estrategico" model="ir.actions.act_window">
@@ -218,11 +205,7 @@
 
 
 
-    <menuitem id="menu_action_mz_asistencia_servicio" 
-              name="Asistencia" 
-              parent="menu_mz_ejecucion" 
-              groups="manzana_de_cuidados.group_manzana_lider_estrategia,manzana_de_cuidados.group_coordinador_manzana"
-              action="action_mz_asistencia_servicio_lider_estrategico" sequence="20"/>
+    <menuitem id="menu_action_mz_asistencia_servicio" name="Asistencia" parent="menu_mz_ejecucion" groups="manzana_de_cuidados.group_manzana_lider_estrategia,manzana_de_cuidados.group_coordinador_manzana" action="action_mz_asistencia_servicio_lider_estrategico" sequence="20"/>
 
 
 
@@ -238,9 +221,5 @@
 
 
 
-    <menuitem id="menu_action_mz_asistencia_servicio_limit" 
-              name="Asistencia" 
-              parent="menu_mz_ejecucion" 
-              groups="manzana_de_cuidados.group_mz_prestador_servicio"
-              action="action_mz_asistencia_servicio_limit" sequence="20"/> -->
+    <menuitem id="menu_action_mz_asistencia_servicio_limit" name="Asistencia" parent="menu_mz_ejecucion" groups="manzana_de_cuidados.group_mz_prestador_servicio" action="action_mz_asistencia_servicio_limit" sequence="20"/> -->
 </odoo>

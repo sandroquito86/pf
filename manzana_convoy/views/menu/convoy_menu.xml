@@ -4,15 +4,15 @@
         <!-- Configuración Menu -->
         <menuitem id="mz_convoy_menu_prinicipal" name="Convoy" web_icon="manzana_convoy,static/img/convoy.png"/>
 
-        <menuitem id="mz_convoy_menu_registro" name="Registro" parent="mz_convoy_menu_prinicipal" sequence="10"/>
+        <menuitem id="mz_convoy_menu_registro" name="Registro" parent="mz_convoy_menu_prinicipal" groups="group_mz_convoy_operador,group_mz_convoy_coordinador,group_mz_convoy_administrador,group_mz_convoy_asistente_coordinador" sequence="10"/>
 
-        <menuitem id="mz_convoy_menu_planificacion" name="Planificación" parent="mz_convoy_menu_prinicipal" groups="group_mz_convoy_coordinador,group_mz_convoy_administrador" sequence="20"/>
+        <menuitem id="mz_convoy_menu_planificacion" name="Planificación" parent="mz_convoy_menu_prinicipal" groups="group_mz_convoy_operador,group_mz_convoy_coordinador,group_mz_convoy_administrador" sequence="20"/>
 
         <menuitem id="menu_mz_convoy_ejecucion" name="Ejecución" parent="mz_convoy_menu_prinicipal" sequence="30"/>
 
-        <menuitem id="menu_mz_convoy_servicios_prestado" name="Servicios Prestados" parent="mz_convoy_menu_prinicipal" sequence="40"/>
-        <menuitem id="menu_mz_convoy_servicios_consultas" name="Consultas" parent="menu_mz_convoy_servicios_prestado" sequence="10"/>
-        <menuitem id="menu_mz_convoy_servicios_otros" name="Otros" parent="menu_mz_convoy_servicios_prestado" sequence="20"/>
+        <menuitem id="menu_mz_convoy_servicios_prestado" name="Servicios Prestados" parent="mz_convoy_menu_prinicipal" groups="group_mz_convoy_coordinador,group_mz_convoy_administrador" sequence="40"/>
+        <menuitem id="menu_mz_convoy_servicios_consultas" name="Consultas" parent="menu_mz_convoy_servicios_prestado" groups="group_mz_convoy_coordinador,group_mz_convoy_administrador" sequence="10"/>
+        <menuitem id="menu_mz_convoy_servicios_otros" name="Otros" parent="menu_mz_convoy_servicios_prestado" groups="group_mz_convoy_coordinador,group_mz_convoy_administrador" sequence="20"/>
 
         <menuitem id="mz_convoy_menu_configuracion" name="Configuración" parent="mz_convoy_menu_prinicipal" sequence="50" groups="group_mz_convoy_administrador"/>
         <menuitem id="mz_convoy_conf_catalogo" name="Catálogo General" parent="mz_convoy_menu_configuracion" sequence="10"/>

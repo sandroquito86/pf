@@ -38,7 +38,6 @@ class ConvoyGenerarHorarios(models.Model):
         """
         args = args or []
         user = self.env.user
-        
         if self._context.get('filtrar_convoy'):
             # Verificar grupos
             if user.has_group('manzana_convoy.group_mz_convoy_coordinador'):
@@ -48,18 +47,23 @@ class ConvoyGenerarHorarios(models.Model):
                 ])
                 programa_ids = convoyes.mapped('programa_id').ids
                 base_args = [('programa_id', 'in', programa_ids)]
-                
             elif user.has_group('manzana_convoy.group_mz_convoy_administrador'):
                 # Para admin/asistente: ver horarios con modulo_id = 4
                 base_args = [('programa_id.modulo_id', '=', 4)]
-                
+            elif user.has_group('manzana_convoy.group_mz_convoy_operador'):
+                # Para operador: ver solo horarios de convoyes donde está asignado y están en ejecución
+                convoyes = self.env['mz.convoy'].search([
+                    ('state', '=', 'ejecutando'),
+                    ('operadores_ids', 'in', user.employee_id.id)
+                ])
+                programa_ids = convoyes.mapped('programa_id').ids
+                base_args = [('programa_id', 'in', programa_ids)]
             args = base_args + args
-            
         return super(ConvoyGenerarHorarios, self)._search(
-            args, 
-            offset=offset, 
-            limit=limit, 
-            order=order, 
+            args,
+            offset=offset,
+            limit=limit,
+            order=order,
             access_rights_uid=access_rights_uid
         )
 

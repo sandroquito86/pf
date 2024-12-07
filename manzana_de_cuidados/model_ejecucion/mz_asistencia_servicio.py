@@ -35,6 +35,8 @@ class AsistenciaServicio(models.Model):
     asesoria_legal_id = fields.Many2one('mz.asesoria.legal', string='Asesoría Legal')
     servicio_veterinario_id = fields.Many2one('mz.servicio.veterinario', string='Servicio Veterinario')
     active = fields.Boolean(string='Activo', default=True)
+    sub_servicio_id = fields.Many2one(comodel_name='mz.sub.servicio', string='Sub Servicio',domain="[('servicio_id', '=', servicio_id)]")
+
 
     # Signos vitales
     presion_arterial = fields.Char(

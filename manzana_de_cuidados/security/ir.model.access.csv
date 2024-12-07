@@ -236,3 +236,5 @@ access_mz_asesoria_legal_registro_informacion,mz.asesoria.legal.registro.informa
 access_mz_mascota_registro_informacion,mz.mascota.registro.informacion,model_mz_mascota,group_mz_registro_informacion,1,0,0,0
 access_mz_servicio_veterinario_registro_informacion,mz.servicio.veterinario.registro.informacion,model_mz_servicio_veterinario,group_mz_registro_informacion,1,1,0,0
 access_mz_receta_veterinaria_linea_registro_informacion,mz.receta.veterinaria.linea.registro.informacion,model_mz_receta_veterinaria_linea,group_mz_registro_informacion,1,0,0,0
+
+access_mz.control_asistencia_user,mz.control_asistencia.user,model_mz_control_asistencia,,1,1,1,1

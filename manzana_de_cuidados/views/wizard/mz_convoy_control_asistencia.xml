@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_control_asistencia_form" model="ir.ui.view">
+        <field name="name">control.asistencia.wizard.form</field>
+        <field name="model">mz.control_asistencia</field>
+        <field name="arch" type="xml">
+            <form string="Control de Asistencia">
+                <group>
+                    <field name="observacion" placeholder="Escriba una observación aquí..."/>
+                    <field name="servicio_id" readonly="1" force_save="1" invisible="1" />
+                    <field name="tiene_subservicios" invisible="1" />
+                    <field name="sub_servicio_id" invisible="not tiene_subservicios" required="tiene_subservicios"/>
+                </group>
+                <div class="alert alert-info mb-0" role="alert">
+                    <i class="fa fa-info-circle me-2"/>
+                            Si necesita registrar un subservicio por favor comunicarse con el COORDINADOR
+                </div>
+                <footer>
+                    <button string="Confirmar" type="object" name="action_confirm" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_control_asistencia" model="ir.actions.act_window">
+        <field name="name">Control de Asistencia</field>
+        <field name="res_model">mz.control_asistencia</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -12,6 +12,7 @@ class ConvoyBeneficiarioWizardDependiente(models.TransientModel):
     _description = 'Dependiente en Wizard de Beneficiario'
 
     wizard_id = fields.Many2one('mz_convoy.beneficiario_wizard', string='Wizard')
+    programa_id = fields.Many2one('pf.programas', string="Programa", readonly=True)
     name = fields.Char(string='Nombre Completo', compute='_compute_name', store=True)
     dependiente_id = fields.Many2one('mz.dependiente', string='Dependiente')  # Agregamos este campo
     tipo_dependiente = fields.Many2one('pf.items', string="Tipo de Dependiente", required=True,
@@ -24,9 +25,11 @@ class ConvoyBeneficiarioWizardDependiente(models.TransientModel):
     tipo_documento = fields.Selection([('dni', 'DNI'), ('pasaporte', 'Pasaporte'), ('carnet_extranjeria', 'Carnet de Extranjería')], string='Tipo de Documento', required=True)
     numero_documento = fields.Char(string='Número de Documento', required=True)
     edad = fields.Char(string="Edad", compute="_compute_edad", store=True)
+    servicio_ids = fields.Many2many('mz.asignacion.servicio', 'mz_convoy_dependiente_servicio_rel', 'dependiente_wizard_id', 'servicio_id', string='Servicios a Recibir', 
+                                    domain="[('programa_id', '=', programa_id)]")
+
 
    
-
     @api.onchange('numero_documento')
     def _onchange_dependiente(self):
         if self.numero_documento:
@@ -35,29 +38,40 @@ class ConvoyBeneficiarioWizardDependiente(models.TransientModel):
             ], limit=1)
             if dependiente:
                 self._cargar_dependiente(dependiente)
+            else:
+                # Limpiar campos si no se encuentra el dependiente
+                self._limpiar_campos()
+
+    def _limpiar_campos(self):
+        """Limpia todos los campos del dependiente"""
+        self.update({
+            'dependiente_id': False,
+            'tipo_dependiente': False,
+            'primer_apellido': False,
+            'segundo_apellido': False,
+            'primer_nombre': False,
+            'segundo_nombre': False,
+            'fecha_nacimiento': False,
+            'tipo_documento': False,
+            'servicio_ids': [(5, 0, 0)]  # Limpia los servicios seleccionados
+        })
+   
 
     def _cargar_dependiente(self, dependiente):
         """Carga los datos del dependiente encontrado"""
-        self.dependiente_id = dependiente.id
-        self.tipo_dependiente = dependiente.tipo_dependiente.id
-        self.primer_apellido = dependiente.primer_apellido
-        self.segundo_apellido = dependiente.segundo_apellido
-        self.primer_nombre = dependiente.primer_nombre
-        self.segundo_nombre = dependiente.segundo_nombre
-        self.fecha_nacimiento = dependiente.fecha_nacimiento
-        self.tipo_documento = dependiente.tipo_documento
-        self.numero_documento = dependiente.numero_documento
+        self.update({
+            'dependiente_id': dependiente.id,
+            'tipo_dependiente': dependiente.tipo_dependiente.id,
+            'primer_apellido': dependiente.primer_apellido,
+            'segundo_apellido': dependiente.segundo_apellido,
+            'primer_nombre': dependiente.primer_nombre,
+            'segundo_nombre': dependiente.segundo_nombre,
+            'fecha_nacimiento': dependiente.fecha_nacimiento,
+            'tipo_documento': dependiente.tipo_documento,
+            'numero_documento': dependiente.numero_documento,
+            'servicio_ids': [(5, 0, 0)]  # Limpia los servicios al cargar nuevo dependiente
+        })
 
-    # @api.onchange('tipo_documento', 'numero_documento')
-    # def _onchange_documento(self):
-    #     if self.tipo_documento == 'dni' and self.numero_documento:
-    #         if not utils.validar_cedula(self.numero_documento):
-    #             return {
-    #                 'warning': {
-    #                     'title': "Cédula Inválida",
-    #                     'message': "El sssnúmero de cédula ingresado no es válido."
-    #                 }
-    #             }
 
     @api.depends('fecha_nacimiento')
     def _compute_edad(self):
@@ -83,14 +97,7 @@ class ConvoyBeneficiarioWizardDependiente(models.TransientModel):
                 parts.append(record.segundo_nombre)
             record.name = ' '.join(parts)
 
-    @api.onchange('numero_documento')
-    def _onchange_dependiente(self):
-        if self.numero_documento:
-            dependiente = self.env['mz.dependiente'].search([
-                ('numero_documento', '=', self.numero_documento)
-            ], limit=1)
-            if dependiente:
-                self._cargar_dependiente(dependiente)
+    
 
    
 

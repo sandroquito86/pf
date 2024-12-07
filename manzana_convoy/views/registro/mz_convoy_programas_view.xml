@@ -14,7 +14,7 @@
                     <field name="state" widget="statusbar"/>
                     <button name="action_aprobar_convoy" string="Aprobar" type="object" class="oe_highlight" invisible="state != 'borrador'"/>
                     <button name="action_ejecutar_convoy" string="Iniciar Ejecución" type="object" class="oe_highlight" invisible="state != 'aprobado'" confirm="¿Está seguro de iniciar la ejecución de este convoy?"/>
-                    <button name="%(action_mz_convoy_beneficiario_wizard)d" type="action" string="Beneficiarios" context="{'default_convoy_id': id}" class="oe_highlight" icon="fa-user" invisible="state != 'ejecutando'"/>
+                    <button name="%(action_mz_convoy_beneficiario_wizard)d" type="action" string="Beneficiarios" context="{'default_convoy_id': id}" class="oe_highlight" icon="fa-user" invisible="state != 'ejecutando'" groups="manzana_convoy.group_mz_convoy_operador,manzana_convoy.group_mz_convoy_coordinador,manzana_convoy.group_mz_convoy_administrador"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -41,9 +41,19 @@
                     <group string="Informacion del CONVOY">
                         <field name="institucion_anfitriona" readonly="state in ('ejecutando', 'fin')"/>
                         <field name="formato_evento" readonly="state in ('ejecutando', 'fin')"/>
-                        <field name="director_coordinador" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" readonly="state in ('ejecutando', 'fin')"/>
+                        <field name="director_coordinador" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" readonly="state != 'borrador'"/>
+
                     </group>
                     <notebook>
+                        <page string="Permisos" invisible="1">
+                            <field name="permisos_ids">
+                                <tree create="0" edit="0">
+                                    <field name="convoy_id"/>
+                                    <field name="user_id"/>
+                                    <field name="permisos_originales"/>
+                                </tree>
+                            </field>
+                        </page>
                         <page string="Beneficiarios">
                             <field name="beneficiario_ids" widget="one2many_search" readonly="state in ('ejecutando', 'fin')">
                                 <tree create="0" edit="0">
@@ -51,8 +61,7 @@
                                     <field name="nombres_completos"/>
                                     <field name="tipo_beneficiario"/>
                                     <field name="dependiente_id"/>
-                                    <field name="tipo_registro"/>
-                                    <field name="fecha_registro"/>
+                                    <field name="servicio_ids" widget="many2many_tags" />
                                 </tree>
                             </field>
                         </page>
@@ -201,7 +210,7 @@
                 <field name="director_coordinador"/>
                 <field name="state"/>
                 <field name="dia_semana"/>
-                <button name="action_finalizar_manual" string="Finalizar Convoy" type="object" class="oe_highlight" invisible="state not in ('aprobado', 'ejecutando')" confirm="¿Está seguro de querer finalizar este convoy?"/>
+                <button name="action_finalizar_manual" string="Finalizar Convoy" type="object" class="oe_highlight" invisible="state not in ('aprobado', 'ejecutando')" groups="manzana_convoy.group_mz_convoy_coordinador,manzana_convoy.group_mz_convoy_administrador" confirm="¿Está seguro de querer finalizar este convoy?"/>
             </tree>
         </field>
     </record>

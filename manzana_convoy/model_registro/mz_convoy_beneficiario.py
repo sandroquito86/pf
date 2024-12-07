@@ -24,7 +24,8 @@ class ConvoyBeneficiarioRel(models.Model):
     nombres_completos = fields.Char(compute='_compute_nombres_completos', store=True, string='Nombres Completos')
     tipo_beneficiario = fields.Selection([('titular', 'Titular'),('dependiente', 'Dependiente')], string='Tipo de Beneficiario', default='titular', required=True, tracking=True)    
     dependiente_id = fields.Many2one('mz.dependiente',string='Dependiente',tracking=True,domain="[('beneficiario_id', '=', beneficiario_id)]" )
-  
+    servicio_ids = fields.Many2many('mz.servicio', 'mz_convoy_beneficiario_servicio_recibido_rel', 'convoy_beneficiario_id', 'servicio_id', string='Servicios Solicitados')
+
 
     _sql_constraints = [
         ('unique_beneficiario_convoy', 

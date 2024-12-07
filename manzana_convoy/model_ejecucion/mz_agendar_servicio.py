@@ -7,8 +7,9 @@ from datetime import date
 from datetime import timedelta
 from babel.dates import format_date
 from datetime import datetime, timedelta
+from odoo.osv import expression
 
-class AgendarServicio(models.Model):
+class ConvoyAgendarServicio(models.Model):
     _inherit = 'mz.agendar_servicio'
     
     
@@ -20,24 +21,87 @@ class AgendarServicio(models.Model):
     dependiente_convoy_id_domain = fields.Char(compute="_compute_dependiente_convoy_id_domain", readonly=True, store=False, )
     personal_convoy_id_domain = fields.Char(compute="_compute_personal_convoy_id_domain", readonly=True, store=False, )
 
-    @api.constrains('convoy_id', 'beneficiario_id', 'servicio_id')
-    def _check_duplicate_beneficiario_servicio(self):
-        for record in self:
-            if record.convoy_id and record.beneficiario_id and record.servicio_id:
-                # Buscamos si existe otro registro con el mismo convoy, beneficiario y servicio
-                duplicate = self.search([
-                    ('id', '!=', record.id),  # Excluimos el registro actual
-                    ('convoy_id', '=', record.convoy_id.id),
-                    ('beneficiario_id', '=', record.beneficiario_id.id),
-                    ('servicio_id', '=', record.servicio_id.id),
-                    ('state', 'not in', ['cancelado', 'finalizado'])  # Opcional: excluir estados finalizados/cancelados
-                ])
+    def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
+        """
+        Método _search personalizado para filtrar registros según el grupo del usuario
+        """
+        if self._context.get('filtrar_convoy'):  
+            args = args or []
+            user = self.env.user
 
-                if duplicate:
-                    raise UserError(
-                        f'El beneficiario {record.beneficiario_id.name} ya tiene agendado el '
-                        f'servicio {record.servicio_id.name}'
-                    )
+            # Lista de grupos que no deben ver nada
+            grupos_sin_acceso = [
+                'manzana_convoy.group_mz_convoy_prestador_servicio',
+                'manzana_convoy.group_mz_convoy_asistente_coordinador',
+                'manzana_convoy.group_mz_convoy_bodeguero'
+            ]
+
+            # Si el usuario pertenece a grupos sin acceso, retornar dominio imposible
+            if any(user.has_group(grupo) for grupo in grupos_sin_acceso):
+                args = [('id', '=', -1)]  # Dominio imposible
+            # Coordinador: ve todos los convoy donde es director_coordinador
+            elif user.has_group('manzana_convoy.group_mz_convoy_coordinador'):
+                convoy_ids = self.env['mz.convoy'].search([
+                    ('director_coordinador.user_id', '=', user.id)
+                ]).ids
+                if convoy_ids:
+                    args = expression.AND([args, [('convoy_id', 'in', convoy_ids)]])
+                else:
+                    args = [('id', '=', -1)]
+            # Operador: ve solo registros de convoy en estado ejecutando donde está asignado
+            elif user.has_group('manzana_convoy.group_mz_convoy_operador'):
+                convoy_ids = self.env['mz.convoy'].search([
+                    ('state', '=', 'ejecutando'),
+                    ('operadores_ids', 'in', user.employee_id.id)
+                ]).ids
+                if convoy_ids:
+                    args = expression.AND([args, [('convoy_id', 'in', convoy_ids)]])
+                else:
+                    args = [('id', '=', -1)]
+            # Administrador: ve todo
+            elif user.has_group('manzana_convoy.group_mz_convoy_administrador'):
+                pass  # No se agregan restricciones adicionales
+            # Cualquier otro grupo: no ve nada
+            else:
+                args = [('id', '=', -1)]
+
+        return super(ConvoyAgendarServicio, self)._search(
+            args,
+            offset=offset,
+            limit=limit,
+            order=order,
+            access_rights_uid=access_rights_uid
+        )
+    
+
+
+    @api.model
+    def get_view(self, view_id=None, view_type='form', context=None, toolbar=False, submenu=False, **kwargs):
+        context = context or {}
+        user = self.env.user
+
+        # Si es operador, mostrar vistas normales
+        if user.has_group('manzana_convoy.group_mz_convoy_operador'):
+            if view_type == 'tree':
+                view_id = self.env.ref('manzana_convoy.mz_convoy_view_agendar_servicio_tree').id
+            elif view_type == 'form':
+                view_id = self.env.ref('manzana_convoy.mz_convoy_view_agendar_servicio_form').id
+        else:
+            # Para coordinadores, administradores y otros usuarios, mostrar vistas readonly
+            if view_type == 'tree':
+                view_id = self.env.ref('manzana_convoy.mz_convoy_view_agendar_servicio_tree_readonly').id
+            elif view_type == 'form':
+                view_id = self.env.ref('manzana_convoy.mz_convoy_view_agendar_servicio_form_readonly').id
+
+        return super().get_view(
+            view_id=view_id,
+            view_type=view_type,
+            context=context,
+            toolbar=toolbar,
+            submenu=submenu,
+            **kwargs
+        )
+
 
 
     @api.onchange('fecha_solicitud')
@@ -66,7 +130,7 @@ class AgendarServicio(models.Model):
                             record.convoy_id.fecha_hasta_evento.strftime('%d/%m/%Y')
                         ))
             
-            # Retornar warning si existe
+            # R ornar warning si existe
             if warning:
                 return {'warning': warning}
             
@@ -108,13 +172,12 @@ class AgendarServicio(models.Model):
                 'beneficiario_ids': [(6, 0, [vals.get('beneficiario_id')])] if vals.get('beneficiario_id') else [(6, 0, [])]
             }
             
-            horario = self.env['mz.planificacion.servicio'].create(horario_vals)
-            
+            horario = self.env['mz.planificacion.servicio'].create(horario_vals)            
             # Asignar el horario creado al registro de agendar_servicio
             vals['horario_id'] = horario.id
             vals['fecha_solicitud'] = fecha_actual
             vals['state'] = 'solicitud'            
-            servicio = super(AgendarServicio, self).create(vals)
+            servicio = super(ConvoyAgendarServicio, self).create(vals)
             servicio.solicitar_horario()
             return servicio
     

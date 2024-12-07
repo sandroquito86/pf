@@ -78,7 +78,6 @@ class Dependiente(models.Model):
             'context': dict(self.env.context, create=False)
         }
     
-
     
     @api.depends('fecha_nacimiento')
     def _compute_edad(self):
